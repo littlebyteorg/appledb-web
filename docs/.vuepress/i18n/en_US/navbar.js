@@ -4,27 +4,27 @@ module.exports = [
     children: [
       {
         text: 'iPhone',
-        link: '/chart/device/iPhone.html',
+        link: '/device/iPhone.html',
       },
       {
         text: 'iPad',
-        link: '/chart/device/iPad.html',
+        link: '/device/iPad.html',
       },
       {
         text: 'iPod',
-        link: '/chart/device/iPod.html',
+        link: '/device/iPod.html',
       },
       {
         text: 'Apple TV',
-        link: '/chart/device/AppleTV.html',
+        link: '/device/AppleTV.html',
       },
       {
         text: 'Apple Watch',
-        link: '/chart/device/AppleWatch.html',
+        link: '/device/AppleWatch.html',
       },
       {
         text: 'All firmwares',
-        link: '/chart.html',
+        link: '/',
       },
     ]
   },

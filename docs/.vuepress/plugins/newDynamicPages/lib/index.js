@@ -96,7 +96,7 @@ for (var g in deviceGroups) {
 }
 
 pageList.push({
-  path: '/index.html',
+  path: '/',
   frontmatter: {
     title: 'Firmware Chart',
     description: 'iOS Jailbreak Firmware Chart',

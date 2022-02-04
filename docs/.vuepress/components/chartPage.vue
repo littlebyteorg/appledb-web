@@ -43,41 +43,34 @@ const chartType = computed(() => { return frontmatter.value.chartType })
 
 const discordNoticeText = computed(() => {
   var discordNoticeText = frontmatter.value.discordNoticeText || themeLocale.value.discordNoticeText
-  if (!discordNoticeText) return null
+  if (!discordNoticeText) return
   
   return '<p>' + discordNoticeText + '</p>'
 })
 
 const adTagOne = computed(() => {
   var adTagOne = themeLocale.value.adTagOne
-  if (adTagOne === null) {
-    return null
-  }
+  if (!adTagOne) return
   
   return adTagOne
 })
 
 const adTagTwo = computed(() => {
   var adTagTwo = themeLocale.value.adTagTwo
-  if (adTagTwo === null) {
-    return null
-  }
+  if (!adTagTwo) return
   
   return adTagTwo
 })
 
 const adsBool = computed(() => {
-  if (frontmatter.value.ads == null) {
-    return true
-  }
+  if (!frontmatter.value.ads) return
   
   return frontmatter.value.ads
 })
 
 const pageTitle = computed(() => {
-  if (frontmatter.value.title === null) {
-    return null
-  }
+  if (!frontmatter.value.title) return
+  
   return frontmatter.value.title
 })
 </script>

@@ -4,7 +4,7 @@ module.exports = {
   locales: {
     lang: 'en-US',
     title: 'AppleDB',
-    description: 'JSON database and API of Apple firmwares and jailbraeks',
+    description: 'JSON database and API of Apple firmwares and jailbreaks',
   },
   
   themeConfig: {
