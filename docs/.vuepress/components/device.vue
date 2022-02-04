@@ -64,11 +64,9 @@
         </div>
       </li>
       <li>
-        <div class="chartDropdown">
-          <button v-on:click="reverseSorting = !reverseSorting">
-            <i class="fas fa-sort"></i>
+        <div class="chartDropdown" v-on:click="reverseSorting = !reverseSorting">
+          <i class="fas fa-sort"></i>
             {{ sortStr }}
-          </button>
         </div>
       </li>
     </ul>
