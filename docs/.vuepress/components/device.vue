@@ -13,7 +13,7 @@
   </template>
   <input type="text" v-model="reverseSorting" style="display:none;">
   <template v-if="getFwArr.length > 0">
-    <h2 v-html="tableHeader"/>
+    <h2 v-if="Object.keys(frontmatter.device).length != Object.keys(devices).length" v-html="tableHeader"/>
     <ul class="tableOptionsWrapper">
       <li class="showOnHover">
         <div class="chartDropdown">
