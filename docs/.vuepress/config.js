@@ -2,14 +2,6 @@ const { localePath, locales, themeConfigLocales, searchLocales } = require("./i1
 const path = require("path")
 const fs = require("fs")
 
-const mainObj = {
-  ios: require('./json/ios'),
-  jailbreak: require('./json/jailbreak'),
-  device: require('./json/deviceList'),
-  groups: require('./json/deviceGroups'),
-  bypass: require('./json/jbBypass')
-}
-
 module.exports = {
   locales: locales,
   
@@ -61,12 +53,6 @@ module.exports = {
   theme: path.resolve(__dirname, './vuepress-theme'),
   extendsMarkdown: (md) => {
       md.use(require('markdown-it-include'))
-  },
-  
-  onPrepared(app) {
-    fs.writeFile('./docs/.vuepress/public/main.json', JSON.stringify(mainObj), function (err) {
-      if (err) throw err
-    })
   },
   
   bundler: '@vuepress/bundler-vite',
