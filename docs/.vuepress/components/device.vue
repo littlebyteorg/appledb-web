@@ -15,47 +15,49 @@
   <template v-if="getFwArr.length > 0">
     <h2 v-if="Object.keys(frontmatter.device).length != Object.keys(devices).length" v-html="tableHeader"/>
     <ul class="tableOptionsWrapper">
-      <li class="showOnHover">
+      <li>
         <div class="chartDropdown">
           <i class="fas fa-filter"></i>
           {{ filterStr }}
           <span class="arrow down"></span>
         </div>
-        <div class="hoverElement chartDropdownBox opaqueHover">
+        <div class="chartDropdownBox opaqueHover">
           <ul>
-            <li class="dropdown-item" style="padding: 0em 1em">
+            <li class="dropdown-item">
               <input type="checkbox" v-model="showBuildNum" id="showBuildNumCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
               <label for="showBuildNumCheckbox">{{ showBuildNumStr }}</label>
             </li>
-            <li class="dropdown-item" style="padding: 0em 1em">
+            <li class="dropdown-item">
               <input type="checkbox" v-model="showVersion" id="showVersionCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
               <label for="showVersionCheckbox">{{ showVersionStr }}</label>
             </li>
-            <li class="dropdown-item" style="padding: 0em 1em">
+            <li class="dropdown-item">
               <input type="checkbox" v-model="showJailbreak" id="showJailbreakCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
               <label for="showJailbreakCheckbox">{{ showJailbreakStr }}</label>
             </li>
-            <li class="dropdown-item" style="padding: 0em 1em">
+            <li class="dropdown-item">
               <input type="checkbox" v-model="showReleaseDate" id="showReleaseDateCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
               <label for="showReleaseDateCheckbox">{{ showReleaseDateStr }}</label>
             </li>
-            <hr v-if="getFwArr.filter(x => x.beta).length > 1 || Object.keys(frontmatter.device).length == Object.keys(devices).length">
+            <li class="dropdown-item" style="padding: 0px" v-if="getFwArr.filter(x => x.beta).length > 1 || Object.keys(frontmatter.device).length == Object.keys(devices).length">
+              <hr>
+            </li>
             <template v-if="getFwArr.filter(x => x.beta).length > 1">
-              <li class="dropdown-item" style="padding: 0em 1em">
+              <li class="dropdown-item">
                 <input type="checkbox" v-model="showBeta" id="showBetaCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
                 <label for="showBetaCheckbox">{{ showBetaStr }}</label>
               </li>
-              <li class="dropdown-item" style="padding: 0em 1em">
+              <li class="dropdown-item">
                 <input type="checkbox" v-model="showStable" id="showStableCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
                 <label for="showStableCheckbox">{{ showStableStr }}</label>
               </li>
             </template>
             <template v-if="Object.keys(frontmatter.device).length == Object.keys(devices).length">
-              <li class="dropdown-item" style="padding: 0em 1em">
+              <li class="dropdown-item">
                 <input type="checkbox" v-model="showiOS" id="showiOSCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
                 <label for="showiOSCheckbox">{{ showiOSStr }}</label>
               </li>
-              <li class="dropdown-item" style="padding: 0em 1em">
+              <li class="dropdown-item">
                 <input type="checkbox" v-model="showtvOS" id="showtvOSCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
                 <label for="showtvOSCheckbox">{{ showtvOSStr }}</label>
               </li>
@@ -419,6 +421,7 @@ export default {
   line-height: 1.4rem;
   font-weight: 500;
   cursor: pointer;
+  user-select: none;
 }
 
 .chartDropdownBox {
@@ -426,19 +429,59 @@ export default {
   height: auto !important;
   box-sizing: border-box;
   background-color: var(--c-bg-navbar);
-  border: 1px solid var(--c-border);
   border-bottom-color: var(--c-border-dark);
   text-align: left;
   border-radius: 0.25rem;
   white-space: nowrap;
   top: auto;
+  user-select: none;
+  border: 0px solid var(--c-border);
+
+  padding: 0;
+  max-height: 0px;
+  transition: 300ms ease-in-out;
+}
+
+.chartDropdown:hover + div.chartDropdownBox {
+  left: auto;
+  top: auto;
   padding: 1.5em 0.8em 1.5em 0em;
+  border: 1px solid var(--c-border);
+  max-height: 100%;
+  transition: 300ms ease-in-out;
+}
+
+.chartDropdownBox:hover {
+  left: auto;
+  top: auto;
+  padding: 1.5em 0.8em 1.5em 0em;
+  border: 1px solid var(--c-border);
+  max-height: 100%;
+  transition: 300ms ease-in-out;
+}
+
+.chartDropdown:hover + div.chartDropdownBox li {
+  opacity: 1;
+  padding: 0em 1em;
+  max-height: 100%;
+}
+
+.chartDropdownBox:hover li {
+  opacity: 1;
+  padding: 0em 1em;
+  max-height: 100%;
 }
 
 .chartDropdownBox li {
   list-style-type: none;
   float: none !important;
   margin: 0 !important;
+
+  overflow: hidden;
+  padding: 0px;
+  opacity: 0;
+  max-height: 0px;
+  transition: 300ms ease-in-out;
 }
 
 .tableOptionsWrapper li {
