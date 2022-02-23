@@ -389,7 +389,6 @@ export default {
     },
     loadMoreRows: function() {
       window.onscroll = () => {
-        console.log(this.entryCount)
         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight * 0.9
         if (bottomOfWindow) {
           if (this.entryCount + this.entryIncrement >= this.maxEntryCount) this.entryCount = this.maxEntryCount
@@ -427,11 +426,9 @@ export default {
       this.fwArr = this.getFwArrMethod(val)
     }
   },
-  created() {
-    this.fwArr = this.getFwArrMethod(this.entryCount)
-  },
   mounted() {
-    this.loadMoreRows();
+    this.fwArr = this.getFwArrMethod(this.entryCount)
+    this.loadMoreRows()
   }
 }
 </script>
