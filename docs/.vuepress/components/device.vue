@@ -349,9 +349,19 @@ export default {
           const beta        = [a.beta, b.beta]
           
           if (beta[1] - beta[0] != 0) return beta[1] - beta[0]
-          else if (verInclRC[0] - verInclRC[1] != 0) return verInclRC[0] - verInclRC[1]
-          else if (verInclGM[0] - verInclGM[1] != 0) return verInclGM[0] - verInclGM[1]
-          else if (verInclBeta[0] - verInclBeta[1] != 0) return verInclBeta[0] - verInclBeta[1]
+          if (verInclRC[0] - verInclRC[1] != 0) return verInclRC[0] - verInclRC[1]
+          if (verInclGM[0] - verInclGM[1] != 0) return verInclGM[0] - verInclGM[1]
+          if (verInclBeta[0] - verInclBeta[1] != 0) return verInclBeta[0] - verInclBeta[1]
+
+          if (a.beta && b.beta) {
+            const betaNum = [a.version, b.version]
+              .map(x => x.split(' '))
+              .map(x => x[2])
+              .map(x => (x == undefined) ? '1' : x)
+              .map(x => (x == '6-enterprise') ? '7' : x)
+              .map(x => parseInt(x))
+            if (betaNum[0] - betaNum[1] != 0) return betaNum[0] - betaNum[1]
+          }
         }
         return 0
       })
