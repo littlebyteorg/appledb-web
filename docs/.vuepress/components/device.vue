@@ -11,101 +11,89 @@
       </li>
     </ul>
   </template>
-  <input type="text" v-model="reverseSorting" style="display:none;">
-  <template v-if="getFwArr.length > 0">
-    <h2 v-if="Object.keys(frontmatter.device).length != Object.keys(devices).length" v-html="tableHeader"/>
-    <ul class="tableOptionsWrapper">
-      <li>
-        <div class="chartDropdown">
-          <i class="fas fa-filter"></i>
-          {{ filterStr }}
-          <span class="arrow down"></span>
-        </div>
-        <div class="chartDropdownBox opaqueHover">
-          <ul>
+  <h2 v-if="Object.keys(frontmatter.device).length != Object.keys(devices).length" v-html="tableHeader"/>
+  <ul class="tableOptionsWrapper">
+    <li>
+      <div class="chartDropdown">
+        <i class="fas fa-filter"></i>
+        {{ filterStr }}
+        <span class="arrow down"></span>
+      </div>
+      <div class="chartDropdownBox opaqueHover">
+        <ul>
+          <li class="dropdown-item">
+            <input type="checkbox" v-model="showBuildNum" id="showBuildNumCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
+            <label for="showBuildNumCheckbox">{{ showBuildNumStr }}</label>
+          </li>
+          <li class="dropdown-item">
+            <input type="checkbox" v-model="showVersion" id="showVersionCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
+            <label for="showVersionCheckbox">{{ showVersionStr }}</label>
+          </li>
+          <li class="dropdown-item">
+            <input type="checkbox" v-model="showJailbreak" id="showJailbreakCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
+            <label for="showJailbreakCheckbox">{{ showJailbreakStr }}</label>
+          </li>
+          <li class="dropdown-item">
+            <input type="checkbox" v-model="showReleaseDate" id="showReleaseDateCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
+            <label for="showReleaseDateCheckbox">{{ showReleaseDateStr }}</label>
+          </li>
+          <li class="dropdown-item" style="padding: 0px">
+            <hr>
+          </li>
+          <li class="dropdown-item">
+            <input type="checkbox" v-model="showBeta" id="showBetaCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
+            <label for="showBetaCheckbox">{{ showBetaStr }}</label>
+          </li>
+          <li class="dropdown-item">
+            <input type="checkbox" v-model="showStable" id="showStableCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
+            <label for="showStableCheckbox">{{ showStableStr }}</label>
+          </li>
+          <template v-if="Object.keys(frontmatter.device).length == Object.keys(devices).length">
             <li class="dropdown-item">
-              <input type="checkbox" v-model="showBuildNum" id="showBuildNumCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
-              <label for="showBuildNumCheckbox">{{ showBuildNumStr }}</label>
+              <input type="checkbox" v-model="showiOS" id="showiOSCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
+              <label for="showiOSCheckbox">{{ showiOSStr }}</label>
             </li>
             <li class="dropdown-item">
-              <input type="checkbox" v-model="showVersion" id="showVersionCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
-              <label for="showVersionCheckbox">{{ showVersionStr }}</label>
+              <input type="checkbox" v-model="showtvOS" id="showtvOSCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
+              <label for="showtvOSCheckbox">{{ showtvOSStr }}</label>
             </li>
-            <li class="dropdown-item">
-              <input type="checkbox" v-model="showJailbreak" id="showJailbreakCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
-              <label for="showJailbreakCheckbox">{{ showJailbreakStr }}</label>
-            </li>
-            <li class="dropdown-item">
-              <input type="checkbox" v-model="showReleaseDate" id="showReleaseDateCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
-              <label for="showReleaseDateCheckbox">{{ showReleaseDateStr }}</label>
-            </li>
-            <li class="dropdown-item" style="padding: 0px" v-if="getFwArr.filter(x => x.beta).length > 1 || Object.keys(frontmatter.device).length == Object.keys(devices).length">
-              <hr>
-            </li>
-            <template v-if="getFwArr.filter(x => x.beta).length > 1">
-              <li class="dropdown-item">
-                <input type="checkbox" v-model="showBeta" id="showBetaCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
-                <label for="showBetaCheckbox">{{ showBetaStr }}</label>
-              </li>
-              <li class="dropdown-item">
-                <input type="checkbox" v-model="showStable" id="showStableCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
-                <label for="showStableCheckbox">{{ showStableStr }}</label>
-              </li>
-            </template>
-            <template v-if="Object.keys(frontmatter.device).length == Object.keys(devices).length">
-              <li class="dropdown-item">
-                <input type="checkbox" v-model="showiOS" id="showiOSCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
-                <label for="showiOSCheckbox">{{ showiOSStr }}</label>
-              </li>
-              <li class="dropdown-item">
-                <input type="checkbox" v-model="showtvOS" id="showtvOSCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
-                <label for="showtvOSCheckbox">{{ showtvOSStr }}</label>
-              </li>
-            </template>
-          </ul>
-        </div>
-      </li>
-      <li>
-        <div class="chartDropdown" v-on:click="reverseSorting = !reverseSorting">
-          <i class="fas fa-sort"></i>
-            {{ sortStr }}
-        </div>
-      </li>
-    </ul>
-    <table>
+          </template>
+        </ul>
+      </div>
+    </li>
+    <li>
+      <div class="chartDropdown" v-on:click="reverseSortingBtn()">
+        <i class="fas fa-sort"></i>
+          {{ sortStr }}
+      </div>
+    </li>
+  </ul>
+  <table>
+    <tr>
+      <th v-html="buildStr" v-if="showBuildNum"/>
+      <th v-html="versionStr" v-if="showVersion"/>
+      <th v-html="jailbreakStr" v-if="showJailbreak"/>
+      <th v-html="releaseDateStr" v-if="showReleaseDate" style="width: 15%;"/>
+    </tr>
+    <template v-for="(fw, index) in fwArr" :key="fw">
       <tr>
-        <th v-html="buildStr" v-if="showBuildNum"/>
-        <th v-html="versionStr" v-if="showVersion"/>
-        <th v-html="jailbreakStr" v-if="showJailbreak"/>
-        <th v-html="releaseDateStr" v-if="showReleaseDate" style="width: 15%;"/>
-      </tr>
-      <template v-for="fw in fwArr" :key="fw">
-        <tr v-if="(
-          (
-            (fw.istvOS && showtvOS) ||
-            (!fw.istvOS && showiOS)
-          ) && (
-            (fw.beta && showBeta) ||
-            (!fw.beta && showStable)
-          )
-        )">
-          <td v-if="showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.build}}</a></td>
+        <td v-if="showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.build}}</a></td>
 
-          <template v-if="showVersion">
-            <td v-if="!showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.osStr}} {{fw.version}} <span v-if="getFwArr.filter(x => x.version == fw.version && x.osStr == fw.osStr).length > 1">({{fw.build}})</span></a></td>
-            <td v-else>{{fw.osStr}} {{fw.version}}</td>
-          </template>
-          
-          <template v-if="showJailbreak">
-            <td v-if="fw.jailbreakArr.length > 0"><span v-for="(jb, index) in fw.jailbreakArr" :key="jb"><a :href="jailbreakPath + jb.name.replace(/ /g, '-') + '.html'" v-html="jb.name"/><span v-if="index+1 < fw.jailbreakArr.length">, </span></span></td>
-            <td v-else v-html="noJbStr"/>
-          </template>
-          
-          <td v-if="showReleaseDate">{{fw.released}}</td>
-        </tr>
-      </template>
-    </table>
-  </template>
+        <template v-if="showVersion">
+          <td v-if="!showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.osStr}} {{fw.version}} <span v-if="fwArr.filter(x => x.version == fw.version && x.osStr == fw.osStr).length > 1">({{fw.build}})</span></a></td>
+          <td v-else>{{fw.osStr}} {{fw.version}}</td>
+        </template>
+        
+        <template v-if="showJailbreak">
+          <td v-if="fw.jailbreakArr.length > 0"><span v-for="(jb, index) in fw.jailbreakArr" :key="jb"><a :href="jailbreakPath + jb.name.replace(/ /g, '-') + '.html'" v-html="jb.name"/><span v-if="index+1 < fw.jailbreakArr.length">, </span></span></td>
+          <td v-else v-html="noJbStr"/>
+        </template>
+        
+        <td v-if="showReleaseDate">{{fw.released}}</td>
+      </tr>
+      <tr v-if="(index == entryCount - 1)"><td :colspan="showBuildNum + showVersion + showJailbreak + showReleaseDate">{{loadingStr}}</td></tr>
+    </template>
+  </table>
 </template>
 
 <script>
@@ -164,6 +152,7 @@ export default {
 
       filterStr: 'Filter',
       sortStr: 'Sort',
+      loadingStr: 'Loading...',
 
       showBeta: false,
       showStable: true,
@@ -177,6 +166,9 @@ export default {
 
       reverseSorting: true,
       fwArr: undefined,
+      entryCount: 50,
+      entryIncrement: 50,
+      maxEntryCount: 99999,
 
       frontmatter: usePageFrontmatter(),
       devices: json.device,
@@ -266,44 +258,37 @@ export default {
       // Grab device data
       devArr = devArr.map(d => this.devices[d])
       return devArr
+    }
+  },
+  methods: {
+    reverseSortingBtn: function() {
+      this.reverseSorting = !this.reverseSorting
     },
-    getFwArr() {
+    getFwArrMethod: function(val) {
       const fm = this.frontmatter
       var devArr = fm.device
 
       var fwArr = []
-      for (var d in devArr) {
-        var devFwArr = this.firmwares.filter(function(x) {
-          if (!x.hasOwnProperty('devices')) return 0
-          else return Object.keys(x.devices).includes(devArr[d])
-        })
-        devFwArr.map(function(x) { if (!fwArr.includes(x)) fwArr.push(x) })
-      }
-
       if (devArr.length == Object.keys(this.devices).length) fwArr = this.firmwares
-
-      var jbList = this.jailbreaks
-      for (var f in fwArr) {
-        var jbArr = []
-        const fw = fwArr[f]
-        for (var jb in jbList) {
-          if (!jbList[jb].hasOwnProperty('compatibility')) continue
-          for (var c in jbList[jb].compatibility) {
-            if (!jbList[jb].compatibility[c].firmwares.includes(fw.uniqueBuild)) continue
-            if (!jbList[jb].compatibility[c].devices.some(r=> devArr.includes(r))) continue
-            if (jbArr.includes(jbList[jb])) continue
-            jbArr.push(jbList[jb])
-          }
+      else {
+        for (var d in devArr) {
+          var devFwArr = this.firmwares.filter(function(x) {
+            if (!x.hasOwnProperty('devices')) return 0
+            else return Object.keys(x.devices).includes(devArr[d])
+          })
+          devFwArr.map(function(x) { if (!fwArr.includes(x)) fwArr.push(x) })
         }
-
-        jbArr = jbArr.sort((a,b) => a.priority - b.priority)
-        fwArr[f].jailbreakArr = jbArr
       }
 
-      fwArr = fwArr.map(function(x) {
-        x.istvOS = (x.osStr == 'tvOS' || x.osStr == 'Apple TV Software')
-        return x
-      })
+      fwArr = fwArr.filter(fw => (
+        (
+          (fw.istvOS && this.showtvOS) ||
+          (!fw.istvOS && this.showiOS)
+        ) && (
+          (fw.beta && this.showBeta) ||
+          (!fw.beta && this.showStable)
+        )
+      ))
 
       function versionCompare(v1, v2, options) {
         var lexicographical = options && options.lexicographical,
@@ -366,6 +351,33 @@ export default {
         return 0
       })
 
+      if (this.reverseSorting) fwArr = fwArr.reverse()
+      fwArr = fwArr.filter((fw,index) => index < val)
+      if (fwArr.length <= this.entryCount) this.maxEntryCount = fwArr.length
+
+      var jbList = this.jailbreaks
+      for (var f in fwArr) {
+        var jbArr = []
+        const fw = fwArr[f]
+        for (var jb in jbList) {
+          if (!jbList[jb].hasOwnProperty('compatibility')) continue
+          for (var c in jbList[jb].compatibility) {
+            if (!jbList[jb].compatibility[c].firmwares.includes(fw.uniqueBuild)) continue
+            if (!jbList[jb].compatibility[c].devices.some(r=> devArr.includes(r))) continue
+            if (jbArr.includes(jbList[jb])) continue
+            jbArr.push(jbList[jb])
+          }
+        }
+
+        jbArr = jbArr.sort((a,b) => a.priority - b.priority)
+        fwArr[f].jailbreakArr = jbArr
+      }
+
+      fwArr = fwArr.map(function(x) {
+        x.istvOS = (x.osStr == 'tvOS' || x.osStr == 'Apple TV Software')
+        return x
+      })
+
       const timeLocale = this.timeLocale
       fwArr = fwArr.map(function(x) {
         if (!x.hasOwnProperty('released')) return x
@@ -374,20 +386,52 @@ export default {
       })
 
       return fwArr
+    },
+    loadMoreRows: function() {
+      window.onscroll = () => {
+        console.log(this.entryCount)
+        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight * 0.9
+        if (bottomOfWindow) {
+          if (this.entryCount + this.entryIncrement >= this.maxEntryCount) this.entryCount = this.maxEntryCount
+          this.entryCount += this.entryIncrement
+        }
+      }
     }
   },
   watch: {
-    reverseSorting: function (bool) {
-      const fw = this.getFwArr
-      this.fwArr = fw.reverse()
+    reverseSorting: function () {
+      this.fwArr = this.getFwArrMethod(this.entryCount)
+      this.entryCount = 50
     },
-    fwArr: function (val) {
-      this.result = val
+    showBeta: function (bool) {
+      this.fwArr = this.getFwArrMethod(this.entryCount)
+      this.entryCount = 50
+      this.maxEntryCount = 99999
+    },
+    showStable: function (bool) {
+      this.fwArr = this.getFwArrMethod(this.entryCount)
+      this.entryCount = 50
+      this.maxEntryCount = 99999
+    },
+    showtvOS: function (bool) {
+      this.fwArr = this.getFwArrMethod(this.entryCount)
+      this.entryCount = 50
+      this.maxEntryCount = 99999
+    },
+    showiOS: function (bool) {
+      this.fwArr = this.getFwArrMethod(this.entryCount)
+      this.entryCount = 50
+      this.maxEntryCount = 99999
+    },
+    entryCount: function(val) {
+      this.fwArr = this.getFwArrMethod(val)
     }
   },
   created() {
-    this.fwArr = this.getFwArr
-    if (this.reverseSorting) this.fwArr = this.fwArr.reverse()
+    this.fwArr = this.getFwArrMethod(this.entryCount)
+  },
+  mounted() {
+    this.loadMoreRows();
   }
 }
 </script>
