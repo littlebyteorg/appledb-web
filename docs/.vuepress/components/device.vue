@@ -166,9 +166,9 @@ export default {
 
       reverseSorting: true,
       fwArr: [],
-      entryStart: 50,
-      entryCount: 50,
-      entryIncrement: 50,
+      entryStart: 25,
+      entryCount: 25,
+      entryIncrement: 25,
       maxEntryCount: 99999,
 
       frontmatter: usePageFrontmatter(),
@@ -361,7 +361,7 @@ export default {
 
       var fwArrLength = this.fwArr.concat(fwArr).length
       if (fwArrLength <= this.entryCount) this.maxEntryCount = fwArrLength
-      
+
       var jbList = this.jailbreaks
       for (var f in fwArr) {
         var jbArr = []
