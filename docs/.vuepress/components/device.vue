@@ -165,7 +165,8 @@ export default {
       showReleaseDate: false,
 
       reverseSorting: true,
-      fwArr: undefined,
+      fwArr: [],
+      entryStart: 50,
       entryCount: 50,
       entryIncrement: 50,
       maxEntryCount: 99999,
@@ -353,8 +354,14 @@ export default {
 
       if (this.reverseSorting) fwArr = fwArr.reverse()
       fwArr = fwArr.filter((fw,index) => index < val)
-      if (fwArr.length <= this.entryCount) this.maxEntryCount = fwArr.length
 
+      var filterVal = this.entryCount - this.entryIncrement
+      fwArr = fwArr.filter((fw, index) => index > filterVal)
+
+
+      var fwArrLength = this.fwArr.concat(fwArr).length
+      if (fwArrLength <= this.entryCount) this.maxEntryCount = fwArrLength
+      
       var jbList = this.jailbreaks
       for (var f in fwArr) {
         var jbArr = []
@@ -385,7 +392,7 @@ export default {
         return x
       })
 
-      return fwArr
+      return this.fwArr.concat(fwArr)
     },
     loadMoreRows: function() {
       window.onscroll = () => {
@@ -395,32 +402,30 @@ export default {
           this.entryCount += this.entryIncrement
         }
       }
+    },
+    resetFwArr: function() {
+      this.fwArr = []
+      this.fwArr = this.getFwArrMethod(this.entryCount)
+      this.entryCount = this.entryStart
+      this.maxEntryCount = 99999
+      this.fwArrLength = 0
     }
   },
   watch: {
     reverseSorting: function () {
-      this.fwArr = this.getFwArrMethod(this.entryCount)
-      this.entryCount = 50
+      this.resetFwArr()
     },
     showBeta: function (bool) {
-      this.fwArr = this.getFwArrMethod(this.entryCount)
-      this.entryCount = 50
-      this.maxEntryCount = 99999
+      this.resetFwArr()
     },
     showStable: function (bool) {
-      this.fwArr = this.getFwArrMethod(this.entryCount)
-      this.entryCount = 50
-      this.maxEntryCount = 99999
+      this.resetFwArr()
     },
     showtvOS: function (bool) {
-      this.fwArr = this.getFwArrMethod(this.entryCount)
-      this.entryCount = 50
-      this.maxEntryCount = 99999
+      this.resetFwArr()
     },
     showiOS: function (bool) {
-      this.fwArr = this.getFwArrMethod(this.entryCount)
-      this.entryCount = 50
-      this.maxEntryCount = 99999
+      this.resetFwArr()
     },
     entryCount: function(val) {
       this.fwArr = this.getFwArrMethod(val)
