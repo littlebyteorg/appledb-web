@@ -166,9 +166,12 @@ export default {
 
       reverseSorting: true,
       fwArr: [],
-      entryStart: 25,
-      entryCount: 25,
+
+      constEntryCount: 25,
+      constMaxEntryCount: 99999,
       entryIncrement: 25,
+
+      entryCount: 25,
       maxEntryCount: 99999,
 
       frontmatter: usePageFrontmatter(),
@@ -357,8 +360,7 @@ export default {
 
       var filterVal = this.entryCount - this.entryIncrement
       fwArr = fwArr.filter((fw, index) => index > filterVal)
-
-
+      
       var fwArrLength = this.fwArr.concat(fwArr).length
       if (fwArrLength <= this.entryCount) this.maxEntryCount = fwArrLength
 
@@ -405,10 +407,9 @@ export default {
     },
     resetFwArr: function() {
       this.fwArr = []
-      this.fwArr = this.getFwArrMethod(this.entryCount)
-      this.entryCount = this.entryStart
-      this.maxEntryCount = 99999
-      this.fwArrLength = 0
+      this.maxEntryCount = this.constMaxEntryCount
+      this.fwArr = this.getFwArrMethod(this.constEntryCount)
+      this.entryCount = this.constEntryCount
     }
   },
   watch: {
@@ -432,7 +433,7 @@ export default {
     }
   },
   mounted() {
-    this.fwArr = this.getFwArrMethod(this.entryCount)
+    this.resetFwArr()
     this.loadMoreRows()
   }
 }
