@@ -7,8 +7,6 @@ module.exports = {
   
   themeConfig: {
     repo: 'emiyl/appledb',
-    adTagOne: '',
-    adTagTwo: '',
     selectLanguageText: '<i class="fas fa-globe"/>',
     logo: '/assets/images/logo.png',
     logoDark: '/assets/images/logo_dark.png',

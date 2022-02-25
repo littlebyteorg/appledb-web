@@ -439,6 +439,8 @@ export default {
           }
         })
         fwArr = newArr
+
+        return fwArr
       }
 
       return this.fwArr.concat(fwArr)
