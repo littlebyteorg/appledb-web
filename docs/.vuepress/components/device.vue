@@ -311,10 +311,16 @@ export default {
         }
       }
 
+      fwArr = fwArr.map(function(x) {
+        x.istvOS = (x.osStr == 'tvOS' || x.osStr == 'Apple TV Software')
+        x.isiOS = (x.osStr == 'iOS' || x.osStr == 'iPadOS' || x.osStr == 'iPhoneOS')
+        return x
+      })
+
       fwArr = fwArr.filter(fw => (
         (
           (fw.istvOS && this.showtvOS) ||
-          (!fw.istvOS && this.showiOS)
+          (fw.isiOS && this.showiOS)
         ) && (
           (fw.beta && this.showBeta) ||
           (!fw.beta && this.showStable)
@@ -412,11 +418,6 @@ export default {
         
         fwArr[f].jailbreakArr = jbArr
       }
-
-      fwArr = fwArr.map(function(x) {
-        x.istvOS = (x.osStr == 'tvOS' || x.osStr == 'Apple TV Software')
-        return x
-      })
 
       const timeLocale = this.timeLocale
       fwArr = fwArr.map(function(x) {
