@@ -22,39 +22,48 @@
       <div class="chartDropdownBox opaqueHover">
         <ul>
           <li class="dropdown-item">
-            <input type="checkbox" v-model="showBuildNum" id="showBuildNumCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
-            <label for="showBuildNumCheckbox">{{ showBuildNumStr }}</label>
+            <input type="checkbox" v-model="simpleTable" id="simpleTableCheckbox">
+            <label for="simpleTableCheckbox">{{ simpleTableStr }}</label>
           </li>
+          <template v-if="!simpleTable">
+            <!--<li class="dropdown-item">
+              <input type="checkbox" v-model="showGuide" id="showGuideCheckbox">
+              <label for="showGuideCheckbox">{{ showGuideStr }}</label>
+            </li>-->
+            <li class="dropdown-item" style="padding: 0px"><hr></li>
+            <li class="dropdown-item">
+              <input type="checkbox" v-model="showBuildNum" id="showBuildNumCheckbox">
+              <label for="showBuildNumCheckbox">{{ showBuildNumStr }}</label>
+            </li>
+            <li class="dropdown-item">
+              <input type="checkbox" v-model="showVersion" id="showVersionCheckbox">
+              <label for="showVersionCheckbox">{{ showVersionStr }}</label>
+            </li>
+            <li class="dropdown-item">
+              <input type="checkbox" v-model="showJailbreak" id="showJailbreakCheckbox">
+              <label for="showJailbreakCheckbox">{{ showJailbreakStr }}</label>
+            </li>
+            <li class="dropdown-item">
+              <input type="checkbox" v-model="showReleaseDate" id="showReleaseDateCheckbox">
+              <label for="showReleaseDateCheckbox">{{ showReleaseDateStr }}</label>
+            </li>
+          </template>
+          <li class="dropdown-item" style="padding: 0px"><hr></li>
           <li class="dropdown-item">
-            <input type="checkbox" v-model="showVersion" id="showVersionCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
-            <label for="showVersionCheckbox">{{ showVersionStr }}</label>
-          </li>
-          <li class="dropdown-item">
-            <input type="checkbox" v-model="showJailbreak" id="showJailbreakCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
-            <label for="showJailbreakCheckbox">{{ showJailbreakStr }}</label>
-          </li>
-          <li class="dropdown-item">
-            <input type="checkbox" v-model="showReleaseDate" id="showReleaseDateCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
-            <label for="showReleaseDateCheckbox">{{ showReleaseDateStr }}</label>
-          </li>
-          <li class="dropdown-item" style="padding: 0px">
-            <hr>
-          </li>
-          <li class="dropdown-item">
-            <input type="checkbox" v-model="showBeta" id="showBetaCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
+            <input type="checkbox" v-model="showBeta" id="showBetaCheckbox">
             <label for="showBetaCheckbox">{{ showBetaStr }}</label>
           </li>
           <li class="dropdown-item">
-            <input type="checkbox" v-model="showStable" id="showStableCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
+            <input type="checkbox" v-model="showStable" id="showStableCheckbox">
             <label for="showStableCheckbox">{{ showStableStr }}</label>
           </li>
           <template v-if="Object.keys(frontmatter.device).length == Object.keys(devices).length">
             <li class="dropdown-item">
-              <input type="checkbox" v-model="showiOS" id="showiOSCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
+              <input type="checkbox" v-model="showiOS" id="showiOSCheckbox">
               <label for="showiOSCheckbox">{{ showiOSStr }}</label>
             </li>
             <li class="dropdown-item">
-              <input type="checkbox" v-model="showtvOS" id="showtvOSCheckbox" style="position: static; left: 0px; opacity: 1; margin-right: .5em;">
+              <input type="checkbox" v-model="showtvOS" id="showtvOSCheckbox">
               <label for="showtvOSCheckbox">{{ showtvOSStr }}</label>
             </li>
           </template>
@@ -69,14 +78,24 @@
     </li>
   </ul>
   <table>
-    <tr>
+    <tr v-if="simpleTable">
+      <th v-html="fromStr"/>
+      <th v-html="toStr"/>
+      <th v-html="jailbreakStr"/>
+    </tr>
+    <tr v-else>
       <th v-html="buildStr" v-if="showBuildNum"/>
       <th v-html="versionStr" v-if="showVersion"/>
       <th v-html="jailbreakStr" v-if="showJailbreak"/>
       <th v-html="releaseDateStr" v-if="showReleaseDate" style="width: 15%;"/>
     </tr>
     <template v-for="(fw, index) in fwArr" :key="fw">
-      <tr>
+      <tr v-if="simpleTable">
+        <td v-for="i in (reverseSorting) ? Object.keys(fw).reverse() : Object.keys(fw)" :key="i">{{ fw[i].version }}</td>
+        <td v-if="fw.startBuild.jailbreakArr.length"><router-link :to="jailbreakPath + fw.startBuild.jailbreakArr[0].name.replace(/ /g, '-') + '.html'">{{ fw.startBuild.jailbreakArr[0].name }}</router-link></td>
+        <td v-else v-html="noJbStr"/>
+      </tr>
+      <tr v-else>
         <td v-if="showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.build}}</a></td>
 
         <template v-if="showVersion">
@@ -91,7 +110,7 @@
         
         <td v-if="showReleaseDate">{{fw.released}}</td>
       </tr>
-      <tr v-if="(index == entryCount - 1)"><td :colspan="showBuildNum + showVersion + showJailbreak + showReleaseDate">{{loadingStr}}</td></tr>
+      <tr v-if="(index == entryCount - 1)"><td :colspan="(simpleTable) ? 3 : (showBuildNum + showVersion + showJailbreak + showReleaseDate)">{{loadingStr}}</td></tr>
     </template>
   </table>
 </template>
@@ -144,6 +163,11 @@ export default {
       showJailbreakStr: 'Show jailbreaks',
       showReleaseDateStr: 'Show release date',
 
+      showGuideStr: 'Show guide links',
+      simpleTableStr: 'Simple table',
+
+      fromStr: 'From',
+      toStr: 'To',
       buildStr: 'Build',
       versionStr: 'Version',
       jailbreakStr: 'Jailbreak',
@@ -163,6 +187,9 @@ export default {
       showVersion: true,
       showJailbreak: true,
       showReleaseDate: false,
+
+      simpleTable: false,
+      showGuide: false,
 
       reverseSorting: true,
       fwArr: [],
@@ -356,11 +383,13 @@ export default {
       })
 
       if (this.reverseSorting) fwArr = fwArr.reverse()
-      fwArr = fwArr.filter((fw,index) => index < val)
 
-      var filterVal = this.entryCount - this.entryIncrement
-      fwArr = fwArr.filter((fw, index) => index > filterVal)
-      
+      if (!this.simpleTable) {
+        var filterVal = this.entryCount - this.entryIncrement
+        fwArr = fwArr.filter((fw,index) => index < val)
+          .filter((fw, index) => index >= filterVal)
+      }
+
       var fwArrLength = this.fwArr.concat(fwArr).length
       if (fwArrLength <= this.entryCount) this.maxEntryCount = fwArrLength
 
@@ -379,6 +408,8 @@ export default {
         }
 
         jbArr = jbArr.sort((a,b) => a.priority - b.priority)
+        if (this.simpleTable) jbArr = jbArr.filter((jb, index) => index == 0)
+        
         fwArr[f].jailbreakArr = jbArr
       }
 
@@ -394,12 +425,27 @@ export default {
         return x
       })
 
+      if (this.simpleTable) {
+        var newArr = []
+        fwArr.map(function(fw, index) {
+          var newObj = {}
+          if (index == 0 || JSON.stringify(newArr[newArr.length-1].endBuild.jailbreakArr) != JSON.stringify(fw.jailbreakArr)) {
+            newObj.startBuild = fw
+            newObj.endBuild = fw
+            newArr.push(newObj)
+          } else {
+            newArr[newArr.length-1].endBuild = fw
+          }
+        })
+        fwArr = newArr
+      }
+
       return this.fwArr.concat(fwArr)
     },
     loadMoreRows: function() {
       window.onscroll = () => {
         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight * 0.9
-        if (bottomOfWindow) {
+        if (bottomOfWindow && !this.simpleTable) {
           if (this.entryCount + this.entryIncrement >= this.maxEntryCount) this.entryCount = this.maxEntryCount
           this.entryCount += this.entryIncrement
         }
@@ -423,9 +469,18 @@ export default {
       this.resetFwArr()
     },
     showtvOS: function (bool) {
+      if (this.simpleTable && bool) this.showiOS = false
       this.resetFwArr()
     },
     showiOS: function (bool) {
+      if (this.simpleTable && bool) this.showtvOS = false
+      this.resetFwArr()
+    },
+    showGuide: function (bool) {
+      this.resetFwArr()
+    },
+    simpleTable: function (bool) {
+      if (bool && this.showtvOS && this.showiOS && Object.keys(this.frontmatter.device).length == Object.keys(this.devices).length) this.showtvOS = false
       this.resetFwArr()
     },
     entryCount: function(val) {
@@ -497,6 +552,13 @@ export default {
   padding: 0;
   max-height: 0px;
   transition: 300ms ease-in-out;
+}
+
+.chartDropdownBox input[type="checkbox"] {
+  position: static;
+  left: 0px;
+  opacity: 1;
+  margin-right: .5em;
 }
 
 .chartDropdown:hover + div.chartDropdownBox {
