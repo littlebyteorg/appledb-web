@@ -110,7 +110,7 @@
         
         <td v-if="showReleaseDate">{{fw.released}}</td>
       </tr>
-      <tr v-if="(index == entryCount - 1)"><td :colspan="(simpleTable) ? 3 : (showBuildNum + showVersion + showJailbreak + showReleaseDate)">{{loadingStr}}</td></tr>
+      <tr v-if="index == entryCount - 1 && !simpleTable"><td :colspan="(simpleTable) ? 3 : (showBuildNum + showVersion + showJailbreak + showReleaseDate)">{{loadingStr}}</td></tr>
     </template>
   </table>
 </template>
