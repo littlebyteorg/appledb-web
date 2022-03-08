@@ -181,7 +181,7 @@ export default {
         }).sort(function(a, b) { return (a.name.toUpperCase() < b.name.toUpperCase()) ? -1 : (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : 0; });
 
         var type = g.type
-        if (g.hasOwnProperty('subtype')) type += ' ' + g.subtype
+        if (g.hasOwnProperty('subtype') && g.subtype != g.type) type += ' ' + g.subtype
         
         return {
           name: g.name,
@@ -192,15 +192,12 @@ export default {
       })
 
       groupArr = groupArr.sort(function(a,b) {
-        if (a.type.startsWith('iPhone') < b.type.startsWith('iPhone')) return 1;
-        if (a.type < b.type)
-          return -1;
-        if (a.type > b.type)
-          return 1;
-        return 0;
-      })
+        console.log(a.type > b.type)
 
-      return groupArr;
+        return a.type > b.type
+      })
+ 
+      return groupArr
     },
     jailbreakArr() {
       const build = this.currentBuild.uniqueBuild

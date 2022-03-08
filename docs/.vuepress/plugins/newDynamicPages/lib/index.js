@@ -23,7 +23,7 @@ for (var i in iosList) {
     path: `${fwPath}${iosList[i].uniqueBuild}.html`,
     frontmatter: {
       title: `${iosList[i].osStr} ${iosList[i].version} (${iosList[i].build})`,
-      description: `Compatible jailbreaks for firmware version ${iosList[i].version}`,
+      description: `Compatible jailbreaks for software version ${iosList[i].version}`,
       layout: 'chartLayout',
       chartType: 'firmware',
       build: iosList[i],
@@ -47,7 +47,7 @@ for (var jb in jbList) {
     path: `${jbPath}${jbList[jb].name.replace(/ /g, '-')}.html`,
     frontmatter: {
       title: jbList[jb].name,
-      description: `Compatible firmwares for ${jbList[jb].name}`,
+      description: `Compatible devices and software versions for ${jbList[jb].name}`,
       layout: 'chartLayout',
       chartType: 'jailbreak',
       jailbreak: jbList[jb],
@@ -64,7 +64,7 @@ for (var d in deviceList) {
   pageList.push({
     path: `${devicePath}${d}.html`,
     frontmatter: {
-      title: `Firmware Chart (${deviceList[d].name})`,
+      title: `${deviceList[d].name}`,
       description: `Find out what jailbreaks you can use on your ${deviceList[d].name}`,
       layout: 'chartLayout',
       chartType: 'device',
@@ -81,7 +81,7 @@ for (var g in deviceGroups) {
   pageList.push({
     path: `${devicePath}${deviceGroups[g].name.replace(/ /g,'-')}.html`,
     frontmatter: {
-      title: `Firmware Chart (${deviceGroups[g].name})`,
+      title: `${deviceGroups[g].name}`,
       description: `Find out what jailbreaks you can use on your ${deviceGroups[g].name}`,
       layout: 'chartLayout',
       chartType: 'device',
