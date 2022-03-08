@@ -23,7 +23,7 @@ for (var i in iosList) {
     path: `${fwPath}${iosList[i].uniqueBuild}.html`,
     frontmatter: {
       title: `${iosList[i].osStr} ${iosList[i].version} (${iosList[i].build})`,
-      description: `Compatible jailbreaks for software version ${iosList[i].version}`,
+      description: `Information for ${iosList[i].osStr} version ${iosList[i].version}`,
       layout: 'chartLayout',
       chartType: 'firmware',
       build: iosList[i],
@@ -65,7 +65,7 @@ for (var d in deviceList) {
     path: `${devicePath}${d}.html`,
     frontmatter: {
       title: `${deviceList[d].name}`,
-      description: `Find out what jailbreaks you can use on your ${deviceList[d].name}`,
+      description: `Information lookup for ${deviceList[d].name}`,
       layout: 'chartLayout',
       chartType: 'device',
       device: [d],
@@ -82,7 +82,7 @@ for (var g in deviceGroups) {
     path: `${devicePath}${deviceGroups[g].name.replace(/ /g,'-')}.html`,
     frontmatter: {
       title: `${deviceGroups[g].name}`,
-      description: `Find out what jailbreaks you can use on your ${deviceGroups[g].name}`,
+      description: `Information lookup for ${deviceGroups[g].name}`,
       layout: 'chartLayout',
       chartType: 'device',
       device: deviceGroups[g].devices,
@@ -99,7 +99,7 @@ pageList.push({
   path: '/',
   frontmatter: {
     title: 'Firmware Chart',
-    description: 'iOS Jailbreak Firmware Chart',
+    description: 'AppleDB Firmware Chart',
     layout: 'chartLayout',
     chartType: 'device',
     device: Object.keys(deviceList),
