@@ -191,7 +191,7 @@ export default {
         }
       })
 
-      groupArr = groupArr.sort(function(a,b) {\
+      groupArr = groupArr.sort(function(a,b) {
         return a.type > b.type
       })
  
