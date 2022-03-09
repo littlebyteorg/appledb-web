@@ -55,6 +55,7 @@ iosArr = iosArr.map(function(x) {
     if (x.iosVersion) x.sortVersion = x.iosVersion
     else x.sortVersion = x.version
   }
+  if (iosArr.filter(y => y.osStr == x.osStr && y.version == x.version).length > 1) x.duplicateVersion = true
   return x
 })
 

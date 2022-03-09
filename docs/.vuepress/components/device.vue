@@ -111,7 +111,7 @@
           <td v-if="showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.build}}</a></td>
 
           <template v-if="showVersion">
-            <td v-if="!showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.osStr}} {{fw.version}} <span v-if="fwArr.filter(x => x.version == fw.version && x.osStr == fw.osStr).length > 1">({{fw.build}})</span></a></td>
+            <td v-if="!showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.osStr}} {{fw.version}} <span v-if="fw.duplicateVersion">({{fw.build}})</span></a></td>
             <td v-else>{{fw.osStr}} {{fw.version}}</td>
           </template>
           
