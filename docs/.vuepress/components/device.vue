@@ -427,8 +427,11 @@ export default {
             if (betaNum[0] - betaNum[1] != 0) return betaNum[0] - betaNum[1]
           }
         }
-        var dates = [new Date(a.released).valueOf(), new Date(b.released).valueOf()]
-        return dates[0] - dates[1]
+        var dates = new Date(a.released).valueOf() - new Date(b.released).valueOf()
+        if (dates != 0) return dates
+        if (a.osStr > b.osStr) return -1
+        if (a.osStr < b.osStr) return 1
+        return 0
       })
 
       if (this.reverseSorting) fwArr = fwArr.reverse()
