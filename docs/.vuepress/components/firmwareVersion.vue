@@ -191,9 +191,7 @@ export default {
         }
       })
 
-      groupArr = groupArr.sort(function(a,b) {
-        console.log(a.type > b.type)
-
+      groupArr = groupArr.sort(function(a,b) {\
         return a.type > b.type
       })
  
