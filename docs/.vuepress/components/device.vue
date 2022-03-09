@@ -358,7 +358,8 @@ export default {
         (
           (fw.istvOS && this.showtvOS) ||
           (fw.isiOS && this.showiOS) ||
-          (fw.iswatchOS && this.showwatchOS)
+          (fw.iswatchOS && this.showwatchOS) ||
+          !(fw.istvOS || fw.isiOS || fw.iswatchOS)
         ) && (
           (fw.beta && this.showBeta) ||
           (!fw.beta && this.showStable)
@@ -514,6 +515,10 @@ export default {
       this.resetFwArr()
     },
     showiOS: function (bool) {
+      if (this.simpleTable && bool) this.showtvOS = false
+      this.resetFwArr()
+    },
+    showwatchOS: function (bool) {
       if (this.simpleTable && bool) this.showtvOS = false
       this.resetFwArr()
     },
