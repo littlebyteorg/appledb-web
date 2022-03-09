@@ -425,14 +425,9 @@ export default {
               .map(x => (x == '6-enterprise') ? '7' : x)
               .map(x => parseFloat(x))
             if (betaNum[0] - betaNum[1] != 0) return betaNum[0] - betaNum[1]
-            /*  .map(x => x + x.split('.').length < 1 ? '.0' : '')
-            compVerStr = versionCompare(v[0], v[1])
-            if (compVerStr != 0) return compVerStr*/
           }
-
-          return a.released - b.released
         }
-        return 0
+        return a.released < b.released
       })
 
       if (this.reverseSorting) fwArr = fwArr.reverse()
