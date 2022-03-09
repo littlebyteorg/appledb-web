@@ -3,8 +3,8 @@
     <h2 v-html="infoHeader" v-if="infoData.length > 0"/>
     <p>
       <div v-for="(i, index) in infoData" :key="i">
-        <template v-if="index == 'identifier' && deviceIdentifierArr.length > 5 && !showAllIdent">{{ i.replace(deviceIdentifierArr.join(', '), deviceIdentifierArr.slice(0, 3).join(', ')) }} <a style="user-select: none; cursor: pointer;" v-on:click="showAllIdent = true">...</a></template>
-        <template v-else-if="index == 'model' && deviceModelArr.length > 5 && !showAllModel">{{ i.replace(deviceModelArr.join(', '), deviceModelArr.slice(0, 3).join(', ')) }} <a style="user-select: none; cursor: pointer;" v-on:click="showAllModel = true">...</a></template>
+        <template v-if="index == 'identifier' && deviceIdentifierArr.length > 5 && !showAllIdent">{{ i.replace(deviceIdentifierArr.join(', '), deviceIdentifierArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllIdent = true">...</a></template>
+        <template v-else-if="index == 'model' && deviceModelArr.length > 5 && !showAllModel">{{ i.replace(deviceModelArr.join(', '), deviceModelArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllModel = true">...</a></template>
         <template v-else>{{ i }}</template>
       </div>
     </p>
