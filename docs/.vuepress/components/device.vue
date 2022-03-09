@@ -423,8 +423,8 @@ export default {
               .map(x => x[2])
               .map(x => (x == undefined) ? '1' : x)
               .map(x => (x == '6-enterprise') ? '7' : x)
-              .map(x => parseInt(x))
-            if (betaNum[0] - betaNum[1] != 0) return betaNum[0] - betaNum[1]
+            compVerStr = versionCompare(v[0], v[1])
+            if (compVerStr != 0) return compVerStr
           }
 
           return a.released - b.released
