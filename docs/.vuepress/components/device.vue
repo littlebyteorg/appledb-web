@@ -431,6 +431,8 @@ export default {
         if (dates != 0) return dates
         if (a.osStr > b.osStr) return -1
         if (a.osStr < b.osStr) return 1
+        if (a.build < b.build) return -1
+        if (a.build > b.build) return 1
         return 0
       })
 
