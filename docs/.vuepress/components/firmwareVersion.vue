@@ -1,7 +1,8 @@
 <template>
   <h2 v-html="infoHeader"/>
   <p>
-    <div v-html="verStr.format({ verNum: frontmatter.build.version })"/>
+    <div v-html="verStr.format({ verNum: [frontmatter.build.osStr,frontmatter.build.version].join(' ') })"/>
+    <div v-if="frontmatter.build.iosVersion" v-html="basedOnStr.format({ iosVersion: [(parseInt(frontmatter.build.iosVersion.split('.')[0]) < 4 ? 'iPhoneOS' : 'iOS'), frontmatter.build.iosVersion].join(' ') })"/>
     <div v-html="buildStr.format({ buildId: frontmatter.build.build })"/>
     <div v-if="getReleasedDate != -1" v-html="releasedStr.format({releasedTime: getReleasedDate})"/>
   </p>
@@ -97,6 +98,7 @@ export default {
       verStr: 'Version: ${verNum}',
       buildStr: 'Build: ${buildId}',
       releasedStr: 'Released: ${releasedTime}',
+      basedOnStr: 'Based on: ${iosVersion}',
 
       devicesHeader: 'Devices',
       showMoreStr: 'Show More',
