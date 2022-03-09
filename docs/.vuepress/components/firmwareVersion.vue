@@ -2,7 +2,7 @@
   <h2 v-html="infoHeader"/>
   <p>
     <div v-html="verStr.format({ verNum: [frontmatter.build.osStr,frontmatter.build.version].join(' ') })"/>
-    <div v-if="frontmatter.build.iosVersion" v-html="basedOnStr.format({ iosVersion: [(parseInt(frontmatter.build.iosVersion.split('.')[0]) < 4 ? 'iPhoneOS' : 'iOS'), frontmatter.build.iosVersion].join(' ') })"/>
+    <div v-if="frontmatter.build.iosVersion" v-html="basedOnStr.format({ iosVersion: [(parseInt(frontmatter.build.iosVersion.split('.')[0]) < 4 ? 'iPhoneOS' : 'iOS'), iosBuildNumArr.length == 1 ? [`<a href='${iosBuildNumArr[0]}.html'>`,frontmatter.build.iosVersion,'</a>'].join('') : frontmatter.build.iosVersion + ' (' + iosBuildNumArr.map(x => `<a href='${x}.html'>${x}</a>`).join(', ') + ')'].join(' ') })"/>
     <div v-html="buildStr.format({ buildId: frontmatter.build.build })"/>
     <div v-if="getReleasedDate != -1" v-html="releasedStr.format({releasedTime: getReleasedDate})"/>
   </p>
@@ -143,6 +143,10 @@ export default {
   computed: {
     currentBuild() {
       return this.frontmatter.build
+    },
+    iosBuildNumArr() {
+      if (!this.currentBuild.iosVersion) return null
+      return json.ios.filter(x => x.version == this.currentBuild.iosVersion).map(x => x.build)
     },
     getReleasedDate() {
       if (!this.currentBuild.hasOwnProperty('released')) return -1
