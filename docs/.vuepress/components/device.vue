@@ -514,22 +514,43 @@ export default {
       this.resetFwArr()
     },
     showtvOS: function (bool) {
-      if (this.simpleTable && bool) this.showiOS = false
+      if (this.simpleTable && bool) {
+        this.showiOS = false
+        this.showwatchOS = false
+      }
       this.resetFwArr()
     },
     showiOS: function (bool) {
-      if (this.simpleTable && bool) this.showtvOS = false
+      if (this.simpleTable && bool) {
+        this.showtvOS = false
+        this.showwatchOS = false
+      }
       this.resetFwArr()
     },
     showwatchOS: function (bool) {
-      if (this.simpleTable && bool) this.showtvOS = false
+      if (this.simpleTable && bool) {
+        this.showiOS = false
+        this.showtvOS = false
+      }
       this.resetFwArr()
     },
     showGuide: function (bool) {
       this.resetFwArr()
     },
     simpleTable: function (bool) {
-      if (bool && this.showtvOS && this.showiOS && Object.keys(this.frontmatter.device).length == Object.keys(this.devices).length) this.showtvOS = false
+      var enableArr = ['showiOS', 'showtvOS', 'showwatchOS']
+      var enabledCount = enableArr.map(x => this[x]).filter(x => x).length
+      if (bool && enabledCount > 1 && Object.keys(this.frontmatter.device).length == Object.keys(this.devices).length) {
+        for (var i in enableArr) {
+          if (this[enableArr[i]]) {
+            for (var j of enableArr) this[j] = false
+            this[enableArr[i]] = true
+            break
+          }
+        }
+        enabledCount = enableArr.map(x => this[x]).filter(x => x).length
+        if (enabledCount == 0) this[enableArr[0]] = true
+      }
       this.resetFwArr()
     },
     entryCount: function(val) {
