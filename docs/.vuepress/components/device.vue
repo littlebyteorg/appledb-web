@@ -2,7 +2,11 @@
   <template v-if="Object.keys(frontmatter.device).length != Object.keys(devices).length">
     <h2 v-html="infoHeader" v-if="infoData.length > 0"/>
     <p>
-      <div v-for="i in infoData" :key="i" v-html="i"/>
+      <div v-for="(i, index) in infoData" :key="i">
+        <template v-if="index == 'identifier' && deviceIdentifierArr.length > 5 && !showAllIdent">{{ i.replace(deviceIdentifierArr.join(', '), deviceIdentifierArr.slice(0, 3).join(', ')) }} <a style="user-select: none; cursor: pointer;" v-on:click="showAllIdent = true">...</a></template>
+        <template v-else-if="index == 'model' && deviceModelArr.length > 5 && !showAllModel">{{ i.replace(deviceModelArr.join(', '), deviceModelArr.slice(0, 3).join(', ')) }} <a style="user-select: none; cursor: pointer;" v-on:click="showAllModel = true">...</a></template>
+        <template v-else>{{ i }}</template>
+      </div>
     </p>
     <h2 v-html="groupHeader" v-if="groupedDevices && groupedDevices.length > 0"/>
     <ul>
@@ -182,6 +186,9 @@ export default {
       sortStr: 'Sort',
       loadingStr: 'Loading...',
 
+      showAllIdent: false,
+      showAllModel: false,
+
       showBeta: false,
       showStable: true,
       showtvOS: true,
@@ -212,7 +219,7 @@ export default {
     }
   },
   computed: {
-    deviceName() {
+    deviceNameStr() {
       const fm = this.frontmatter
       if (fm.name) return this.deviceStr.format({ dev: fm.name })
 
@@ -223,16 +230,20 @@ export default {
       const deviceNameArr = removeNullAndDuplicatesAndSort(deviceList.map(x => x.name))
       if (deviceNameArr.length > 0) return this.deviceStr.format({ dev: deviceNameArr.join(', ') })
     },
-    deviceIdentifier() {
+    deviceIdentifierArr() {
       const fm = this.frontmatter
       var deviceList = fm.device
       if (!deviceList) return
       deviceList = deviceList.map(x => this.devices[x])
       
       const deviceIdentifierArr = removeNullAndDuplicatesAndSort(deviceList.map(x => x.identifier))
-      if (deviceIdentifierArr.length > 0) return this.identStr.format({ ident: deviceIdentifierArr.join(', ') })
+      return deviceIdentifierArr
     },
-    deviceSoc() {
+    deviceIdentifierStr() {
+      const arr = this.deviceIdentifierArr
+      if (arr.length > 0) return this.identStr.format({ ident: arr.join(', ') })
+    },
+    deviceSocStr() {
       const fm = this.frontmatter
       var deviceList = fm.device
       if (!deviceList) return
@@ -241,7 +252,7 @@ export default {
       const deviceSocArr = removeNullAndDuplicatesAndSort(deviceList.map(x => x.soc))
       if (deviceSocArr.length > 0) return this.socStr.format({ soc: deviceSocArr.join(', ')})
     },
-    deviceArch() {
+    deviceArchStr() {
       const fm = this.frontmatter
       var deviceList = fm.device
       if (!deviceList) return
@@ -250,7 +261,7 @@ export default {
       const deviceArchArr = removeNullAndDuplicatesAndSort(deviceList.map(x => x.arch))
       if (deviceArchArr.length > 0) return this.archStr.format({ arch: deviceArchArr.join(', ')})
     },
-    deviceModel() {
+    deviceModelArr() {
       const fm = this.frontmatter
       var deviceList = fm.device
       if (!deviceList) return
@@ -260,18 +271,26 @@ export default {
         if (x.model) return x.model.join(', ')
         else return null
       }))
-      if (deviceModelArr.length > 0) return this.modelStr.format({ model: deviceModelArr.join(', ') })
+
+      var retArr = []
+      for (var i of deviceModelArr) retArr.push(...i.split(', '))
+
+      return retArr
+    },
+    deviceModelStr() {
+      const arr = this.deviceModelArr
+      if (arr.length > 0) return this.modelStr.format({ model: arr.join(', ') })
     },
     infoData() {
       const fm = this.frontmatter
       if (!fm.device && !fm.group) return []
-      return [
-        this.deviceName,
-        this.deviceIdentifier,
-        this.deviceSoc,
-        this.deviceArch,
-        this.deviceModel,
-      ].filter(i => i)
+      return {
+        device: this.deviceNameStr,
+        identifier: this.deviceIdentifierStr,
+        soc: this.deviceSocStr,
+        arch: this.deviceArchStr,
+        model: this.deviceModelStr
+      }
     },
     groupHeader() {
       const fm = this.frontmatter
