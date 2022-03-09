@@ -427,7 +427,8 @@ export default {
             if (betaNum[0] - betaNum[1] != 0) return betaNum[0] - betaNum[1]
           }
         }
-        return a.released < b.released
+        var dates = [new Date(a.released).valueOf(), new Date(b.released).valueOf()]
+        return dates[0] - dates[1]
       })
 
       if (this.reverseSorting) fwArr = fwArr.reverse()
