@@ -70,6 +70,10 @@
               <input type="checkbox" v-model="showtvOS" id="showtvOSCheckbox">
               <label for="showtvOSCheckbox">{{ showtvOSStr }}</label>
             </li>
+            <li class="dropdown-item">
+              <input type="checkbox" v-model="showwatchOS" id="showwatchOSCheckbox">
+              <label for="showwatchOSCheckbox">{{ showwatchOSStr }}</label>
+            </li>
           </template>
         </ul>
       </div>
@@ -166,6 +170,7 @@ export default {
       showStableStr: 'Show stable versions',
       showiOSStr: 'Show iOS versions',
       showtvOSStr: 'Show tvOS versions',
+      showwatchOSStr: 'Show watchOS versions',
 
       showBuildNumStr: 'Show build numbers',
       showVersionStr: 'Show version numbers',
@@ -195,6 +200,7 @@ export default {
       showStable: true,
       showtvOS: true,
       showiOS: true,
+      showwatchOS: true,
 
       showBuildNum: false,
       showVersion: true,
@@ -344,13 +350,15 @@ export default {
       fwArr = fwArr.map(function(x) {
         x.istvOS = (x.osStr == 'tvOS' || x.osStr == 'Apple TV Software')
         x.isiOS = (x.osStr == 'iOS' || x.osStr == 'iPadOS' || x.osStr == 'iPhoneOS')
+        x.iswatchOS = (x.osStr == 'watchOS')
         return x
       })
 
       fwArr = fwArr.filter(fw => (
         (
           (fw.istvOS && this.showtvOS) ||
-          (fw.isiOS && this.showiOS)
+          (fw.isiOS && this.showiOS) ||
+          (fw.iswatchOS && this.showwatchOS)
         ) && (
           (fw.beta && this.showBeta) ||
           (!fw.beta && this.showStable)
@@ -519,6 +527,10 @@ export default {
     entryCount: function(val) {
       this.fwArr = this.getFwArrMethod(val)
     }
+  },
+  created() {
+    this.resetFwArr()
+    this.loadMoreRows()
   },
   mounted() {
     this.resetFwArr()
