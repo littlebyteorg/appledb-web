@@ -400,8 +400,12 @@ export default {
       }
 
       fwArr = fwArr.sort(function(a,b) {
-        function getVerStr(x) { return x.version.split(' ')[0] }
-        const compVerStr = versionCompare(getVerStr(a), getVerStr(b))
+        function getVerStr(x, useiOSVersionBool) {
+          var version = x.version
+          if (x.iosVersion && useiOSVersionBool) version = x.iosVersion
+          return version.split(' ')[0]
+        }
+        var compVerStr = versionCompare(getVerStr(a, true), getVerStr(b, true))
         if (compVerStr != 0) return compVerStr
         else {
           const verInclGM   = [a.version.includes('GM'), b.version.includes('GM')]
