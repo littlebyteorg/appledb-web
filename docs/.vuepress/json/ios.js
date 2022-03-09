@@ -51,6 +51,10 @@ iosArr.sort(function (a, b) {
 iosArr = iosArr.map(function(x) {
   if (!x.uniqueBuild) x.uniqueBuild = x.build
   if (!x.beta) x.beta = false
+  if (!x.sortVersion) {
+    if (x.iosVersion) x.sortVersion = x.iosVersion
+    else x.sortVersion = x.version
+  }
   return x
 })
 

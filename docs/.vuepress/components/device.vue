@@ -400,17 +400,16 @@ export default {
       }
 
       fwArr = fwArr.sort(function(a,b) {
-        function getVerStr(x, useiOSVersionBool) {
-          var version = x.version
-          if (x.iosVersion && useiOSVersionBool) version = x.iosVersion
-          return version.split(' ')[0]
-        }
-        var compVerStr = versionCompare(getVerStr(a, true), getVerStr(b, true))
+        var v = [a.version, b.version]
+        if (a.sortVersion) v[0] = a.sortVersion
+        if (b.sortVersion) v[1] = b.sortVersion
+        function getVerStr(x) { return x.split(' ')[0] }
+        var compVerStr = versionCompare(getVerStr(v[0]), getVerStr(v[1]))
         if (compVerStr != 0) return compVerStr
         else {
-          const verInclGM   = [a.version.includes('GM'), b.version.includes('GM')]
-          const verInclBeta = [a.version.includes('beta'), b.version.includes('beta')]
-          const verInclRC   = [a.version.includes('RC'), b.version.includes('RC')]
+          const verInclGM   = [v[0].includes('GM'), v[1].includes('GM')]
+          const verInclBeta = [v[0].includes('beta'), v[1].includes('beta')]
+          const verInclRC   = [v[0].includes('RC'), v[1].includes('RC')]
           const beta        = [a.beta, b.beta]
           
           if (beta[1] - beta[0] != 0) return beta[1] - beta[0]
@@ -419,7 +418,7 @@ export default {
           if (verInclBeta[0] - verInclBeta[1] != 0) return verInclBeta[0] - verInclBeta[1]
 
           if (a.beta && b.beta) {
-            const betaNum = [a.version, b.version]
+            const betaNum = [v[0], v[1]]
               .map(x => x.split(' '))
               .map(x => x[2])
               .map(x => (x == undefined) ? '1' : x)
@@ -427,6 +426,8 @@ export default {
               .map(x => parseInt(x))
             if (betaNum[0] - betaNum[1] != 0) return betaNum[0] - betaNum[1]
           }
+
+          return a.released - b.released
         }
         return 0
       })
