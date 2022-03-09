@@ -17,6 +17,8 @@
       <div v-if="adTagTwo && adsBool" style="text-align: center;">
           <div :id="adTagTwo"></div>
       </div>
+
+      <p>AppleDB is not affiliated with Apple Inc.</p>
     </div>
 
     <slot name="bottom" />

@@ -71,7 +71,7 @@ function getHtml(typeArr, path, toc) {
     }
   }
   
-  return html;
+  return html + '<p>AppleDB is not affiliated with Apple Inc.</p>';
 }
 
 module.exports = function(typeArr, path, toc) {

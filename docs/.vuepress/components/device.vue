@@ -15,7 +15,7 @@
       </li>
     </ul>
   </template>
-  <template v-if="fwArr && fwArr.length">
+  <template v-if="fwArr && fwArr.length || (!(showBeta  || showStable) || !(showiOS || showtvOS))">
     <h2 v-if="Object.keys(frontmatter.device).length != Object.keys(devices).length" v-html="tableHeader"/>
     <ul class="tableOptionsWrapper">
       <li>
