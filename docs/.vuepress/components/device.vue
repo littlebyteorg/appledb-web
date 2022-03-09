@@ -15,112 +15,113 @@
       </li>
     </ul>
   </template>
-  <template v-if="fwArr && fwArr.length || (!(showBeta  || showStable) || !(showiOS || showtvOS))">
-    <h2 v-if="Object.keys(frontmatter.device).length != Object.keys(devices).length" v-html="tableHeader"/>
-    <ul class="tableOptionsWrapper">
-      <li>
-        <div class="chartDropdown">
-          <i class="fas fa-filter"></i>
-          {{ filterStr }}
-          <span class="arrow down"></span>
-        </div>
-        <div class="chartDropdownBox opaqueHover">
-          <ul>
-            <li class="dropdown-item">
-              <input type="checkbox" v-model="simpleTable" id="simpleTableCheckbox">
-              <label for="simpleTableCheckbox">{{ simpleTableStr }}</label>
-            </li>
-            <template v-if="!simpleTable">
-              <!--<li class="dropdown-item">
-                <input type="checkbox" v-model="showGuide" id="showGuideCheckbox">
-                <label for="showGuideCheckbox">{{ showGuideStr }}</label>
-              </li>-->
-              <li class="dropdown-item" style="padding: 0px"><hr></li>
-              <li class="dropdown-item">
-                <input type="checkbox" v-model="showBuildNum" id="showBuildNumCheckbox">
-                <label for="showBuildNumCheckbox">{{ showBuildNumStr }}</label>
-              </li>
-              <li class="dropdown-item">
-                <input type="checkbox" v-model="showVersion" id="showVersionCheckbox">
-                <label for="showVersionCheckbox">{{ showVersionStr }}</label>
-              </li>
-              <li class="dropdown-item">
-                <input type="checkbox" v-model="showJailbreak" id="showJailbreakCheckbox">
-                <label for="showJailbreakCheckbox">{{ showJailbreakStr }}</label>
-              </li>
-              <li class="dropdown-item">
-                <input type="checkbox" v-model="showReleaseDate" id="showReleaseDateCheckbox">
-                <label for="showReleaseDateCheckbox">{{ showReleaseDateStr }}</label>
-              </li>
-            </template>
+  <h2 v-if="Object.keys(frontmatter.device).length != Object.keys(devices).length" v-html="tableHeader"/>
+  <ul class="tableOptionsWrapper">
+    <li>
+      <div class="chartDropdown">
+        <i class="fas fa-filter"></i>
+        {{ filterStr }}
+        <span class="arrow down"></span>
+      </div>
+      <div class="chartDropdownBox opaqueHover">
+        <ul>
+          <li class="dropdown-item">
+            <input type="checkbox" v-model="simpleTable" id="simpleTableCheckbox">
+            <label for="simpleTableCheckbox">{{ simpleTableStr }}</label>
+          </li>
+          <template v-if="!simpleTable">
+            <!--<li class="dropdown-item">
+              <input type="checkbox" v-model="showGuide" id="showGuideCheckbox">
+              <label for="showGuideCheckbox">{{ showGuideStr }}</label>
+            </li>-->
             <li class="dropdown-item" style="padding: 0px"><hr></li>
             <li class="dropdown-item">
-              <input type="checkbox" v-model="showBeta" id="showBetaCheckbox">
-              <label for="showBetaCheckbox">{{ showBetaStr }}</label>
+              <input type="checkbox" v-model="showBuildNum" id="showBuildNumCheckbox">
+              <label for="showBuildNumCheckbox">{{ showBuildNumStr }}</label>
             </li>
             <li class="dropdown-item">
-              <input type="checkbox" v-model="showStable" id="showStableCheckbox">
-              <label for="showStableCheckbox">{{ showStableStr }}</label>
+              <input type="checkbox" v-model="showVersion" id="showVersionCheckbox">
+              <label for="showVersionCheckbox">{{ showVersionStr }}</label>
             </li>
-            <template v-if="Object.keys(frontmatter.device).length == Object.keys(devices).length">
-              <li class="dropdown-item">
-                <input type="checkbox" v-model="showiOS" id="showiOSCheckbox">
-                <label for="showiOSCheckbox">{{ showiOSStr }}</label>
-              </li>
-              <li class="dropdown-item">
-                <input type="checkbox" v-model="showtvOS" id="showtvOSCheckbox">
-                <label for="showtvOSCheckbox">{{ showtvOSStr }}</label>
-              </li>
-            </template>
-          </ul>
-        </div>
-      </li>
-      <li>
-        <div class="chartDropdown" v-on:click="reverseSortingBtn()">
-          <i class="fas fa-sort"></i>
-            {{ sortStr }}
-        </div>
-      </li>
-    </ul>
-    <div class="tableContainer">
-      <table>
-        <tr v-if="simpleTable">
+            <li class="dropdown-item">
+              <input type="checkbox" v-model="showJailbreak" id="showJailbreakCheckbox">
+              <label for="showJailbreakCheckbox">{{ showJailbreakStr }}</label>
+            </li>
+            <li class="dropdown-item">
+              <input type="checkbox" v-model="showReleaseDate" id="showReleaseDateCheckbox">
+              <label for="showReleaseDateCheckbox">{{ showReleaseDateStr }}</label>
+            </li>
+          </template>
+          <li class="dropdown-item" style="padding: 0px"><hr></li>
+          <li class="dropdown-item">
+            <input type="checkbox" v-model="showBeta" id="showBetaCheckbox">
+            <label for="showBetaCheckbox">{{ showBetaStr }}</label>
+          </li>
+          <li class="dropdown-item">
+            <input type="checkbox" v-model="showStable" id="showStableCheckbox">
+            <label for="showStableCheckbox">{{ showStableStr }}</label>
+          </li>
+          <template v-if="Object.keys(frontmatter.device).length == Object.keys(devices).length">
+            <li class="dropdown-item">
+              <input type="checkbox" v-model="showiOS" id="showiOSCheckbox">
+              <label for="showiOSCheckbox">{{ showiOSStr }}</label>
+            </li>
+            <li class="dropdown-item">
+              <input type="checkbox" v-model="showtvOS" id="showtvOSCheckbox">
+              <label for="showtvOSCheckbox">{{ showtvOSStr }}</label>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </li>
+    <li>
+      <div class="chartDropdown" v-on:click="reverseSortingBtn()">
+        <i class="fas fa-sort"></i>
+          {{ sortStr }}
+      </div>
+    </li>
+  </ul>
+  <div class="tableContainer">
+    <table>
+      <tr v-if="fwArr.length">
+        <template v-if="simpleTable">
           <th v-html="fromStr"/>
           <th v-html="toStr"/>
           <th v-html="jailbreakStr"/>
-        </tr>
-        <tr v-else>
+        </template>
+        <template v-else>
           <th v-html="buildStr" v-if="showBuildNum"/>
           <th v-html="versionStr" v-if="showVersion"/>
           <th v-html="jailbreakStr" v-if="showJailbreak"/>
           <th v-html="releaseDateStr" v-if="showReleaseDate" style="width: 15%;"/>
-        </tr>
-        <template v-for="(fw, index) in fwArr" :key="fw">
-          <tr v-if="simpleTable">
-            <td v-for="i in (reverseSorting) ? Object.keys(fw).reverse() : Object.keys(fw)" :key="i">{{ fw[i].version }}</td>
-            <td v-if="fw.startBuild.jailbreakArr.length"><router-link :to="jailbreakPath + fw.startBuild.jailbreakArr[0].name.replace(/ /g, '-') + '.html'">{{ fw.startBuild.jailbreakArr[0].name }}</router-link></td>
-            <td v-else v-html="noJbStr"/>
-          </tr>
-          <tr v-else>
-            <td v-if="showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.build}}</a></td>
-
-            <template v-if="showVersion">
-              <td v-if="!showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.osStr}} {{fw.version}} <span v-if="fwArr.filter(x => x.version == fw.version && x.osStr == fw.osStr).length > 1">({{fw.build}})</span></a></td>
-              <td v-else>{{fw.osStr}} {{fw.version}}</td>
-            </template>
-            
-            <template v-if="showJailbreak">
-              <td v-if="fw.jailbreakArr.length > 0"><span v-for="(jb, index) in fw.jailbreakArr" :key="jb"><a :href="jailbreakPath + jb.name.replace(/ /g, '-') + '.html'" v-html="jb.name"/><span v-if="index+1 < fw.jailbreakArr.length">, </span></span></td>
-              <td v-else v-html="noJbStr"/>
-            </template>
-            
-            <td v-if="showReleaseDate">{{fw.released}}</td>
-          </tr>
-          <tr v-if="index == entryCount - 1 && !simpleTable"><td :colspan="(simpleTable) ? 3 : (showBuildNum + showVersion + showJailbreak + showReleaseDate)">{{loadingStr}}</td></tr>
         </template>
-      </table>
-    </div>
-  </template>
+      </tr>
+      <tr v-else><td>{{noFwStr}}</td></tr>
+      <template v-for="(fw, index) in fwArr" :key="fw">
+        <tr v-if="simpleTable">
+          <td v-for="i in (reverseSorting) ? Object.keys(fw).reverse() : Object.keys(fw)" :key="i">{{ fw[i].version }}</td>
+          <td v-if="fw.startBuild.jailbreakArr.length"><router-link :to="jailbreakPath + fw.startBuild.jailbreakArr[0].name.replace(/ /g, '-') + '.html'">{{ fw.startBuild.jailbreakArr[0].name }}</router-link></td>
+          <td v-else v-html="noJbStr"/>
+        </tr>
+        <tr v-else>
+          <td v-if="showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.build}}</a></td>
+
+          <template v-if="showVersion">
+            <td v-if="!showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.osStr}} {{fw.version}} <span v-if="fwArr.filter(x => x.version == fw.version && x.osStr == fw.osStr).length > 1">({{fw.build}})</span></a></td>
+            <td v-else>{{fw.osStr}} {{fw.version}}</td>
+          </template>
+          
+          <template v-if="showJailbreak">
+            <td v-if="fw.jailbreakArr.length > 0"><span v-for="(jb, index) in fw.jailbreakArr" :key="jb"><a :href="jailbreakPath + jb.name.replace(/ /g, '-') + '.html'" v-html="jb.name"/><span v-if="index+1 < fw.jailbreakArr.length">, </span></span></td>
+            <td v-else v-html="noJbStr"/>
+          </template>
+          
+          <td v-if="showReleaseDate">{{fw.released}}</td>
+        </tr>
+        <tr v-if="index == entryCount - 1 && !simpleTable"><td :colspan="(simpleTable) ? 3 : (showBuildNum + showVersion + showJailbreak + showReleaseDate)">{{loadingStr}}</td></tr>
+      </template>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -185,6 +186,7 @@ export default {
       filterStr: 'Filter',
       sortStr: 'Sort',
       loadingStr: 'Loading...',
+      noFwStr: 'No software versions available.',
 
       showAllIdent: false,
       showAllModel: false,
