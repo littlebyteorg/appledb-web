@@ -275,6 +275,8 @@ export default {
       var retArr = []
       for (var i of deviceModelArr) retArr.push(...i.split(', '))
 
+      retArr = removeNullAndDuplicatesAndSort(retArr)
+
       return retArr
     },
     deviceModelStr() {
