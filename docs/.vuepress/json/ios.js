@@ -41,11 +41,12 @@ iosArr = iosArr.map(function(x) {
 
   if (!x.uniqueBuild) x.uniqueBuild = x.build
   if (!x.beta) x.beta = false
+  if (x.iosVersion) {
+    x.iosBuildNumArr = iosArr.filter(y => y.version == x.iosVersion).filter(y => y.isiOS).map(y => y.build)
+    x.iosStr = parseInt(x.iosVersion.split('.')[0]) < 4 ? 'iPhoneOS' : 'iOS'
+  }
   if (!x.sortVersion) {
-    if (x.iosVersion) {
-      x.sortVersion = x.iosVersion
-      x.iosBuildNumArr = iosArr.filter(y => y.version == x.iosVersion && x.isiOS).map(x => x.uniqueBuild)
-    }
+    if (x.iosVersion) x.sortVersion = x.iosVersion
     else x.sortVersion = x.version
   }
   
