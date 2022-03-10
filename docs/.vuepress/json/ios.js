@@ -35,21 +35,21 @@ var iosArr = [];
 for (const file in iosFiles) iosArr.push(require('.' + path.sep + iosFiles[file]));
 
 iosArr = iosArr.map(function(x) {
+  x.istvOS = (x.osStr == 'tvOS' || x.osStr == 'Apple TV Software')
+  x.isiOS = (x.osStr == 'iOS' || x.osStr == 'iPadOS' || x.osStr == 'iPhoneOS')
+  x.iswatchOS = (x.osStr == 'watchOS')
+
   if (!x.uniqueBuild) x.uniqueBuild = x.build
   if (!x.beta) x.beta = false
   if (!x.sortVersion) {
     if (x.iosVersion) {
       x.sortVersion = x.iosVersion
-      x.iosBuildNumArr = iosArr.filter(y => y.version == x.iosVersion).map(x => x.build)
+      x.iosBuildNumArr = iosArr.filter(y => y.version == x.iosVersion && x.isiOS).map(x => x.uniqueBuild)
     }
     else x.sortVersion = x.version
   }
   
   if (iosArr.filter(y => y.osStr == x.osStr && y.version == x.version).length > 1) x.duplicateVersion = true
-
-  x.istvOS = (x.osStr == 'tvOS' || x.osStr == 'Apple TV Software')
-  x.isiOS = (x.osStr == 'iOS' || x.osStr == 'iPadOS' || x.osStr == 'iPhoneOS')
-  x.iswatchOS = (x.osStr == 'watchOS')
 
   if (x.devices) {
     var o = {}

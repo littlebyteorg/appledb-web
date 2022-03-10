@@ -2,7 +2,7 @@
   <h2 v-html="infoHeader"/>
   <p>
     <div v-html="verStr.format({ verNum: [frontmatter.build.osStr,frontmatter.build.version].join(' ') })"/>
-    <div v-if="frontmatter.build.iosVersion" v-html="basedOnStr.format({ iosVersion: [(parseInt(frontmatter.build.iosVersion.split('.')[0]) < 4 ? 'iPhoneOS' : 'iOS'), frontmatter.build.iosBuildNumArr.length == 1 ? [`<a href='${frontmatter.build.iosBuildNumArr[0]}.html'>`,frontmatter.build.iosVersion,'</a>'].join('') : frontmatter.build.iosVersion + ' (' + frontmatter.build.iosBuildNumArr.map(x => `<a href='${x}.html'>${x}</a>`).join(', ') + ')'].join(' ') })"/>
+    <div v-if="frontmatter.build.iosVersion" v-html="basedOnStr.format({ iosVersion: frontmatter.build.iosBuildNumArr ? [(parseInt(frontmatter.build.iosVersion.split('.')[0]) < 4 ? 'iPhoneOS' : 'iOS'), frontmatter.build.iosBuildNumArr.length == 1 ? [`<a href='${frontmatter.build.iosBuildNumArr[0]}.html'>`,frontmatter.build.iosVersion,'</a>'].join('') : frontmatter.build.iosVersion + ' (' + frontmatter.build.iosBuildNumArr.map(x => `<a href='${x}.html'>${x}</a>`).join(', ') + ')'].join(' ') : [parseInt(frontmatter.build.iosVersion.split('.')[0]) < 4 ? 'iPhoneOS' : 'iOS',frontmatter.build.iosVersion].join(' ')})"/>
     <div v-html="buildStr.format({ buildId: frontmatter.build.build })"/>
     <div v-if="getReleasedDate != -1" v-html="releasedStr.format({releasedTime: getReleasedDate})"/>
   </p>
