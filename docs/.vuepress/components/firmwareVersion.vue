@@ -154,9 +154,9 @@ export default {
       const deviceList = json.device
 
       var groupArr = []
-      for (const i of deviceArr) {
-        if (!groupArr.includes(JSON.stringify(i.group)))
-          groupArr.push(JSON.stringify(i.group))
+      for (const i in deviceArr) {
+        if (!groupArr.includes(JSON.stringify(deviceArr[i].group)))
+          groupArr.push(JSON.stringify(deviceArr[i].group))
       }
       groupArr = groupArr.map(x => JSON.parse(x))
       
