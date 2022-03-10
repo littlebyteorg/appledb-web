@@ -1,5 +1,8 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
+const dev = require('./deviceList')
+const group = require('./deviceGroups')
+const devicePath = '/device/'
 const p = 'docs/.vuepress/json/appledb/iosFiles'
 
 function getAllFiles(dirPath, arrayOfFiles) {
@@ -31,35 +34,39 @@ var iosArr = [];
 
 for (const file in iosFiles) iosArr.push(require('.' + path.sep + iosFiles[file]));
 
-iosArr.sort(function (a, b) {
-  a = a.version.split(' ')[0].split('.')
-  while(a.length < 3) a.push('0');
-  for (const i in a) a[i] = parseInt(a[i], 10)
-  
-  b = b.version.split(' ')[0].split('.')
-  while(b.length < 3) b.push('0');
-  for (const i in b) b[i] = parseInt(b[i], 10)
-  
-  for (const i in a) {
-    if (a[i] > b[i]) return 1;
-    if (a[i] < b[i]) return -1;
-  }
-  
-  a.length == b.length ? 0: (a.length < b.length ? -1 : 1);
-})
-
 iosArr = iosArr.map(function(x) {
   if (!x.uniqueBuild) x.uniqueBuild = x.build
   if (!x.beta) x.beta = false
   if (!x.sortVersion) {
-    if (x.iosVersion) x.sortVersion = x.iosVersion
+    if (x.iosVersion) {
+      x.sortVersion = x.iosVersion
+      x.iosBuildNumArr = iosArr.filter(y => y.version == x.iosVersion).map(x => x.build)
+    }
     else x.sortVersion = x.version
   }
+  
   if (iosArr.filter(y => y.osStr == x.osStr && y.version == x.version).length > 1) x.duplicateVersion = true
+
+  x.istvOS = (x.osStr == 'tvOS' || x.osStr == 'Apple TV Software')
+  x.isiOS = (x.osStr == 'iOS' || x.osStr == 'iPadOS' || x.osStr == 'iPhoneOS')
+  x.iswatchOS = (x.osStr == 'watchOS')
+
+  if (x.devices) {
+    var o = {}
+    var devArr = Object.keys(x.devices).sort()
+    .map(function(y) {
+      o[y] = {}
+      o[y].name = dev[y].name
+      o[y].group = group.filter(g => g.devices.includes(y))[0]
+      o[y].url = devicePath + y + '.html'
+      o[y].ipsw = x.devices[y].ipsw
+      return o
+    })
+    x.devices = o
+  }
+
   return x
 })
-
-
 
 function versionCompare(v1, v2, options) {
   var lexicographical = options && options.lexicographical,
@@ -129,13 +136,6 @@ iosArr = iosArr.sort(function(a,b) {
   if (a.build < b.build) return -1
   if (a.build > b.build) return 1
   return 0
-})
-
-iosArr = iosArr.map(function(x) {
-  x.istvOS = (x.osStr == 'tvOS' || x.osStr == 'Apple TV Software')
-  x.isiOS = (x.osStr == 'iOS' || x.osStr == 'iPadOS' || x.osStr == 'iPhoneOS')
-  x.iswatchOS = (x.osStr == 'watchOS')
-  return x
 })
 
 module.exports = iosArr;

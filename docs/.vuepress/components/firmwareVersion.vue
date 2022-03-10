@@ -2,7 +2,7 @@
   <h2 v-html="infoHeader"/>
   <p>
     <div v-html="verStr.format({ verNum: [frontmatter.build.osStr,frontmatter.build.version].join(' ') })"/>
-    <div v-if="frontmatter.build.iosVersion" v-html="basedOnStr.format({ iosVersion: [(parseInt(frontmatter.build.iosVersion.split('.')[0]) < 4 ? 'iPhoneOS' : 'iOS'), iosBuildNumArr.length == 1 ? [`<a href='${iosBuildNumArr[0]}.html'>`,frontmatter.build.iosVersion,'</a>'].join('') : frontmatter.build.iosVersion + ' (' + iosBuildNumArr.map(x => `<a href='${x}.html'>${x}</a>`).join(', ') + ')'].join(' ') })"/>
+    <div v-if="frontmatter.build.iosVersion" v-html="basedOnStr.format({ iosVersion: [(parseInt(frontmatter.build.iosVersion.split('.')[0]) < 4 ? 'iPhoneOS' : 'iOS'), frontmatter.build.iosBuildNumArr.length == 1 ? [`<a href='${frontmatter.build.iosBuildNumArr[0]}.html'>`,frontmatter.build.iosVersion,'</a>'].join('') : frontmatter.build.iosVersion + ' (' + frontmatter.build.iosBuildNumArr.map(x => `<a href='${x}.html'>${x}</a>`).join(', ') + ')'].join(' ') })"/>
     <div v-html="buildStr.format({ buildId: frontmatter.build.build })"/>
     <div v-if="getReleasedDate != -1" v-html="releasedStr.format({releasedTime: getReleasedDate})"/>
   </p>
@@ -144,47 +144,33 @@ export default {
     currentBuild() {
       return this.frontmatter.build
     },
-    iosBuildNumArr() {
-      if (!this.currentBuild.iosVersion) return null
-      return json.ios.filter(x => x.version == this.currentBuild.iosVersion).map(x => x.build)
-    },
     getReleasedDate() {
       if (!this.currentBuild.hasOwnProperty('released')) return -1
       return new Intl.DateTimeFormat(this.timeLocale, { dateStyle: 'full'}).format(new Date(this.currentBuild.released))
     },
-    devArr() {
-      var devArr = []
-      for (var i in this.currentBuild.devices) {
-        devArr.push({
-          name: json.device[i].name,
-          group: json.groups.filter(g => g.devices.includes(i))[0],
-          identifier: i,
-          url: this.devicePath + i,
-          ipsw: this.currentBuild.devices[i].ipsw
-        })
-      }
-      return devArr
-    },
     devGroupArr() {
-      const deviceArr = this.devArr
+      const deviceArr = this.currentBuild.devices
       const path = this.devicePath
       const deviceList = json.device
-      const ipswList = this.currentBuild.devices
 
       var groupArr = []
-      for (const i in deviceArr) if (!groupArr.includes(deviceArr[i].group)) groupArr.push(deviceArr[i].group)
+      for (var i in deviceArr) {
+        if (!groupArr.includes(JSON.stringify(deviceArr[i].group)))
+          groupArr.push(JSON.stringify(deviceArr[i].group))
+      }
+      groupArr = groupArr.map(x => JSON.parse(x))
       
       groupArr = groupArr.map(function(g) {
         const devices = g.devices.map(function(d) {
           var ipsw
-          try { ipsw = ipswList[d].ipsw } catch { ipsw = -1; }
+          try { ipsw = deviceArr[d].ipsw } catch { ipsw = null; }
           
           return {
             name: deviceList[d].name,
             url: `${path + d.replace(/ /g, '-')}`,
             ipsw: ipsw,
           }
-        }).sort(function(a, b) { return (a.name.toUpperCase() < b.name.toUpperCase()) ? -1 : (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : 0; });
+        })
 
         var type = g.type
         if (g.hasOwnProperty('subtype') && g.subtype != g.type) type += ' ' + g.subtype
@@ -193,15 +179,29 @@ export default {
           name: g.name,
           url: `${path + g.name.replace(/ /g, '-')}`,
           devices: devices,
+          order: g.order,
           type: type,
         }
       })
-
-      groupArr = groupArr.sort(function(a,b) {
-        return a.type > b.type
-      })
  
-      return groupArr
+      return groupArr.sort(function(a,b) {
+        console.log(a)
+        if (a.type == 'iPhone' && b.type != 'iPhone') return 1
+        if (a.type != 'iPhone' && b.type == 'iPhone') return -1
+
+        function alphaSort(x, y, attr) {
+          if (x[attr] < y[attr]) return -1
+          if (x[attr] > y[attr]) return 1
+          return 0
+        }
+        const sortArr = [
+          'type',
+          'order',
+          'name'
+        ]
+        for (var i of sortArr) if (alphaSort(a, b, i) != 0) return alphaSort(a, b, i)
+        return 0
+      }).reverse()
     },
     jailbreakArr() {
       const build = this.currentBuild.uniqueBuild
@@ -215,7 +215,7 @@ export default {
     },
     jbDevArr() {
       const jailbreakArr = this.jailbreakArr
-      const devArr = this.devArr
+      const devArr = this.currentBuild.devices
       const build = this.currentBuild.uniqueBuild
       var retArr = []
       for (var jb in jailbreakArr) {
