@@ -225,9 +225,9 @@ export default {
           if (!compat[c].firmwares.includes(build)) continue
           for (var d in compat[c].devices) {
             var device = compat[c].devices[d]
-            if (devArr.includes(device)) continue
+            if (Object.keys(devArr).includes(device)) continue
             if (!Object.keys(this.currentBuild.devices).includes(device)) continue
-            device = devArr.filter(d => d.identifier == device)[0]
+            device = devArr[Object.keys(devArr).filter(d => d == device)[0]]
             retDevArr.push(device)
           }
         }

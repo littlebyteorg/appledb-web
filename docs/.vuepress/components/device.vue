@@ -488,11 +488,10 @@ export default {
   },
   created() {
     this.resetFwArr()
-    this.loadMoreRows()
   },
   mounted() {
-    this.resetFwArr()
     this.loadMoreRows()
+    if (window.screen.width > 650) this.showReleaseDate = true
   }
 }
 </script>
