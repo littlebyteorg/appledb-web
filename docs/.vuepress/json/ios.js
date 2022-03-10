@@ -41,17 +41,52 @@ iosArr = iosArr.map(function(x) {
 
   if (!x.uniqueBuild) x.uniqueBuild = x.build
   if (!x.beta) x.beta = false
-  if (x.iosVersion) {
-    x.iosBuildNumArr = iosArr.filter(y => y.version == x.iosVersion).filter(y => y.isiOS).map(y => y.build)
-    x.iosStr = parseInt(x.iosVersion.split('.')[0]) < 4 ? 'iPhoneOS' : 'iOS'
-  }
   if (!x.sortVersion) {
     if (x.iosVersion) x.sortVersion = x.iosVersion
     else x.sortVersion = x.version
   }
   
-  if (iosArr.filter(y => y.osStr == x.osStr && y.version == x.version).length > 1) x.duplicateVersion = true
+  return x
+})
 
+iosArr = iosArr.map(function(x) {
+  if (iosArr.filter(y => y.osStr == x.osStr && y.version == x.version).length > 1) x.duplicateVersion = true
+  return x
+})
+
+iosArr = iosArr.map(function(x) {
+  x.relatedFirmwares = []
+
+  function getVer(o) {
+    if (o.isiOS) return o.version
+    else if (o.istvOS) {
+      if (o.iosVersion) return o.iosVersion
+      else return o.version
+    }
+    else if (o.iswatchOS && o.iosVersion) return o.iosVersion
+    return -1
+  }
+
+  const v0 = getVer(x)
+  for (var i of iosArr) {
+    if (i.uniqueBuild == x.uniqueBuild) continue
+    var v1 = getVer(i)
+    if (v1 < 0) continue
+    if (v0 == v1) {
+      x.relatedFirmwares.push({
+        osStr: i.osStr,
+        version: i.version,
+        build: i.build,
+        uniqueBuild: i.uniqueBuild,
+        duplicateVersion: i.duplicateVersion
+      })
+    }
+  }
+
+  return x
+})
+
+iosArr = iosArr.map(function(x) {
   if (x.devices) {
     var o = {}
     var devArr = Object.keys(x.devices).sort()

@@ -2,27 +2,19 @@
   <h2 v-html="infoHeader"/>
   <p>
     <div v-html="verStr.format({ verNum: [frontmatter.build.osStr,frontmatter.build.version].join(' ') })"/>
-    <div v-if="frontmatter.build.iosVersion">
-      <span v-if="!frontmatter.build.iosBuildNumArr || frontmatter.build.iosBuildNumArr.length == 0">
-        {{ basedOnStr.format({ iosVersion: [frontmatter.build.iosStr, frontmatter.build.iosVersion].join(' ') }) }}
-      </span>
-      <span v-else-if="frontmatter.build.iosBuildNumArr.length == 1">
-        {{ basedOnStr.split('${iosVersion}')[0] }}
-        <router-link :to="`${frontmatter.build.iosBuildNumArr[0]}.html`">{{ [frontmatter.build.iosStr, frontmatter.build.iosVersion].join(' ') }}</router-link>
-        {{ basedOnStr.split('${iosVersion}')[2] }}
-      </span>
-      <span v-else>
-        {{ basedOnStr.split('${iosVersion}')[0] }}
-        {{ [frontmatter.build.iosStr, frontmatter.build.iosVersion].join(' ') }}
-        (<template v-for="build in frontmatter.build.iosBuildNumArr" :key="build">
-          <router-link :to="`${build}.html`">{{ build }}</router-link>{{ frontmatter.build.iosBuildNumArr[frontmatter.build.iosBuildNumArr.length - 1] != build ? ', ' : ''}}
-        </template>)
-        {{ basedOnStr.split('${iosVersion}')[2] }}
-      </span>
-    </div>
     <div v-html="buildStr.format({ buildId: frontmatter.build.build })"/>
     <div v-if="getReleasedDate != -1" v-html="releasedStr.format({releasedTime: getReleasedDate})"/>
   </p>
+
+  <h2>{{relatedFirmwaresHeader}}</h2>
+  <ul>
+    <li v-for="fw in frontmatter.build.relatedFirmwares" :key="fw">
+      <router-link :to="`${fw.uniqueBuild}.html`">
+        {{fw.osStr}} {{fw.version}} 
+        <span v-if="fw.duplicateVersion">({{ fw.build }})</span>
+      </router-link>
+    </li>
+  </ul>
 
   <h2 v-if="jailbreakArr.length > 0" v-html="jailbreaksHeader"/>
   <ul>
@@ -116,6 +108,8 @@ export default {
       buildStr: 'Build: ${buildId}',
       releasedStr: 'Released: ${releasedTime}',
       basedOnStr: 'Based on: ${iosVersion}',
+
+      relatedFirmwaresHeader: 'Related Firmwares',
 
       devicesHeader: 'Devices',
       showMoreStr: 'Show More',
