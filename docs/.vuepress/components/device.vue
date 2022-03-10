@@ -11,7 +11,7 @@
     <h2 v-html="groupHeader" v-if="groupedDevices && groupedDevices.length > 0"/>
     <ul>
       <li v-for="d in groupedDevices" :key="d">
-        <a v-html="d.name" :href="devicePath + d.identifier + '.html'"/>
+        <router-link v-html="d.name" :to="devicePath + d.identifier + '.html'"/>
       </li>
     </ul>
   </template>
@@ -108,15 +108,15 @@
           <td v-else v-html="noJbStr"/>
         </tr>
         <tr v-else>
-          <td v-if="showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.build}}</a></td>
+          <td v-if="showBuildNum"><router-link :to="firmwarePath + fw.uniqueBuild + '.html'">{{fw.build}}</router-link></td>
 
           <template v-if="showVersion">
-            <td v-if="!showBuildNum"><a :href="firmwarePath + fw.uniqueBuild + '.html'">{{fw.osStr}} {{fw.version}} <span v-if="fw.duplicateVersion">({{fw.build}})</span></a></td>
+            <td v-if="!showBuildNum"><router-link :to="firmwarePath + fw.uniqueBuild + '.html'">{{fw.osStr}} {{fw.version}} <span v-if="fw.duplicateVersion">({{fw.build}})</span></router-link></td>
             <td v-else>{{fw.osStr}} {{fw.version}}</td>
           </template>
           
           <template v-if="showJailbreak">
-            <td v-if="fw.jailbreakArr.length > 0"><span v-for="(jb, index) in fw.jailbreakArr" :key="jb"><a :href="jailbreakPath + jb.name.replace(/ /g, '-') + '.html'" v-html="jb.name"/><span v-if="index+1 < fw.jailbreakArr.length">, </span></span></td>
+            <td v-if="fw.jailbreakArr.length > 0"><span v-for="(jb, index) in fw.jailbreakArr" :key="jb"><router-link :to="jailbreakPath + jb.name.replace(/ /g, '-') + '.html'" v-html="jb.name"/><span v-if="index+1 < fw.jailbreakArr.length">, </span></span></td>
             <td v-else v-html="noJbStr"/>
           </template>
           
@@ -567,7 +567,8 @@ export default {
   left: auto;
   top: auto;
   padding: 1.5em 0.8em 1.5em 0em;
-  border: 1px solid var(--c-border);
+  /*border: 1px solid var(--c-border);*/
+  box-shadow: 0px 1px 6px var(--dropdown-shadow);
   max-height: 100%;
   transition: 300ms ease-in-out;
 }
@@ -576,7 +577,8 @@ export default {
   left: auto;
   top: auto;
   padding: 1.5em 0.8em 1.5em 0em;
-  border: 1px solid var(--c-border);
+  /*border: 1px solid var(--c-border);*/
+  box-shadow: 0px 1px 6px var(--dropdown-shadow);
   max-height: 100%;
   transition: 300ms ease-in-out;
 }
