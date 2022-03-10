@@ -185,7 +185,6 @@ export default {
       })
  
       return groupArr.sort(function(a,b) {
-        console.log(a)
         if (a.type == 'iPhone' && b.type != 'iPhone') return 1
         if (a.type != 'iPhone' && b.type == 'iPhone') return -1
 
