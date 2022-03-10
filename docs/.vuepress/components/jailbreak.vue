@@ -7,7 +7,7 @@
       <input type="checkbox" :id="`toggleListCompat-${g.name.replace(/ /g, '-')}`">
       <i class="fas fa-chevron-right chevron chevronPoint clickToHide"/>
       <i class="fas fa-chevron-down chevron chevronPoint clickToShow displayNone"/>
-      <a v-html="g.name" :href="`${devicePath}${g.name.replace(/ /g, '-')}.html`"/>
+      <router-link v-html="g.name" :to="`${devicePath}${g.name.replace(/ /g, '-')}.html`"/>
       
       <div class="hoverElement" style="display: inline;">
         <i class="fas fa-circle ml-" style="font-size: 0.3rem; opacity: 0.5; vertical-align: middle; margin-left: 2em; margin-right: 2em;"/>
@@ -20,7 +20,7 @@
             <th v-for="d in g.devices" :key="d" v-html="devices[d].name"/>
           </tr>
           <tr v-for="fw in g.firmwares.reverse()" :key="fw">
-            <td>{{fw.version}} (<a v-html="fw.build" :href="`${firmwarePath}${fw.uniqueBuild}.html`"/>)</td>
+            <td>{{fw.version}} (<router-link v-html="fw.build" :to="`${firmwarePath}${fw.uniqueBuild}.html`"/>)</td>
             <td v-for="d in g.devices" :key="d" v-html="getCompat[d][fw.uniqueBuild] ? compatibleStr : notCompatibleStr"/>
           </tr>
         </table>
@@ -109,7 +109,7 @@ export default {
         if (!g.url) return g.name
         if (!g.name) g.name = g.url
 
-        var link = `<a href="${g.url}">${g.name}</a>`
+        var link = `<a href="https://ios.cfw.guide${g.url}" target="_blank">${g.name}</a>${extLinkIcon}`
         return gStr.format({ guideLink: link })
       })
     },

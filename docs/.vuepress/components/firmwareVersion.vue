@@ -6,7 +6,7 @@
     <div v-if="getReleasedDate != -1" v-html="releasedStr.format({releasedTime: getReleasedDate})"/>
   </p>
 
-  <h2>{{relatedFirmwaresHeader}}</h2>
+  <h2 v-if="frontmatter.build.relatedFirmwares && frontmatter.build.relatedFirmwares.length">{{relatedFirmwaresHeader}}</h2>
   <ul>
     <li v-for="fw in frontmatter.build.relatedFirmwares" :key="fw">
       <router-link :to="`${fw.uniqueBuild}.html`">
@@ -22,7 +22,7 @@
       <input type="checkbox" :id="`toggleListJb-${jb.name.replace(/ /g, '-')}`">
       <i class="fas fa-chevron-right chevron chevronPoint clickToHide"/>
       <i class="fas fa-chevron-down chevron chevronPoint clickToShow displayNone"/>
-      <a v-html="jb.name" :href="`${jailbreakPath}${jb.name}.html`"/>
+      <router-link v-html="jb.name" :to="`${jailbreakPath}${jb.name}.html`"/>
       
       <template v-if="jbDevArr[index].length > 0">
         <div class="hoverElement" style="display: inline;">
@@ -33,7 +33,7 @@
           <p>
             <ul>
               <li class="showOnHover" style="list-style-type: disc" v-for="d in jbDevArr[index]" :key="d">
-                <a :href="d.url" v-html="d.name"/>
+                <router-link :to="d.url" v-html="d.name"/>
               </li>
             </ul>
           </p>
@@ -51,7 +51,7 @@
         <i class="clickToShow fas fa-chevron-down chevron chevronPoint"/>
       </template>
 
-      <a :href="g.url" v-html="g.name"/>
+      <router-link :to="g.url" v-html="g.name"/>
 
       <template v-if="g.devices.length > 1">
         <div class="hoverElement" style="display: inline;">
@@ -62,7 +62,7 @@
           <p>
             <ul>
               <li class="showOnHover" style="list-style-type: disc" v-for="d in g.devices" :key="d">
-                <a :href="d.url" v-html="d.name"/>
+                <router-link :to="d.url" v-html="d.name"/>
                 <a v-if="d.ipsw != 'none' && d.ipsw" class="hoverElement" :href="d.ipsw">
                   <i class="fas fa-download chevron" style="margin-left: 0.8em; margin-right: 0.5em;"/>
                   <span style="font-weight: 500;" v-html="downloadStr"/>
