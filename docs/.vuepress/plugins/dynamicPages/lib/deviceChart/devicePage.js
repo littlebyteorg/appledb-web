@@ -18,10 +18,10 @@ function getDeviceArr(typeArr) {
   return deviceArr;
 }
 
-function getTableCount(typeArr, deviceArr) {
+function getTableCount(typeArr, deviceArr, tableWidth) {
   var tableCount = [];
   for (const i in typeArr) {
-    tableCount.push(parseInt(deviceArr[i].length / 3) + !!(deviceArr[i].length % 3))
+    tableCount.push(parseInt(deviceArr[i].length / tableWidth) + !!(deviceArr[i].length % tableWidth))
   }
   return tableCount;
 }
@@ -43,7 +43,10 @@ function getHtml(typeArr, path, toc) {
   if (typeArr.includes('iPad') && !(typeArr.includes('mini') && typeArr.includes('Pro') && typeArr.includes('Air'))) typeArr = typeArr.concat(['mini', 'Pro', 'Air'])
   
   var deviceArr = getDeviceArr(typeArr);
-  var tableCount = getTableCount(typeArr, deviceArr);
+  var tableWidth = 3
+  if (deviceArr[0].length < 3) tableWidth = deviceArr[0].length
+  var tableCount = getTableCount(typeArr, deviceArr, tableWidth);
+  var colWidth = parseInt(100 / tableWidth)
   
   for (const i in deviceArr) {
     if (deviceArr[i].length < 1) continue;
@@ -53,14 +56,14 @@ function getHtml(typeArr, path, toc) {
     deviceArr[i].reverse()
     
     for (var j = 0; j < tableCount[i]; j++) {
-      html += '<table><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><thead><tr>'
-      for (var k = 0; k < 3; k++) {
-        if (deviceArr[i][j*3+k]) html += '<th>' + deviceArr[i][j*3+k].name.replace('generation', 'gen') + '</th>';
+      html += `<table><colgroup><col width="${colWidth}%"><col width="${colWidth}%"><col width="${colWidth}%"></colgroup><thead><tr>`
+      for (var k = 0; k < tableWidth; k++) {
+        if (deviceArr[i][j*tableWidth+k]) html += '<th>' + deviceArr[i][j*tableWidth+k].name.replace('generation', 'gen') + '</th>';
         else html += '<th></th>';
       }
       html += '</tr></thead><tbody><tr>'
-      for (var k = 0; k < 3; k++) {
-        const d = deviceArr[i][j*3+k];
+      for (var k = 0; k < tableWidth; k++) {
+        const d = deviceArr[i][j*tableWidth+k];
         const p = path || devicePath;
         if (d) {
           html += '<td><router-link to="' + p + d.name.replace(/ /g, '-') + '"><img src="https://ipsw.me/assets/devices/' + d.devices[0] + '.png" alt="' + d.name + '" loading="lazy" style="width: 50%;"></router-link></td>';
