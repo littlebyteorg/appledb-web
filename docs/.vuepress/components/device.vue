@@ -460,6 +460,7 @@ export default {
         retQueryArr.push(...existingQuery)
       }
       var newQuery = [this.showStable ? 'stable' : null, bool ? 'beta' : null].filter(x => x)
+      if (newQuery.length == 1 & newQuery[0] == 'stable') newQuery = []
       retQueryArr.push(...newQuery)
       if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(',') }})
       else this.$router.push({query: {}})
@@ -473,6 +474,7 @@ export default {
         retQueryArr.push(...existingQuery)
       }
       var newQuery = [bool ? 'stable' : null, this.showBeta ? 'beta' : null].filter(x => x)
+      if (newQuery.length == 1 & newQuery[0] == 'stable') newQuery = []
       retQueryArr.push(...newQuery)
       if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(',') }})
       else this.$router.push({query: {}})
