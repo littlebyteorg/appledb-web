@@ -451,15 +451,45 @@ export default {
     reverseSorting() {
       this.resetFwArr()
     },
-    showBeta() {
+    showBeta(bool) {
       this.resetFwArr()
+      const query = this.$route.query
+      var retQueryArr = []
+      if (query && query.filter) {
+        var existingQuery = query.filter.split(',').filter(x => !['stable','beta'].includes(x))
+        retQueryArr.push(...existingQuery)
+      }
+      var newQuery = [this.showStable ? 'stable' : null, bool ? 'beta' : null].filter(x => x)
+      retQueryArr.push(...newQuery)
+      if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(',') }})
+      else this.$router.push({query: {}})
     },
-    showStable() {
+    showStable(bool) {
       this.resetFwArr()
+      const query = this.$route.query
+      var retQueryArr = []
+      if (query && query.filter) {
+        var existingQuery = query.filter.split(',').filter(x => !['stable','beta'].includes(x))
+        retQueryArr.push(...existingQuery)
+      }
+      var newQuery = [bool ? 'stable' : null, this.showBeta ? 'beta' : null].filter(x => x)
+      retQueryArr.push(...newQuery)
+      if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(',') }})
+      else this.$router.push({query: {}})
     },
     showOsTypeObj: {
-      handler: function() {
+      handler: function(val) {
         this.resetFwArr()
+        const query = this.$route.query
+        var retQueryArr = []
+        if (query && query.filter) {
+          var existingQuery = query.filter.split(',').filter(x => !this.osTypeArr.includes(x))
+          retQueryArr.push(...existingQuery)
+        }
+        var newQuery = Object.keys(val).filter(x => val[x])
+        retQueryArr.push(...newQuery)
+        if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(',') }})
+        else this.$router.push({query: {}})
       },
       deep: true
     },
@@ -475,6 +505,21 @@ export default {
   },
   created() {
     this.resetFwArr()
+    const query = this.$route.query
+    if (Object.keys(query).length > 0) {
+      if (query.filter) {
+        var filterArr = query.filter.split(',')
+        if (filterArr.includes('stable') || filterArr.includes('beta')) {
+          this.showBeta = filterArr.includes('beta')
+          this.showStable = filterArr.includes('stable')
+          filterArr = filterArr.filter(x => x != 'stable' || x != 'beta')
+        }
+        if (filterArr.some(r=> this.osTypeArr.includes(r))) {
+          for (const i in this.showOsTypeObj) this.showOsTypeObj[i] = false
+          for (const i of filterArr) this.showOsTypeObj[i] = true
+        }
+      }
+    }
   },
   mounted() {
     this.loadMoreRows()
