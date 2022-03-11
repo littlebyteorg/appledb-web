@@ -9,7 +9,7 @@
   <h2 v-if="frontmatter.build.relatedFirmwares && frontmatter.build.relatedFirmwares.length">{{relatedFirmwaresHeader}}</h2>
   <ul>
     <li v-for="fw in frontmatter.build.relatedFirmwares" :key="fw">
-      <router-link :to="`${fw.uniqueBuild}.html`">
+      <router-link :to="fw.path">
         {{fw.osStr}} {{fw.version}} 
         <span v-if="fw.duplicateVersion">({{ fw.build }})</span>
       </router-link>

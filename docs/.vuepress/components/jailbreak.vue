@@ -20,7 +20,7 @@
             <th v-for="d in g.devices" :key="d" v-html="devices[d].name"/>
           </tr>
           <tr v-for="fw in g.firmwares.reverse()" :key="fw">
-            <td>{{fw.version}} (<router-link v-html="fw.build" :to="`${firmwarePath}${fw.uniqueBuild}.html`"/>)</td>
+            <td>{{fw.version}} (<router-link v-html="fw.build" :to="fw.path"/>)</td>
             <td v-for="d in g.devices" :key="d" v-html="getCompat[d][fw.uniqueBuild] ? compatibleStr : notCompatibleStr"/>
           </tr>
         </table>

@@ -25,16 +25,16 @@
       </div>
       <div class="chartDropdownBox opaqueHover">
         <ul>
-          <li class="dropdown-item">
+          <li class="dropdown-item" v-if="osTypeArr.length == 1">
             <input type="checkbox" v-model="simpleTable" id="simpleTableCheckbox">
             <label for="simpleTableCheckbox">{{ simpleTableStr }}</label>
           </li>
+          <li class="dropdown-item" style="padding: 0px" v-if="osTypeArr.length == 1 && !simpleTable"><hr></li>
           <template v-if="!simpleTable">
             <!--<li class="dropdown-item">
               <input type="checkbox" v-model="showGuide" id="showGuideCheckbox">
               <label for="showGuideCheckbox">{{ showGuideStr }}</label>
             </li>-->
-            <li class="dropdown-item" style="padding: 0px"><hr></li>
             <li class="dropdown-item">
               <input type="checkbox" v-model="showBuildNum" id="showBuildNumCheckbox">
               <label for="showBuildNumCheckbox">{{ showBuildNumStr }}</label>
@@ -61,18 +61,11 @@
             <input type="checkbox" v-model="showStable" id="showStableCheckbox">
             <label for="showStableCheckbox">{{ showStableStr }}</label>
           </li>
-          <template v-if="Object.keys(frontmatter.device).length == Object.keys(devices).length">
-            <li class="dropdown-item">
-              <input type="checkbox" v-model="showiOS" id="showiOSCheckbox">
-              <label for="showiOSCheckbox">{{ showiOSStr }}</label>
-            </li>
-            <li class="dropdown-item">
-              <input type="checkbox" v-model="showtvOS" id="showtvOSCheckbox">
-              <label for="showtvOSCheckbox">{{ showtvOSStr }}</label>
-            </li>
-            <li class="dropdown-item">
-              <input type="checkbox" v-model="showwatchOS" id="showwatchOSCheckbox">
-              <label for="showwatchOSCheckbox">{{ showwatchOSStr }}</label>
+          <template v-if="osTypeArr.length > 1">
+            <li class="dropdown-item" style="padding: 0px"><hr></li>
+            <li class="dropdown-item" v-for="type in osTypeArr" :key="type">
+              <input type="checkbox" v-model="showOsTypeObj[type]" :id="type + 'checkbox'">
+              <label :for="type + 'checkbox'">{{ showOSStr.format({ osType: type }) }}</label>
             </li>
           </template>
         </ul>
@@ -108,10 +101,10 @@
           <td v-else v-html="noJbStr"/>
         </tr>
         <tr v-else>
-          <td v-if="showBuildNum"><router-link :to="firmwarePath + fw.uniqueBuild + '.html'">{{fw.build}}</router-link></td>
+          <td v-if="showBuildNum"><router-link :to="fw.path">{{fw.build}}</router-link></td>
 
           <template v-if="showVersion">
-            <td v-if="!showBuildNum"><router-link :to="firmwarePath + fw.uniqueBuild + '.html'">{{fw.osStr}} {{fw.version}} <span v-if="fw.duplicateVersion">({{fw.build}})</span></router-link></td>
+            <td v-if="!showBuildNum"><router-link :to="fw.path">{{fw.osStr}} {{fw.version}} <span v-if="fw.duplicateVersion">({{fw.build}})</span></router-link></td>
             <td v-else>{{fw.osStr}} {{fw.version}}</td>
           </template>
           
@@ -151,7 +144,7 @@ export default {
     return {
       devicePath: '/device/',
       jailbreakPath: '/jailbreak/',
-      firmwarePath: '/firmware/',
+      firmwarePath: '/firmware',
       timeLocale: 'en-US',
 
       infoHeader: 'Info',
@@ -168,9 +161,7 @@ export default {
 
       showBetaStr: 'Show beta versions',
       showStableStr: 'Show stable versions',
-      showiOSStr: 'Show iOS versions',
-      showtvOSStr: 'Show tvOS versions',
-      showwatchOSStr: 'Show watchOS versions',
+      showOSStr: 'Show ${osType} versions',
 
       showBuildNumStr: 'Show build numbers',
       showVersionStr: 'Show version numbers',
@@ -198,9 +189,13 @@ export default {
 
       showBeta: false,
       showStable: true,
-      showtvOS: true,
-      showiOS: true,
-      showwatchOS: true,
+
+      showOsTypeObj: {
+        iOS: true,
+        tvOS: true,
+        watchOS: true,
+        audioOS: true
+      },
 
       showBuildNum: false,
       showVersion: true,
@@ -325,13 +320,8 @@ export default {
       // Grab device data
       devArr = devArr.map(d => this.devices[d])
       return devArr
-    }
-  },
-  methods: {
-    reverseSortingBtn: function() {
-      this.reverseSorting = !this.reverseSorting
     },
-    getFwArrMethod: function(val) {
+    deviceFwArr() {
       const fm = this.frontmatter
       var devArr = fm.device
 
@@ -346,13 +336,39 @@ export default {
           devFwArr.map(function(x) { if (!fwArr.includes(x)) fwArr.push(x) })
         }
       }
+      return fwArr
+    },
+    osTypeArr() {
+      var arr = [...new Set(this.deviceFwArr.map(x => x.osType))]
+      var order = [
+        'iOS',
+        'tvOS',
+        'watchOS',
+        'audioOS'
+      ]
+      for (i of order) if (!arr.includes(i)) order = order.filter(x => x != i)
+      for (i of arr) if (!order.includes(i)) order.push(i)
+      var ret = []
+      for (var i = 0; i < order.length; i++)
+        if (arr.indexOf(order[i]) > -1)
+          ret.push(order[i])
+          
+      return ret
+    }
+  },
+  methods: {
+    reverseSortingBtn: function() {
+      this.reverseSorting = !this.reverseSorting
+    },
+    getFwArrMethod: function(val) {
+      const fm = this.frontmatter
+      var devArr = fm.device
+
+      var fwArr = this.deviceFwArr
 
       fwArr = fwArr.filter(fw => (
         (
-          (fw.istvOS && this.showtvOS) ||
-          (fw.isiOS && this.showiOS) ||
-          (fw.iswatchOS && this.showwatchOS) ||
-          !(fw.istvOS || fw.isiOS || fw.iswatchOS)
+          this.showOsTypeObj[fw.osType]
         ) && (
           (fw.beta && this.showBeta) ||
           (!fw.beta && this.showStable)
@@ -433,53 +449,25 @@ export default {
     }
   },
   watch: {
-    reverseSorting: function () {
+    reverseSorting() {
       this.resetFwArr()
     },
-    showBeta: function (bool) {
+    showBeta() {
       this.resetFwArr()
     },
-    showStable: function (bool) {
+    showStable() {
       this.resetFwArr()
     },
-    showtvOS: function (bool) {
-      if (this.simpleTable && bool) {
-        this.showiOS = false
-        this.showwatchOS = false
-      }
-      this.resetFwArr()
-    },
-    showiOS: function (bool) {
-      if (this.simpleTable && bool) {
-        this.showtvOS = false
-        this.showwatchOS = false
-      }
-      this.resetFwArr()
-    },
-    showwatchOS: function (bool) {
-      if (this.simpleTable && bool) {
-        this.showiOS = false
-        this.showtvOS = false
-      }
-      this.resetFwArr()
+    showOsTypeObj: {
+      handler: function() {
+        this.resetFwArr()
+      },
+      deep: true
     },
     showGuide: function (bool) {
       this.resetFwArr()
     },
     simpleTable: function (bool) {
-      var enableArr = ['showiOS', 'showtvOS', 'showwatchOS']
-      var enabledCount = enableArr.map(x => this[x]).filter(x => x).length
-      if (bool && enabledCount > 1 && Object.keys(this.frontmatter.device).length == Object.keys(this.devices).length) {
-        for (var i in enableArr) {
-          if (this[enableArr[i]]) {
-            for (var j of enableArr) this[j] = false
-            this[enableArr[i]] = true
-            break
-          }
-        }
-        enabledCount = enableArr.map(x => this[x]).filter(x => x).length
-        if (enabledCount == 0) this[enableArr[0]] = true
-      }
       this.resetFwArr()
     },
     entryCount: function(val) {

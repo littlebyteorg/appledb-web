@@ -18,15 +18,15 @@ var devicePath = '/device/'
 
 var pageList = []
 
-for (var i in iosList) {
+for (const i of iosList) {
   pageList.push({
-    path: `${fwPath}${iosList[i].uniqueBuild}.html`,
+    path: `${fwPath}/${i.osType}/${i.uniqueBuild}.html`,
     frontmatter: {
-      title: `${iosList[i].osStr} ${iosList[i].version} (${iosList[i].build})`,
-      description: `Information for ${iosList[i].osStr} version ${iosList[i].version}`,
+      title: `${i.osStr} ${i.version} (${i.build})`,
+      description: `Information for ${i.osStr} version ${i.version}`,
       layout: 'chartLayout',
       chartType: 'firmware',
-      build: iosList[i],
+      build: i,
       sidebar: false,
       editLink: false,
       lastUpdated: false,

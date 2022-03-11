@@ -3,6 +3,7 @@ const path = require('path')
 const dev = require('./deviceList')
 const group = require('./deviceGroups')
 const devicePath = '/device/'
+const firmwarePath = '/firmware'
 const p = 'docs/.vuepress/json/appledb/iosFiles'
 
 function getAllFiles(dirPath, arrayOfFiles) {
@@ -38,6 +39,11 @@ iosArr = iosArr.map(function(x) {
   x.istvOS = (x.osStr == 'tvOS' || x.osStr == 'Apple TV Software')
   x.isiOS = (x.osStr == 'iOS' || x.osStr == 'iPadOS' || x.osStr == 'iPhoneOS')
   x.iswatchOS = (x.osStr == 'watchOS')
+  x.isaudioOS = (x.osStr == 'audioOS')
+  
+  x.osType = x.osStr
+  if (x.osStr == 'iPhoneOS' || x.osStr == 'iPadOS') x.osType = 'iOS'
+  else if (x.osStr == 'Apple TV Software') x.osType = 'tvOS'
 
   if (!x.uniqueBuild) x.uniqueBuild = x.build
   if (!x.beta) x.beta = false
@@ -45,6 +51,8 @@ iosArr = iosArr.map(function(x) {
     if (x.iosVersion) x.sortVersion = x.iosVersion
     else x.sortVersion = x.version
   }
+
+  x.path = [firmwarePath, x.osStr, x.uniqueBuild].join('/') + '.html'
   
   return x
 })
@@ -61,24 +69,28 @@ iosArr = iosArr.map(function(x) {
     if (o.isiOS) return o.version
     else if (o.istvOS) {
       if (o.iosVersion) return o.iosVersion
-      else return o.version
+      else if (parseInt(o.version.split('.')[0]) > 8) return o.version
+      else return -1
     }
     else if (o.iswatchOS && o.iosVersion) return o.iosVersion
+    else if (o.isaudioOS) return o.version
     return -1
   }
 
   const v0 = getVer(x)
   for (var i of iosArr) {
-    if (i.uniqueBuild == x.uniqueBuild) continue
+    if (i.uniqueBuild == x.uniqueBuild && i.osType == x.osType) continue
     var v1 = getVer(i)
     if (v1 < 0) continue
     if (v0 == v1) {
       x.relatedFirmwares.push({
         osStr: i.osStr,
+        osType: i.osType,
         version: i.version,
         build: i.build,
         uniqueBuild: i.uniqueBuild,
-        duplicateVersion: i.duplicateVersion
+        duplicateVersion: i.duplicateVersion,
+        path: i.path
       })
     }
   }
