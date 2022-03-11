@@ -171,7 +171,6 @@ iosArr = iosArr.sort(function(a,b) {
         .map(x => x.split(' '))
         .map(x => x[2])
         .map(x => (x == undefined) ? '1' : x)
-        .map(x => (x == '6-enterprise') ? '7' : x)
         .map(x => parseFloat(x))
       if (betaNum[0] - betaNum[1] != 0) return betaNum[0] - betaNum[1]
     }
