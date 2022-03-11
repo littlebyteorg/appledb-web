@@ -3,7 +3,6 @@ const path = require('path')
 const dev = require('./deviceList')
 const group = require('./deviceGroups')
 const devicePath = '/device/'
-const firmwarePath = '/firmware'
 const p = 'docs/.vuepress/json/appledb/iosFiles'
 
 function getAllFiles(dirPath, arrayOfFiles) {
@@ -52,7 +51,7 @@ iosArr = iosArr.map(function(x) {
     else x.sortVersion = x.version
   }
 
-  x.path = [firmwarePath, x.osStr, x.uniqueBuild].join('/') + '.html'
+  x.path = '/' + [x.osStr, x.uniqueBuild].join('/') + '.html'
   
   return x
 })

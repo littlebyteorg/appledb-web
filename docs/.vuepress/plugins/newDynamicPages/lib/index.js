@@ -13,14 +13,13 @@ var bigJson = {
 }
 
 var jbPath = '/jailbreak/'
-var fwPath = '/firmware/'
 var devicePath = '/device/'
 
 var pageList = []
 
 for (const i of iosList) {
   pageList.push({
-    path: `${fwPath}/${i.osType}/${i.uniqueBuild}.html`,
+    path: `/${i.osType}/${i.uniqueBuild}.html`,
     frontmatter: {
       title: `${i.osStr} ${i.version} (${i.build})`,
       description: `Information for ${i.osStr} version ${i.version}`,

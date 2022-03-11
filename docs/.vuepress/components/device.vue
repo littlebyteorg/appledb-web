@@ -144,7 +144,6 @@ export default {
     return {
       devicePath: '/device/',
       jailbreakPath: '/jailbreak/',
-      firmwarePath: '/firmware',
       timeLocale: 'en-US',
 
       infoHeader: 'Info',
