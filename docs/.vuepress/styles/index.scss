@@ -1,10 +1,15 @@
 @media (max-width: 950px) {
-  .tableContainer { 
-      width: 100% !important;
-      overflow-x: scroll; 
-  }
-  
   .tableContainer td, th {
     min-width: 100px;
   }
+}
+
+.tableContainer { 
+    width: 100% !important;
+    overflow-x: scroll; 
+}
+
+
+.tableContainer .complexTable td, th {
+  min-width: 200px;
 }

@@ -44,7 +44,15 @@ iosArr = iosArr.map(function(x) {
   if (x.osStr == 'iPhoneOS' || x.osStr == 'iPadOS') x.osType = 'iOS'
   else if (x.osStr == 'Apple TV Software') x.osType = 'tvOS'
 
-  if (!x.uniqueBuild) x.uniqueBuild = x.build
+  if (!x.uniqueBuild) x.uniqueBuild = x.build/*
+  return x
+})
+
+const uniqueBuildArr = iosArr.map(x => x.uniqueBuild)
+
+iosArr = iosArr.map(function(x) {
+  if (!x.uniqueBuildOsType) x.uniqueBuildOsType = x.uniqueBuild
+  if (uniqueBuildArr.filter(y => y == x.uniqueBuild).length > 1) x.uniqueBuildOsType = x.uniqueBuild + '-' + x.osType*/
   if (!x.beta) x.beta = false
   if (!x.sortVersion) {
     if (x.iosVersion) x.sortVersion = x.iosVersion

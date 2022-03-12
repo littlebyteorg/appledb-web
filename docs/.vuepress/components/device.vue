@@ -89,7 +89,12 @@
         <template v-else>
           <th v-html="buildStr" v-if="showBuildNum"/>
           <th v-html="versionStr" v-if="showVersion"/>
-          <th v-html="jailbreakStr" v-if="showJailbreak"/>
+          <template v-if="complexTable">
+            <template v-for="group in groupArr" :key="group">
+              <th class="complexTable">{{ group.name }}</th>
+            </template>
+          </template>
+          <th v-html="jailbreakStr" v-else-if="showJailbreak"/>
           <th v-html="releaseDateStr" v-if="showReleaseDate" style="width: 15%;"/>
         </template>
       </tr>
@@ -107,9 +112,28 @@
             <td v-if="!showBuildNum"><router-link :to="fw.path">{{fw.osStr}} {{fw.version}} <span v-if="fw.duplicateVersion">({{fw.build}})</span></router-link></td>
             <td v-else>{{fw.osStr}} {{fw.version}}</td>
           </template>
+
+          <template v-if="complexTable">
+            <td v-for="group in groupArr" :key="group">
+              <template v-if="bigJbArr[fw.build][group.devices[0]] && bigJbArr[fw.build][group.devices[0]].length > 0">
+                <span v-for="(jb, index) in bigJbArr[fw.build][group.devices[0]]" :key="jb">
+                  <router-link :to="jailbreakPath + jb.name.replace(/ /g, '-') + '.html'" v-html="jb.name"/>
+                  <span v-if="index+1 < bigJbArr[fw.build][group.devices[0]].length">, </span>
+                </span>
+              </template>
+              <template v-else-if="!bigJbArr[fw.build][group.devices[0]]">
+                {{noJbStr}}
+              </template>
+            </td>
+          </template>
           
-          <template v-if="showJailbreak">
-            <td v-if="fw.jailbreakArr.length > 0"><span v-for="(jb, index) in fw.jailbreakArr" :key="jb"><router-link :to="jailbreakPath + jb.name.replace(/ /g, '-') + '.html'" v-html="jb.name"/><span v-if="index+1 < fw.jailbreakArr.length">, </span></span></td>
+          <template v-else-if="showJailbreak">
+            <td v-if="fw.jailbreakArr && fw.jailbreakArr.length > 0">
+              <span v-for="(jb, index) in fw.jailbreakArr" :key="jb">
+                <router-link :to="jailbreakPath + jb.name.replace(/ /g, '-') + '.html'" v-html="jb.name"/>
+                <span v-if="index+1 < fw.jailbreakArr.length">, </span>
+              </span>
+            </td>
             <td v-else v-html="noJbStr"/>
           </template>
           
@@ -202,6 +226,7 @@ export default {
       showReleaseDate: false,
 
       simpleTable: false,
+      complexTable: false,
       showGuide: false,
 
       reverseSorting: true,
@@ -221,22 +246,25 @@ export default {
     }
   },
   computed: {
+    deviceList() {
+      const fm = this.frontmatter
+      var deviceList = fm.device
+      deviceList = deviceList.map(x => this.devices[x])
+      return deviceList
+    },
     deviceNameStr() {
       const fm = this.frontmatter
       if (fm.name) return this.deviceStr.format({ dev: fm.name })
 
-      var deviceList = fm.device
+      var deviceList = this.deviceList
       if (!deviceList) return
-      deviceList = deviceList.map(x => this.devices[x])
 
       const deviceNameArr = removeNullAndDuplicatesAndSort(deviceList.map(x => x.name))
       if (deviceNameArr.length > 0) return this.deviceStr.format({ dev: deviceNameArr.join(', ') })
     },
     deviceIdentifierArr() {
-      const fm = this.frontmatter
-      var deviceList = fm.device
+      var deviceList = this.deviceList
       if (!deviceList) return
-      deviceList = deviceList.map(x => this.devices[x])
       
       const deviceIdentifierArr = removeNullAndDuplicatesAndSort(deviceList.map(x => x.identifier))
       return deviceIdentifierArr
@@ -246,28 +274,22 @@ export default {
       if (arr.length > 0) return this.identStr.format({ ident: arr.join(', ') })
     },
     deviceSocStr() {
-      const fm = this.frontmatter
-      var deviceList = fm.device
+      var deviceList = this.deviceList
       if (!deviceList) return
-      deviceList = deviceList.map(x => this.devices[x])
       
       const deviceSocArr = removeNullAndDuplicatesAndSort(deviceList.map(x => x.soc))
       if (deviceSocArr.length > 0) return this.socStr.format({ soc: deviceSocArr.join(', ')})
     },
     deviceArchStr() {
-      const fm = this.frontmatter
-      var deviceList = fm.device
+      var deviceList = this.deviceList
       if (!deviceList) return
-      deviceList = deviceList.map(x => this.devices[x])
       
       const deviceArchArr = removeNullAndDuplicatesAndSort(deviceList.map(x => x.arch))
       if (deviceArchArr.length > 0) return this.archStr.format({ arch: deviceArchArr.join(', ')})
     },
     deviceModelArr() {
-      const fm = this.frontmatter
-      var deviceList = fm.device
+      var deviceList = this.deviceList
       if (!deviceList) return
-      deviceList = deviceList.map(x => this.devices[x])
       
       const deviceModelArr = removeNullAndDuplicatesAndSort(deviceList.map(function(x) {
         if (x.model) return x.model.join(', ')
@@ -335,7 +357,37 @@ export default {
           devFwArr.map(function(x) { if (!fwArr.includes(x)) fwArr.push(x) })
         }
       }
+
       return fwArr
+    },
+    groupArr() {
+      if (!this.complexTable) return
+      const fwArr = this.fwArr
+      const fwArrDevices = fwArr.map(x => x.devices).filter(x => x)
+      var groupArr = []
+      for (const i in fwArrDevices) {
+        for (const j in fwArrDevices[i]) {
+          if (!JSON.stringify(groupArr).includes(JSON.stringify(fwArrDevices[i][j].group)))
+            groupArr.push(fwArrDevices[i][j].group)
+        }
+      }
+      groupArr = groupArr.sort(function(a,b) {
+        const sortType = [a.type, b.type]
+        if (a.subtype) sortType[0] += ' ' + a.subtype
+        if (b.subtype) sortType[1] += ' ' + b.subtype
+
+        if (sortType[0] == 'iPhone' < sortType[1] == 'iPhone') return 1
+        if (sortType[0] == 'iPhone' > sortType[1] == 'iPhone') return -1
+        if (sortType[0] < sortType[1]) return 1
+        if (sortType[0] > sortType[1]) return -1
+        if (a.order < b.order) return 1
+        if (a.order > b.order) return -1
+        if (a.name < b.name) return 1
+        if (b.name > b.name) return -1
+        return 0
+      })
+
+      return groupArr
     },
     osTypeArr() {
       var arr = [...new Set(this.deviceFwArr.map(x => x.osType))]
@@ -353,6 +405,49 @@ export default {
           ret.push(order[i])
           
       return ret
+    },
+    bigJbArr() {
+      if (!this.complexTable) return
+      const fwArr = this.deviceFwArr
+      const jbList = this.jailbreaks
+
+      var bigObj = {}
+      for (const f of fwArr) {
+        const b = f.build
+        const devArr = (f.devices) ? Object.keys(f.devices) : []
+        bigObj[b] = {}
+        for (const d of devArr) {
+          bigObj[b][d] = []
+          for (const jb of jbList) {
+            if (!jb.hasOwnProperty('compatibility')) continue
+            for (const c of jb.compatibility) {
+              if (!c.firmwares.includes(b)) continue
+              if (!c.devices.some(r => devArr.includes(r))) continue
+              if (bigObj[b][d].includes(jb)) continue
+              bigObj[b][d].push(jb)
+            }
+          }
+        }
+      }
+
+      /*for (const d of devArr) {
+        bigObj[d] = {}
+        for (const f of fwArr) {
+          bigObj[d][f] = []
+          for (const jb of jbList) {
+            if (!jb.hasOwnProperty('compatibility')) continue
+            for (const c of jb.compatibility) {
+              if (!c.firmwares.includes(f)) continue
+              if (!c.devices.some(r => devArr.includes(r))) continue
+              if (bigObj[d][f].includes(jb)) continue
+              bigObj[d][f].push(jb)
+            }
+          }
+        }
+      }*/
+
+      console.log(bigObj)
+      return bigObj
     }
   },
   methods: {
