@@ -34,7 +34,7 @@ export default {
       const fm = this.frontmatter
       const devList = fm.deviceList
       return devList.map(function(x) {
-        if (x.subtype) x.type = [x.type,x.subtype].join(' ')
+        if (x.subtype && !x.type.includes(x.subtype)) x.type = [x.type,x.subtype].join(' ')
         x.url = `/device/${x.name.replace(/ /g, '-')}.html`
         return x
       })
