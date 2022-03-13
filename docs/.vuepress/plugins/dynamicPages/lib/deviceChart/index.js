@@ -2,10 +2,9 @@ var page = []
 
 // Device listing
 var types = ['iPhone', 'iPad', 'iPod', 'TV', 'Watch', 'HomePod']
-types = [types].concat(types.map(t => [t]));
-const title = ['',' (iPhone)',' (iPad)',' (iPod)',' (Apple TV)',' (Apple Watch)', ' (HomePod)'];
-const description = ['device','iPhone','iPad','iPod','Apple TV','Apple Watch', 'HomePod'];
-const path = ['.html', '/select/iPhone.html', '/select/iPad.html', '/select/iPod.html', '/select/AppleTV.html', '/select/AppleWatch.html', '/select/HomePod.html']
+const title = [' (iPhone)',' (iPad)',' (iPod)',' (Apple TV)',' (Apple Watch)', ' (HomePod)'];
+const description = ['iPhone','iPad','iPod','Apple TV','Apple Watch', 'HomePod'];
+const path = ['/select/iPhone.html', '/select/iPad.html', '/select/iPod.html', '/select/AppleTV.html', '/select/AppleWatch.html', '/select/HomePod.html']
 
 for (const i in types) {
   var contentsHeader = '';

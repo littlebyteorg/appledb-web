@@ -114,14 +114,42 @@ for (var g in deviceGroups) {
 }
 
 pageList.push({
+  path: '/device.html',
+  frontmatter: {
+    title: 'Device List',
+    description: 'AppleDB device list',
+    layout: 'chartLayout',
+    chartType: 'deviceList',
+    deviceList: deviceGroups.sort(function(a,b) {
+      const c = [a, b].map(x => JSON.stringify(x)).map(x => JSON.parse(x)) // don't ask
+
+      if (c[0].subtype) c[0].type = [c[0].type,c[0].subtype].join('')
+      if (c[1].subtype) c[1].type = [c[1].type,c[1].subtype].join('')
+
+      if (c[0].type < c[1].type) return -1
+      if (c[0].type > c[1].type) return 1
+      
+      if (c[0].order > c[1].order) return -1
+      if (c[0].order < c[1].order) return 1
+
+      return 0
+    }),
+    sidebar: false,
+    editLink: false,
+    lastUpdated: false,
+    contributors: false,
+  }
+})
+
+pageList.push({
   path: '/',
   frontmatter: {
     title: 'Firmware Chart',
-    description: 'AppleDB Firmware Chart',
+    description: 'AppleDB firmware chart',
     layout: 'chartLayout',
     chartType: 'device',
     device: Object.keys(deviceList),
-    bigObj: bigObj,
+    //bigObj: bigObj,
     sidebar: false,
     editLink: false,
     lastUpdated: false,

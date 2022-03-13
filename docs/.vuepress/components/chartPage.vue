@@ -6,17 +6,10 @@
       <h1>{{ pageTitle }}</h1>
       <div class="custom-container tip" v-if="discordNoticeText" v-html="discordNoticeText"/>
       
-      <div v-if="adTagOne && adsBool" style="text-align: center;">
-          <div :id="adTagOne"></div>
-      </div>
-      
       <firmwareVersion v-if="chartType == 'firmware'"/>
-      <jailbreak v-if="chartType == 'jailbreak'"/>
-      <device v-if="chartType == 'device'"/>
-      
-      <div v-if="adTagTwo && adsBool" style="text-align: center;">
-          <div :id="adTagTwo"></div>
-      </div>
+      <jailbreak v-else-if="chartType == 'jailbreak'"/>
+      <device v-else-if="chartType == 'device'"/>
+      <deviceList v-else-if="chartType == 'deviceList'"/>
 
       <p>AppleDB is not affiliated with Apple Inc.</p>
     </div>
@@ -38,6 +31,7 @@ import { useThemeLocaleData } from '../vuepress-theme/lib/client/composables'
 import firmwareVersion from './firmwareVersion.vue'
 import jailbreak from './jailbreak.vue'
 import device from './device.vue'
+import deviceList from './deviceList.vue'
 
 const themeLocale = useThemeLocaleData()
 

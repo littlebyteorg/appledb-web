@@ -33,4 +33,10 @@ for (const file in deviceFiles) {
   deviceGroupArr.push(require('.' + path.sep + deviceFiles[file]));
 }
 
+deviceGroupArr.map(function(x) {
+  if (x.type == 'TV' || x.type == 'Watch') x.type = 'Apple ' + x.type
+  if (x.type == 'iPad' && x.subtype == 'Base') delete x.subtype
+  return x
+})
+
 module.exports = deviceGroupArr;
