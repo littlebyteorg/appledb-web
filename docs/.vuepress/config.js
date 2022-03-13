@@ -2,11 +2,17 @@ const { localePath, locales, themeConfigLocales, searchLocales } = require("./i1
 const path = require("path")
 const fs = require("fs")
 
+const adArr = [
+  { slot: '/22046652915/appledb-0', size: [[728, 90], [320, 50]], id: 'div-gpt-ad-1647210846871-0' },
+  { slot: '/22046652915/appledb-1', size: [[728, 90], [320, 50]], id: 'div-gpt-ad-1647210898928-0' }
+]
+
 module.exports = {
   locales: locales,
   
   themeConfig: {
     repo: 'emiyl/appledb',
+    adArr: adArr,
     selectLanguageText: '<i class="fas fa-globe"/>',
     logo: '/assets/images/logo.png',
     logoDark: '/assets/images/logo_dark.png',
@@ -46,6 +52,7 @@ module.exports = {
     ['script', {src: 'https://cdn.thisiswaldo.com/static/js/8531.js'}],
     ['script', {src: 'https://www.googletagmanager.com/gtag/js?id=UA-152619365-1'}],
     ['script', {src: '/assets/js/analytics.js'}],
+    require('./plugins/createAdScript/lib')(adArr)
   ],
 
   theme: path.resolve(__dirname, './vuepress-theme'),
