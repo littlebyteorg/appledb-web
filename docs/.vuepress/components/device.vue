@@ -33,7 +33,7 @@
             <input type="checkbox" v-model="complexTable" id="complexTableCheckbox">
             <label for="complexTableCheckbox">{{ complexTableStr }}</label>
           </li>-->
-          <li class="dropdown-item" style="padding: 0px" v-if="osTypeArr.length == 1 || !simpleTable"><hr></li>
+          <li class="dropdown-item" style="padding: 0px" v-if="osTypeArr.length == 1 && !simpleTable"><hr></li>
           <template v-if="!simpleTable">
             <!--<li class="dropdown-item">
               <input type="checkbox" v-model="showGuide" id="showGuideCheckbox">
