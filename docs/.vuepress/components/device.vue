@@ -29,7 +29,11 @@
             <input type="checkbox" v-model="simpleTable" id="simpleTableCheckbox">
             <label for="simpleTableCheckbox">{{ simpleTableStr }}</label>
           </li>
-          <li class="dropdown-item" style="padding: 0px" v-if="osTypeArr.length == 1 && !simpleTable"><hr></li>
+          <li class="dropdown-item" v-if="osTypeArr.length > 1">
+            <input type="checkbox" v-model="complexTable" id="complexTableCheckbox">
+            <label for="complexTableCheckbox">{{ complexTableStr }}</label>
+          </li>
+          <li class="dropdown-item" style="padding: 0px" v-if="osTypeArr.length > 0"><hr></li>
           <template v-if="!simpleTable">
             <!--<li class="dropdown-item">
               <input type="checkbox" v-model="showGuide" id="showGuideCheckbox">
@@ -78,7 +82,7 @@
       </div>
     </li>
   </ul>
-  <div class="tableContainer">
+  <div :class="'tableContainer' + (complexTable) ? ' complexTableContainer' : ''">
     <table>
       <tr v-if="fwArr.length">
         <template v-if="simpleTable">
@@ -89,7 +93,7 @@
         <template v-else>
           <th v-html="buildStr" v-if="showBuildNum"/>
           <th v-html="versionStr" v-if="showVersion"/>
-          <template v-if="complexTable">
+          <template v-if="complexTable && showJailbreak">
             <template v-for="group in groupArr" :key="group">
               <th class="complexTable">{{ group.name }}</th>
             </template>
@@ -113,7 +117,7 @@
             <td v-else>{{fw.osStr}} {{fw.version}}</td>
           </template>
 
-          <template v-if="complexTable">
+          <template v-if="complexTable && showJailbreak">
             <td v-for="group in groupArr" :key="group">
               <template v-if="bigJbArr[fw.build][group.devices[0]] && bigJbArr[fw.build][group.devices[0]].length > 0">
                 <span v-for="(jb, index) in bigJbArr[fw.build][group.devices[0]]" :key="jb">
@@ -139,10 +143,11 @@
           
           <td v-if="showReleaseDate">{{fw.released}}</td>
         </tr>
-        <tr v-if="index == entryCount - 1 && !simpleTable"><td :colspan="(simpleTable) ? 3 : (showBuildNum + showVersion + showJailbreak + showReleaseDate)">{{loadingStr}}</td></tr>
+        <tr v-if="index == entryCount - 1 && !simpleTable && !complexTable"><td :colspan="(simpleTable) ? 3 : (showBuildNum + showVersion + showJailbreak + showReleaseDate)">{{loadingStr}}</td></tr>
       </template>
     </table>
   </div>
+  <p v-if="complexTable"><a style="cursor: pointer;" v-on:click="incrementRows()">{{loadMoreStr}}</a></p>
 </template>
 
 <script>
@@ -193,6 +198,7 @@ export default {
 
       showGuideStr: 'Show guide links',
       simpleTableStr: 'Simple table',
+      complexTableStr: 'Show all devices',
 
       fromStr: 'From',
       toStr: 'To',
@@ -205,6 +211,7 @@ export default {
       filterStr: 'Filter',
       sortStr: 'Sort',
       loadingStr: 'Loading...',
+      loadMoreStr: 'Load more firmwares',
       noFwStr: 'No software versions available.',
 
       showAllIdent: false,
@@ -407,47 +414,7 @@ export default {
       return ret
     },
     bigJbArr() {
-      if (!this.complexTable) return
-      const fwArr = this.deviceFwArr
-      const jbList = this.jailbreaks
-
-      var bigObj = {}
-      for (const f of fwArr) {
-        const b = f.build
-        const devArr = (f.devices) ? Object.keys(f.devices) : []
-        bigObj[b] = {}
-        for (const d of devArr) {
-          bigObj[b][d] = []
-          for (const jb of jbList) {
-            if (!jb.hasOwnProperty('compatibility')) continue
-            for (const c of jb.compatibility) {
-              if (!c.firmwares.includes(b)) continue
-              if (!c.devices.some(r => devArr.includes(r))) continue
-              if (bigObj[b][d].includes(jb)) continue
-              bigObj[b][d].push(jb)
-            }
-          }
-        }
-      }
-
-      /*for (const d of devArr) {
-        bigObj[d] = {}
-        for (const f of fwArr) {
-          bigObj[d][f] = []
-          for (const jb of jbList) {
-            if (!jb.hasOwnProperty('compatibility')) continue
-            for (const c of jb.compatibility) {
-              if (!c.firmwares.includes(f)) continue
-              if (!c.devices.some(r => devArr.includes(r))) continue
-              if (bigObj[d][f].includes(jb)) continue
-              bigObj[d][f].push(jb)
-            }
-          }
-        }
-      }*/
-
-      console.log(bigObj)
-      return bigObj
+      return this.frontmatter.bigObj
     }
   },
   methods: {
@@ -527,19 +494,23 @@ export default {
       return this.fwArr.concat(fwArr)
     },
     loadMoreRows: function() {
-      window.onscroll = () => {
+      if (!this.complexTable) window.onscroll = () => {
         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight * 0.9
         if (bottomOfWindow && !this.simpleTable) {
-          if (this.entryCount + this.entryIncrement >= this.maxEntryCount) this.entryCount = this.maxEntryCount
-          this.entryCount += this.entryIncrement
+          this.incrementRows()
         }
       }
+    },
+    incrementRows: function() {
+      var incr = this.entryIncrement / parseInt(this.complexTable + 1)
+      if (this.entryCount + incr >= this.maxEntryCount) this.entryCount = this.maxEntryCount
+      this.entryCount += incr
     },
     resetFwArr: function() {
       this.fwArr = []
       this.maxEntryCount = this.constMaxEntryCount
-      this.fwArr = this.getFwArrMethod(this.constEntryCount)
-      this.entryCount = this.constEntryCount
+      this.fwArr = this.getFwArrMethod(this.constEntryCount / parseInt(this.complexTable + 1))
+      this.entryCount = this.constEntryCount / parseInt(this.complexTable + 1)
     }
   },
   watch: {

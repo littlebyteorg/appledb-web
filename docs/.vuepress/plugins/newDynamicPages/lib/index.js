@@ -1,15 +1,34 @@
 const { createPage } = require('@vuepress/core')
 const { path } = require('@vuepress/utils')
 
-var iosList = require('../../../json/ios');
-var deviceList = require('../../../json/deviceList');
-var deviceGroups = require('../../../json/deviceGroups');
-var jbList = require('../../../json/jailbreak');
-var bigJson = {
+const iosList = require('../../../json/ios');
+const deviceList = require('../../../json/deviceList');
+const deviceGroups = require('../../../json/deviceGroups');
+const jbList = require('../../../json/jailbreak');
+const bigJson = {
   ios: iosList,
   jailbreak: jbList,
   device: deviceList,
   groups: deviceGroups,
+}
+
+var bigObj = {}
+for (const f of iosList) {
+  const b = f.build
+  const devArr = ((f.devices) ? Object.keys(f.devices) : [])
+  bigObj[b] = {}
+  for (const d of devArr) {
+    bigObj[b][d] = []
+    for (const jb of jbList) {
+      if (!jb.hasOwnProperty('compatibility')) continue
+      for (const c of jb.compatibility) {
+        if (!c.firmwares.includes(b)) continue
+        if (!c.devices.some(r => devArr)) continue
+        if (bigObj[b][d].includes(jb)) continue
+        bigObj[b][d].push(jb)
+      }
+    }
+  }
 }
 
 var jbPath = '/jailbreak/'
@@ -102,6 +121,7 @@ pageList.push({
     layout: 'chartLayout',
     chartType: 'device',
     device: Object.keys(deviceList),
+    bigObj: bigObj,
     sidebar: false,
     editLink: false,
     lastUpdated: false,

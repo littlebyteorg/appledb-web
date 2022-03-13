@@ -9,6 +9,11 @@
   }
 }
 
+.complexTableContainer {
+  width: 100% !important;
+  overflow-x: scroll; 
+}
+
 .tableContainer .complexTable td, th {
   min-width: 200px;
 }
