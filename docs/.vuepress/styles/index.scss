@@ -14,6 +14,10 @@
   overflow-x: scroll; 
 }
 
-.tableContainer .complexTable td, th {
+.tableContainer .complexTable td {
+  min-width: 200px;
+}
+
+.tableContainer .complexTable th {
   min-width: 200px;
 }
