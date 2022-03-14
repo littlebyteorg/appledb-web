@@ -1,15 +1,18 @@
 <template>
-  <!--<h3>{{ contentsStr }}</h3>
+  <h3>{{ contentsStr }}</h3>
   <ul>
-    <li v-for="type in groupObj" :key="type"><a :href="'#' + type[0].type.replace(/ /g, '-')">{{type[0].type}}</a></li>
+    <li v-on:click="sortBy = 'type'" v-for="type in groupObj" :key="type">
+      <a :href="'#' + type[0].type.replace(/ /g, '-')">{{type[0].type}}</a>
+    </li>
   </ul>
-  <hr>
+  <!--<hr>
   <template v-for="type in groupObj" :key="type">
     <h3 :id="type[0].type.replace(/ /g, '-')">{{type[0].type}}</h3>
     <ul>
       <li v-for="dev in type.filter(x => !x.hideiOSCFW)" :key="dev"><router-link :to="dev.url">{{ dev.name }}</router-link></li>
     </ul>
   </template>-->
+  <h3 v-if="sortBy == 'type'" :id="groupList[0].type.replace(/ /g, '-')">{{groupList[0].type}}</h3>
   <table>
     <tr>
       <th>{{deviceStr}}<i v-on:click="sortBy == 'name' ? sortReverse = !sortReverse : sortBy = 'name'" class="fas fa-sort" style="float: right; cursor: pointer;"></i></th>
@@ -17,12 +20,15 @@
       <th>{{socStr}}<i v-on:click="sortBy == 'soc' ? sortReverse = !sortReverse : sortBy = 'soc'" class="fas fa-sort" style="float: right; cursor: pointer;"></i></th>
       <th>{{archStr}}<i v-on:click="sortBy == 'arch' ? sortReverse = !sortReverse : sortBy = 'arch'" class="fas fa-sort" style="float: right; cursor: pointer;"></i></th>
     </tr>
-    <tr v-for="group in groupList" :key="group">
-      <td><router-link :to="group.url">{{group.name}}</router-link></td>
-      <td>{{group.type}}</td>
-      <td>{{group.soc}}</td>
-      <td>{{group.arch}}</td>
-    </tr>
+    <template v-for="(group, index) in groupList" :key="group">
+      <tr>
+        <td><router-link :to="group.url">{{group.name}}</router-link></td>
+        <td>{{group.type}}</td>
+        <td>{{group.soc}}</td>
+        <td>{{group.arch}}</td>
+      </tr>
+      <h3 :id="groupList[index+1].type.replace(/ /g, '-')" v-if="sortBy == 'type' && groupList[index+1] && (groupList[index].type != groupList[index+1].type)" style="text-align: initial;">{{groupList[index+1].type}}</h3>
+    </template>
   </table>
 </template>
 
@@ -39,6 +45,7 @@ String.prototype.format = function(vars) {
 export default {
   data() {
     return {
+      contentsStr: 'Contents',
       deviceStr: 'Device',
       typeStr: 'Type',
       socStr: 'SoC',
@@ -52,11 +59,22 @@ export default {
     }
   },
   computed: {
+    constGroupList() {
+      const fm = this.frontmatter
+      const devList = fm.deviceList.map(function(x) {
+        if (x.subtype && !x.type.includes(x.subtype)) x.type = [x.type,x.subtype].join(' ')
+        x.url = `/device/${x.name.replace(/ /g, '-')}.html`
+        x.soc = Array.isArray(x.soc) ? x.soc[0] : x.soc
+        x.arch = Array.isArray(x.arch) ? x.arch[0] : x.arch
+        return x
+      })
+      return devList
+    },
     groupObj() {
-      const groupList = this.groupList
-      const typeArr = new Set(this.groupList.map(x => x.type))
+      const list = this.constGroupList
+      const typeArr = new Set(list.map(x => x.type))
       var o = {}
-      for (const i of typeArr) o[i] = groupList.filter(x => x.type == i)
+      for (const i of typeArr) o[i] = list.filter(x => x.type == i)
       return o
     }
   },
