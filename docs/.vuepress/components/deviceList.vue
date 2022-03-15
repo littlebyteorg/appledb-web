@@ -13,6 +13,7 @@
     </ul>
   </template>-->
   <h3 v-if="sortBy == 'type'" :id="groupList[0].type.replace(/ /g, '-')">{{groupList[0].type}}</h3>
+  <div class="tableContainer">
   <table>
     <tr>
       <th>{{deviceStr}}<i v-on:click="sortBy == 'name' ? sortReverse = !sortReverse : sortBy = 'name'" class="fas fa-sort" style="float: right; cursor: pointer;"></i></th>
@@ -30,6 +31,7 @@
       <h3 :id="groupList[index+1].type.replace(/ /g, '-')" v-if="sortBy == 'type' && groupList[index+1] && (groupList[index].type != groupList[index+1].type)" style="text-align: initial;">{{groupList[index+1].type}}</h3>
     </template>
   </table>
+  </div>
 </template>
 
 <script>
