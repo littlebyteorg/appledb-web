@@ -68,15 +68,18 @@ iosArr = iosArr.map(function(x) {
   x.relatedFirmwares = []
 
   function getVer(o) {
-    if (o.isiOS) return o.version
-    else if (o.istvOS) {
-      if (o.iosVersion) return o.iosVersion
-      else if (parseInt(o.version.split('.')[0]) > 8) return o.version
-      else return -1
-    }
-    else if (o.iswatchOS && o.iosVersion) return o.iosVersion
-    else if (o.isaudioOS) return o.version
-    return -1
+    if (o.iosVersion) return o.iosVersion
+    if (
+      (
+        o.osType == 'tvOS' &&
+        !o.iosVersion &&
+        parseInt(o.version.split('.')[0]) < 9
+      ) || (
+        o.osType == 'watchOS' &&
+        !o.iosVersion
+      )
+    ) return -1
+    return o.version
   }
 
   const v0 = getVer(x)
