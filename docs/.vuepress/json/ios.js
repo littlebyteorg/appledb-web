@@ -35,11 +35,6 @@ var iosArr = [];
 for (const file in iosFiles) iosArr.push(require('.' + path.sep + iosFiles[file]));
 
 iosArr = iosArr.map(function(x) {
-  x.istvOS = (x.osStr == 'tvOS' || x.osStr == 'Apple TV Software')
-  x.isiOS = (x.osStr == 'iOS' || x.osStr == 'iPadOS' || x.osStr == 'iPhoneOS')
-  x.iswatchOS = (x.osStr == 'watchOS')
-  x.isaudioOS = (x.osStr == 'audioOS')
-  
   x.osType = x.osStr
   if (x.osStr == 'iPhoneOS' || x.osStr == 'iPadOS') x.osType = 'iOS'
   else if (x.osStr == 'Apple TV Software') x.osType = 'tvOS'

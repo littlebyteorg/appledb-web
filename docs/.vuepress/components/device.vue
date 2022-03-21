@@ -224,7 +224,8 @@ export default {
         iOS: true,
         tvOS: true,
         watchOS: true,
-        audioOS: true
+        audioOS: true,
+        darwinOS: true
       },
 
       showBuildNum: false,
@@ -402,7 +403,8 @@ export default {
         'iOS',
         'tvOS',
         'watchOS',
-        'audioOS'
+        'audioOS',
+        'darwinOS'
       ]
       for (i of order) if (!arr.includes(i)) order = order.filter(x => x != i)
       for (i of arr) if (!order.includes(i)) order.push(i)
