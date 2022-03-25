@@ -1,36 +1,48 @@
 <template>
+  <!--<h3>{{ devicesStr }}</h3>
+  <table v-for="i of Math.ceil(Object.keys(groupObj).length / rowLength)" :key="i">
+    <tr v-for="row of 2" :key="row">
+      <template v-for="j of rowLength" :key="j">
+        <template v-if="Object.keys(groupObj).length > (j - 1) + (i - 1) * rowLength">
+          <th class="columnWidth" v-if="row == 1">{{ Object.keys(groupObj)[(j - 1) + (i - 1) * rowLength] }}</th>
+          <td class="columnWidth" v-else-if="row == 2">
+            <a>
+              <img :src="`https://ipsw.me/assets/devices/${groupObj[Object.keys(groupObj)[(j - 1) + (i - 1) * rowLength]][0].devices[0]}.png`" alt="Device image" style="width: 50%;">
+            </a>
+          </td>
+        </template>
+        <template v-else>
+          <th class="columnWidth" v-if="row == 1"></th>
+          <td class="columnWidth" v-else-if="row == 2"></td>
+        </template>
+      </template>
+    </tr>
+  </table>-->
   <h3>{{ contentsStr }}</h3>
   <ul>
     <li v-on:click="sortBy = 'type'" v-for="type in groupObj" :key="type">
       <a :href="'#' + type[0].type.replace(/ /g, '-')">{{type[0].type}}</a>
     </li>
   </ul>
-  <!--<hr>
-  <template v-for="type in groupObj" :key="type">
-    <h3 :id="type[0].type.replace(/ /g, '-')">{{type[0].type}}</h3>
-    <ul>
-      <li v-for="dev in type.filter(x => !x.hideiOSCFW)" :key="dev"><router-link :to="dev.url">{{ dev.name }}</router-link></li>
-    </ul>
-  </template>-->
   <h3 v-if="sortBy == 'type'" :id="groupList[0].type.replace(/ /g, '-')">{{groupList[0].type}}</h3>
   <div class="tableContainer">
-  <table>
-    <tr>
-      <th>{{deviceStr}}<i v-on:click="sortBy == 'name' ? sortReverse = !sortReverse : sortBy = 'name'" class="fas fa-sort" style="float: right; cursor: pointer;"></i></th>
-      <th>{{typeStr}}<i v-on:click="sortBy == 'type' ? sortReverse = !sortReverse : sortBy = 'type'" class="fas fa-sort" style="float: right; cursor: pointer;"></i></th>
-      <th>{{socStr}}<i v-on:click="sortBy == 'soc' ? sortReverse = !sortReverse : sortBy = 'soc'" class="fas fa-sort" style="float: right; cursor: pointer;"></i></th>
-      <th>{{archStr}}<i v-on:click="sortBy == 'arch' ? sortReverse = !sortReverse : sortBy = 'arch'" class="fas fa-sort" style="float: right; cursor: pointer;"></i></th>
-    </tr>
-    <template v-for="(group, index) in groupList" :key="group">
+    <table>
       <tr>
-        <td><router-link :to="group.url">{{group.name}}</router-link></td>
-        <td>{{group.type}}</td>
-        <td>{{group.soc}}</td>
-        <td>{{group.arch}}</td>
+        <th>{{deviceStr}}<i v-on:click="sortBy == 'name' ? sortReverse = !sortReverse : sortBy = 'name'" class="fas fa-sort" style="float: right; cursor: pointer;"></i></th>
+        <th>{{typeStr}}<i v-on:click="sortBy == 'type' ? sortReverse = !sortReverse : sortBy = 'type'" class="fas fa-sort" style="float: right; cursor: pointer;"></i></th>
+        <th>{{socStr}}<i v-on:click="sortBy == 'soc' ? sortReverse = !sortReverse : sortBy = 'soc'" class="fas fa-sort" style="float: right; cursor: pointer;"></i></th>
+        <th>{{archStr}}<i v-on:click="sortBy == 'arch' ? sortReverse = !sortReverse : sortBy = 'arch'" class="fas fa-sort" style="float: right; cursor: pointer;"></i></th>
       </tr>
-      <h3 :id="groupList[index+1].type.replace(/ /g, '-')" v-if="sortBy == 'type' && groupList[index+1] && (groupList[index].type != groupList[index+1].type)" style="text-align: initial;">{{groupList[index+1].type}}</h3>
-    </template>
-  </table>
+      <template v-for="(group, index) in groupList" :key="group">
+        <tr>
+          <td><router-link :to="group.url">{{group.name}}</router-link></td>
+          <td>{{group.type}}</td>
+          <td>{{group.soc}}</td>
+          <td>{{group.arch}}</td>
+        </tr>
+        <h3 :id="groupList[index+1].type.replace(/ /g, '-')" v-if="sortBy == 'type' && groupList[index+1] && (groupList[index].type != groupList[index+1].type)" style="text-align: initial;">{{groupList[index+1].type}}</h3>
+      </template>
+    </table>
   </div>
 </template>
 
@@ -49,6 +61,7 @@ export default {
     return {
       contentsStr: 'Contents',
       deviceStr: 'Device',
+      devicesStr: 'Devices',
       typeStr: 'Type',
       socStr: 'SoC',
       archStr: 'Arch',
@@ -56,6 +69,8 @@ export default {
       sortBy: 'type',
       sortReverse: false,
       groupList: [],
+
+      rowLength: 3,
 
       frontmatter: usePageFrontmatter()
     }
@@ -141,3 +156,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.columnWidth {
+  width: 33%;
+}
+</style>
