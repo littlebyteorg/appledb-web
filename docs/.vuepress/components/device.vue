@@ -20,8 +20,8 @@
   <ul class="tableOptionsWrapper">
     <li>
       <div class="chartDropdown">
-        <i class="fas fa-filter"></i>
-        {{ filterStr }}
+        <i class="fas fa-cog"></i>
+        {{ optionsStr }}
         <span class="arrow down"></span>
       </div>
       <div class="chartDropdownBox opaqueHover">
@@ -57,7 +57,17 @@
               <label for="showReleaseDateCheckbox">{{ showReleaseDateStr }}</label>
             </li>
           </template>
-          <li class="dropdown-item" style="padding: 0px"><hr></li>
+        </ul>
+      </div>
+    </li>
+    <li>
+      <div class="chartDropdown">
+        <i class="fas fa-filter"></i>
+        {{ filterStr }}
+        <span class="arrow down"></span>
+      </div>
+      <div class="chartDropdownBox opaqueHover">
+        <ul>
           <li class="dropdown-item">
             <input type="checkbox" v-model="showBeta" id="showBetaCheckbox">
             <label for="showBetaCheckbox">{{ showBetaStr }}</label>
@@ -205,7 +215,7 @@ export default {
       noJbStr: 'N/A',
 
       filterStr: 'Filter',
-      sortStr: 'Sort',
+      optionsStr: 'Options',
       loadingStr: 'Loading...',
       loadMoreStr: 'Load more firmwares',
       noFwStr: 'No software versions available.',
