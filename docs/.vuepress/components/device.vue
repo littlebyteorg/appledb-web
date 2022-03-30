@@ -76,12 +76,6 @@
         </ul>
       </div>
     </li>
-    <li>
-      <div class="chartDropdown" v-on:click="reverseSortingBtn()">
-        <i class="fas fa-sort"></i>
-          {{ sortStr }}
-      </div>
-    </li>
   </ul>
   <div :class="'tableContainer' + (complexTable) ? ' complexTableContainer' : ''">
     <table>
@@ -92,15 +86,15 @@
           <th v-html="jailbreakStr"/>
         </template>
         <template v-else>
-          <th v-html="buildStr" v-if="showBuildNum"/>
-          <th v-html="versionStr" v-if="showVersion"/>
+          <th v-if="showBuildNum">{{ buildStr }}</th>
+          <th v-if="showVersion">{{ versionStr }} <i v-on:click="sortBy == 'version' ? reverseSortingBtn() : sortBy = 'version'" class="fas fa-sort" style="float: right; user-select: none; cursor: pointer;"></i></th>
           <template v-if="complexTable && showJailbreak">
             <template v-for="group in groupArr" :key="group">
               <th class="complexTable">{{ group.name }}</th>
             </template>
           </template>
-          <th v-html="jailbreakStr" v-else-if="showJailbreak"/>
-          <th v-html="releaseDateStr" v-if="showReleaseDate" style="width: 15%;"/>
+          <th v-else-if="showJailbreak">{{ jailbreakStr }}</th>
+          <th v-if="showReleaseDate" style="width: 15%;">{{ releaseDateStr }} <i v-on:click="sortBy == 'released' ? reverseSortingBtn() : sortBy = 'released'" class="fas fa-sort" style="float: right; user-select: none; cursor: pointer;"></i></th>
         </template>
       </tr>
       <tr v-else><td>{{noFwStr}}</td></tr>
@@ -219,6 +213,8 @@ export default {
       showAllIdent: false,
       showAllModel: false,
       showAllBoard: false,
+
+      sortBy: 'version',
 
       showBeta: false,
       showStable: true,
@@ -462,6 +458,12 @@ export default {
         )
       ))
 
+      if (this.sortBy == 'released') fwArr = fwArr.sort(function(a,b) {
+        const rel = [new Date(a.released), new Date(b.released)]
+        if (rel[0] < rel[1]) return -1
+        if (rel[0] > rel[1]) return 1
+        return 0
+      })
       if (this.reverseSorting) fwArr = fwArr.reverse()
 
       if (!this.simpleTable) {
@@ -541,6 +543,9 @@ export default {
   },
   watch: {
     reverseSorting() {
+      this.resetFwArr()
+    },
+    sortBy() {
       this.resetFwArr()
     },
     showBeta(bool) {
