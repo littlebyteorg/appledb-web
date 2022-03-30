@@ -30,8 +30,10 @@ deviceFiles = deviceFiles.map(function(x) {
 var deviceObj = {};
 
 for (const file in deviceFiles) {
-  const id = deviceFiles[file].split(path.sep).slice(-1)[0].split('.')[0];
-  deviceObj[id] = require('.' + path.sep + deviceFiles[file]);
+  const id = deviceFiles[file].split(path.sep).slice(-1)[0].split('.')[0]
+  const obj = require('.' + path.sep + deviceFiles[file])
+  if (obj.board && !Array.isArray(obj.board)) obj.board = [obj.board]
+  deviceObj[id] = obj
 }
 
 module.exports = deviceObj;

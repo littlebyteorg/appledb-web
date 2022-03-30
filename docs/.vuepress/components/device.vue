@@ -5,6 +5,7 @@
       <div v-for="(i, index) in infoData" :key="i">
         <template v-if="index == 'identifier' && deviceIdentifierArr.length > 5 && !showAllIdent">{{ i.replace(deviceIdentifierArr.join(', '), deviceIdentifierArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllIdent = true">...</a></template>
         <template v-else-if="index == 'model' && deviceModelArr.length > 5 && !showAllModel">{{ i.replace(deviceModelArr.join(', '), deviceModelArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllModel = true">...</a></template>
+        <template v-else-if="index == 'board' && deviceBoardArr.length > 5 && !showAllBoard">{{ i.replace(deviceBoardArr.join(', '), deviceBoardArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllBoard = true">...</a></template>
         <template v-else>{{ i }}</template>
       </div>
     </p>
@@ -181,6 +182,7 @@ export default {
       socStr: 'SoC: ${soc}',
       archStr: 'Arch: ${arch}',
       modelStr: 'Model: ${model}',
+      boardStr: 'Board: ${board}',
 
       relatedHeader: 'Related Devices',
       groupedHeader: 'Grouped Devices',
@@ -216,6 +218,7 @@ export default {
 
       showAllIdent: false,
       showAllModel: false,
+      showAllBoard: false,
 
       showBeta: false,
       showStable: true,
@@ -315,6 +318,26 @@ export default {
       const arr = this.deviceModelArr
       if (arr.length > 0) return this.modelStr.format({ model: arr.join(', ') })
     },
+    deviceBoardArr() {
+      var deviceList = this.deviceList
+      if (!deviceList) return
+      
+      const deviceBoardArr = removeNullAndDuplicatesAndSort(deviceList.map(function(x) {
+        if (x.board) return x.board.join(', ')
+        else return null
+      }))
+
+      var retArr = []
+      for (var i of deviceBoardArr) retArr.push(...i.split(', '))
+
+      retArr = removeNullAndDuplicatesAndSort(retArr)
+
+      return retArr
+    },
+    deviceBoardStr() {
+      const arr = this.deviceBoardArr
+      if (arr.length > 0) return this.boardStr.format({ board: arr.join(', ') })
+    },
     infoData() {
       const fm = this.frontmatter
       if (!fm.device && !fm.group) return []
@@ -323,7 +346,8 @@ export default {
         identifier: this.deviceIdentifierStr,
         soc: this.deviceSocStr,
         arch: this.deviceArchStr,
-        model: this.deviceModelStr
+        model: this.deviceModelStr,
+        board: this.deviceBoardStr
       }
     },
     groupHeader() {
