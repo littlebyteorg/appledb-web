@@ -81,7 +81,7 @@
             <input type="checkbox" v-model="showOsTypeObj[type]" :id="type + 'checkbox'">
             <label :for="type + 'checkbox'">{{ showOSStr.format({ osType: type }) }}</label>
           </li>-->
-          <li class="dropdown-item" v-for="dev in deviceFilterArr" :key="dev">
+          <li class="dropdown-item" v-for="dev in deviceFilterArr.sort()" :key="dev">
             <input v-if="showFwByDev.includes(dev)" type="checkbox" v-on:click="toggleDeviceFilter(dev)" :id="dev + 'checkbox'" checked>
             <input v-else type="checkbox" v-on:click="toggleDeviceFilter(dev)" :id="dev + 'checkbox'">
             <label :for="dev + 'checkbox'">{{ dev }}</label>
@@ -264,7 +264,14 @@ export default {
       var deviceList = fm.device
       .map(x => this.devices[x])
       .map(function(x) {
-        if (x.type.includes('iPad')) x.type = 'iPad'
+        if (fm.mainList) {
+          if (x.type.includes('iPad')) x.type = 'iPad'
+          if (
+            x.type == 'iPad' ||
+            x.type == 'iPhone' ||
+            x.type == 'iPod'
+          ) x.type = 'iPhone, iPad, iPod'
+        }
         return x
       })
       return deviceList
@@ -468,17 +475,21 @@ export default {
       var fwArr = this.deviceFwArr
       if (!this.showFwByDev) this.showFwByDev = JSON.parse(JSON.stringify(this.deviceFilterArr))
 
-      fwArr = fwArr.filter(fw => (
-        (
-          (Object.keys(fw.devices).map(x => fw.devices[x].group.type).some(r=> this.showFwByDev.includes(r)))
-        ) &&
-        /*(
-          this.showOsTypeObj[fw.osType]
-        ) &&*/ (
-          (fw.beta && this.showBeta) ||
-          (!fw.beta && this.showStable)
+      const showFwByDev = this.showFwByDev
+      const showBeta = this.showBeta
+      const showStable = this.showStable
+      fwArr = fwArr.filter(function(fw) {
+        const fwTypeArr = Object.keys(fw.devices).map(x => fw.devices[x].group.type)
+        return (
+          (
+            (fwTypeArr.some(r=> showFwByDev.includes(r))) ||
+            ((fwTypeArr.includes('iPad') || fwTypeArr.includes('iPhone') || fwTypeArr.includes('iPod')) && showFwByDev.includes('iPhone, iPad, iPod'))
+          ) && (
+            (fw.beta && showBeta) ||
+            (!fw.beta && showStable)
+          )
         )
-      ))
+      })
 
       if (this.sortBy == 'released') fwArr = fwArr.sort(function(a,b) {
         const rel = [new Date(a.released), new Date(b.released)]
