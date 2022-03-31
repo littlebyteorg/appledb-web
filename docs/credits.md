@@ -35,9 +35,6 @@ sidebar: false
       <a class="social-icon" href="https://reddit.com/u/aaronp613" target="_blank">
         <i class="fab fa-reddit"></i>
       </a>
-      <a class="social-icon" href="https://github.com/aaronp613" target="_blank">
-        <i class="fab fa-github"></i>
-      </a>
     </div>
   </div>
 </div>
