@@ -508,15 +508,18 @@ export default {
       var fwArrLength = this.fwArr.concat(fwArr).length
       if (fwArrLength <= this.entryCount) this.maxEntryCount = fwArrLength
 
-      var jbList = this.jailbreaks
+      const jbList = this.jailbreaks
+      const deviceList = this.deviceList
+
       for (var f in fwArr) {
         var jbArr = []
         const fw = fwArr[f]
+        var fwDevArr = devArr.filter(x => Object.keys(fw.devices).includes(x) && Array.from(showFwByDev).includes(this.deviceList.filter(y => y.identifier == x)[0].type))
         for (var jb in jbList) {
           if (!jbList[jb].hasOwnProperty('compatibility')) continue
           for (var c in jbList[jb].compatibility) {
             if (!jbList[jb].compatibility[c].firmwares.includes(fw.uniqueBuild)) continue
-            if (!jbList[jb].compatibility[c].devices.some(r=> devArr.includes(r))) continue
+            if (!jbList[jb].compatibility[c].devices.some(r=> fwDevArr.includes(r))) continue
             if (jbArr.includes(jbList[jb])) continue
             jbArr.push(jbList[jb])
           }
@@ -556,7 +559,7 @@ export default {
     },
     loadMoreRows: function() {
       if (!this.complexTable) window.onscroll = () => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight * 0.9
+        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight * 0.6
         if (bottomOfWindow && !this.simpleTable) {
           this.incrementRows()
         }
