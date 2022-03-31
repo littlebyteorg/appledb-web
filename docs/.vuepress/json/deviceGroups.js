@@ -34,9 +34,6 @@ for (const file in deviceFiles) {
 }
 
 deviceGroupArr.map(function(x) {
-  if (x.type == 'TV' || x.type == 'Watch') x.type = 'Apple ' + x.type
-  else if (x.type == 'iPad' && x.subtype == 'Base') delete x.subtype
-
   if (x.devices) {
     x.soc = Array.from(new Set(x.devices.map(y => require('./deviceList')[y]).map(y => y.soc)))
     x.arch = Array.from(new Set(x.devices.map(y => require('./deviceList')[y]).map(y => y.arch)))

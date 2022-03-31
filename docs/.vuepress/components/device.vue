@@ -1,5 +1,5 @@
 <template>
-  <template v-if="Object.keys(frontmatter.device).length != Object.keys(devices).length">
+  <template v-if="!frontmatter.mainList">
     <h2 v-html="infoHeader" v-if="infoData.length > 0"/>
     <p>
       <div v-for="(i, index) in infoData" :key="i">
@@ -16,7 +16,7 @@
       </li>
     </ul>
   </template>
-  <h2 v-if="Object.keys(frontmatter.device).length != Object.keys(devices).length" v-html="tableHeader"/>
+  <h2 v-if="!frontmatter.mainList" v-html="tableHeader"/>
   <ul class="tableOptionsWrapper">
     <li>
       <div class="chartDropdown">
@@ -26,7 +26,7 @@
       </div>
       <div class="chartDropdownBox opaqueHover">
         <ul>
-          <li class="dropdown-item" v-if="osTypeArr.length == 1">
+          <li class="dropdown-item" v-if="!frontmatter.mainList">
             <input type="checkbox" v-model="simpleTable" id="simpleTableCheckbox">
             <label for="simpleTableCheckbox">{{ simpleTableStr }}</label>
           </li>
@@ -34,8 +34,17 @@
             <input type="checkbox" v-model="complexTable" id="complexTableCheckbox">
             <label for="complexTableCheckbox">{{ complexTableStr }}</label>
           </li>-->
-          <li class="dropdown-item" style="padding: 0px" v-if="osTypeArr.length == 1 && !simpleTable"><hr></li>
+          <li class="dropdown-item" style="padding: 0px" v-if="!frontmatter.mainList"><hr></li>
+          <li class="dropdown-item">
+            <input type="checkbox" v-model="showBeta" id="showBetaCheckbox">
+            <label for="showBetaCheckbox">{{ showBetaStr }}</label>
+          </li>
+          <li class="dropdown-item">
+            <input type="checkbox" v-model="showStable" id="showStableCheckbox">
+            <label for="showStableCheckbox">{{ showStableStr }}</label>
+          </li>
           <template v-if="!simpleTable">
+            <li class="dropdown-item" style="padding: 0px"><hr></li>
             <!--<li class="dropdown-item">
               <input type="checkbox" v-model="showGuide" id="showGuideCheckbox">
               <label for="showGuideCheckbox">{{ showGuideStr }}</label>
@@ -60,29 +69,23 @@
         </ul>
       </div>
     </li>
-    <li>
+    <li v-if="frontmatter.mainList">
       <div class="chartDropdown">
         <i class="fas fa-filter"></i>
-        {{ filterStr }}
+        {{ devicesStr }}
         <span class="arrow down"></span>
       </div>
       <div class="chartDropdownBox opaqueHover">
         <ul>
-          <li class="dropdown-item">
-            <input type="checkbox" v-model="showBeta" id="showBetaCheckbox">
-            <label for="showBetaCheckbox">{{ showBetaStr }}</label>
+          <!--<li class="dropdown-item" v-for="type in osTypeArr" :key="type">
+            <input type="checkbox" v-model="showOsTypeObj[type]" :id="type + 'checkbox'">
+            <label :for="type + 'checkbox'">{{ showOSStr.format({ osType: type }) }}</label>
+          </li>-->
+          <li class="dropdown-item" v-for="dev in deviceFilterArr" :key="dev">
+            <input v-if="showFwByDev.includes(dev)" type="checkbox" v-on:click="toggleDeviceFilter(dev)" :id="dev + 'checkbox'" checked>
+            <input v-else type="checkbox" v-on:click="toggleDeviceFilter(dev)" :id="dev + 'checkbox'">
+            <label :for="dev + 'checkbox'">{{ dev }}</label>
           </li>
-          <li class="dropdown-item">
-            <input type="checkbox" v-model="showStable" id="showStableCheckbox">
-            <label for="showStableCheckbox">{{ showStableStr }}</label>
-          </li>
-          <template v-if="osTypeArr.length > 1">
-            <li class="dropdown-item" style="padding: 0px"><hr></li>
-            <li class="dropdown-item" v-for="type in osTypeArr" :key="type">
-              <input type="checkbox" v-model="showOsTypeObj[type]" :id="type + 'checkbox'">
-              <label :for="type + 'checkbox'">{{ showOSStr.format({ osType: type }) }}</label>
-            </li>
-          </template>
         </ul>
       </div>
     </li>
@@ -214,7 +217,7 @@ export default {
       releaseDateStr: 'Released',
       noJbStr: 'N/A',
 
-      filterStr: 'Filter',
+      devicesStr: 'Devices',
       optionsStr: 'Options',
       loadingStr: 'Loading...',
       loadMoreStr: 'Load more firmwares',
@@ -228,14 +231,7 @@ export default {
 
       showBeta: false,
       showStable: true,
-
-      showOsTypeObj: {
-        iOS: true,
-        tvOS: true,
-        watchOS: true,
-        audioOS: true,
-        darwinOS: true
-      },
+      showFwByDev: null,
 
       showBuildNum: false,
       showVersion: true,
@@ -266,7 +262,11 @@ export default {
     deviceList() {
       const fm = this.frontmatter
       var deviceList = fm.device
-      deviceList = deviceList.map(x => this.devices[x])
+      .map(x => this.devices[x])
+      .map(function(x) {
+        if (x.type.includes('iPad')) x.type = 'iPad'
+        return x
+      })
       return deviceList
     },
     deviceNameStr() {
@@ -385,7 +385,7 @@ export default {
       var devArr = fm.device
 
       var fwArr = []
-      if (devArr.length == Object.keys(this.devices).length) fwArr = this.firmwares
+      if (fm.mainList) fwArr = this.firmwares
       else {
         for (var d in devArr) {
           var devFwArr = this.firmwares.filter(function(x) {
@@ -397,6 +397,9 @@ export default {
       }
 
       return fwArr
+    },
+    deviceFilterArr() {
+      return Array.from(new Set(this.deviceList.map(x => x.type)))
     },
     groupArr() {
       if (!this.complexTable) return
@@ -453,16 +456,25 @@ export default {
     reverseSortingBtn: function() {
       this.reverseSorting = !this.reverseSorting
     },
+    toggleDeviceFilter: function(dev) {
+      const d = this.showFwByDev
+      if (d.includes(dev)) d.splice(d.indexOf(dev), 1)
+      else d.push(dev)
+      this.resetFwArr()
+    },
     getFwArrMethod: function(val) {
       const fm = this.frontmatter
       var devArr = fm.device
-
       var fwArr = this.deviceFwArr
+      if (!this.showFwByDev) this.showFwByDev = JSON.parse(JSON.stringify(this.deviceFilterArr))
 
       fwArr = fwArr.filter(fw => (
         (
+          (Object.keys(fw.devices).map(x => fw.devices[x].group.type).some(r=> this.showFwByDev.includes(r)))
+        ) &&
+        /*(
           this.showOsTypeObj[fw.osType]
-        ) && (
+        ) &&*/ (
           (fw.beta && this.showBeta) ||
           (!fw.beta && this.showStable)
         )
@@ -585,7 +597,7 @@ export default {
       retQueryArr.push(...newQuery)
       if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(',') }})
       else this.$router.push({query: {}})
-    },
+    }/*,
     showOsTypeObj: {
       handler: function(val) {
         this.resetFwArr()
@@ -601,7 +613,7 @@ export default {
         else this.$router.push({query: {}})
       },
       deep: true
-    },
+    }*/,
     showGuide: function (bool) {
       this.resetFwArr()
     },
@@ -623,10 +635,10 @@ export default {
           this.showStable = filterArr.includes('stable')
           filterArr = filterArr.filter(x => x != 'stable' || x != 'beta')
         }
-        if (filterArr.some(r=> this.osTypeArr.includes(r))) {
+        /*if (filterArr.some(r=> this.osTypeArr.includes(r))) {
           for (const i in this.showOsTypeObj) this.showOsTypeObj[i] = false
           for (const i of filterArr) this.showOsTypeObj[i] = true
-        }
+        }*/
       }
     }
   },

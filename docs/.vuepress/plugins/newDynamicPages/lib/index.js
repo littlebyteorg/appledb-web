@@ -141,6 +141,10 @@ pageList.push({
   }
 })
 
+var devListFromFw = []
+for (const i of iosList.map(x => Object.keys(x.devices))) devListFromFw.push(...i)
+devListFromFw = Array.from(new Set(devListFromFw)).sort()
+
 pageList.push({
   path: '/',
   frontmatter: {
@@ -148,7 +152,8 @@ pageList.push({
     description: 'AppleDB firmware chart',
     layout: 'chartLayout',
     chartType: 'device',
-    device: Object.keys(deviceList),
+    device: devListFromFw,
+    mainList: true,
     //bigObj: bigObj,
     sidebar: false,
     editLink: false,
