@@ -4,6 +4,10 @@ module.exports = [
     link: '/device'
   },
   {
+    text: 'Credits',
+    link: '/credits'
+  },
+  {
     text: 'iOS Guide',
     link: 'https://ios.cfw.guide/'
   }
