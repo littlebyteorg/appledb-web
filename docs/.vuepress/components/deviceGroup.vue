@@ -1,5 +1,7 @@
 <template>
     <p v-for="s in introStr" :key="s">{{ s }}</p>
+
+    <div v-if="frontmatter.type == 'iPhone'" class="custom-container tip"><p>{{iPhoneNote}}</p></div>
     
     <table v-for="t in Math.ceil(deviceArr.length / colCount)" :key="t">
         <tr>
@@ -33,6 +35,7 @@ export default {
     data() {
         return {
             colCount: 3,
+            iPhoneNote: 'Note that all "Plus", "Max", "Pro" and "mini" models of iPhones are functionally identical to the regular models.',
             frontmatter: usePageFrontmatter(),
         }
     },
