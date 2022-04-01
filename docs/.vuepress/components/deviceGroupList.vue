@@ -12,7 +12,7 @@
         <tr>
             <td v-for="c in colCount" :key="c">
                 <router-link v-if="typeArr[(t - 1) * colCount + c - 1]" :to="`/device-selection/${typeArr[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`">
-                    <img :src="imageObj[typeArr[(t - 1) * colCount + c - 1]]" style="height: 8em;">
+                    <img :src="imageObj[typeArr[(t - 1) * colCount + c - 1]]" style="max-height: 8em;">
                 </router-link>
             </td>
         </tr>
