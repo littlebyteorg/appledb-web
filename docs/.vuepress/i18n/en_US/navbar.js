@@ -1,11 +1,11 @@
 module.exports = [
   {
     text: 'Devices',
-    link: '/device'
+    link: '/devices.html'
   },
   {
     text: 'Credits',
-    link: '/credits'
+    link: '/credits.html'
   },
   {
     text: 'iOS Guide',

@@ -114,12 +114,13 @@ for (var g in deviceGroups) {
 }
 
 pageList.push({
-  path: '/device.html',
+  path: '/devices.html',
   frontmatter: {
     title: 'Device List',
     description: 'AppleDB device list',
     layout: 'chartLayout',
     chartType: 'deviceList',
+    redirect_from: '/device.html',
     deviceList: deviceGroups.sort(function(a,b) {
       const c = [a, b].map(x => JSON.stringify(x)).map(x => JSON.parse(x)) // don't ask
 
