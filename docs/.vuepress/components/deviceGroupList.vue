@@ -28,7 +28,6 @@ export default {
     data() {
         return {
             introStr: [
-                'Different devices will require different steps to jailbreak your Apple device. This page will help you find where to start.',
                 'Please select what kind of device you have below.'
             ],
             viewAllStr: 'View all devices',
