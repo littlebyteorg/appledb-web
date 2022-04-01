@@ -9,7 +9,20 @@ const bigJson = {
   ios: iosList,
   jailbreak: jbList,
   device: deviceList,
-  groups: deviceGroups,
+  groups: deviceGroups.sort(function(a,b) {
+    const c = [a, b].map(x => JSON.stringify(x)).map(x => JSON.parse(x)) // don't ask
+
+    if (c[0].subtype) c[0].type = [c[0].type,c[0].subtype].join('')
+    if (c[1].subtype) c[1].type = [c[1].type,c[1].subtype].join('')
+
+    if (c[0].type < c[1].type) return -1
+    if (c[0].type > c[1].type) return 1
+    
+    if (c[0].order > c[1].order) return -1
+    if (c[0].order < c[1].order) return 1
+
+    return 0
+  })
 }
 
 var bigObj = {}
@@ -114,27 +127,13 @@ for (var g in deviceGroups) {
 }
 
 pageList.push({
-  path: '/devices.html',
+  path: '/device-list.html',
   frontmatter: {
     title: 'Device List',
     description: 'AppleDB device list',
     layout: 'chartLayout',
     chartType: 'deviceList',
-    redirect_from: '/device.html',
-    deviceList: deviceGroups.sort(function(a,b) {
-      const c = [a, b].map(x => JSON.stringify(x)).map(x => JSON.parse(x)) // don't ask
-
-      if (c[0].subtype) c[0].type = [c[0].type,c[0].subtype].join('')
-      if (c[1].subtype) c[1].type = [c[1].type,c[1].subtype].join('')
-
-      if (c[0].type < c[1].type) return -1
-      if (c[0].type > c[1].type) return 1
-      
-      if (c[0].order > c[1].order) return -1
-      if (c[0].order < c[1].order) return 1
-
-      return 0
-    }),
+    deviceList: deviceGroups,
     sidebar: false,
     editLink: false,
     lastUpdated: false,
@@ -142,12 +141,46 @@ pageList.push({
   }
 })
 
+pageList.push({
+  path: '/device-selection.html',
+  frontmatter: {
+    title: 'Device Selection',
+    description: 'AppleDB device selection',
+    layout: 'chartLayout',
+    chartType: 'deviceGroupList',
+    redirect_from: ['/devices','/devices.html','/device','/device.html'],
+    groupList: deviceGroups,
+    sidebar: false,
+    editLink: false,
+    lastUpdated: false,
+    contributors: false,
+  }
+})
+
+Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
+  pageList.push({
+    path: `/device-selection/${t.toLowerCase().replace(/ /g, '-')}.html`,
+    frontmatter: {
+      title: `Device Selection (${t})`,
+      description: 'AppleDB device selection',
+      layout: 'chartLayout',
+      chartType: 'deviceGroup',
+      type: t,
+      group: deviceGroups.filter(x => x.type == t),
+      sidebar: false,
+      editLink: false,
+      lastUpdated: false,
+      contributors: false,
+    }
+  })
+})
+
 var devListFromFw = []
 for (const i of iosList.map(x => Object.keys(x.devices))) devListFromFw.push(...i)
 devListFromFw = Array.from(new Set(devListFromFw)).sort()
 
 pageList.push({
-  path: '/',
+  path: '/firmwares.html',
   frontmatter: {
     title: 'Firmware Chart',
     description: 'AppleDB firmware chart',

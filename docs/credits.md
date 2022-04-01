@@ -71,3 +71,5 @@ If I forgot you here, contact me and I'll add your name.
   + joshuah345
   + zachary7829
 </pre>
+
+AppleDB is not affiliated with Apple Inc.

@@ -16,6 +16,8 @@
       <jailbreak v-else-if="chartType == 'jailbreak'"/>
       <device v-else-if="chartType == 'device'"/>
       <deviceList v-else-if="chartType == 'deviceList'"/>
+      <deviceGroupList v-else-if="chartType == 'deviceGroupList'"/>
+      <deviceGroup v-else-if="chartType == 'deviceGroup'"/>
 
       <template v-for="(ad, index) in adArr" :key="ad">
         <template v-if="index % 2 != 0">
@@ -44,6 +46,8 @@ import firmwareVersion from './firmwareVersion.vue'
 import jailbreak from './jailbreak.vue'
 import device from './device.vue'
 import deviceList from './deviceList.vue'
+import deviceGroupList from './deviceGroupList.vue'
+import deviceGroup from './deviceGroup.vue'
 
 const themeLocale = useThemeLocaleData()
 

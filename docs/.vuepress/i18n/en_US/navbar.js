@@ -1,7 +1,11 @@
 module.exports = [
   {
+    text: 'Firmwares',
+    link: '/firmwares.html'
+  },
+  {
     text: 'Devices',
-    link: '/devices.html'
+    link: '/device-selection.html'
   },
   {
     text: 'Credits',
