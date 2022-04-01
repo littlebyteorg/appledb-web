@@ -11,7 +11,11 @@
         </tr>
         <tr>
             <td v-for="c in colCount" :key="c">
-                <router-link v-if="typeArr[(t - 1) * colCount + c - 1]" :to="`/device-selection/${typeArr[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`">
+                <router-link v-if="typeArr[(t - 1) * colCount + c - 1]" :to="
+                    (devCount[typeArr[(t - 1) * colCount + c - 1]] > 1) ?
+                    `/device-selection/${typeArr[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html` :
+                    `/device/${groupList.filter(x => x.type == typeArr[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`
+                ">
                     <img :src="imageObj[typeArr[(t - 1) * colCount + c - 1]]" style="max-height: 8em;">
                 </router-link>
             </td>
@@ -41,6 +45,21 @@ export default {
         },
         typeArr() {
             return Array.from(new Set(this.groupList.map(x => x.type)))
+        },
+        devCount() {
+            const groupList = this.groupList
+            var tempTypeArr = []
+            var ret = {}
+
+            for (const g of groupList) {
+                if (tempTypeArr.includes(g.type)) continue
+                tempTypeArr.push(g.type)
+                ret[g.type] = 0
+            }
+
+            for (const g of groupList) ret[g.type] += g.devices.length
+            
+            return ret
         },
         imageObj() {
             const groupList = this.groupList
