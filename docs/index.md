@@ -1,10 +1,10 @@
 ---
 title: AppleDB
-description: A database for Apple software and devices.
+description: A database of Apple software and devices.
 home: true
 header:
   overlay_title: AppleDB
-  overlay_excerpt: A database for Apple software and devices.
+  overlay_excerpt: A database of Apple software and devices.
   overlay_image:
     dark: /assets/images/splash-23aaron-0.jpg
     light: /assets/images/splash-23aaron-1.jpg
