@@ -161,9 +161,9 @@
             <td v-else v-html="noJbStr"/>
           </template>
 
-          <td v-if="showDownload" class="showOnHover">
+          <td v-if="showDownload">
             <template v-for="dev in fw.ipswObj" :key="dev">
-              <div v-if="dev.ipsw != 'none'">
+              <div v-if="dev.ipsw != 'none'" class="showOnHover">
                 <span v-if="Object.keys(fw.ipswObj).length > 1">{{dev.name}}: </span>
                 <a :href="dev.ipsw">
                   {{dev.ipsw.split('/')[dev.ipsw.split('/').length-1]}}
