@@ -131,7 +131,7 @@
           <td v-if="showBuildNum"><router-link :to="fw.path">{{fw.build}}</router-link></td>
 
           <td v-if="showVersion" class="showOnHover">
-            <span v-if="!showBuildNum"><router-link :to="fw.path">{{fw.osStr}} {{fw.version}}<template v-if="fw.duplicateVersion"> {{fw.build}})</template></router-link></span>
+            <span v-if="!showBuildNum"><router-link :to="fw.path">{{fw.osStr}} {{fw.version}}<template v-if="fw.duplicateVersion"> ({{fw.build}})</template></router-link></span>
             <span v-else>{{fw.osStr}} {{fw.version}}</span>
             <span class="hoverElement" style="margin-left: .4em; position: absolute;" v-if="!showDownload && (!hideRightHandDownload && deviceIdentifierArr.length == 1 || smallScreen)">
               <template v-for="dev in fw.ipswObj" :key="dev">
