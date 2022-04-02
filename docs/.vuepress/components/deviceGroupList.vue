@@ -4,7 +4,11 @@
     <table v-for="t in Math.ceil(typeArr.length / colCount)" :key="t">
         <tr>
             <th v-for="c in colCount" :key="c">
-                <router-link v-if="typeArr[(t - 1) * colCount + c - 1]" :to="`/device-selection/${typeArr[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`">
+                <router-link v-if="typeArr[(t - 1) * colCount + c - 1]" :to="
+                    (devCount[typeArr[(t - 1) * colCount + c - 1]] > 1) ?
+                    `/device-selection/${typeArr[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html` :
+                    `/device/${groupList.filter(x => x.type == typeArr[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`
+                ">
                     {{ typeArr[(t - 1) * colCount + c - 1] }}
                 </router-link>
             </th>
