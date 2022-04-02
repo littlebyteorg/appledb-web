@@ -14,7 +14,7 @@
             </th>
         </tr>
         <tr>
-            <td v-for="c in colCount" :key="c">
+            <td v-for="c in colCount" :key="c" style="height: 8em;">
                 <router-link v-if="typeArr[(t - 1) * colCount + c - 1]" :to="
                     // (devCount[typeArr[(t - 1) * colCount + c - 1]] > 1) ?
                     `/device-selection/${typeArr[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`
