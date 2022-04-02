@@ -66,6 +66,7 @@ iosArr = iosArr.map(function(x) {
 
 iosArr = iosArr.map(function(x) {
   x.relatedFirmwares = []
+  if (x.osStr == 'macOS') return x
 
   function getVer(o) {
     if (o.iosVersion) return o.iosVersion
@@ -155,6 +156,10 @@ function versionCompare(v1, v2, options) {
 }
 
 iosArr = iosArr.sort(function(a,b) {
+  const macOS = [a.osStr == 'macOS', b.osStr == 'macOS']
+  const dates = new Date(a.released).valueOf() - new Date(b.released).valueOf()
+  if (macOS[0] || macOS[1]) return dates
+
   var v = [a.version, b.version]
   if (a.sortVersion) v[0] = a.sortVersion
   if (b.sortVersion) v[1] = b.sortVersion
@@ -181,7 +186,6 @@ iosArr = iosArr.sort(function(a,b) {
       if (betaNum[0] - betaNum[1] != 0) return betaNum[0] - betaNum[1]
     }
   }
-  var dates = new Date(a.released).valueOf() - new Date(b.released).valueOf()
   if (dates != 0) return dates
   if (a.osStr > b.osStr) return -1
   if (a.osStr < b.osStr) return 1
