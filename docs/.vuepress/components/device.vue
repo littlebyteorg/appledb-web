@@ -647,12 +647,12 @@ export default {
 
       flexImg.onload = () => {
         flexImgWidth = flexImg.clientWidth
-        this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth
+        this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
       }
 
       window.onresize = () => {
         totalWidth = totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
-        this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth
+        this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
       }
     },
     incrementRows: function() {
