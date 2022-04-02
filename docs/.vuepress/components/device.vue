@@ -1,12 +1,17 @@
 <template>
   <template v-if="!frontmatter.mainList">
-    <h2 v-html="infoHeader" v-if="infoData.length > 0"/>
-    <p>
-      <div v-for="(i, index) in infoData" :key="i">
-        <template v-if="index == 'identifier' && deviceIdentifierArr.length > 5 && !showAllIdent">{{ i.replace(deviceIdentifierArr.join(', '), deviceIdentifierArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllIdent = true">...</a></template>
-        <template v-else-if="index == 'model' && deviceModelArr.length > 5 && !showAllModel">{{ i.replace(deviceModelArr.join(', '), deviceModelArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllModel = true">...</a></template>
-        <template v-else-if="index == 'board' && deviceBoardArr.length > 5 && !showAllBoard">{{ i.replace(deviceBoardArr.join(', '), deviceBoardArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllBoard = true">...</a></template>
-        <template v-else>{{ i }}</template>
+    <h2 v-html="infoHeader" v-if="infoData.length > 0"></h2>
+    <p class="flexWrapper" :style="(wrapImg) ? 'flex-direction: column;' : 'flex-direction: row;'">
+      <div id="flexInfo">
+        <div v-for="(i, index) in infoData" :key="i">
+          <template v-if="index == 'identifier' && deviceIdentifierArr.length > 5 && !showAllIdent">{{ i.replace(deviceIdentifierArr.join(', '), deviceIdentifierArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllIdent = true">...</a></template>
+          <template v-else-if="index == 'model' && deviceModelArr.length > 5 && !showAllModel">{{ i.replace(deviceModelArr.join(', '), deviceModelArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllModel = true">...</a></template>
+          <template v-else-if="index == 'board' && deviceBoardArr.length > 5 && !showAllBoard">{{ i.replace(deviceBoardArr.join(', '), deviceBoardArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllBoard = true">...</a></template>
+          <template v-else>{{ i }}</template>
+        </div>
+      </div>
+      <div id="flexImgWrapper" :style="`margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
+        <img id="flexImg" :src="`/assets/images/device/${deviceIdentifierArr[0]}.png`" :style="`max-height: ${Object.keys(infoData).length * 1.8}em;`">
       </div>
     </p>
     <h2 v-html="groupHeader" v-if="groupedDevices && groupedDevices.length > 0"/>
@@ -287,6 +292,8 @@ export default {
 
       entryCount: 50,
       maxEntryCount: 99999,
+
+      wrapImg: false,
 
       frontmatter: usePageFrontmatter(),
       devices: json.device,
@@ -629,6 +636,25 @@ export default {
         }
       }
     },
+    checkWrap: function() {
+      const flexImg = document.getElementById('flexImg')
+      const flexInfoWidth = document.getElementById('flexInfo').getBoundingClientRect().width
+
+      const homeElement = document.getElementsByClassName('home')[0]
+      var totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
+      var flexImgWidth = 0
+
+
+      flexImg.onload = () => {
+        flexImgWidth = flexImg.clientWidth
+        this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth
+      }
+
+      window.onresize = () => {
+        totalWidth = totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
+        this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth
+      }
+    },
     incrementRows: function() {
       var incr = this.entryIncrement / parseInt(this.complexTable + 1)
       if (this.entryCount + incr >= this.maxEntryCount) this.entryCount = this.maxEntryCount
@@ -711,6 +737,8 @@ export default {
   },
   mounted() {
     this.loadMoreRows()
+    this.checkWrap()
+
     if (window.screen.width > 650) this.showReleaseDate = true
     else if (this.hideRightHandDownload) {
       this.showReleaseDate = true
@@ -722,6 +750,16 @@ export default {
 </script>
 
 <style>
+.flexWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flexWrapper img {
+  margin-right: 0;
+  margin-left: 0;
+}
+
 .chevronPoint { 
   float: left;
   margin-left: -1.5em;
