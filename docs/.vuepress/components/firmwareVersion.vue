@@ -4,6 +4,13 @@
     <div v-html="verStr.format({ verNum: [frontmatter.build.osStr,frontmatter.build.version].join(' ') })"/>
     <div v-html="buildStr.format({ buildId: frontmatter.build.build })"/>
     <div v-if="getReleasedDate != -1" v-html="releasedStr.format({releasedTime: getReleasedDate})"/>
+    <div
+      v-if="
+        Array.from(new Set(devGroupArr.map(x => x.devices).flat().map(x => x.ipsw))).length == 1 &&
+        devGroupArr[0].devices[0].ipsw != 'none'
+      "
+      v-html="downloadInfoStr.format({ ipsw: devGroupArr[0].devices[0].ipsw, ipswStr: [devGroupArr[0].devices[0].ipsw.split('/')[devGroupArr[0].devices[0].ipsw.split('/').length-1]] })"
+    />
   </p>
 
   <h2 v-if="frontmatter.build.relatedFirmwares && frontmatter.build.relatedFirmwares.length">{{relatedFirmwaresHeader}}</h2>
@@ -108,6 +115,7 @@ export default {
       buildStr: 'Build: ${buildId}',
       releasedStr: 'Released: ${releasedTime}',
       basedOnStr: 'Based on: ${iosVersion}',
+      downloadInfoStr: 'Download: <a href="${ipsw}">${ipswStr} <i class="fas fa-download"></i></a>',
 
       relatedFirmwaresHeader: 'Related Firmwares',
 
