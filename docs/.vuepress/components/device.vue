@@ -61,6 +61,10 @@
               <input type="checkbox" v-model="showJailbreak" id="showJailbreakCheckbox">
               <label for="showJailbreakCheckbox">{{ showJailbreakStr }}</label>
             </li>
+            <li class="dropdown-item" v-if="!frontmatter.mainList">
+              <input type="checkbox" v-model="showDownload" id="showDownloadCheckbox">
+              <label for="showDownloadCheckbox">{{ showDownloadStr }}</label>
+            </li>
             <li class="dropdown-item">
               <input type="checkbox" v-model="showReleaseDate" id="showReleaseDateCheckbox">
               <label for="showReleaseDateCheckbox">{{ showReleaseDateStr }}</label>
@@ -107,6 +111,7 @@
             </template>
           </template>
           <th v-else-if="showJailbreak">{{ jailbreakStr }}</th>
+          <th v-if="showDownload">{{ downloadStr }}</th>
           <th v-if="showReleaseDate" style="width: 15%;">{{ releaseDateStr }} <i v-on:click="sortBy == 'released' ? reverseSortingBtn() : sortBy = 'released'" class="fas fa-sort" style="float: right; user-select: none; cursor: pointer;"></i></th>
         </template>
       </tr>
@@ -148,6 +153,22 @@
             </td>
             <td v-else v-html="noJbStr"/>
           </template>
+
+          <td v-if="showDownload">
+            <template v-for="dev in fw.ipswObj" :key="dev">
+              <div v-if="dev.ipsw != 'none'">
+                <span v-if="Object.keys(fw.ipswObj).length > 1">{{dev.name}}: </span>
+                <a :href="dev.ipsw">
+                  {{dev.ipsw.split('/')[dev.ipsw.split('/').length-1]}} 
+                  <i class="fas fa-download"></i>
+                </a>
+              </div>
+              <div v-else>
+                <span v-if="Object.keys(fw.ipswObj).length > 1">{{dev.name}}: </span>
+                {{ noJbStr }}
+              </div>
+            </template>
+          </td>
           
           <td v-if="showReleaseDate">{{fw.released}}</td>
         </tr>
@@ -203,6 +224,7 @@ export default {
       showBuildNumStr: 'Show build numbers',
       showVersionStr: 'Show version numbers',
       showJailbreakStr: 'Show jailbreaks',
+      showDownloadStr: 'Show downloads',
       showReleaseDateStr: 'Show release date',
 
       showGuideStr: 'Show guide links',
@@ -214,6 +236,7 @@ export default {
       buildStr: 'Build',
       versionStr: 'Version',
       jailbreakStr: 'Jailbreak',
+      downloadStr: 'Download',
       releaseDateStr: 'Released',
       noJbStr: 'N/A',
 
@@ -236,7 +259,13 @@ export default {
       showBuildNum: false,
       showVersion: true,
       showJailbreak: true,
+      showDownload: false,
       showReleaseDate: false,
+
+      showDownloadsFor: [
+        'macOS',
+        'darwinOS'
+      ],
 
       simpleTable: false,
       complexTable: false,
@@ -532,6 +561,33 @@ export default {
         fwArr[f].jailbreakArr = jbArr
       }
 
+      if (!this.frontmatter.mainList) {
+        for (const fw of fwArr) {
+          fw.ipswObj = {}
+          for (const ident of this.deviceIdentifierArr) {
+            const dev = fw.devices[ident]
+            if (dev) {
+              fw.ipswObj[ident] = {
+                name: dev.name,
+                identifier: ident,
+                ipsw: dev.ipsw
+              }
+            }
+          }
+          if (
+            Array.from(new Set(Object.keys(fw.ipswObj).map(x => fw.ipswObj[x].ipsw))).length == 1 &&
+            Object.keys(fw.ipswObj).length == this.deviceIdentifierArr.length
+          ) 
+            fw.ipswObj = {
+              "Device1,1": {
+                name: 'Device',
+                identifier: "Device1,1",
+                ipsw: fw.ipswObj[Object.keys(fw.ipswObj)[0]].ipsw
+              }
+            }
+        }
+      }
+
       const timeLocale = this.timeLocale
       fwArr = fwArr.map(function(x) {
         if (!x.hasOwnProperty('released')) return x
@@ -639,6 +695,11 @@ export default {
       }
     }
     this.resetFwArr()
+
+    if (this.deviceFwArr.filter(x => !this.showDownloadsFor.includes(x.osStr)).length == 0) {
+      this.showDownload = true
+      this.showJailbreak = false
+    }
   },
   mounted() {
     this.loadMoreRows()
