@@ -113,7 +113,6 @@
           <th v-else-if="showJailbreak">{{ jailbreakStr }}</th>
           <th v-if="showDownload">{{ downloadStr }}</th>
           <th v-if="showReleaseDate" style="width: 15%;">{{ releaseDateStr }} <i v-on:click="sortBy == 'released' ? reverseSortingBtn() : sortBy = 'released'" class="fas fa-sort" style="float: right; user-select: none; cursor: pointer;"></i></th>
-          <th v-if="!showDownload && !hideRightHandDownload && deviceIdentifierArr.length == 1" class="thinRow"/>
         </template>
       </tr>
       <tr v-else><td>{{noFwStr}}</td></tr>
@@ -126,10 +125,17 @@
         <tr v-else>
           <td v-if="showBuildNum"><router-link :to="fw.path">{{fw.build}}</router-link></td>
 
-          <template v-if="showVersion">
-            <td v-if="!showBuildNum"><router-link :to="fw.path">{{fw.osStr}} {{fw.version}} <span v-if="fw.duplicateVersion">({{fw.build}})</span></router-link></td>
-            <td v-else>{{fw.osStr}} {{fw.version}}</td>
-          </template>
+          <td v-if="showVersion" class="showOnHover">
+            <span v-if="!showBuildNum"><router-link :to="fw.path">{{fw.osStr}} {{fw.version}}<template v-if="fw.duplicateVersion"> {{fw.build}})</template></router-link></span>
+            <span v-else>{{fw.osStr}} {{fw.version}}</span>
+            <span class="hoverElement" style="margin-left: .4em; position: absolute;" v-if="!showDownload && !hideRightHandDownload && deviceIdentifierArr.length == 1">
+              <template v-for="dev in fw.ipswObj" :key="dev">
+                <template v-if="dev.ipsw && dev.ipsw != 'none'">
+                  <a :href="dev.ipsw"> <i class="fas fa-download"></i></a>
+                </template>
+              </template>
+            </span>
+          </td>
 
           <template v-if="complexTable && showJailbreak">
             <td v-for="group in groupArr" :key="group">
@@ -155,13 +161,13 @@
             <td v-else v-html="noJbStr"/>
           </template>
 
-          <td v-if="showDownload">
+          <td v-if="showDownload" class="showOnHover">
             <template v-for="dev in fw.ipswObj" :key="dev">
               <div v-if="dev.ipsw != 'none'">
                 <span v-if="Object.keys(fw.ipswObj).length > 1">{{dev.name}}: </span>
                 <a :href="dev.ipsw">
-                  {{dev.ipsw.split('/')[dev.ipsw.split('/').length-1]}} 
-                  <i class="fas fa-download"></i>
+                  {{dev.ipsw.split('/')[dev.ipsw.split('/').length-1]}}
+                  <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
                 </a>
               </div>
               <div v-else>
@@ -172,16 +178,6 @@
           </td>
           
           <td v-if="showReleaseDate">{{fw.released}}</td>
-          
-          <td v-if="!showDownload && !hideRightHandDownload && deviceIdentifierArr.length == 1" class="thinRow">
-            <template v-for="dev in fw.ipswObj" :key="dev">
-              <div v-if="dev.ipsw != 'none'">
-                <a :href="dev.ipsw">
-                  <i class="fas fa-download"></i>
-                </a>
-              </div>
-            </template>
-          </td>
         </tr>
         <tr v-if="index == entryCount - 1 && !simpleTable && !complexTable"><td :colspan="(simpleTable) ? 3 : (showBuildNum + showVersion + showJailbreak + showReleaseDate)">{{loadingStr}}</td></tr>
       </template>
@@ -726,10 +722,6 @@ export default {
   margin-left: -1.5em;
 }
 
-.thinRow {
-  width: 1em !important;
-}
-
 .chevron {
   padding-right: 0.23em;
   margin-top: 0.8em;
@@ -737,6 +729,11 @@ export default {
 }
 
 .showOnHover .hoverElement {
+  opacity: 0;
+  display: none !important;
+}
+
+.showOnHover .opaqueHoverElement {
   opacity: 0;
   display: none !important;
 }
@@ -749,8 +746,12 @@ export default {
   display: inline !important;
 }
 
-.showOnHover:hover .opaqueHover {
-  opacity: 1 !important;
+.showOnHover:hover .opaqueHoverElement {
+  opacity: 1;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 100ms;
+  display: inline !important;
 }
 
 .hoverElement:hover {
