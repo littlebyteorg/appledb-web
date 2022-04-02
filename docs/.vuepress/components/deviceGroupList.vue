@@ -5,9 +5,9 @@
         <tr>
             <th v-for="c in colCount" :key="c">
                 <router-link v-if="typeArr[(t - 1) * colCount + c - 1]" :to="
-                    (devCount[typeArr[(t - 1) * colCount + c - 1]] > 1) ?
-                    `/device-selection/${typeArr[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html` :
-                    `/device/${groupList.filter(x => x.type == typeArr[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`
+                    // (devCount[typeArr[(t - 1) * colCount + c - 1]] > 1) ?
+                    `/device-selection/${typeArr[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`
+                    // : `/device/${groupList.filter(x => x.type == typeArr[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`*/
                 ">
                     {{ typeArr[(t - 1) * colCount + c - 1] }}
                 </router-link>
@@ -16,9 +16,9 @@
         <tr>
             <td v-for="c in colCount" :key="c">
                 <router-link v-if="typeArr[(t - 1) * colCount + c - 1]" :to="
-                    (devCount[typeArr[(t - 1) * colCount + c - 1]] > 1) ?
-                    `/device-selection/${typeArr[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html` :
-                    `/device/${groupList.filter(x => x.type == typeArr[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`
+                    // (devCount[typeArr[(t - 1) * colCount + c - 1]] > 1) ?
+                    `/device-selection/${typeArr[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`
+                    // : `/device/${groupList.filter(x => x.type == typeArr[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`
                 ">
                     <img :src="imageObj[typeArr[(t - 1) * colCount + c - 1]]" style="max-height: 8em;">
                 </router-link>
