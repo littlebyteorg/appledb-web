@@ -61,7 +61,7 @@
               <input type="checkbox" v-model="showJailbreak" id="showJailbreakCheckbox">
               <label for="showJailbreakCheckbox">{{ showJailbreakStr }}</label>
             </li>
-            <li class="dropdown-item" v-if="!frontmatter.mainList">
+            <li class="dropdown-item" v-if="!frontmatter.mainList && !(!hideRightHandDownload && deviceIdentifierArr.length == 1)">
               <input type="checkbox" v-model="showDownload" id="showDownloadCheckbox">
               <label for="showDownloadCheckbox">{{ showDownloadStr }}</label>
             </li>
@@ -113,6 +113,7 @@
           <th v-else-if="showJailbreak">{{ jailbreakStr }}</th>
           <th v-if="showDownload">{{ downloadStr }}</th>
           <th v-if="showReleaseDate" style="width: 15%;">{{ releaseDateStr }} <i v-on:click="sortBy == 'released' ? reverseSortingBtn() : sortBy = 'released'" class="fas fa-sort" style="float: right; user-select: none; cursor: pointer;"></i></th>
+          <th v-if="!showDownload && !hideRightHandDownload && deviceIdentifierArr.length == 1" class="thinRow"/>
         </template>
       </tr>
       <tr v-else><td>{{noFwStr}}</td></tr>
@@ -171,6 +172,16 @@
           </td>
           
           <td v-if="showReleaseDate">{{fw.released}}</td>
+          
+          <td v-if="!showDownload && !hideRightHandDownload && deviceIdentifierArr.length == 1" class="thinRow">
+            <template v-for="dev in fw.ipswObj" :key="dev">
+              <div v-if="dev.ipsw != 'none'">
+                <a :href="dev.ipsw">
+                  <i class="fas fa-download"></i>
+                </a>
+              </div>
+            </template>
+          </td>
         </tr>
         <tr v-if="index == entryCount - 1 && !simpleTable && !complexTable"><td :colspan="(simpleTable) ? 3 : (showBuildNum + showVersion + showJailbreak + showReleaseDate)">{{loadingStr}}</td></tr>
       </template>
@@ -699,6 +710,7 @@ export default {
     if (this.deviceFwArr.filter(x => !this.showDownloadsFor.includes(x.osStr)).length == 0) {
       this.showDownload = true
       this.showJailbreak = false
+      this.hideRightHandDownload = true
     }
   },
   mounted() {
@@ -712,6 +724,10 @@ export default {
 .chevronPoint { 
   float: left;
   margin-left: -1.5em;
+}
+
+.thinRow {
+  width: 1em !important;
 }
 
 .chevron {
