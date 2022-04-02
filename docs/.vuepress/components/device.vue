@@ -271,6 +271,9 @@ export default {
             x.type == 'iPhone' ||
             x.type == 'iPod'
           ) x.type = 'iPhone, iPad, iPod'
+          if (x.type.includes('Mac') || x.type == 'Developer Transition Kit') {
+            x.type = 'Mac'
+          }
         }
         return x
       })
@@ -481,7 +484,8 @@ export default {
         return (
           (
             (fwTypeArr.some(r=> showFwByDev.includes(r))) ||
-            ((fwTypeArr.includes('iPad') || fwTypeArr.includes('iPhone') || fwTypeArr.includes('iPod')) && showFwByDev.includes('iPhone, iPad, iPod'))
+            ((fwTypeArr.includes('iPad') || fwTypeArr.includes('iPhone') || fwTypeArr.includes('iPod')) && showFwByDev.includes('iPhone, iPad, iPod')) ||
+            ((fwTypeArr.filter(x => x.includes('Mac')).length > 0 || fwTypeArr.includes('Developer Transition Kit')) && showFwByDev.includes('Mac'))
           ) && (
             (fw.beta && showBeta) ||
             (!fw.beta && showStable)
