@@ -437,24 +437,6 @@ export default {
 
       return groupArr
     },
-    osTypeArr() {
-      var arr = [...new Set(this.deviceFwArr.map(x => x.osType))]
-      var order = [
-        'iOS',
-        'tvOS',
-        'watchOS',
-        'audioOS',
-        'darwinOS'
-      ]
-      for (i of order) if (!arr.includes(i)) order = order.filter(x => x != i)
-      for (i of arr) if (!order.includes(i)) order.push(i)
-      var ret = []
-      for (var i = 0; i < order.length; i++)
-        if (arr.indexOf(order[i]) > -1)
-          ret.push(order[i])
-          
-      return ret
-    },
     bigJbArr() {
       return this.frontmatter.bigObj
     }
@@ -464,10 +446,26 @@ export default {
       this.reverseSorting = !this.reverseSorting
     },
     toggleDeviceFilter: function(dev) {
-      const d = this.showFwByDev
+      var d = this.showFwByDev
       if (d.includes(dev)) d.splice(d.indexOf(dev), 1)
       else d.push(dev)
+
       this.resetFwArr()
+      
+      const query = this.$route.query
+      var retQueryArr = []
+
+      if (query && query.filter) {
+        var existingQuery = query.filter.split(';').filter(x => !this.deviceFilterArr.includes(x))
+        retQueryArr.push(...existingQuery)
+      }
+
+      var newQuery = d
+      if (newQuery.length == this.deviceFilterArr.length) newQuery = []
+      retQueryArr.push(...newQuery)
+
+      if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(';') }})
+      else this.$router.push({query: {}})
     },
     getFwArrMethod: function(val) {
       const fm = this.frontmatter
@@ -490,7 +488,6 @@ export default {
           )
         )
       })
-
       if (this.sortBy == 'released') fwArr = fwArr.sort(function(a,b) {
         const rel = [new Date(a.released), new Date(b.released)]
         if (rel[0] < rel[1]) return -1
@@ -589,13 +586,13 @@ export default {
       const query = this.$route.query
       var retQueryArr = []
       if (query && query.filter) {
-        var existingQuery = query.filter.split(',').filter(x => !['stable','beta'].includes(x))
+        var existingQuery = query.filter.split(';').filter(x => !['stable','beta'].includes(x))
         retQueryArr.push(...existingQuery)
       }
       var newQuery = [this.showStable ? 'stable' : null, bool ? 'beta' : null].filter(x => x)
       if (newQuery.length == 1 & newQuery[0] == 'stable') newQuery = []
       retQueryArr.push(...newQuery)
-      if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(',') }})
+      if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(';') }})
       else this.$router.push({query: {}})
     },
     showStable(bool) {
@@ -603,31 +600,15 @@ export default {
       const query = this.$route.query
       var retQueryArr = []
       if (query && query.filter) {
-        var existingQuery = query.filter.split(',').filter(x => !['stable','beta'].includes(x))
+        var existingQuery = query.filter.split(';').filter(x => !['stable','beta'].includes(x))
         retQueryArr.push(...existingQuery)
       }
       var newQuery = [bool ? 'stable' : null, this.showBeta ? 'beta' : null].filter(x => x)
       if (newQuery.length == 1 & newQuery[0] == 'stable') newQuery = []
       retQueryArr.push(...newQuery)
-      if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(',') }})
+      if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(';') }})
       else this.$router.push({query: {}})
-    }/*,
-    showOsTypeObj: {
-      handler: function(val) {
-        this.resetFwArr()
-        const query = this.$route.query
-        var retQueryArr = []
-        if (query && query.filter) {
-          var existingQuery = query.filter.split(',').filter(x => !this.osTypeArr.includes(x))
-          retQueryArr.push(...existingQuery)
-        }
-        var newQuery = Object.keys(val).filter(x => val[x])
-        retQueryArr.push(...newQuery)
-        if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(',') }})
-        else this.$router.push({query: {}})
-      },
-      deep: true
-    }*/,
+    },
     showGuide: function (bool) {
       this.resetFwArr()
     },
@@ -639,22 +620,21 @@ export default {
     }
   },
   created() {
-    this.resetFwArr()
     const query = this.$route.query
     if (Object.keys(query).length > 0) {
       if (query.filter) {
-        var filterArr = query.filter.split(',')
+        var filterArr = query.filter.split(';')
         if (filterArr.includes('stable') || filterArr.includes('beta')) {
           this.showBeta = filterArr.includes('beta')
           this.showStable = filterArr.includes('stable')
           filterArr = filterArr.filter(x => x != 'stable' || x != 'beta')
         }
-        /*if (filterArr.some(r=> this.osTypeArr.includes(r))) {
-          for (const i in this.showOsTypeObj) this.showOsTypeObj[i] = false
-          for (const i of filterArr) this.showOsTypeObj[i] = true
-        }*/
+        const devArr = filterArr.filter(y => this.deviceFilterArr.includes(y))
+        if (devArr.length > 0) this.showFwByDev = devArr
+        console.log(this.showFwByDev)
       }
     }
+    this.resetFwArr()
   },
   mounted() {
     this.loadMoreRows()
