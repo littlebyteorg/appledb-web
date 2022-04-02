@@ -35,6 +35,7 @@ for (const file in deviceFiles) {
 
 deviceGroupArr.map(function(x) {
   if (x.devices) {
+    console.log(x)
     x.soc = Array.from(new Set(x.devices.map(y => require('./deviceList')[y]).map(y => y.soc)))
     x.arch = Array.from(new Set(x.devices.map(y => require('./deviceList')[y]).map(y => y.arch)))
   }
