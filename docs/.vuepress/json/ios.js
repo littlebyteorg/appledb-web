@@ -157,35 +157,35 @@ function versionCompare(v1, v2, options) {
 
 iosArr = iosArr.sort(function(a,b) {
   const macOS = [a.osStr == 'macOS', b.osStr == 'macOS']
-  const dates = new Date(a.released).valueOf() - new Date(b.released).valueOf()
-  if (macOS[0] || macOS[1]) return dates
+  if (!(macOS[0] || macOS[1])) {
+    var v = [a.version, b.version]
+    if (a.sortVersion) v[0] = a.sortVersion
+    if (b.sortVersion) v[1] = b.sortVersion
+    function getVerStr(x) { return x.split(' ')[0] }
+    var compVerStr = versionCompare(getVerStr(v[0]), getVerStr(v[1]))
+    if (compVerStr != 0) return compVerStr
+    else {
+      const verInclGM   = [v[0].includes('GM'), v[1].includes('GM')]
+      const verInclBeta = [v[0].includes('beta'), v[1].includes('beta')]
+      const verInclRC   = [v[0].includes('RC'), v[1].includes('RC')]
+      const beta        = [a.beta, b.beta]
+      
+      if (beta[1] - beta[0] != 0) return beta[1] - beta[0]
+      if (verInclRC[0] - verInclRC[1] != 0) return verInclRC[0] - verInclRC[1]
+      if (verInclGM[0] - verInclGM[1] != 0) return verInclGM[0] - verInclGM[1]
+      if (verInclBeta[0] - verInclBeta[1] != 0) return verInclBeta[0] - verInclBeta[1]
 
-  var v = [a.version, b.version]
-  if (a.sortVersion) v[0] = a.sortVersion
-  if (b.sortVersion) v[1] = b.sortVersion
-  function getVerStr(x) { return x.split(' ')[0] }
-  var compVerStr = versionCompare(getVerStr(v[0]), getVerStr(v[1]))
-  if (compVerStr != 0) return compVerStr
-  else {
-    const verInclGM   = [v[0].includes('GM'), v[1].includes('GM')]
-    const verInclBeta = [v[0].includes('beta'), v[1].includes('beta')]
-    const verInclRC   = [v[0].includes('RC'), v[1].includes('RC')]
-    const beta        = [a.beta, b.beta]
-    
-    if (beta[1] - beta[0] != 0) return beta[1] - beta[0]
-    if (verInclRC[0] - verInclRC[1] != 0) return verInclRC[0] - verInclRC[1]
-    if (verInclGM[0] - verInclGM[1] != 0) return verInclGM[0] - verInclGM[1]
-    if (verInclBeta[0] - verInclBeta[1] != 0) return verInclBeta[0] - verInclBeta[1]
-
-    if (a.beta && b.beta) {
-      const betaNum = [v[0], v[1]]
-        .map(x => x.split(' '))
-        .map(x => x[2])
-        .map(x => (x == undefined) ? '1' : x)
-        .map(x => parseFloat(x))
-      if (betaNum[0] - betaNum[1] != 0) return betaNum[0] - betaNum[1]
+      if (a.beta && b.beta) {
+        const betaNum = [v[0], v[1]]
+          .map(x => x.split(' '))
+          .map(x => x[2])
+          .map(x => (x == undefined) ? '1' : x)
+          .map(x => parseFloat(x))
+        if (betaNum[0] - betaNum[1] != 0) return betaNum[0] - betaNum[1]
+      }
     }
   }
+  const dates = new Date(a.released).valueOf() - new Date(b.released).valueOf()
   if (dates != 0) return dates
   if (a.osStr > b.osStr) return -1
   if (a.osStr < b.osStr) return 1
