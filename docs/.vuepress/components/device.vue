@@ -128,7 +128,7 @@
           <td v-if="showVersion" class="showOnHover">
             <span v-if="!showBuildNum"><router-link :to="fw.path">{{fw.osStr}} {{fw.version}}<template v-if="fw.duplicateVersion"> {{fw.build}})</template></router-link></span>
             <span v-else>{{fw.osStr}} {{fw.version}}</span>
-            <span class="hoverElement" style="margin-left: .4em; position: absolute;" v-if="!showDownload && !hideRightHandDownload && deviceIdentifierArr.length == 1">
+            <span class="hoverElement" style="margin-left: .4em; position: absolute;" v-if="!showDownload && (!hideRightHandDownload && deviceIdentifierArr.length == 1 || smallScreen)">
               <template v-for="dev in fw.ipswObj" :key="dev">
                 <template v-if="dev.ipsw && dev.ipsw != 'none'">
                   <a :href="dev.ipsw"> <i class="fas fa-download"></i></a>
@@ -712,6 +712,11 @@ export default {
   mounted() {
     this.loadMoreRows()
     if (window.screen.width > 650) this.showReleaseDate = true
+    else if (this.hideRightHandDownload) {
+      this.showReleaseDate = true
+      this.showDownload = false
+      this.smallScreen = true
+    }
   }
 }
 </script>
