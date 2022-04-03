@@ -156,8 +156,8 @@ function versionCompare(v1, v2, options) {
 }
 
 iosArr = iosArr.sort(function(a,b) {
-  const macOS = [a.osStr == 'macOS', b.osStr == 'macOS']
-  if (!(macOS[0] || macOS[1])) {
+  const osStr = [a.osStr, b.osStr]
+  if (osStr[0] == osStr[1]) {
     var v = [a.version, b.version]
     if (a.sortVersion) v[0] = a.sortVersion
     if (b.sortVersion) v[1] = b.sortVersion
