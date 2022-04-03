@@ -5,7 +5,7 @@ home: true
 head:
   - - meta
     - property: og:image
-      content: /assets/images/splash-23aaron-logo.jpg
+      content: https://appledb.dev/assets/images/splash-23aaron-logo.jpg
 header:
   overlay_title: AppleDB
   overlay_excerpt: A database of Apple software and devices.

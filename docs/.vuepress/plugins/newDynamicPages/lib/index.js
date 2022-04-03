@@ -106,7 +106,7 @@ for (var d in deviceList) {
           "meta",
           {
             property: "og:image",
-            content: `/assets/images/device@1024/${d}.png`
+            content: `https://appledb.dev/assets/images/device@1024/${d}.png`
           }
         ]
       ],
@@ -135,7 +135,7 @@ for (var g in deviceGroups) {
           "meta",
           {
             property: "og:image",
-            content: `/assets/images/device@1024/${deviceGroups[g].devices[0]}.png`
+            content: `https://appledb.dev/assets/images/device@1024/${deviceGroups[g].devices[0]}.png`
           }
         ]
       ],
