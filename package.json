@@ -20,7 +20,7 @@
     },
     "scripts": {
         "dev": "vuepress dev docs",
-        "build": "vuepress build docs && node generateImages.js",
-        "ghbuild": "NODE_OPTIONS=--max_old_space_size=16384 vuepress build docs && node generateImages.js"
+        "build": "node generateImages.js && vuepress build docs",
+        "ghbuild": "node generateImages.js && NODE_OPTIONS=--max_old_space_size=16384 vuepress build docs"
     }
 }
