@@ -100,6 +100,17 @@ for (var d in deviceList) {
       layout: 'chartLayout',
       chartType: 'device',
       device: [d],
+
+      head: [
+        [
+          "meta",
+          {
+            property: "og:image",
+            content: `/assets/images/device@1024/${d}.png`
+          }
+        ]
+      ],
+
       sidebar: false,
       editLink: false,
       lastUpdated: false,
@@ -118,6 +129,17 @@ for (var g in deviceGroups) {
       chartType: 'device',
       device: deviceGroups[g].devices,
       name: deviceGroups[g].name,
+
+      head: [
+        [
+          "meta",
+          {
+            property: "og:image",
+            content: `/assets/images/device@1024/${deviceGroups[g].devices[0]}.png`
+          }
+        ]
+      ],
+
       sidebar: false,
       editLink: false,
       lastUpdated: false,
