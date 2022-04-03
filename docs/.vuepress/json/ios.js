@@ -156,11 +156,9 @@ function versionCompare(v1, v2, options) {
 }
 
 iosArr = iosArr.sort(function(a,b) {
-  const osStr = [a.osStr, b.osStr]
-  if (osStr[0] == osStr[1]) {
+  const osType = [a.osType, b.osType]
+  if (osType[0] == osType[1]) {
     var v = [a.version, b.version]
-    if (a.sortVersion) v[0] = a.sortVersion
-    if (b.sortVersion) v[1] = b.sortVersion
     function getVerStr(x) { return x.split(' ')[0] }
     var compVerStr = versionCompare(getVerStr(v[0]), getVerStr(v[1]))
     if (compVerStr != 0) return compVerStr
@@ -187,10 +185,11 @@ iosArr = iosArr.sort(function(a,b) {
   }
   const dates = new Date(a.released).valueOf() - new Date(b.released).valueOf()
   if (dates != 0) return dates
-  if (a.osStr > b.osStr) return -1
-  if (a.osStr < b.osStr) return 1
+
+  /*if (osType[0] > osType[1]) return -1
+  if (osType[0] < osType[1]) return 1
   if (a.build < b.build) return -1
-  if (a.build > b.build) return 1
+  if (a.build > b.build) return 1*/
   return 0
 })
 
