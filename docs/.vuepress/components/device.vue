@@ -10,9 +10,7 @@
           <template v-else>{{ i }}</template>
         </div>
       </div>
-      <div id="flexImgWrapper" :style="`margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
-        <img id="flexImg" :src="`/assets/images/device/${deviceIdentifierArr[0]}.png`" :style="`max-height: ${Object.keys(infoData).length * 1.8}em;`">
-      </div>
+      <img id="flexImg" :src="`/assets/images/device/${deviceIdentifierArr[0]}.png`" :style="`max-height: ${Object.keys(infoData).length * 1.8}em; max-width: 70%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
     </p>
     <h2 v-html="groupHeader" v-if="groupedDevices && groupedDevices.length > 0"/>
     <ul>
