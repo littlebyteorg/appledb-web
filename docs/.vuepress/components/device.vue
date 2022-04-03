@@ -31,7 +31,7 @@
       </div>
       <div class="chartDropdownBox opaqueHover">
         <ul>
-          <li class="dropdown-item" v-if="!frontmatter.mainList">
+          <li class="dropdown-item" v-if="!frontmatter.mainList && !noJb">
             <input type="checkbox" v-model="simpleTable" id="simpleTableCheckbox">
             <label for="simpleTableCheckbox">{{ simpleTableStr }}</label>
           </li>
@@ -39,7 +39,7 @@
             <input type="checkbox" v-model="complexTable" id="complexTableCheckbox">
             <label for="complexTableCheckbox">{{ complexTableStr }}</label>
           </li>-->
-          <li class="dropdown-item" style="padding: 0px" v-if="!frontmatter.mainList"><hr></li>
+          <li class="dropdown-item" style="padding: 0px" v-if="!frontmatter.mainList && !noJb"><hr></li>
           <li class="dropdown-item">
             <input type="checkbox" v-model="showBeta" id="showBetaCheckbox">
             <label for="showBetaCheckbox">{{ showBetaStr }}</label>
@@ -62,11 +62,11 @@
               <input type="checkbox" v-model="showVersion" id="showVersionCheckbox">
               <label for="showVersionCheckbox">{{ showVersionStr }}</label>
             </li>
-            <li class="dropdown-item">
+            <li class="dropdown-item" v-if="!noJb">
               <input type="checkbox" v-model="showJailbreak" id="showJailbreakCheckbox">
               <label for="showJailbreakCheckbox">{{ showJailbreakStr }}</label>
             </li>
-            <li class="dropdown-item" v-if="!frontmatter.mainList && !(!hideRightHandDownload && deviceIdentifierArr.length == 1)">
+            <li class="dropdown-item" v-if="!frontmatter.mainList && !(!noJb && deviceIdentifierArr.length == 1)">
               <input type="checkbox" v-model="showDownload" id="showDownloadCheckbox">
               <label for="showDownloadCheckbox">{{ showDownloadStr }}</label>
             </li>
@@ -135,7 +135,7 @@
               <router-link :to="fw.path">{{fw.osStr}} {{fw.version}}<template v-if="(frontmatter.mainList && fw.duplicateVersion) || (!frontmatter.mainList && fwArr.filter(x => x.version == fw.version).length > 1)"> ({{fw.build}})</template></router-link>
             </span>
             <span v-else>{{fw.osStr}} {{fw.version}}</span>
-            <span class="hoverElement" style="margin-left: .4em; position: absolute;" v-if="!showDownload && (!hideRightHandDownload && deviceIdentifierArr.length == 1 || smallScreen)">
+            <span class="hoverElement" style="margin-left: .4em; position: absolute;" v-if="!showDownload && (!noJb && deviceIdentifierArr.length == 1 || smallScreen)">
               <template v-for="dev in fw.ipswObj" :key="dev">
                 <template v-if="dev.ipsw && dev.ipsw != 'none'">
                   <a :href="dev.ipsw"> <i class="fas fa-download"></i></a>
@@ -734,7 +734,7 @@ export default {
     if (this.deviceFwArr.filter(x => !this.showDownloadsFor.includes(x.osStr)).length == 0) {
       this.showDownload = true
       this.showJailbreak = false
-      this.hideRightHandDownload = true
+      this.noJb = true
     }
   },
   mounted() {
@@ -742,7 +742,7 @@ export default {
     if (!this.frontmatter.mainList) this.checkWrap()
 
     if (window.screen.width > 650) this.showReleaseDate = true
-    else if (this.hideRightHandDownload) {
+    else if (this.noJb) {
       this.showReleaseDate = true
       this.showDownload = false
       this.smallScreen = true
