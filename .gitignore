@@ -7,3 +7,4 @@ yarn.lock
 yarn-error.log
 docs/.vuepress/public/main.json
 .DS_STORE
+docs/.vuepress/public/assets/images/device@*

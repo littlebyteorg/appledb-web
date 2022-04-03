@@ -1,6 +1,7 @@
 {
     "dependencies": {
         "@vuepress/bundler-vite": "2.0.0-beta.27",
+        "sharp": "^0.30.3",
         "yarn": "^1.22.17"
     },
     "name": "appledb-web",
@@ -19,7 +20,7 @@
     },
     "scripts": {
         "dev": "vuepress dev docs",
-        "build": "vuepress build docs",
-        "ghbuild": "NODE_OPTIONS=--max_old_space_size=16384 vuepress build docs"
+        "build": "vuepress build docs && node generateImages.js",
+        "ghbuild": "NODE_OPTIONS=--max_old_space_size=16384 vuepress build docs && node generateImages.js"
     }
 }

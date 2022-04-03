@@ -80,7 +80,7 @@ export default {
             for (const o in overrides) firstDeviceObj[o] = overrides[o]
 
             var ret = {}
-            for (const d in firstDeviceObj) ret[d] = `/assets/images/device/${firstDeviceObj[d]}.png`
+            for (const d in firstDeviceObj) ret[d] = `/assets/images/device@256/${firstDeviceObj[d]}.png`
             
             return ret
         }
