@@ -131,7 +131,9 @@
           <td v-if="showBuildNum"><router-link :to="fw.path">{{fw.build}}</router-link></td>
 
           <td v-if="showVersion" class="showOnHover">
-            <span v-if="!showBuildNum"><router-link :to="fw.path">{{fw.osStr}} {{fw.version}}<template v-if="fw.duplicateVersion"> ({{fw.build}})</template></router-link></span>
+            <span v-if="!showBuildNum">
+              <router-link :to="fw.path">{{fw.osStr}} {{fw.version}}<template v-if="(frontmatter.mainList && fw.duplicateVersion) || (!frontmatter.mainList && fwArr.filter(x => x.version == fw.version).length > 1)"> ({{fw.build}})</template></router-link>
+            </span>
             <span v-else>{{fw.osStr}} {{fw.version}}</span>
             <span class="hoverElement" style="margin-left: .4em; position: absolute;" v-if="!showDownload && (!hideRightHandDownload && deviceIdentifierArr.length == 1 || smallScreen)">
               <template v-for="dev in fw.ipswObj" :key="dev">
@@ -737,7 +739,7 @@ export default {
   },
   mounted() {
     this.loadMoreRows()
-    this.checkWrap()
+    if (!this.frontmatter.mainList) this.checkWrap()
 
     if (window.screen.width > 650) this.showReleaseDate = true
     else if (this.hideRightHandDownload) {
