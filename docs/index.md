@@ -2,10 +2,6 @@
 title: AppleDB
 description: A database of Apple software and devices.
 home: true
-head:
-  - - meta
-    - property: og:image
-      content: /assets/images/splash-23aaron-logo.jpg
 header:
   overlay_title: AppleDB
   overlay_excerpt: A database of Apple software and devices.
