@@ -311,7 +311,10 @@ export default {
         getFilteredDownloads(dlArr) {
             const filterDev = this.options.filterDev
             const fmDeviceFilter = this.fm.deviceFilter
-            if (JSON.stringify(filterDev) == JSON.stringify(fmDeviceFilter[0].value)) return dlArr
+            if (
+                JSON.stringify(filterDev) == JSON.stringify(fmDeviceFilter[0].value) ||
+                this.fm.mainList
+            ) return dlArr
             
             const retArr = dlArr.filter(x => filterDev.includes(x.identifier))
             urlCount = Array.from(new Set(retArr.map(x => x.url))).length
