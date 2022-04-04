@@ -53,7 +53,7 @@
             </label>
             <select v-model="options.filterDev" name="deviceSelect" id="deviceSelect" :style="`margin-left: .5em; ${(options.filterDev == fm.deviceFilter[0].value) ? 'color: gray;' : ''}`">
                 <option v-for="(filterItem, index) in fm.deviceFilter" :key="filterItem" :value="filterItem.value">
-                    <template v-if="index == 0" >{{ allDeviceStr }}</template>
+                    <template v-if="index == 0 && !fm.mainList" >{{ allDeviceStr }}</template>
                     <template v-else>{{ filterItem.label }}</template>
                 </option>
             </select>
