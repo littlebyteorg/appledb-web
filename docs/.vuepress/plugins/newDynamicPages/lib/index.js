@@ -56,7 +56,7 @@ var pageList = []
 
 for (const i of iosList) {
   pageList.push({
-    path: `/${i.osType}/${i.uniqueBuild}.html`,
+    path: `/${i.osStr.replace(/ /g, '-')}/${i.uniqueBuild}.html`,
     frontmatter: {
       title: `${i.osStr} ${i.version} (${i.build})`,
       description: `Information for ${i.osStr} version ${i.version}`,
@@ -153,7 +153,7 @@ function getDevicePage(args) {
       version: i.version,
       build: i.build,
       duplicateVersion: duplicateVersionArr.includes([i.osStr,i.version].join(' ')),
-      url: '/' + [i.osStr, i.build].join('/') + '.html',
+      url: `/${i.osStr.replace(/ /g, '-')}/${i.uniqueBuild}.html`,
       released: i.released,
       beta: i.beta,
       releasedStr: new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'}).format(new Date(i.released)),
