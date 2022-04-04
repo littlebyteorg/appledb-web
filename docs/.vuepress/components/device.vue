@@ -27,7 +27,7 @@
     </template>
 
     <ul class="tableOptionsWrapper">
-        <li style="margin-right: 1.5em; padding-top: .5em;">
+        <li :style="`margin-right: 1.5em; ${(fm.deviceFilter.length > 2) ? 'padding-top: .5em; padding-bottom: .7em;' : 'padding-bottom: .5em;'}`">
             <label class="chartDropdown">
                 <i class="fas fa-cog"></i>
                 {{ optionsStr }}
@@ -45,15 +45,16 @@
                 </template>
             </div>
         </li>
-        <li v-if="fm.mainList">
+        <li v-if="fm.deviceFilter.length > 2">
             <label class="chartDropdown" for="deviceSelect">
                 <i class="fas fa-filter"></i>
                 {{ deviceStr }}
                 <span class="arrow down" style="display: none;"></span>
             </label>
-            <select v-model="options.filterDevType" style="margin-left: .5em;" name="deviceSelect" id="deviceSelect">
-                <option v-for="type in fm.deviceTypeArr" :key="type">
-                    {{ type }}
+            <select v-model="options.filterDev" name="deviceSelect" id="deviceSelect" :style="`margin-left: .5em; ${(options.filterDev == fm.deviceFilter[0].value) ? 'color: gray;' : ''}`">
+                <option v-for="(filterItem, index) in fm.deviceFilter" :key="filterItem" :value="filterItem.value">
+                    <template v-if="index == 0" >{{ allDeviceStr }}</template>
+                    <template v-else>{{ filterItem.label }}</template>
                 </option>
             </select>
         </li>
@@ -64,64 +65,68 @@
             <tr>
                 <th v-for="header in tableHeaders" :key="header">{{ header }}</th>
             </tr>
-            <tr v-for="fw in fm.versionArr.filter(fw => {
+            <template v-for="fw in fm.versionArr.filter(fw => {
                 return (
                     (
                         (fw.beta && options.showBeta) ||
                         (!fw.beta && options.showStable) 
-                    ) && (
-                        (fm.mainList && fw.deviceTypeArr.includes(options.filterDevType)) ||
-                        !fm.mainList
                     )
                 )
             })" :key="fw">
-
-                <td v-if="options.showBuildColumn" class="showOnHover">
-                    <router-link :to="fw.url">{{ fw.build }}</router-link>
-                    <template v-if="fw.downloads.length == 1 && !options.showDownloadColumn">
-                        <a v-for="dl in fw.downloads" :key="dl" :href="dl.url">
-                            <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
-                        </a>
-                    </template>
-                </td>
-                
-                <td v-if="options.showVersionColumn">
-                    <template v-if="options.showBuildColumn">{{ fw.osStr }} {{ fw.version }}</template>
-                    <div v-else class="showOnHover">
-                        <router-link :to="fw.url">{{ fw.osStr }} {{ fw.version }}<template v-if="fw.duplicateVersion"> ({{ fw.build }})</template></router-link>
+                <tr v-if="
+                    (fm.mainList) ? 
+                        fw.deviceFilterArr.includes(this.options.filterDev) :
+                        fw.deviceFilterArr.some(r => this.options.filterDev.includes(r))
+                ">
+            
+                    <td v-if="options.showBuildColumn" class="showOnHover">
+                        <router-link :to="fw.url">{{ fw.build }}</router-link>
                         <template v-if="fw.downloads.length == 1 && !options.showDownloadColumn">
                             <a v-for="dl in fw.downloads" :key="dl" :href="dl.url">
                                 <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
                             </a>
                         </template>
-                    </div>
-                </td>
+                    </td>
+                    
+                    <td v-if="options.showVersionColumn">
+                        <template v-if="options.showBuildColumn">{{ fw.osStr }} {{ fw.version }}</template>
+                        <div v-else class="showOnHover">
+                            <router-link :to="fw.url">{{ fw.osStr }} {{ fw.version }}<template v-if="fw.duplicateVersion"> ({{ fw.build }})</template></router-link>
+                            <template v-if="fw.downloads.length == 1 && !options.showDownloadColumn">
+                                <a v-for="dl in fw.downloads" :key="dl" :href="dl.url">
+                                    <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
+                                </a>
+                            </template>
+                        </div>
+                    </td>
 
-                <td v-if="options.showJailbreakColumn">
-                    <template v-for="(jb, index) in fw.jailbreakArr" :key="jb">
-                        <router-link :to="`/jailbreak/${jb.replace(/ /g, '-')}.html`">
-                            {{ jb }}
-                        </router-link>
-                        <template v-if="index < fw.jailbreakArr.length - 1">, </template>
-                    </template>
-                    <template v-if="fw.jailbreakArr.length == 0">{{ naStr }}</template>
-                </td>
+                    <td v-if="options.showJailbreakColumn">
+                        <template v-for="(jb, index) in fw.jailbreakArr" :key="jb">
+                            <router-link :to="`/jailbreak/${jb.replace(/ /g, '-')}.html`">
+                                {{ jb }}
+                            </router-link>
+                            <template v-if="index < fw.jailbreakArr.length - 1">, </template>
+                        </template>
+                        <template v-if="fw.jailbreakArr.length == 0">{{ naStr }}</template>
+                    </td>
 
-                <td v-if="options.showDownloadColumn">
-                    <div v-for="dl in fw.downloads" :key="dl" class="showOnHover">
-                        <template v-if="dl.deviceName">{{ dl.deviceName }}: </template>
-                        <a :href="dl.url">
-                            {{ dl.label }}
-                            <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
-                        </a>
-                    </div>
-                    <template v-if="fw.downloads.length == 0">
-                        {{ naStr }}
-                    </template>
-                </td>
+                    <td v-if="options.showDownloadColumn">
+                        <div v-for="dl in fw.downloads" :key="dl" class="showOnHover">
+                            <template v-if="dl.deviceName">{{ dl.deviceName }}: </template>
+                            <a :href="dl.url">
+                                {{ dl.label }}
+                                <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
+                            </a>
+                        </div>
+                        <template v-if="fw.downloads.length == 0">
+                            {{ naStr }}
+                        </template>
+                    </td>
 
-                <td v-if="options.showReleasedColumn" style="width: 7em;">{{ fw.releasedStr }}</td>
-            </tr>
+                    <td v-if="options.showReleasedColumn" style="width: 7em;">{{ fw.releasedStr }}</td>
+
+                </tr>
+            </template>
         </table>
     </div>
 </template>
@@ -160,6 +165,7 @@ export default {
             },
             optionsStr: 'Options',
             deviceStr: 'Device',
+            allDeviceStr: 'Filter',
             naStr: 'N/A',
 
             optionsObjStr: {
@@ -181,7 +187,8 @@ export default {
 
                 showStable: true,
                 showBeta: false,
-
+                
+                filterDev: [],
                 showAll: {}
             },
 
@@ -289,6 +296,17 @@ export default {
                 totalWidth = totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
                 this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
             }
+        },
+        validateJSON(text) {
+            if (typeof text !== "string") {
+                return false;
+            }
+            try {
+                JSON.parse(text);
+                return true;
+            } catch (error) {
+                return false;
+            }
         }
     },
     mounted() {
@@ -301,18 +319,24 @@ export default {
             this.options.showReleasedColumn = true
             if (this.fm.noJb) this.options.showDownloadColumn = true
         }
-        if (this.fm.mainList) document.getElementById("showDownloadColumnCheckbox").disabled = true
-        else this.checkWrap()
+        if (this.fm.mainList) {
+            this.options.filterDev = this.fm.deviceFilter[0].value
+            if (this.fm.deviceFilter.map(x => x.value).includes(this.defaultFilter)) this.options.filterDev = this.defaultFilter
 
-        this.options.filterDevType = this.fm.deviceTypeArr[0]
-        if (this.fm.deviceTypeArr.includes(this.defaultFilter)) this.options.filterDevType = this.defaultFilter
+            document.getElementById("showDownloadColumnCheckbox").disabled = true
+        }
+        else {
+            this.checkWrap()
+            this.options.filterDev = this.fm.deviceFilter[0].value
+        }
+
+        
     }
 }
 </script>
 
 <style scoped>
 select {
-
   /* styling */
   background-color: inherit;
   border: thin solid var(--c-border-dark);
@@ -334,7 +358,7 @@ select {
   background-image:
     linear-gradient(45deg, transparent 50%, gray 50%),
     linear-gradient(135deg, gray 50%, transparent 50%),
-    linear-gradient(to right, #ccc, #ccc);
+    linear-gradient(to right, var(--c-border-dark), var(--c-border-dark));
   background-position:
     calc(100% - 20px) calc(1em + 2px),
     calc(100% - 15px) calc(1em + 2px),
@@ -350,7 +374,7 @@ select:focus {
   background-image:
     linear-gradient(45deg, var(--c-text-accent) 50%, transparent 50%),
     linear-gradient(135deg, transparent 50%, var(--c-text-accent) 50%),
-    linear-gradient(to right, #ccc, #ccc);
+    linear-gradient(to right, var(--c-text-accent), var(--c-text-accent));
   background-position:
     calc(100% - 15px) 1em,
     calc(100% - 20px) 1em,
@@ -361,6 +385,7 @@ select:focus {
     1px 1.5em;
   background-repeat: no-repeat;
   border-color: var(--c-text-accent);
+  color: var(--c-text-accent) !important;
   outline: 0;
 }
 

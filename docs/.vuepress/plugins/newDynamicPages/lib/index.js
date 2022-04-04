@@ -158,7 +158,9 @@ function getDevicePage(args) {
       beta: i.beta,
       releasedStr: new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'}).format(new Date(i.released)),
       devices: devIdFwArr,
-      deviceTypeArr: devTypeArr,
+      deviceFilterArr: (mainList) ?
+        devTypeArr :
+        devIdFwArr,
       jailbreakArr: Array.from(
         new Set(
           devArr.map(d => d.identifier)
@@ -204,7 +206,26 @@ function getDevicePage(args) {
       grouped: grouped,
       mainList: mainList,
       noJb: ((osType.includes('macOS') || osType.includes('darwinOS')) && !mainList),
-      deviceTypeArr: Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort(),
+      deviceFilter: (mainList) ? 
+        Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort().map(x => {
+          return {
+            label: x,
+            value: x
+          }
+        }) :
+        [devArr].map(x => {
+          const nameArr = x.map(y => y.name)
+          const idenArr = x.map(y => y.identifier)
+          return {
+            label: nameArr.join(', '),
+            value: idenArr
+          }
+        }).concat(devArr.map(x => {
+          return {
+            label: x.name,
+            value: [x.identifier]
+          }
+        })),
 
       head: head,
 
