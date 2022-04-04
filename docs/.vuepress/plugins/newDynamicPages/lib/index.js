@@ -37,7 +37,7 @@ for (const f of iosList) {
       if (!jb.hasOwnProperty('compatibility')) continue
       for (const c of jb.compatibility) {
         if (!c.firmwares.includes(b)) continue
-        if (!c.devices.some(r => devArr)) continue
+        if (!c.devices.includes(d)) continue
 
         const jbString = JSON.stringify(jb)
         if (jbStringArr.includes(jbString)) continue
