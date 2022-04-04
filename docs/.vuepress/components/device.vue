@@ -75,14 +75,14 @@
             })" :key="fw">
                 <tr v-if="
                     (fm.mainList) ? 
-                        fw.deviceFilterArr.includes(this.options.filterDev) :
-                        fw.deviceFilterArr.some(r => this.options.filterDev.includes(r))
+                        fw.deviceFilterArr.includes(options.filterDev) :
+                        fw.deviceFilterArr.some(r => options.filterDev.includes(r))
                 ">
-            
+
                     <td v-if="options.showBuildColumn" class="showOnHover">
                         <router-link :to="fw.url">{{ fw.build }}</router-link>
-                        <template v-if="fw.downloads.length == 1 && !options.showDownloadColumn">
-                            <a v-for="dl in fw.downloads" :key="dl" :href="dl.url">
+                        <template v-if="getFilteredDownloads(fw.downloads).length == 1 && !options.showDownloadColumn">
+                            <a v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" :href="dl.url">
                                 <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
                             </a>
                         </template>
@@ -92,8 +92,8 @@
                         <template v-if="options.showBuildColumn">{{ fw.osStr }} {{ fw.version }}</template>
                         <div v-else class="showOnHover">
                             <router-link :to="fw.url">{{ fw.osStr }} {{ fw.version }}<template v-if="fw.duplicateVersion"> ({{ fw.build }})</template></router-link>
-                            <template v-if="fw.downloads.length == 1 && !options.showDownloadColumn">
-                                <a v-for="dl in fw.downloads" :key="dl" :href="dl.url">
+                            <template v-if="getFilteredDownloads(fw.downloads).length == 1 && !options.showDownloadColumn">
+                                <a v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" :href="dl.url">
                                     <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
                                 </a>
                             </template>
@@ -111,14 +111,14 @@
                     </td>
 
                     <td v-if="options.showDownloadColumn">
-                        <div v-for="dl in fw.downloads" :key="dl" class="showOnHover">
-                            <template v-if="dl.deviceName">{{ dl.deviceName }}: </template>
+                        <div v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" class="showOnHover">
+                            <template v-if="getFilteredDownloads(fw.downloads).length > 1">{{ dl.deviceName }}: </template>
                             <a :href="dl.url">
                                 {{ dl.label }}
                                 <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
                             </a>
                         </div>
-                        <template v-if="fw.downloads.length == 0">
+                        <template v-if="getFilteredDownloads(fw.downloads).length == 0">
                             {{ naStr }}
                         </template>
                     </td>
@@ -307,6 +307,17 @@ export default {
             } catch (error) {
                 return false;
             }
+        },
+        getFilteredDownloads(dlArr) {
+            const filterDev = this.options.filterDev
+            const fmDeviceFilter = this.fm.deviceFilter
+            if (JSON.stringify(filterDev) == JSON.stringify(fmDeviceFilter[0].value)) return dlArr
+            
+            const retArr = dlArr.filter(x => filterDev.includes(x.identifier))
+            urlCount = Array.from(new Set(retArr.map(x => x.url))).length
+
+            if (urlCount == 1) return [retArr[0]]
+            else return retArr
         }
     },
     mounted() {
@@ -329,8 +340,6 @@ export default {
             this.checkWrap()
             this.options.filterDev = this.fm.deviceFilter[0].value
         }
-
-        
     }
 }
 </script>

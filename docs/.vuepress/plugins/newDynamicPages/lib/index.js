@@ -128,16 +128,14 @@ function getDevicePage(args) {
       if (!i.devices[x] || !i.devices[x].ipsw || i.devices[x].ipsw == 'none') return undefined
       return {
         deviceName: devArr.filter(y => y.identifier == x)[0].name,
+        identifier: x,
         label: i.devices[x].ipsw.split('/')[i.devices[x].ipsw.split('/').length-1],
         url: i.devices[x].ipsw
       }
     }).filter(x => x)
 
     urlCount = Array.from(new Set(dlArr.map(x => x.url))).length
-    if (urlCount == 1) dlArr = [{
-      label: dlArr[0].label,
-      url: dlArr[0].url
-    }]
+    if (urlCount == 1) dlArr = [dlArr[0]]
 
     const devIdFwArr = Object.keys(i.devices).filter(x => devArr.map(x => x.identifier).includes(x))
     const devTypeArr = Array.from(
