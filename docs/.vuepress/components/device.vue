@@ -83,7 +83,8 @@
                         (fw.beta && options.showBeta) ||
                         (!fw.beta && options.showStable) 
                     ) && (
-                        (fw.deviceTypeArr.includes(options.filterDevType))
+                        fm.mainList && 
+                        fw.deviceTypeArr.includes(options.filterDevType)
                     )
                 )
             })" :key="fw">
