@@ -317,7 +317,7 @@ export default {
             ) return dlArr
             
             const retArr = dlArr.filter(x => filterDev.includes(x.identifier))
-            urlCount = Array.from(new Set(retArr.map(x => x.url))).length
+            const urlCount = Array.from(new Set(retArr.map(x => x.url))).length
 
             if (urlCount == 1) return [retArr[0]]
             else return retArr
