@@ -27,7 +27,7 @@
     </template>
 
     <ul class="tableOptionsWrapper">
-        <li style="margin-right: 1.5em;">
+        <li style="margin-right: 1.5em; padding-top: .5em;">
             <label class="chartDropdown">
                 <i class="fas fa-cog"></i>
                 {{ optionsStr }}
@@ -311,6 +311,65 @@ export default {
 </script>
 
 <style scoped>
+select {
+
+  /* styling */
+  background-color: inherit;
+  border: thin solid var(--c-border-dark);
+  border-radius: 8px;
+  display: inline-block;
+  font: inherit;
+  line-height: 1.5em;
+  padding: 0.5em 3.5em 0.5em 1em;
+
+  /* reset */
+
+  margin: 0;      
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, gray 50%),
+    linear-gradient(135deg, gray 50%, transparent 50%),
+    linear-gradient(to right, #ccc, #ccc);
+  background-position:
+    calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px),
+    calc(100% - 2.5em) 0.5em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1px 1.5em;
+  background-repeat: no-repeat;
+}
+
+select:focus {
+  background-image:
+    linear-gradient(45deg, var(--c-text-accent) 50%, transparent 50%),
+    linear-gradient(135deg, transparent 50%, var(--c-text-accent) 50%),
+    linear-gradient(to right, #ccc, #ccc);
+  background-position:
+    calc(100% - 15px) 1em,
+    calc(100% - 20px) 1em,
+    calc(100% - 2.5em) 0.5em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1px 1.5em;
+  background-repeat: no-repeat;
+  border-color: var(--c-text-accent);
+  outline: 0;
+}
+
+
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+
 .flexWrapper {
   display: flex;
   justify-content: space-between;
