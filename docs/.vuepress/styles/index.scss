@@ -9,6 +9,13 @@
   }
 }
 
+@media (min-width: 951px) {
+  .tableContainer {
+    padding-top: 1.9em;
+    padding-bottom: 0.01em;
+  }
+}
+
 .complexTableContainer {
   width: 100% !important;
   overflow-x: auto; 

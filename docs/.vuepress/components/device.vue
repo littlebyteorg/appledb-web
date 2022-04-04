@@ -27,7 +27,7 @@
     </template>
 
     <ul class="tableOptionsWrapper">
-        <li :style="`margin-right: 1.5em; ${(fm.deviceFilter.length > 2) ? 'padding-top: .5em; padding-bottom: .7em;' : 'padding-bottom: .5em;'}`">
+        <li :style="`margin-right: 1.5em; ${(fm.deviceFilter.length > 2) ? 'padding-top: 0.15em;' : ''}`">
             <label class="chartDropdown">
                 <i class="fas fa-cog"></i>
                 {{ optionsStr }}
@@ -355,8 +355,9 @@ select {
   border-radius: 8px;
   display: inline-block;
   font: inherit;
-  line-height: 1.5em;
-  padding: 0.5em 3.5em 0.5em 1em;
+  line-height: 1em;
+  font-size: .8em;
+  padding: 0.8em 3.5em 0.8em 1em;
 
   /* reset */
 
@@ -372,9 +373,9 @@ select {
     linear-gradient(135deg, gray 50%, transparent 50%),
     linear-gradient(to right, var(--c-border-dark), var(--c-border-dark));
   background-position:
-    calc(100% - 20px) calc(1em + 2px),
-    calc(100% - 15px) calc(1em + 2px),
-    calc(100% - 2.5em) 0.5em;
+    calc(100% - 18px) calc(1em + 2px),
+    calc(100% - 13px) calc(1em + 2px),
+    calc(100% - 2.5em) 0.55em;
   background-size:
     5px 5px,
     5px 5px,
@@ -388,9 +389,9 @@ select:focus {
     linear-gradient(135deg, transparent 50%, var(--c-text-accent) 50%),
     linear-gradient(to right, var(--c-text-accent), var(--c-text-accent));
   background-position:
-    calc(100% - 15px) 1em,
-    calc(100% - 20px) 1em,
-    calc(100% - 2.5em) 0.5em;
+    calc(100% - 13px) 1.1em,
+    calc(100% - 18px) 1.1em,
+    calc(100% - 2.5em) 0.55em;
   background-size:
     5px 5px,
     5px 5px,
@@ -533,7 +534,13 @@ select:-moz-focusring {
 
 .tableOptionsWrapper li {
   float: left;
-  margin: 0.2em 1.3em 1em 0em;
+  margin: 0em 1.5em .5em 0em;
+}
+
+@media (min-width: 951px) {
+  .tableOptionsWrapper {
+      margin-bottom: 2.1em;
+  }
 }
 
 .tableOptionsWrapper li {
