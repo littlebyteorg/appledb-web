@@ -1,199 +1,145 @@
 <template>
-  <template v-if="!frontmatter.mainList">
-    <h2 v-html="infoHeader" v-if="infoData.length > 0"></h2>
-    <p class="flexWrapper" :style="(wrapImg) ? 'flex-direction: column;' : 'flex-direction: row;'">
-      <div id="flexInfo">
-        <div v-for="(i, index) in infoData" :key="i">
-          <template v-if="index == 'identifier' && deviceIdentifierArr.length > 5 && !showAllIdent">{{ i.replace(deviceIdentifierArr.join(', '), deviceIdentifierArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllIdent = true">...</a></template>
-          <template v-else-if="index == 'model' && deviceModelArr.length > 5 && !showAllModel">{{ i.replace(deviceModelArr.join(', '), deviceModelArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllModel = true">...</a></template>
-          <template v-else-if="index == 'board' && deviceBoardArr.length > 5 && !showAllBoard">{{ i.replace(deviceBoardArr.join(', '), deviceBoardArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllBoard = true">...</a></template>
-          <template v-else>{{ i }}</template>
+    <template v-if="!fm.mainList">
+        <p class="flexWrapper" :style="(wrapImg) ? 'flex-direction: column;' : 'flex-direction: row;'">
+            <ul class="infoList" id="flexInfo">
+                <li v-for="(s, index) in infoArr" :key="s">
+                    <template v-if="(infoArr[index].split(', ').length > 5 && !options.showAll[index])">
+                        {{ s.replace(infoArr[index], infoArr[index].split(', ').slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="options.showAll[index] = true">...</a>
+                    </template>
+                    <template v-else>{{ s }}</template>
+                </li>
+            </ul>
+            <img id="flexImg" :src="`/assets/images/device@1024/${fm.device.map(x => x.identifier)[0]}.png`" :style="`max-height: ${Object.keys(infoArr).length * 1.8}em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
+        </p>
+
+
+        <!--<p class="flexWrapper">
+        <div id="flexInfo">
+            <div v-for="(i, index) in infoData" :key="i">
+            <template v-if="index == 'identifier' && deviceIdentifierArr.length > 5 && !showAllIdent">{{ i.replace(deviceIdentifierArr.join(', '), deviceIdentifierArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllIdent = true">...</a></template>
+            <template v-else-if="index == 'model' && deviceModelArr.length > 5 && !showAllModel">{{ i.replace(deviceModelArr.join(', '), deviceModelArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllModel = true">...</a></template>
+            <template v-else-if="index == 'board' && deviceBoardArr.length > 5 && !showAllBoard">{{ i.replace(deviceBoardArr.join(', '), deviceBoardArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllBoard = true">...</a></template>
+            <template v-else>{{ i }}</template>
+            </div>
         </div>
-      </div>
-      <img id="flexImg" :src="`/assets/images/device@1024/${deviceIdentifierArr[0]}.png`" :style="`max-height: ${Object.keys(infoData).length * 1.8}em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
-    </p>
-    <h2 v-html="groupHeader" v-if="groupedDevices && groupedDevices.length > 0"/>
-    <ul>
-      <li v-for="d in groupedDevices" :key="d">
-        <router-link v-html="d.name" :to="devicePath + d.identifier + '.html'"/>
-      </li>
-    </ul>
-  </template>
-  <h2 v-if="!frontmatter.mainList" v-html="tableHeader"/>
-  <ul class="tableOptionsWrapper">
-    <li>
-      <div class="chartDropdown">
-        <i class="fas fa-cog"></i>
-        {{ optionsStr }}
-        <span class="arrow down"></span>
-      </div>
-      <div class="chartDropdownBox opaqueHover">
-        <ul>
-          <li class="dropdown-item" v-if="!frontmatter.mainList && !noJb">
-            <input type="checkbox" v-model="simpleTable" id="simpleTableCheckbox">
-            <label for="simpleTableCheckbox">{{ simpleTableStr }}</label>
-          </li>
-          <!--<li class="dropdown-item" v-if="osTypeArr.length > 1">
-            <input type="checkbox" v-model="complexTable" id="complexTableCheckbox">
-            <label for="complexTableCheckbox">{{ complexTableStr }}</label>
-          </li>-->
-          <li class="dropdown-item" style="padding: 0px" v-if="!frontmatter.mainList && !noJb"><hr></li>
-          <li class="dropdown-item">
-            <input type="checkbox" v-model="showBeta" id="showBetaCheckbox">
-            <label for="showBetaCheckbox">{{ showBetaStr }}</label>
-          </li>
-          <li class="dropdown-item">
-            <input type="checkbox" v-model="showStable" id="showStableCheckbox">
-            <label for="showStableCheckbox">{{ showStableStr }}</label>
-          </li>
-          <template v-if="!simpleTable">
-            <li class="dropdown-item" style="padding: 0px"><hr></li>
-            <!--<li class="dropdown-item">
-              <input type="checkbox" v-model="showGuide" id="showGuideCheckbox">
-              <label for="showGuideCheckbox">{{ showGuideStr }}</label>
-            </li>-->
-            <li class="dropdown-item">
-              <input type="checkbox" v-model="showBuildNum" id="showBuildNumCheckbox">
-              <label for="showBuildNumCheckbox">{{ showBuildNumStr }}</label>
-            </li>
-            <li class="dropdown-item">
-              <input type="checkbox" v-model="showVersion" id="showVersionCheckbox">
-              <label for="showVersionCheckbox">{{ showVersionStr }}</label>
-            </li>
-            <li class="dropdown-item" v-if="!noJb">
-              <input type="checkbox" v-model="showJailbreak" id="showJailbreakCheckbox">
-              <label for="showJailbreakCheckbox">{{ showJailbreakStr }}</label>
-            </li>
-            <li class="dropdown-item" v-if="!frontmatter.mainList && !(!noJb && deviceIdentifierArr.length == 1)">
-              <input type="checkbox" v-model="showDownload" id="showDownloadCheckbox">
-              <label for="showDownloadCheckbox">{{ showDownloadStr }}</label>
-            </li>
-            <li class="dropdown-item">
-              <input type="checkbox" v-model="showReleaseDate" id="showReleaseDateCheckbox">
-              <label for="showReleaseDateCheckbox">{{ showReleaseDateStr }}</label>
-            </li>
-          </template>
-        </ul>
-      </div>
-    </li>
-    <li v-if="frontmatter.mainList">
-      <div class="chartDropdown">
-        <i class="fas fa-filter"></i>
-        {{ devicesStr }}
-        <span class="arrow down"></span>
-      </div>
-      <div class="chartDropdownBox opaqueHover">
-        <ul>
-          <!--<li class="dropdown-item" v-for="type in osTypeArr" :key="type">
-            <input type="checkbox" v-model="showOsTypeObj[type]" :id="type + 'checkbox'">
-            <label :for="type + 'checkbox'">{{ showOSStr.format({ osType: type }) }}</label>
-          </li>-->
-          <li class="dropdown-item" v-for="dev in deviceFilterArr.sort()" :key="dev">
-            <input v-if="showFwByDev.includes(dev)" type="checkbox" v-on:click="toggleDeviceFilter(dev)" :id="dev + 'checkbox'" checked>
-            <input v-else type="checkbox" v-on:click="toggleDeviceFilter(dev)" :id="dev + 'checkbox'">
-            <label :for="dev + 'checkbox'">{{ dev }}</label>
-          </li>
-        </ul>
-      </div>
-    </li>
-  </ul>
-  <div :class="'tableContainer' + (complexTable) ? ' complexTableContainer' : ''">
-    <table>
-      <tr v-if="fwArr.length">
-        <template v-if="simpleTable">
-          <th v-html="fromStr"/>
-          <th v-html="toStr"/>
-          <th v-html="jailbreakStr"/>
+        <img id="flexImg" :src="`/assets/images/device@1024/${deviceIdentifierArr[0]}.png`" :style="`max-height: ${Object.keys(infoData).length * 1.8}em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
+        </p>-->
+        
+        <template v-if="groupedOrRelatedDevicesObj.devices.length > 1">
+            <h2>{{ groupedOrRelatedDevicesObj.header }}</h2>
+            <ul>
+                <li v-for="dev in groupedOrRelatedDevicesObj.devices" :key="dev">
+                    <router-link :to="dev.url">
+                        {{ dev.name }}
+                    </router-link>
+                </li>
+            </ul>
         </template>
-        <template v-else>
-          <th v-if="showBuildNum">{{ buildStr }}</th>
-          <th v-if="showVersion">{{ versionStr }} <i v-on:click="sortBy == 'version' ? reverseSortingBtn() : sortBy = 'version'" class="fas fa-sort" style="float: right; user-select: none; cursor: pointer;"></i></th>
-          <template v-if="complexTable && showJailbreak">
-            <template v-for="group in groupArr" :key="group">
-              <th class="complexTable">{{ group.name }}</th>
-            </template>
-          </template>
-          <th v-else-if="showJailbreak">{{ jailbreakStr }}</th>
-          <th v-if="showDownload">{{ downloadStr }}</th>
-          <th v-if="showReleaseDate" style="width: 15%;">{{ releaseDateStr }} <i v-on:click="sortBy == 'released' ? reverseSortingBtn() : sortBy = 'released'" class="fas fa-sort" style="float: right; user-select: none; cursor: pointer;"></i></th>
-        </template>
-      </tr>
-      <tr v-else><td>{{noFwStr}}</td></tr>
-      <template v-for="(fw, index) in fwArr" :key="fw">
-        <tr v-if="simpleTable">
-          <td v-for="i in (reverseSorting) ? Object.keys(fw).reverse() : Object.keys(fw)" :key="i">{{ fw[i].version }}</td>
-          <td v-if="fw.startBuild.jailbreakArr.length"><router-link :to="jailbreakPath + fw.startBuild.jailbreakArr[0].name.replace(/ /g, '-') + '.html'">{{ fw.startBuild.jailbreakArr[0].name }}</router-link></td>
-          <td v-else v-html="noJbStr"/>
-        </tr>
-        <tr v-else>
-          <td v-if="showBuildNum"><router-link :to="fw.path">{{fw.build}}</router-link></td>
 
-          <td v-if="showVersion" class="showOnHover">
-            <span v-if="!showBuildNum">
-              <router-link :to="fw.path">{{fw.osStr}} {{fw.version}}<template v-if="(frontmatter.mainList && fw.duplicateVersion) || (!frontmatter.mainList && fwArr.filter(x => x.version == fw.version).length > 1)"> ({{fw.build}})</template></router-link>
-            </span>
-            <span v-else>{{fw.osStr}} {{fw.version}}</span>
-            <span class="hoverElement" style="margin-left: .4em; position: absolute;" v-if="!showDownload && (!noJb && deviceIdentifierArr.length == 1 || smallScreen)">
-              <template v-for="dev in fw.ipswObj" :key="dev">
-                <template v-if="dev.ipsw && dev.ipsw != 'none'">
-                  <a :href="dev.ipsw"> <i class="fas fa-download"></i></a>
+        <h2>{{ versionHeaderStr }}</h2>
+    </template>
+
+    <ul class="tableOptionsWrapper">
+        <li style="margin-right: 1.5em;">
+            <label class="chartDropdown">
+                <i class="fas fa-cog"></i>
+                {{ optionsStr }}
+                <span class="arrow down"></span>
+            </label>
+            <div class="chartDropdownBox">
+                <template v-for="(optionSection, index) in optionsObj.filter(x => x.filter(y => y.display).length > 0)" :key="optionSection">
+                    <ul>
+                        <li v-for="option in optionSection.filter(x => x.display)" :key="option">
+                            <input type="checkbox" v-model="options[option.model]" :id="option.id">
+                            <label :for="option.id">{{ option.label }}</label>
+                        </li>
+                    </ul>
+                    <template v-if="index < optionsObj.length - 1"><ul><li style="padding: 0;"><hr></li></ul></template>
                 </template>
-              </template>
-            </span>
-          </td>
+            </div>
+        </li>
+        <li v-if="fm.mainList">
+            <label class="chartDropdown" for="deviceSelect">
+                <i class="fas fa-filter"></i>
+                {{ deviceStr }}
+                <span class="arrow down" style="display: none;"></span>
+            </label>
+            <select v-model="options.filterDevType" style="margin-left: .5em;" name="deviceSelect" id="deviceSelect">
+                <option v-for="type in fm.deviceTypeArr" :key="type">
+                    {{ type }}
+                </option>
+            </select>
+        </li>
+    </ul>
 
-          <template v-if="complexTable && showJailbreak">
-            <td v-for="group in groupArr" :key="group">
-              <template v-if="bigJbArr[fw.build][group.devices[0]] && bigJbArr[fw.build][group.devices[0]].length > 0">
-                <span v-for="(jb, index) in bigJbArr[fw.build][group.devices[0]]" :key="jb">
-                  <router-link :to="jailbreakPath + jb.name.replace(/ /g, '-') + '.html'" v-html="jb.name"/>
-                  <span v-if="index+1 < bigJbArr[fw.build][group.devices[0]].length">, </span>
-                </span>
-              </template>
-              <template v-else-if="!bigJbArr[fw.build][group.devices[0]]">
-                {{noJbStr}}
-              </template>
-            </td>
-          </template>
-          
-          <template v-else-if="showJailbreak">
-            <td v-if="fw.jailbreakArr && fw.jailbreakArr.length > 0">
-              <span v-for="(jb, index) in fw.jailbreakArr" :key="jb">
-                <router-link :to="jailbreakPath + jb.name.replace(/ /g, '-') + '.html'" v-html="jb.name"/>
-                <span v-if="index+1 < fw.jailbreakArr.length">, </span>
-              </span>
-            </td>
-            <td v-else v-html="noJbStr"/>
-          </template>
+    <div class="tableContainer" v-if="fm.versionArr">
+        <table>
+            <tr>
+                <th v-for="header in tableHeaders" :key="header">{{ header }}</th>
+            </tr>
+            <tr v-for="fw in fm.versionArr.filter(fw => {
+                return (
+                    (
+                        (fw.beta && options.showBeta) ||
+                        (!fw.beta && options.showStable) 
+                    ) && (
+                        (fw.deviceTypeArr.includes(options.filterDevType))
+                    )
+                )
+            })" :key="fw">
 
-          <td v-if="showDownload">
-            <template v-for="dev in fw.ipswObj" :key="dev">
-              <div v-if="dev.ipsw != 'none'" class="showOnHover">
-                <span v-if="Object.keys(fw.ipswObj).length > 1">{{dev.name}}: </span>
-                <a :href="dev.ipsw">
-                  {{dev.ipsw.split('/')[dev.ipsw.split('/').length-1]}}
-                  <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
-                </a>
-              </div>
-              <div v-else>
-                <span v-if="Object.keys(fw.ipswObj).length > 1">{{dev.name}}: </span>
-                {{ noJbStr }}
-              </div>
-            </template>
-          </td>
-          
-          <td v-if="showReleaseDate">{{fw.released}}</td>
-        </tr>
-        <tr v-if="index == entryCount - 1 && !simpleTable && !complexTable"><td :colspan="(simpleTable) ? 3 : (showBuildNum + showVersion + showJailbreak + showReleaseDate)">{{loadingStr}}</td></tr>
-      </template>
-    </table>
-  </div>
-  <p v-if="complexTable"><a style="cursor: pointer;" v-on:click="incrementRows()">{{loadMoreStr}}</a></p>
+                <td v-if="options.showBuildColumn" class="showOnHover">
+                    <router-link :to="fw.url">{{ fw.build }}</router-link>
+                    <template v-if="fw.downloads.length == 1 && !options.showDownloadColumn">
+                        <a v-for="dl in fw.downloads" :key="dl" :href="dl.url">
+                            <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
+                        </a>
+                    </template>
+                </td>
+                
+                <td v-if="options.showVersionColumn">
+                    <template v-if="options.showBuildColumn">{{ fw.osStr }} {{ fw.version }}</template>
+                    <div v-else class="showOnHover">
+                        <router-link :to="fw.url">{{ fw.osStr }} {{ fw.version }}<template v-if="fw.duplicateVersion"> ({{ fw.build }})</template></router-link>
+                        <template v-if="fw.downloads.length == 1 && !options.showDownloadColumn">
+                            <a v-for="dl in fw.downloads" :key="dl" :href="dl.url">
+                                <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
+                            </a>
+                        </template>
+                    </div>
+                </td>
+
+                <td v-if="options.showJailbreakColumn">
+                    <template v-for="(jb, index) in fw.jailbreakArr" :key="jb">
+                        <router-link :to="`/jailbreak/${jb.replace(/ /g, '-')}.html`">
+                            {{ jb }}
+                        </router-link>
+                        <template v-if="index < fw.jailbreakArr.length - 1">, </template>
+                    </template>
+                    <template v-if="fw.jailbreakArr.length == 0">{{ naStr }}</template>
+                </td>
+
+                <td v-if="options.showDownloadColumn">
+                    <div v-for="dl in fw.downloads" :key="dl" class="showOnHover">
+                        <template v-if="dl.deviceName">{{ dl.deviceName }}: </template>
+                        <a :href="dl.url">
+                            {{ dl.label }}
+                            <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
+                        </a>
+                    </div>
+                    <template v-if="fw.downloads.length == 0">
+                        {{ naStr }}
+                    </template>
+                </td>
+
+                <td v-if="options.showReleasedColumn" style="width: 7em;">{{ fw.releasedStr }}</td>
+            </tr>
+        </table>
+    </div>
 </template>
 
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
-import json from '@temp/main'
 
 String.prototype.format = function(vars) {
   let temp = this;
@@ -202,554 +148,181 @@ String.prototype.format = function(vars) {
   return temp
 }
 
-function removeNullAndDuplicatesAndSort(r) {
-  r = r.filter(x => x)
-  r = [...new Set(r)]
-  r = r.sort((a,b) => a - b)
-  return r
-}
-
 export default {
-  data() {
-    return {
-      devicePath: '/device/',
-      jailbreakPath: '/jailbreak/',
-      timeLocale: 'en-US',
+    data() {
+        return {
+            infoStrArr: [
+                "Identifier: ${identifier}",
+                "SoC: ${soc}",
+                "Arch: ${arch}",
+                "Model: ${model}",
+                "Board: ${board}"
+            ],
 
-      infoHeader: 'Info',
-      deviceStr: 'Device: ${dev}',
-      identStr: 'Identifier: ${ident}',
-      socStr: 'SoC: ${soc}',
-      archStr: 'Arch: ${arch}',
-      modelStr: 'Model: ${model}',
-      boardStr: 'Board: ${board}',
+            groupedHeaderStr: 'Grouped Devices',
+            relatedHeaderStr: 'Related Devices',
 
-      relatedHeader: 'Related Devices',
-      groupedHeader: 'Grouped Devices',
+            versionHeaderStr: 'Version Table',
+            tableHeadObj: {
+                build: "Build",
+                version: "Version",
+                jailbreak: "Jailbreak",
+                download: "Download",
+                released: "Released"
+            },
+            optionsStr: 'Options',
+            deviceStr: 'Device',
+            naStr: 'N/A',
 
-      tableHeader: 'Version Table',
+            optionsObjStr: {
+                showBuildColumn: "Show build numbers",
+                showVersionColumn: "Show version numbers",
+                showJailbreakColumn: "Show jailbreaks",
+                showDownloadColumn: "Show download links",
+                showReleasedColumn: "Show release dates",
+                showStable: "Show stable version",
+                showBeta: 'Show beta versions'
+            },
 
-      showBetaStr: 'Show beta versions',
-      showStableStr: 'Show stable versions',
-      showOSStr: 'Show ${osType} versions',
+            options: {
+                showBuildColumn: false,
+                showVersionColumn: true,
+                showJailbreakColumn: true,
+                showDownloadColumn: false,
+                showReleasedColumn: false,
 
-      showBuildNumStr: 'Show build numbers',
-      showVersionStr: 'Show version numbers',
-      showJailbreakStr: 'Show jailbreaks',
-      showDownloadStr: 'Show downloads',
-      showReleaseDateStr: 'Show release date',
+                showStable: true,
+                showBeta: false,
 
-      showGuideStr: 'Show guide links',
-      simpleTableStr: 'Simple table',
-      complexTableStr: 'Show all devices',
+                showAll: {}
+            },
 
-      fromStr: 'From',
-      toStr: 'To',
-      buildStr: 'Build',
-      versionStr: 'Version',
-      jailbreakStr: 'Jailbreak',
-      downloadStr: 'Download',
-      releaseDateStr: 'Released',
-      noJbStr: 'N/A',
+            defaultFilter: 'iPhone, iPad, iPod',
+            wrapImg: false,
 
-      devicesStr: 'Devices',
-      optionsStr: 'Options',
-      loadingStr: 'Loading...',
-      loadMoreStr: 'Load more firmwares',
-      noFwStr: 'No software versions available.',
-
-      showAllIdent: false,
-      showAllModel: false,
-      showAllBoard: false,
-
-      sortBy: 'version',
-
-      showBeta: false,
-      showStable: true,
-      showFwByDev: null,
-
-      showBuildNum: false,
-      showVersion: true,
-      showJailbreak: true,
-      showDownload: false,
-      showReleaseDate: false,
-
-      showDownloadsFor: [
-        'macOS',
-        'darwinOS'
-      ],
-
-      simpleTable: false,
-      complexTable: false,
-      showGuide: false,
-
-      reverseSorting: true,
-      fwArr: [],
-
-      constEntryCount: 50,
-      constMaxEntryCount: 99999,
-      entryIncrement: 50,
-
-      entryCount: 50,
-      maxEntryCount: 99999,
-
-      wrapImg: false,
-
-      frontmatter: usePageFrontmatter(),
-      devices: json.device,
-      firmwares: json.ios,
-      jailbreaks: json.jailbreak,
-    }
-  },
-  computed: {
-    deviceList() {
-      const fm = this.frontmatter
-      var deviceList = fm.device
-      .map(x => this.devices[x])
-      .map(function(x) {
-        if (fm.mainList) {
-          if (x.type.includes('iPad')) x.type = 'iPad'
-          if (
-            x.type == 'iPad' ||
-            x.type == 'iPhone' ||
-            x.type == 'iPod'
-          ) x.type = 'iPhone, iPad, iPod'
-          if (x.type.includes('Mac') || x.type == 'Developer Transition Kit') {
-            x.type = 'Mac'
-          }
+            devicePath: '/device',
+            fm: usePageFrontmatter()
         }
-        return x
-      })
-      return deviceList
     },
-    deviceNameStr() {
-      const fm = this.frontmatter
-      if (fm.name) return this.deviceStr.format({ dev: fm.name })
-
-      var deviceList = this.deviceList
-      if (!deviceList) return
-
-      const deviceNameArr = removeNullAndDuplicatesAndSort(deviceList.map(x => x.name))
-      if (deviceNameArr.length > 0) return this.deviceStr.format({ dev: deviceNameArr.join(', ') })
-    },
-    deviceIdentifierArr() {
-      var deviceList = this.deviceList
-      if (!deviceList) return
-      
-      const deviceIdentifierArr = removeNullAndDuplicatesAndSort(deviceList.map(x => x.identifier))
-      return deviceIdentifierArr
-    },
-    deviceIdentifierStr() {
-      const arr = this.deviceIdentifierArr
-      if (arr.length > 0) return this.identStr.format({ ident: arr.join(', ') })
-    },
-    deviceSocStr() {
-      var deviceList = this.deviceList
-      if (!deviceList) return
-      
-      const deviceSocArr = removeNullAndDuplicatesAndSort(deviceList.map(x => x.soc))
-      if (deviceSocArr.length > 0) return this.socStr.format({ soc: deviceSocArr.join(', ')})
-    },
-    deviceArchStr() {
-      var deviceList = this.deviceList
-      if (!deviceList) return
-      
-      const deviceArchArr = removeNullAndDuplicatesAndSort(deviceList.map(x => x.arch))
-      if (deviceArchArr.length > 0) return this.archStr.format({ arch: deviceArchArr.join(', ')})
-    },
-    deviceModelArr() {
-      var deviceList = this.deviceList
-      if (!deviceList) return
-      
-      const deviceModelArr = removeNullAndDuplicatesAndSort(deviceList.map(function(x) {
-        if (x.model) return x.model.join(', ')
-        else return null
-      }))
-
-      var retArr = []
-      for (var i of deviceModelArr) retArr.push(...i.split(', '))
-
-      retArr = removeNullAndDuplicatesAndSort(retArr)
-
-      return retArr
-    },
-    deviceModelStr() {
-      const arr = this.deviceModelArr
-      if (arr.length > 0) return this.modelStr.format({ model: arr.join(', ') })
-    },
-    deviceBoardArr() {
-      var deviceList = this.deviceList
-      if (!deviceList) return
-      
-      const deviceBoardArr = removeNullAndDuplicatesAndSort(deviceList.map(function(x) {
-        if (x.board) return x.board.join(', ')
-        else return null
-      }))
-
-      var retArr = []
-      for (var i of deviceBoardArr) retArr.push(...i.split(', '))
-
-      retArr = removeNullAndDuplicatesAndSort(retArr)
-
-      return retArr
-    },
-    deviceBoardStr() {
-      const arr = this.deviceBoardArr
-      if (arr.length > 0) return this.boardStr.format({ board: arr.join(', ') })
-    },
-    infoData() {
-      const fm = this.frontmatter
-      if (!fm.device && !fm.group) return []
-      return {
-        device: this.deviceNameStr,
-        identifier: this.deviceIdentifierStr,
-        soc: this.deviceSocStr,
-        arch: this.deviceArchStr,
-        model: this.deviceModelStr,
-        board: this.deviceBoardStr
-      }
-    },
-    groupHeader() {
-      const fm = this.frontmatter
-      if (fm.device.length == 1) return this.relatedHeader
-      else return this.groupedHeader
-    },
-    groupedDevices() {
-      const fm = this.frontmatter
-      var group = []
-      if (fm.device.length < 1) return
-      else if (fm.device.length == 1) group = json.groups.filter(x => x.devices.includes(fm.device[0]))[0]
-      else group = { "devices": [...fm.device] }
-
-      // Check if group is valid
-      if (!group) return
-      if (!group.hasOwnProperty('devices')) return
-
-      var devArr = group.devices
-      if (devArr.length < 1) return
-      // Remove current device from related devices
-      if (fm.device.length == 1) devArr = devArr.filter(x => x != fm.device[0])
-      // Grab device data
-      devArr = devArr.map(d => this.devices[d])
-      return devArr
-    },
-    deviceFwArr() {
-      const fm = this.frontmatter
-      var devArr = fm.device
-
-      var fwArr = []
-      if (fm.mainList) fwArr = this.firmwares
-      else {
-        for (var d in devArr) {
-          var devFwArr = this.firmwares.filter(function(x) {
-            if (!x.hasOwnProperty('devices')) return 0
-            else return Object.keys(x.devices).includes(devArr[d])
-          })
-          devFwArr.map(function(x) { if (!fwArr.includes(x)) fwArr.push(x) })
-        }
-      }
-
-      return fwArr
-    },
-    deviceFilterArr() {
-      return Array.from(new Set(this.deviceList.map(x => x.type)))
-    },
-    groupArr() {
-      if (!this.complexTable) return
-      const fwArr = this.fwArr
-      const fwArrDevices = fwArr.map(x => x.devices).filter(x => x)
-      var groupArr = []
-      for (const i in fwArrDevices) {
-        for (const j in fwArrDevices[i]) {
-          if (!JSON.stringify(groupArr).includes(JSON.stringify(fwArrDevices[i][j].group)))
-            groupArr.push(fwArrDevices[i][j].group)
-        }
-      }
-      groupArr = groupArr.sort(function(a,b) {
-        const sortType = [a.type, b.type]
-        if (a.subtype) sortType[0] += ' ' + a.subtype
-        if (b.subtype) sortType[1] += ' ' + b.subtype
-
-        if (sortType[0] == 'iPhone' < sortType[1] == 'iPhone') return 1
-        if (sortType[0] == 'iPhone' > sortType[1] == 'iPhone') return -1
-        if (sortType[0] < sortType[1]) return 1
-        if (sortType[0] > sortType[1]) return -1
-        if (a.order < b.order) return 1
-        if (a.order > b.order) return -1
-        if (a.name < b.name) return 1
-        if (b.name > b.name) return -1
-        return 0
-      })
-
-      return groupArr
-    },
-    bigJbArr() {
-      return this.frontmatter.bigObj
-    }
-  },
-  methods: {
-    reverseSortingBtn: function() {
-      this.reverseSorting = !this.reverseSorting
-    },
-    toggleDeviceFilter: function(dev) {
-      var d = this.showFwByDev
-      if (d.includes(dev)) d.splice(d.indexOf(dev), 1)
-      else d.push(dev)
-
-      this.resetFwArr()
-      
-      const query = this.$route.query
-      var retQueryArr = []
-
-      if (query && query.filter) {
-        var existingQuery = query.filter.split(';').filter(x => !this.deviceFilterArr.includes(x))
-        retQueryArr.push(...existingQuery)
-      }
-
-      var newQuery = d
-      if (newQuery.length == this.deviceFilterArr.length) newQuery = []
-      retQueryArr.push(...newQuery)
-
-      if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(';') }})
-      else this.$router.push({query: {}})
-    },
-    getFwArrMethod: function(val) {
-      const fm = this.frontmatter
-      var devArr = fm.device
-      var fwArr = this.deviceFwArr
-      if (!this.showFwByDev) this.showFwByDev = JSON.parse(JSON.stringify(this.deviceFilterArr))
-
-      const showFwByDev = this.showFwByDev
-      const showBeta = this.showBeta
-      const showStable = this.showStable
-      fwArr = fwArr.filter(function(fw) {
-        const fwTypeArr = Object.keys(fw.devices).map(x => fw.devices[x].group.type)
-        return (
-          (
-            (fwTypeArr.some(r=> showFwByDev.includes(r))) ||
-            ((fwTypeArr.includes('iPad') || fwTypeArr.includes('iPhone') || fwTypeArr.includes('iPod')) && showFwByDev.includes('iPhone, iPad, iPod')) ||
-            ((fwTypeArr.filter(x => x.includes('Mac')).length > 0 || fwTypeArr.includes('Developer Transition Kit')) && showFwByDev.includes('Mac'))
-          ) && (
-            (fw.beta && showBeta) ||
-            (!fw.beta && showStable)
-          )
-        )
-      })
-      if (this.sortBy == 'released') fwArr = fwArr.sort(function(a,b) {
-        const rel = [new Date(a.released), new Date(b.released)]
-        if (rel[0] < rel[1]) return -1
-        if (rel[0] > rel[1]) return 1
-        return 0
-      })
-      if (this.reverseSorting) fwArr = fwArr.reverse()
-
-      if (!this.simpleTable) {
-        var filterVal = this.entryCount - this.entryIncrement
-        fwArr = fwArr.filter((fw,index) => index < val)
-          .filter((fw, index) => index >= filterVal)
-      }
-
-      var fwArrLength = this.fwArr.concat(fwArr).length
-      if (fwArrLength <= this.entryCount) this.maxEntryCount = fwArrLength
-
-      const jbList = this.jailbreaks
-      const deviceList = this.deviceList
-
-      for (var f in fwArr) {
-        var jbArr = []
-        const fw = fwArr[f]
-        var fwDevArr = devArr.filter(x => Object.keys(fw.devices).includes(x) && Array.from(showFwByDev).includes(this.deviceList.filter(y => y.identifier == x)[0].type))
-        for (var jb in jbList) {
-          if (!jbList[jb].hasOwnProperty('compatibility')) continue
-          for (var c in jbList[jb].compatibility) {
-            if (!jbList[jb].compatibility[c].firmwares.includes(fw.uniqueBuild)) continue
-            if (!jbList[jb].compatibility[c].devices.some(r=> fwDevArr.includes(r))) continue
-            if (jbArr.includes(jbList[jb])) continue
-            jbArr.push(jbList[jb])
-          }
-        }
-
-        jbArr = jbArr.sort((a,b) => a.priority - b.priority)
-        if (this.simpleTable) jbArr = jbArr.filter((jb, index) => index == 0)
-        
-        fwArr[f].jailbreakArr = jbArr
-      }
-
-      if (!this.frontmatter.mainList) {
-        for (const fw of fwArr) {
-          fw.ipswObj = {}
-          for (const ident of this.deviceIdentifierArr) {
-            const dev = fw.devices[ident]
-            if (dev) {
-              fw.ipswObj[ident] = {
-                name: dev.name,
-                identifier: ident,
-                ipsw: dev.ipsw
-              }
+    computed: {
+        infoArr() {
+            const dev = this.fm.device
+            const grabInfo = (property) => Array.from(new Set(dev.map(x => x[property]))).sort().flat().join(', ')
+            const propertyArr = [
+                'identifier',
+                'soc',
+                'arch',
+                'model',
+                'board'
+            ]
+            var retObj = {}
+            for (var str of this.infoStrArr) {
+                const property = propertyArr.filter(x => str.includes(x))[0]
+                retObj[property] = str.format({ [property]: grabInfo(property) })
             }
-          }
-          if (
-            Array.from(new Set(Object.keys(fw.ipswObj).map(x => fw.ipswObj[x].ipsw))).length == 1 &&
-            Object.keys(fw.ipswObj).length == this.deviceIdentifierArr.length
-          ) 
-            fw.ipswObj = {
-              "Device1,1": {
-                name: 'Device',
-                identifier: "Device1,1",
-                ipsw: fw.ipswObj[Object.keys(fw.ipswObj)[0]].ipsw
-              }
+            return retObj
+        },
+        groupedOrRelatedDevicesObj() {
+            const dev = this.fm.device
+            return {
+                header: (this.fm.grouped) ? this.groupedHeaderStr : this.relatedHeaderStr,
+                devices: this.fm.device.map(x => {
+                    return {
+                        name: x.name,
+                        url: [this.devicePath,x.identifier].join('/') + '.html'
+                    }
+                })
+            }
+        },
+        optionsObj() {
+            return [
+                [
+                    "showStable",
+                    "showBeta",
+                ],
+                [
+                    "showBuildColumn",
+                    "showVersionColumn",
+                    "showJailbreakColumn",
+                    "showDownloadColumn",
+                    "showReleasedColumn"
+                ]
+            ].map(x => {
+                return x.map(y => {
+                    return {
+                        label: this.optionsObjStr[y],
+                        model: y,
+                        id: y + 'Checkbox',
+                        display: true
+                    }
+                })
+            })
+        },
+        tableHeaders() {
+            return [
+                {
+                    label: this.tableHeadObj.build,
+                    value: this.options.showBuildColumn
+                },
+                {
+                    label: this.tableHeadObj.version,
+                    value: this.options.showVersionColumn
+                },
+                {
+                    label: this.tableHeadObj.jailbreak,
+                    value: this.options.showJailbreakColumn
+                },
+                {
+                    label: this.tableHeadObj.download,
+                    value: this.options.showDownloadColumn
+                },
+                {
+                    label: this.tableHeadObj.released,
+                    value: this.options.showReleasedColumn
+                }
+            ].filter(x => x.value).map(x => x.label)
+        }
+    },
+    methods: {
+        checkWrap: function() {
+            const flexImg = document.getElementById('flexImg')
+            const flexInfoWidth = document.getElementById('flexInfo').getBoundingClientRect().width
+
+            const homeElement = document.getElementsByClassName('home')[0]
+            var totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
+            var flexImgWidth = 0
+
+            flexImg.onload = () => {
+                flexImgWidth = flexImg.clientWidth
+                this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
+            }
+
+            window.onresize = () => {
+                totalWidth = totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
+                this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
             }
         }
-      }
-
-      const timeLocale = this.timeLocale
-      fwArr = fwArr.map(function(x) {
-        if (!x.hasOwnProperty('released')) return x
-        x.released = new Intl.DateTimeFormat(timeLocale, { dateStyle: 'medium'}).format(new Date(x.released))
-        return x
-      })
-
-      if (this.simpleTable) {
-        var newArr = []
-        fwArr.map(function(fw, index) {
-          var newObj = {}
-          if (index == 0 || JSON.stringify(newArr[newArr.length-1].endBuild.jailbreakArr) != JSON.stringify(fw.jailbreakArr)) {
-            newObj.startBuild = fw
-            newObj.endBuild = fw
-            newArr.push(newObj)
-          } else {
-            newArr[newArr.length-1].endBuild = fw
-          }
-        })
-        fwArr = newArr
-
-        return fwArr
-      }
-
-      return this.fwArr.concat(fwArr)
     },
-    loadMoreRows: function() {
-      if (!this.complexTable) window.onscroll = () => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight * 0.6
-        if (bottomOfWindow && !this.simpleTable) {
-          this.incrementRows()
+    mounted() {
+        if (this.fm.noJb) {
+            this.options.showReleasedColumn = true
+            this.options.showJailbreakColumn = false
+            this.options.showDownloadColumn = false
         }
-      }
-    },
-    checkWrap: function() {
-      const flexImg = document.getElementById('flexImg')
-      const flexInfoWidth = document.getElementById('flexInfo').getBoundingClientRect().width
-
-      const homeElement = document.getElementsByClassName('home')[0]
-      var totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
-      var flexImgWidth = 0
-
-
-      flexImg.onload = () => {
-        flexImgWidth = flexImg.clientWidth
-        this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
-      }
-
-      window.onresize = () => {
-        totalWidth = totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
-        this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
-      }
-    },
-    incrementRows: function() {
-      var incr = this.entryIncrement / parseInt(this.complexTable + 1)
-      if (this.entryCount + incr >= this.maxEntryCount) this.entryCount = this.maxEntryCount
-      this.entryCount += incr
-    },
-    resetFwArr: function() {
-      this.fwArr = []
-      this.maxEntryCount = this.constMaxEntryCount
-      this.fwArr = this.getFwArrMethod(this.constEntryCount / parseInt(this.complexTable + 1))
-      this.entryCount = this.constEntryCount / parseInt(this.complexTable + 1)
-    }
-  },
-  watch: {
-    reverseSorting() {
-      this.resetFwArr()
-    },
-    sortBy() {
-      this.resetFwArr()
-    },
-    showBeta(bool) {
-      this.resetFwArr()
-      const query = this.$route.query
-      var retQueryArr = []
-      if (query && query.filter) {
-        var existingQuery = query.filter.split(';').filter(x => !['stable','beta'].includes(x))
-        retQueryArr.push(...existingQuery)
-      }
-      var newQuery = [this.showStable ? 'stable' : null, bool ? 'beta' : null].filter(x => x)
-      if (newQuery.length == 1 & newQuery[0] == 'stable') newQuery = []
-      retQueryArr.push(...newQuery)
-      if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(';') }})
-      else this.$router.push({query: {}})
-    },
-    showStable(bool) {
-      this.resetFwArr()
-      const query = this.$route.query
-      var retQueryArr = []
-      if (query && query.filter) {
-        var existingQuery = query.filter.split(';').filter(x => !['stable','beta'].includes(x))
-        retQueryArr.push(...existingQuery)
-      }
-      var newQuery = [bool ? 'stable' : null, this.showBeta ? 'beta' : null].filter(x => x)
-      if (newQuery.length == 1 & newQuery[0] == 'stable') newQuery = []
-      retQueryArr.push(...newQuery)
-      if (retQueryArr.length > 0) this.$router.push({query : { filter: retQueryArr.join(';') }})
-      else this.$router.push({query: {}})
-    },
-    showGuide: function (bool) {
-      this.resetFwArr()
-    },
-    simpleTable: function (bool) {
-      this.resetFwArr()
-    },
-    entryCount: function(val) {
-      this.fwArr = this.getFwArrMethod(val)
-    }
-  },
-  created() {
-    const query = this.$route.query
-    if (Object.keys(query).length > 0) {
-      if (query.filter) {
-        var filterArr = query.filter.split(';')
-        if (filterArr.includes('stable') || filterArr.includes('beta')) {
-          this.showBeta = filterArr.includes('beta')
-          this.showStable = filterArr.includes('stable')
-          filterArr = filterArr.filter(x => x != 'stable' || x != 'beta')
+        if (window.screen.width > 650) {
+            this.options.showReleasedColumn = true
+            if (this.fm.noJb) this.options.showDownloadColumn = true
         }
-        const devArr = filterArr.filter(y => this.deviceFilterArr.includes(y))
-        if (devArr.length > 0) this.showFwByDev = devArr
-        console.log(this.showFwByDev)
-      }
-    }
-    this.resetFwArr()
+        if (this.fm.mainList) document.getElementById("showDownloadColumnCheckbox").disabled = true
+        else this.checkWrap()
 
-    if (this.deviceFwArr.filter(x => !this.showDownloadsFor.includes(x.osStr)).length == 0) {
-      this.showDownload = true
-      this.showJailbreak = false
-      this.noJb = true
+        this.options.filterDevType = this.fm.deviceTypeArr[0]
+        if (this.fm.deviceTypeArr.includes(this.defaultFilter)) this.options.filterDevType = this.defaultFilter
     }
-  },
-  mounted() {
-    this.loadMoreRows()
-    if (!this.frontmatter.mainList) this.checkWrap()
-
-    if (window.screen.width > 650) this.showReleaseDate = true
-    else if (this.noJb) {
-      this.showReleaseDate = true
-      this.showDownload = false
-      this.smallScreen = true
-    }
-  }
 }
 </script>
 
-<style>
+<style scoped>
 .flexWrapper {
   display: flex;
   justify-content: space-between;
@@ -761,15 +334,9 @@ export default {
   margin-left: 0;
 }
 
-.chevronPoint { 
-  float: left;
-  margin-left: -1.5em;
-}
-
-.chevron {
-  padding-right: 0.23em;
-  margin-top: 0.8em;
-  font-size: 0.7em;
+.infoList {
+    list-style-type: none;
+    padding-left: 0;
 }
 
 .showOnHover .hoverElement {
