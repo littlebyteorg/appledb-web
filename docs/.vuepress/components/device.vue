@@ -12,19 +12,6 @@
             <img id="flexImg" :src="`/assets/images/device@1024/${fm.device.map(x => x.identifier)[0]}.png`" :style="`max-height: ${Object.keys(infoArr).length * 1.8}em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
         </p>
 
-
-        <!--<p class="flexWrapper">
-        <div id="flexInfo">
-            <div v-for="(i, index) in infoData" :key="i">
-            <template v-if="index == 'identifier' && deviceIdentifierArr.length > 5 && !showAllIdent">{{ i.replace(deviceIdentifierArr.join(', '), deviceIdentifierArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllIdent = true">...</a></template>
-            <template v-else-if="index == 'model' && deviceModelArr.length > 5 && !showAllModel">{{ i.replace(deviceModelArr.join(', '), deviceModelArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllModel = true">...</a></template>
-            <template v-else-if="index == 'board' && deviceBoardArr.length > 5 && !showAllBoard">{{ i.replace(deviceBoardArr.join(', '), deviceBoardArr.slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAllBoard = true">...</a></template>
-            <template v-else>{{ i }}</template>
-            </div>
-        </div>
-        <img id="flexImg" :src="`/assets/images/device@1024/${deviceIdentifierArr[0]}.png`" :style="`max-height: ${Object.keys(infoData).length * 1.8}em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
-        </p>-->
-        
         <template v-if="groupedOrRelatedDevicesObj.devices.length > 1">
             <h2>{{ groupedOrRelatedDevicesObj.header }}</h2>
             <ul>
@@ -83,8 +70,8 @@
                         (fw.beta && options.showBeta) ||
                         (!fw.beta && options.showStable) 
                     ) && (
-                        fm.mainList && 
-                        fw.deviceTypeArr.includes(options.filterDevType)
+                        (fm.mainList && fw.deviceTypeArr.includes(options.filterDevType)) ||
+                        !fm.mainList
                     )
                 )
             })" :key="fw">
