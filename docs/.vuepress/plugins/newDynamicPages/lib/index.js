@@ -201,7 +201,7 @@ function getDevicePage(args) {
       versionArr: getVersionArr,
       grouped: grouped,
       mainList: mainList,
-      noJb: ((osType.includes('macOS') || osType.includes('darwinOS')) && !mainList),
+      noJb: ((osType.includes('macOS') || osType.includes('darwinOS') || osType.includes('Durian Firmware')) && !mainList),
       deviceFilter: (mainList) ? 
         Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort().map(x => {
           return {
