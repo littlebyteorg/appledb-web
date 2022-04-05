@@ -1,30 +1,34 @@
 <template>
     <p v-for="s in introStr" :key="s">{{ s }}</p>
+
+    <template v-for="o in groupObj" :key="o">
+        <h2>{{ o.label }}</h2>
     
-    <table v-for="t in Math.ceil(typeArr.length / colCount)" :key="t">
-        <tr>
-            <th v-for="c in colCount" :key="c">
-                <router-link v-if="typeArr[(t - 1) * colCount + c - 1]" :to="
-                    // (devCount[typeArr[(t - 1) * colCount + c - 1]] > 1) ?
-                    `/device-selection/${typeArr[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`
-                    // : `/device/${groupList.filter(x => x.type == typeArr[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`*/
-                ">
-                    {{ typeArr[(t - 1) * colCount + c - 1] }}
-                </router-link>
-            </th>
-        </tr>
-        <tr>
-            <td v-for="c in colCount" :key="c" style="height: 8em;">
-                <router-link v-if="typeArr[(t - 1) * colCount + c - 1]" :to="
-                    // (devCount[typeArr[(t - 1) * colCount + c - 1]] > 1) ?
-                    `/device-selection/${typeArr[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`
-                    // : `/device/${groupList.filter(x => x.type == typeArr[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`
-                ">
-                    <img :src="imageObj[typeArr[(t - 1) * colCount + c - 1]]" style="max-height: 8em;">
-                </router-link>
-            </td>
-        </tr>
-    </table>
+        <table v-for="t in Math.ceil(o.types.length / colCount)" :key="t">
+            <tr>
+                <th v-for="c in colCount" :key="c">
+                    <router-link v-if="o.types[(t - 1) * colCount + c - 1]" :to="
+                        // (devCount[o.types[(t - 1) * colCount + c - 1]] > 1) ?
+                        `/device-selection/${o.types[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`
+                        // : `/device/${groupList.filter(x => x.type == o.types[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`*/
+                    ">
+                        {{ o.types[(t - 1) * colCount + c - 1] }}
+                    </router-link>
+                </th>
+            </tr>
+            <tr>
+                <td v-for="c in colCount" :key="c" style="height: 8em;">
+                    <router-link v-if="o.types[(t - 1) * colCount + c - 1]" :to="
+                        // (devCount[o.types[(t - 1) * colCount + c - 1]] > 1) ?
+                        `/device-selection/${o.types[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`
+                        // : `/device/${groupList.filter(x => x.type == o.types[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`
+                    ">
+                        <img :src="imageObj[o.types[(t - 1) * colCount + c - 1]]" style="max-height: 8em;">
+                    </router-link>
+                </td>
+            </tr>
+        </table>
+    </template>
 
     <p><router-link to="/device-list.html">{{ viewAllStr }}</router-link></p>
 </template>
@@ -39,6 +43,7 @@ export default {
                 'Please select what kind of device you have below.'
             ],
             viewAllStr: 'View all devices',
+
             colCount: 3,
             frontmatter: usePageFrontmatter(),
         }
@@ -49,6 +54,55 @@ export default {
         },
         typeArr() {
             return Array.from(new Set(this.groupList.map(x => x.type)))
+        },
+        groupObj() {
+            var presetTypeArr = []
+            var presetOrder = [
+                {
+                    label: "iOS Devices",
+                    types: [
+                        "iPhone",
+                        "iPad",
+                        "iPad Air",
+                        "iPad Pro",
+                        "iPad mini",
+                        "iPod"
+                    ]
+                },
+                {
+                    label: "macOS Devices",
+                    types: [
+                        "MacBook Air",
+                        "MacBook Pro",
+                        "iMac",
+                        "Mac mini",
+                        "Mac Studio",
+                        "Developer Transition Kit",
+                        "Apple Display"
+                    ]
+                },
+                {
+                    label: "Home and Accessories",
+                    types: [
+                        "Apple Watch",
+                        "Apple TV",
+                        "HomePod",
+                        "AirTag"
+                    ]
+                }
+            ].map(x => {
+                x.types = x.types.filter(y => this.typeArr.includes(y))
+                for (const t of x.types) presetTypeArr.push(t)
+                return x
+            })
+
+            const unsetTypes = this.typeArr.filter(x => !presetTypeArr.includes(x))
+            if (unsetTypes.length > 0) presetOrder.push({
+                label: "Other",
+                types: unsetTypes
+            })
+
+            return presetOrder
         },
         devCount() {
             const groupList = this.groupList

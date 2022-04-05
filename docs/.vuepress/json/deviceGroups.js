@@ -33,13 +33,14 @@ for (const file in deviceFiles) {
   deviceGroupArr.push(require('.' + path.sep + deviceFiles[file]));
 }
 
-deviceGroupArr.map(function(x) {
+deviceGroupArr = deviceGroupArr.map(function(x) {
   if (x.devices) {
+    if (x.devices.map(y => require('./deviceList')[y]).filter(x => x).length < 1) return false
     x.soc = Array.from(new Set(x.devices.map(y => require('./deviceList')[y]).map(y => y.soc)))
     x.arch = Array.from(new Set(x.devices.map(y => require('./deviceList')[y]).map(y => y.arch)))
   }
 
   return x
-})
+}).filter(x => x)
 
 module.exports = deviceGroupArr;
