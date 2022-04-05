@@ -6,6 +6,7 @@
     <div v-if="getReleasedDate != -1" v-html="releasedStr.format({releasedTime: getReleasedDate})"/>
     <div
       v-if="
+        devGroupArr[0].devices[0].ipsw &&
         Array.from(new Set(devGroupArr.map(x => x.devices).flat().map(x => x.ipsw))).length == 1 &&
         devGroupArr[0].devices[0].ipsw != 'none'
       "
