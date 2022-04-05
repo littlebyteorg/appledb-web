@@ -183,6 +183,13 @@ function getDevicePage(args) {
     ]
   ]
 
+  const propertyArr = ['name','identifier','soc','arch','model','board']
+  const infoArr = devArr.map(x => {
+    var o = {}
+    for (const p of propertyArr) if (x[p]) o[p] = x[p]
+    return o
+  })
+
   return {
     path: devPath,
     frontmatter: {
@@ -190,16 +197,7 @@ function getDevicePage(args) {
       description: description || `Information lookup for ${name}`,
       layout: 'chartLayout',
       chartType: 'device',
-      device: devArr.map(x => {
-        return {
-          name: x.name,
-          identifier: x.identifier,
-          soc: x.soc,
-          arch: x.arch,
-          model: x.model,
-          board: x.board
-        }
-      }),
+      device: infoArr,
       versionArr: getVersionArr,
       grouped: grouped,
       mainList: mainList,

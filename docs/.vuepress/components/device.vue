@@ -213,7 +213,7 @@ export default {
             var retObj = {}
             for (var str of this.infoStrArr) {
                 const property = propertyArr.filter(x => str.includes(x))[0]
-                retObj[property] = str.format({ [property]: grabInfo(property) })
+                if (grabInfo(property)) retObj[property] = str.format({ [property]: grabInfo(property) })
             }
             return retObj
         },
