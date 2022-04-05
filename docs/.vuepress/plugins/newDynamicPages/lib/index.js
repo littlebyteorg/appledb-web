@@ -182,7 +182,7 @@ function getDevicePage(args) {
       "meta",
       {
         property: "og:image",
-        content: `/assets/images/device@512/${devArr[0].identifier}.png`
+        content: `/assets/images/device@512/${devArr[0].identifier}/0.png`
       }
     ]
   ]

@@ -14,7 +14,7 @@
         <tr>
             <td v-for="c in colCount" :key="c" style="height: 8em;">
                 <router-link v-if="deviceArr[(t - 1) * colCount + c - 1]" :to="`/device/${deviceArr[(t - 1) * colCount + c - 1].name.replace(/ /g, '-')}.html`">
-                    <img :src="`/assets/images/device@256/${deviceArr[(t - 1) * colCount + c - 1].devices[0]}.png`" style="max-height: 8em;">
+                    <img :src="`/assets/images/device@256/${deviceArr[(t - 1) * colCount + c - 1].devices[0]}/0.png`" style="max-height: 8em;">
                 </router-link>
             </td>
         </tr>
