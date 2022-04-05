@@ -167,7 +167,11 @@ export default {
     },
     getReleasedDate() {
       if (!this.currentBuild.hasOwnProperty('released')) return -1
-      return new Intl.DateTimeFormat(this.timeLocale, { dateStyle: 'full'}).format(new Date(this.currentBuild.released))
+
+      const releasedArr = this.currentBuild.released.split('-')
+      const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+      const released = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(this.currentBuild.released))
+      return released
     },
     devGroupArr() {
       const deviceArr = this.currentBuild.devices

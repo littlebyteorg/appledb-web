@@ -146,6 +146,10 @@ function getDevicePage(args) {
       )
     )
 
+    const releasedArr = i.released.split('-')
+    const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+    const released = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(i.released))
+
     return {
       osStr: i.osStr,
       version: i.version,
@@ -154,7 +158,7 @@ function getDevicePage(args) {
       url: `/${i.osStr.replace(/ /g, '-')}/${i.uniqueBuild}.html`,
       released: i.released,
       beta: i.beta,
-      releasedStr: new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'}).format(new Date(i.released)),
+      releasedStr: released,
       devices: devIdFwArr,
       deviceFilterArr: (mainList) ?
         devTypeArr :
@@ -190,6 +194,13 @@ function getDevicePage(args) {
     return o
   })
 
+  const hasJbArr = [
+    'iOS',
+    'tvOS',
+    'audioOS',
+    'watchOS'
+  ]
+
   return {
     path: devPath,
     frontmatter: {
@@ -201,7 +212,7 @@ function getDevicePage(args) {
       versionArr: getVersionArr,
       grouped: grouped,
       mainList: mainList,
-      noJb: ((osType.includes('macOS') || osType.includes('darwinOS') || osType.includes('Durian Firmware')) && !mainList),
+      noJb: (!(osType.some(r => hasJbArr.includes(r))) && !mainList),
       deviceFilter: (mainList) ? 
         Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort().map(x => {
           return {
