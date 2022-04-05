@@ -54,7 +54,7 @@ iosArr = iosArr.map(function(x) {
     else x.sortVersion = x.version
   }
 
-  x.path = '/' + [x.osType, x.uniqueBuild].join('/') + '.html'
+  x.path = '/' + [x.osStr.replace(/ /g,'-'), x.uniqueBuild].join('/') + '.html'
   
   return x
 })
