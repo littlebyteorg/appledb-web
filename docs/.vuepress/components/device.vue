@@ -205,7 +205,7 @@ export default {
     computed: {
         infoArr() {
             const dev = this.fm.device
-            const grabInfo = (property) => Array.from(new Set(dev.map(x => x[property]))).sort().flat().join(', ')
+            const grabInfo = (property) => Array.from(new Set(dev.map(x => x[property]).flat())).sort().join(', ')
             const propertyArr = [
                 'identifier',
                 'soc',
@@ -218,6 +218,7 @@ export default {
                 const property = propertyArr.filter(x => str.includes(x))[0]
                 if (grabInfo(property)) retObj[property] = str.format({ [property]: grabInfo(property) })
             }
+            console.log(retObj)
             return retObj
         },
         groupedOrRelatedDevicesObj() {
