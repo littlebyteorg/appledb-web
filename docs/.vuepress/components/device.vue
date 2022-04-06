@@ -22,113 +22,116 @@
                 </li>
             </ul>
         </template>
-
-        <h2>{{ versionHeaderStr }}</h2>
     </template>
 
-    <ul class="tableOptionsWrapper">
-        <li :style="`margin-right: 1.5em; ${(fm.deviceFilter.length > 2) ? 'padding-top: 0.15em;' : ''}`">
-            <label class="chartDropdown">
-                <i class="fas fa-cog"></i>
-                {{ optionsStr }}
-                <span class="arrow down"></span>
-            </label>
-            <div class="chartDropdownBox">
-                <template v-for="(optionSection, index) in optionsObj.filter(x => x.filter(y => y.display).length > 0)" :key="optionSection">
-                    <ul>
-                        <li v-for="option in optionSection.filter(x => x.display)" :key="option">
-                            <input type="checkbox" v-model="options[option.model]" :id="option.id">
-                            <label :for="option.id">{{ option.label }}</label>
-                        </li>
-                    </ul>
-                    <template v-if="index < optionsObj.length - 1"><ul><li style="padding: 0;"><hr></li></ul></template>
-                </template>
-            </div>
-        </li>
-        <li v-if="!fm.hideChildren && fm.deviceFilter.length > 2">
-            <!--<label class="chartDropdown" for="deviceSelect">
-                <i class="fas fa-filter"></i>
-                {{ deviceStr }}
-                <span class="arrow down" style="display: none;"></span>
-            </label>-->
-            <select v-model="options.filterDev" name="deviceSelect" id="deviceSelect" :style="`margin-left: .5em; ${(options.filterDev == fm.deviceFilter[0].value) ? 'color: gray;' : ''}`">
-                <option v-for="(filterItem, index) in fm.deviceFilter" :key="filterItem" :value="filterItem.value">
-                    <template v-if="index == 0 && !fm.mainList" >{{ allDeviceStr }}</template>
-                    <template v-else>{{ filterItem.label }}</template>
-                </option>
-            </select>
-        </li>
-    </ul>
+    <h2 v-if="fm.versionArr && fm.versionArr.length > 0 && !fm.mainList">{{ versionHeaderStr }}</h2>
 
-    <div class="tableContainer" v-if="fm.versionArr">
-        <table>
-            <tr>
-                <th v-for="header in tableHeaders" :key="header">{{ header }}</th>
-            </tr>
-            <template v-for="fw in fm.versionArr.filter(fw => {
-                return (
-                    (
-                        (fw.beta && options.showBeta) ||
-                        (!fw.beta && options.showStable) 
+    <template v-if="fm.versionArr && fm.versionArr.length > 0">
+
+        <ul class="tableOptionsWrapper">
+            <li :style="`margin-right: 1.5em; ${(fm.deviceFilter.length > 2) ? 'padding-top: 0.15em;' : ''}`">
+                <label class="chartDropdown">
+                    <i class="fas fa-cog"></i>
+                    {{ optionsStr }}
+                    <span class="arrow down"></span>
+                </label>
+                <div class="chartDropdownBox">
+                    <template v-for="(optionSection, index) in optionsObj.filter(x => x.filter(y => y.display).length > 0)" :key="optionSection">
+                        <ul>
+                            <li v-for="option in optionSection.filter(x => x.display)" :key="option">
+                                <input type="checkbox" v-model="options[option.model]" :id="option.id">
+                                <label :for="option.id">{{ option.label }}</label>
+                            </li>
+                        </ul>
+                        <template v-if="index < optionsObj.length - 1"><ul><li style="padding: 0;"><hr></li></ul></template>
+                    </template>
+                </div>
+            </li>
+            <li v-if="!fm.hideChildren && fm.deviceFilter.length > 2">
+                <!--<label class="chartDropdown" for="deviceSelect">
+                    <i class="fas fa-filter"></i>
+                    {{ deviceStr }}
+                    <span class="arrow down" style="display: none;"></span>
+                </label>-->
+                <select v-model="options.filterDev" name="deviceSelect" id="deviceSelect" :style="`margin-left: .5em; ${(options.filterDev == fm.deviceFilter[0].value) ? 'color: gray;' : ''}`">
+                    <option v-for="(filterItem, index) in fm.deviceFilter" :key="filterItem" :value="filterItem.value">
+                        <template v-if="index == 0 && !fm.mainList" >{{ allDeviceStr }}</template>
+                        <template v-else>{{ filterItem.label }}</template>
+                    </option>
+                </select>
+            </li>
+        </ul>
+
+        <div class="tableContainer">
+            <table>
+                <tr>
+                    <th v-for="header in tableHeaders" :key="header">{{ header }}</th>
+                </tr>
+                <template v-for="fw in fm.versionArr.filter(fw => {
+                    return (
+                        (
+                            (fw.beta && options.showBeta) ||
+                            (!fw.beta && options.showStable) 
+                        )
                     )
-                )
-            })" :key="fw">
-                <tr v-if="
-                    (fm.mainList) ? 
-                        fw.deviceFilterArr.includes(options.filterDev) :
-                        fw.deviceFilterArr.some(r => options.filterDev.includes(r))
-                ">
+                })" :key="fw">
+                    <tr v-if="
+                        (fm.mainList) ? 
+                            fw.deviceFilterArr.includes(options.filterDev) :
+                            fw.deviceFilterArr.some(r => options.filterDev.includes(r))
+                    ">
 
-                    <td v-if="options.showBuildColumn" class="showOnHover">
-                        <router-link :to="fw.url">{{ fw.build }}</router-link>
-                        <template v-if="getFilteredDownloads(fw.downloads).length == 1 && !options.showDownloadColumn">
-                            <a v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" :href="dl.url">
-                                <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
-                            </a>
-                        </template>
-                    </td>
-                    
-                    <td v-if="options.showVersionColumn">
-                        <template v-if="options.showBuildColumn">{{ fw.osStr }} {{ fw.version }}</template>
-                        <div v-else class="showOnHover">
-                            <router-link :to="fw.url">{{ fw.osStr }} {{ fw.version }}<template v-if="fw.duplicateVersion"> ({{ fw.build }})</template></router-link>
+                        <td v-if="options.showBuildColumn" class="showOnHover">
+                            <router-link :to="fw.url">{{ fw.build }}</router-link>
                             <template v-if="getFilteredDownloads(fw.downloads).length == 1 && !options.showDownloadColumn">
                                 <a v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" :href="dl.url">
                                     <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
                                 </a>
                             </template>
-                        </div>
-                    </td>
+                        </td>
+                        
+                        <td v-if="options.showVersionColumn">
+                            <template v-if="options.showBuildColumn">{{ fw.osStr }} {{ fw.version }}</template>
+                            <div v-else class="showOnHover">
+                                <router-link :to="fw.url">{{ fw.osStr }} {{ fw.version }}<template v-if="fw.duplicateVersion"> ({{ fw.build }})</template></router-link>
+                                <template v-if="getFilteredDownloads(fw.downloads).length == 1 && !options.showDownloadColumn">
+                                    <a v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" :href="dl.url">
+                                        <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
+                                    </a>
+                                </template>
+                            </div>
+                        </td>
 
-                    <td v-if="options.showJailbreakColumn">
-                        <template v-for="(jb, index) in fw.jailbreakArr" :key="jb">
-                            <router-link :to="`/jailbreak/${jb.replace(/ /g, '-')}.html`">
-                                {{ jb }}
-                            </router-link>
-                            <template v-if="index < fw.jailbreakArr.length - 1">, </template>
-                        </template>
-                        <template v-if="fw.jailbreakArr.length == 0">{{ naStr }}</template>
-                    </td>
+                        <td v-if="options.showJailbreakColumn">
+                            <template v-for="(jb, index) in fw.jailbreakArr" :key="jb">
+                                <router-link :to="`/jailbreak/${jb.replace(/ /g, '-')}.html`">
+                                    {{ jb }}
+                                </router-link>
+                                <template v-if="index < fw.jailbreakArr.length - 1">, </template>
+                            </template>
+                            <template v-if="fw.jailbreakArr.length == 0">{{ naStr }}</template>
+                        </td>
 
-                    <td v-if="options.showDownloadColumn">
-                        <div v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" class="showOnHover">
-                            <template v-if="getFilteredDownloads(fw.downloads).length > 1">{{ dl.deviceName }}: </template>
-                            <a :href="dl.url">
-                                {{ dl.label }}
-                                <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
-                            </a>
-                        </div>
-                        <template v-if="getFilteredDownloads(fw.downloads).length == 0">
-                            {{ naStr }}
-                        </template>
-                    </td>
+                        <td v-if="options.showDownloadColumn">
+                            <div v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" class="showOnHover">
+                                <template v-if="getFilteredDownloads(fw.downloads).length > 1">{{ dl.deviceName }}: </template>
+                                <a :href="dl.url">
+                                    {{ dl.label }}
+                                    <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
+                                </a>
+                            </div>
+                            <template v-if="getFilteredDownloads(fw.downloads).length == 0">
+                                {{ naStr }}
+                            </template>
+                        </td>
 
-                    <td v-if="options.showReleasedColumn" style="width: 7em;">{{ fw.releasedStr }}</td>
+                        <td v-if="options.showReleasedColumn" style="width: 7em;">{{ fw.releasedStr }}</td>
 
-                </tr>
-            </template>
-        </table>
-    </div>
+                    </tr>
+                </template>
+            </table>
+        </div>
+    </template>
 </template>
 
 <script>
