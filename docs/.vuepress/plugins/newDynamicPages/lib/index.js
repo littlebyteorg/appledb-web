@@ -104,6 +104,7 @@ function getDevicePage(args) {
   const description = args.description
   const grouped = args.grouped
   const mainList = args.mainList
+  const hideChildren = args.hideChildren
 
   const devFwArr = iosList.filter(i => {
     const fwDevArr = Object.keys(i.devices)
@@ -211,6 +212,7 @@ function getDevicePage(args) {
       device: infoArr,
       versionArr: getVersionArr,
       grouped: grouped,
+      hideChildren: hideChildren,
       mainList: mainList,
       noJb: (!(osType.some(r => hasJbArr.includes(r))) && !mainList),
       deviceFilter: (mainList) ? 
@@ -260,7 +262,8 @@ for (const g of deviceGroups)
       name: g.name,
       path: [devicePath, g.name.replace(/ /g, '-')].join('/') + '.html',
       devArr: g.devices.map(x => deviceList[x]),
-      grouped: true
+      grouped: true,
+      hideChildren: g.hideChildren
     })
   )
 

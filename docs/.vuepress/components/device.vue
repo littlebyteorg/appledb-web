@@ -12,7 +12,7 @@
             <img id="flexImg" :src="`/assets/images/device@512/${fm.device.map(x => x.identifier)[0]}/0.png`" :style="`height: ${Math.max(Object.keys(infoArr).length, 5) * 1.8}em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
         </p>
 
-        <template v-if="groupedOrRelatedDevicesObj.devices.length > 1">
+        <template v-if="!fm.hideChildren && groupedOrRelatedDevicesObj.devices.length > 1">
             <h2>{{ groupedOrRelatedDevicesObj.header }}</h2>
             <ul>
                 <li v-for="dev in groupedOrRelatedDevicesObj.devices" :key="dev">
@@ -224,6 +224,7 @@ export default {
                 devices: this.fm.device.map(x => {
                     return {
                         name: x.name,
+                        identifier: x.identifier,
                         url: [this.devicePath,x.identifier].join('/') + '.html'
                     }
                 })

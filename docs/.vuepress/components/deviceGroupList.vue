@@ -131,7 +131,11 @@ export default {
                 firstDeviceObj[g.type] = g.devices[0]
             }
 
-            const overrides = { "iPhone": "iPhone14,2" }
+            const overrides = { 
+                iPhone: "iPhone14,2",
+                AirPods: "AirPods1,1"
+            }
+            
             for (const o in overrides) firstDeviceObj[o] = overrides[o]
 
             var ret = {}
