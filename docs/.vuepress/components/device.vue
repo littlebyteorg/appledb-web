@@ -45,7 +45,7 @@
                 </template>
             </div>
         </li>
-        <li v-if="fm.deviceFilter.length > 2">
+        <li v-if="!fm.hideChildren && fm.deviceFilter.length > 2">
             <!--<label class="chartDropdown" for="deviceSelect">
                 <i class="fas fa-filter"></i>
                 {{ deviceStr }}
