@@ -9,7 +9,7 @@
                     <template v-else>{{ s }}</template>
                 </li>
             </ul>
-            <img v-on:click="imgCount++" id="flexImg" :src="`/assets/images/device@512/${fm.device.map(x => x.identifier)[0]}/${imgCount}.png`" :style="`height: ${Math.max(Object.keys(infoArr).length, 5) * 1.8}em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
+            <img v-on:click="imgCount++" id="flexImg" :src="`/assets/images/device@512/${fm.device.map(x => x.identifier)[0]}/${imgCount}.png`" :style="`height: ${Math.max(Object.keys(infoArr).length, 5) * 1.8}em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0}; user-select: none;`">
         </p>
 
         <template v-if="!fm.hideChildren && groupedOrRelatedDevicesObj.devices.length > 1">
