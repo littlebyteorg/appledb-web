@@ -1,5 +1,5 @@
 const { createPage } = require('@vuepress/core')
-const { path } = require('@vuepress/utils')
+const { path, fs } = require('@vuepress/utils')
 
 const iosList = require('../../../json/ios');
 const deviceList = require('../../../json/deviceList');
@@ -202,6 +202,13 @@ function getDevicePage(args) {
     'watchOS'
   ]
 
+  var imgCount = 0
+  try {
+    imgCount = fs.readdirSync(`docs/.vuepress/public/assets/images/device@256/${devArr[0].identifier}/`).length
+  } catch {
+    imgCount = 0
+  }
+
   return {
     path: devPath,
     frontmatter: {
@@ -213,6 +220,7 @@ function getDevicePage(args) {
       versionArr: getVersionArr,
       grouped: grouped,
       hideChildren: hideChildren,
+      imgCount: imgCount,
       mainList: mainList,
       noJb: (!(osType.some(r => hasJbArr.includes(r))) && !mainList),
       deviceFilter: (mainList) ? 

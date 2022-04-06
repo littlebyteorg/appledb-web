@@ -9,7 +9,7 @@
                     <template v-else>{{ s }}</template>
                 </li>
             </ul>
-            <img id="flexImg" :src="`/assets/images/device@512/${fm.device.map(x => x.identifier)[0]}/0.png`" :style="`height: ${Math.max(Object.keys(infoArr).length, 5) * 1.8}em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
+            <img v-on:click="imgCount++" id="flexImg" :src="`/assets/images/device@512/${fm.device.map(x => x.identifier)[0]}/${imgCount}.png`" :style="`height: ${Math.max(Object.keys(infoArr).length, 5) * 1.8}em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
         </p>
 
         <template v-if="!fm.hideChildren && groupedOrRelatedDevicesObj.devices.length > 1">
@@ -181,6 +181,9 @@ export default {
                 showBeta: 'Show beta versions'
             },
 
+            imgCount: 0,
+            maxImgCount: 0,
+
             options: {
                 showBuildColumn: false,
                 showVersionColumn: true,
@@ -218,7 +221,6 @@ export default {
                 const property = propertyArr.filter(x => str.includes(x))[0]
                 if (grabInfo(property)) retObj[property] = str.format({ [property]: grabInfo(property) })
             }
-            console.log(retObj)
             return retObj
         },
         groupedOrRelatedDevicesObj() {
@@ -347,6 +349,13 @@ export default {
         else {
             this.checkWrap()
             this.options.filterDev = this.fm.deviceFilter[0].value
+        }
+
+        this.maxImgCount = this.fm.imgCount
+    },
+    watch: {
+        imgCount(val) {
+            if (val > this.maxImgCount - 1) this.imgCount = 0
         }
     }
 }
