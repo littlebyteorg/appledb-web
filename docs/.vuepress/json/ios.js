@@ -67,6 +67,7 @@ iosArr = iosArr.map(function(x) {
 iosArr = iosArr.map(function(x) {
   x.relatedFirmwares = []
   if (x.osStr == 'macOS') return x
+  return x
 
   function getVer(o) {
     if (o.iosVersion) return o.iosVersion
