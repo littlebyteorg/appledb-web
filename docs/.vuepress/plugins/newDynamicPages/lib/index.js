@@ -58,7 +58,7 @@ for (const i of iosList) {
   pageList.push({
     path: `/${i.osStr.replace(/ /g, '-')}/${i.uniqueBuild}.html`,
     frontmatter: {
-      title: `${i.osStr} ${i.version} (${i.build})`,
+      title: `${i.osStr} ${i.version} ${(i.build != i.version) ? `(${i.build})` : ''}`,
       description: `Information for ${i.osStr} version ${i.version}`,
       layout: 'chartLayout',
       chartType: 'firmware',

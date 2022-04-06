@@ -2,7 +2,7 @@
   <h2 v-html="infoHeader"/>
   <p>
     <div v-html="verStr.format({ verNum: [frontmatter.build.osStr,frontmatter.build.version].join(' ') })"/>
-    <div v-html="buildStr.format({ buildId: frontmatter.build.build })"/>
+    <div v-if="frontmatter.build.build != frontmatter.build.version" v-html="buildStr.format({ buildId: frontmatter.build.build })"/>
     <div v-if="getReleasedDate != -1" v-html="releasedStr.format({releasedTime: getReleasedDate})"/>
     <div
       v-if="
