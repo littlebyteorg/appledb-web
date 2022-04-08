@@ -55,8 +55,9 @@ var devicePath = '/device'
 var pageList = []
 
 for (const i of iosList) {
+  const url = '/' + [i.osStr.replace(/ /g, '-'),i.uniqueBuild].join('/') + '.html'
   pageList.push({
-    path: `/${i.osStr.replace(/ /g, '-')}/${i.uniqueBuild}.html`,
+    path: url,
     frontmatter: {
       title: `${i.osStr} ${i.version} ${(i.build != i.version) ? `(${i.build})` : ''}`,
       description: `Information for ${i.osStr} version ${i.version}`,
@@ -79,8 +80,11 @@ for (var jb in jbList) {
     redirects = redirects.map(x=> jbPath + x)
   }
 
+  const urlPart = jbList[jb].name.replace(/ /g, '-')
+  const url = [jbPath, urlPart].join('/') + '.html'
+
   pageList.push({
-    path: `${jbPath}${jbList[jb].name.replace(/ /g, '-')}.html`,
+    path: url,
     frontmatter: {
       title: jbList[jb].name,
       description: `Compatible devices and software versions for ${jbList[jb].name}`,
@@ -254,26 +258,32 @@ function getDevicePage(args) {
   }
 }
 
-for (const d of Object.keys(deviceList).map(x => deviceList[x]))
+for (const d of Object.keys(deviceList).map(x => deviceList[x])) {
+  const urlPart = d.identifier.replace(/ /g, '-')
+  const url = [devicePath, urlPart].join('/') + '.html'
   pageList.push(
     getDevicePage({
       name: d.name,
-      path: [devicePath, d.identifier].join('/') + '.html',
+      path: url,
       devArr: d,
       grouped: false
     })
   )
+}
 
-for (const g of deviceGroups)
+for (const g of deviceGroups) {
+  const urlPart = g.name.replace(/ /g, '-')
+  const url = [devicePath, urlPart].join('/') + '.html'
   pageList.push(
     getDevicePage({
       name: g.name,
-      path: [devicePath, g.name.replace(/ /g, '-')].join('/') + '.html',
+      path: url,
       devArr: g.devices.map(x => deviceList[x]),
       grouped: true,
       hideChildren: g.hideChildren
     })
   )
+}
 
 var devListFromFw = []
 for (const i of iosList.map(x => Object.keys(x.devices))) devListFromFw.push(...i)
@@ -322,8 +332,10 @@ pageList.push({
 })
 
 Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
+  const urlPart = t.toLowerCase().replace(/ /g, '-')
+  const url = `/device-selection/${urlPart}.html`
   pageList.push({
-    path: `/device-selection/${t.toLowerCase().replace(/ /g, '-')}.html`,
+    path: url,
     frontmatter: {
       title: `Device Selection (${t})`,
       description: 'AppleDB device selection',
