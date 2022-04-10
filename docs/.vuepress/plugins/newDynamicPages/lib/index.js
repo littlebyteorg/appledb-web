@@ -180,7 +180,7 @@ function getDevicePage(args) {
     }
   }).reverse()
 
-  const osType = Array.from(new Set(getVersionArr.map(x => x.osStr)))
+  const osStr = Array.from(new Set(getVersionArr.map(x => x.osStr)))
 
   const head = (mainList) ? [] : [
     [
@@ -203,7 +203,10 @@ function getDevicePage(args) {
     'iOS',
     'tvOS',
     'audioOS',
-    'watchOS'
+    'watchOS',
+    'iPhoneOS',
+    'iPadOS',
+    'Apple TV Software'
   ]
 
   var imgCount = 0
@@ -226,7 +229,7 @@ function getDevicePage(args) {
       hideChildren: hideChildren,
       imgCount: imgCount,
       mainList: mainList,
-      noJb: (!(osType.some(r => hasJbArr.includes(r))) && !mainList),
+      noJb: (!(osStr.some(r => hasJbArr.includes(r))) && !mainList),
       deviceFilter: (mainList) ? 
         Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort().map(x => {
           return {
