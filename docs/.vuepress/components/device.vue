@@ -221,7 +221,9 @@ export default {
             var retObj = {}
             for (var str of this.infoStrArr) {
                 const property = propertyArr.filter(x => str.includes(x))[0]
-                if (grabInfo(property)) retObj[property] = str.format({ [property]: grabInfo(property) })
+                let info = grabInfo(property)
+                if (property == 'identifier' && info == this.fm.title) info = 'N/A'
+                if (info) retObj[property] = str.format({ [property]: info })
             }
             return retObj
         },
