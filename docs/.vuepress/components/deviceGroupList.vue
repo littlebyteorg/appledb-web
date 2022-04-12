@@ -90,6 +90,14 @@ export default {
                         "AirPods",
                         "AirTag"
                     ]
+                },
+                {
+                    label: "Beats",
+                    types: [
+                        "Beats Headphones",
+                        "Beats Earbuds",
+                        "Beats Speakers"
+                    ]
                 }
             ].map(x => {
                 x.types = x.types.filter(y => this.typeArr.includes(y))
