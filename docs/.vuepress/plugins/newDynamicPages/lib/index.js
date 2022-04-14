@@ -335,7 +335,7 @@ pageList.push({
 })
 
 Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
-  const urlPart = t.toLowerCase().replace(/ /g, '-')
+  const urlPart = t.replace(/ /g, '-')
   const url = `/device-selection/${urlPart}.html`
   pageList.push({
     path: url,
