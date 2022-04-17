@@ -64,7 +64,7 @@ iosArr = iosArr.map(function(x) {
   return x
 })
 
-iosArr = iosArr.map(function(x) {
+/*iosArr = iosArr.map(function(x) {
   x.relatedFirmwares = []
   if (x.osStr == 'macOS') return x
   return x
@@ -103,7 +103,7 @@ iosArr = iosArr.map(function(x) {
   }
 
   return x
-})
+})*/
 
 iosArr = iosArr.map(function(x) {
   if (x.devices) {
@@ -156,23 +156,44 @@ function versionCompare(v1, v2, options) {
   return 0;
 }
 
-iosArr = iosArr.sort(function(a,b) {
+iosArr = iosArr.sort((a,b) => {
+  function compareVal(v1, v2) {
+    if (v1 < v2) return -1
+    if (v1 > v2) return 1
+    else return 0
+  }
+  
+  /*const typeDif = compareVal(a.osType, b.osType)
+  if (typeDif != 0) return typeDif*/
+
+  /*function getVerStr(x) { return x.includes(' ') ? x : x.split(' ')[0] }
+  const verDif = versionCompare(...[a,b].map(x => getVerStr(x.version)))
+  if (verDif != 0) return verDif*/
+
+  const dateDif = compareVal(new Date(a.released).valueOf(), new Date(b.released).valueOf())
+  if (dateDif != 0) return dateDif
+
+  /*const buildDif = compareVal(a.build, b.build)
+  if (buildDif != 0) return buildDif*/
+})
+
+/*iosArr = iosArr.sort(function(a,b) {
   const osType = [a.osType, b.osType]
   if (osType[0] == osType[1]) {
     var v = [a.version, b.version]
-    function getVerStr(x) { return x.split(' ')[0] }
+    function getVerStr(x) { return x.includes(' ') ? x : x.split(' ')[0] }
     var compVerStr = versionCompare(getVerStr(v[0]), getVerStr(v[1]))
     if (compVerStr != 0) return compVerStr
     else {
-      const verInclGM   = [v[0].includes('GM'), v[1].includes('GM')]
-      const verInclBeta = [v[0].includes('beta'), v[1].includes('beta')]
-      const verInclRC   = [v[0].includes('RC'), v[1].includes('RC')]
-      const beta        = [a.beta, b.beta]
+      const verInclGM   = v[0].includes('GM') - v[1].includes('GM')
+      const verInclBeta = v[0].includes('beta') - v[1].includes('beta')
+      const verInclRC   = v[0].includes('RC') - v[1].includes('RC')
+      const beta        = a.beta - b.beta
       
-      if (beta[1] - beta[0] != 0) return beta[1] - beta[0]
-      if (verInclRC[0] - verInclRC[1] != 0) return verInclRC[0] - verInclRC[1]
-      if (verInclGM[0] - verInclGM[1] != 0) return verInclGM[0] - verInclGM[1]
-      if (verInclBeta[0] - verInclBeta[1] != 0) return verInclBeta[0] - verInclBeta[1]
+      if (beta != 0) return beta
+      if (verInclRC != 0) return verInclRC
+      if (verInclGM != 0) return verInclGM
+      if (verInclBeta != 0) return verInclBeta
 
       if (a.beta && b.beta) {
         const betaNum = [v[0], v[1]]
@@ -185,13 +206,13 @@ iosArr = iosArr.sort(function(a,b) {
     }
   }
   const dates = new Date(a.released).valueOf() - new Date(b.released).valueOf()
-  if (dates != 0) return dates
+  if (dates != 0) return dates*/
 
   /*if (osType[0] > osType[1]) return -1
   if (osType[0] < osType[1]) return 1
   if (a.build < b.build) return -1
-  if (a.build > b.build) return 1*/
+  if (a.build > b.build) return 1*//*
   return 0
-})
+})*/
 
 module.exports = iosArr;

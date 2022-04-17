@@ -122,6 +122,7 @@ function getDevicePage(args) {
 
   function getDevType(type) {
     if (type.includes('iPad') || type == 'iPhone' || type == 'iPod') return 'iPhone, iPad, iPod'
+    if (type == 'AirPods' || type == 'Beats') return 'AirPods, Beats'
     if (type.includes('Mac') || type == 'Developer Transition Kit') return 'Mac'
     return type
   }
@@ -151,9 +152,13 @@ function getDevicePage(args) {
       )
     )
 
-    const releasedArr = i.released.split('-')
-    const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
-    const released = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(i.released))
+    let released
+    if (!i.released) released = undefined
+    else {
+      const releasedArr = i.released.split('-')
+      const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+      released = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(i.released))
+    }
 
     return {
       osStr: i.osStr,
