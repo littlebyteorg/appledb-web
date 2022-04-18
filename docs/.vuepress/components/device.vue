@@ -55,7 +55,7 @@
                     {{ deviceStr }}
                     <span class="arrow down" style="display: none;"></span>
                 </label>-->
-                <select v-model="options.filterDev" name="deviceSelect" id="deviceSelect" :style="`margin-left: .5em; ${(options.filterDev == fm.deviceFilter[0].value && !fm.mainList) ? 'color: gray;' : ''}`">
+                <select v-model="options.filterDev" name="deviceSelect" id="deviceSelect" :style="`margin-left: .5em; ${(options.filterDev == fm.deviceFilter[0].value) ? 'color: gray;' : ''}`">
                     <option v-for="(filterItem, index) in fm.deviceFilter" :key="filterItem" :value="filterItem.value">
                         <template v-if="index == 0 && !fm.mainList" >{{ allDeviceStr }}</template>
                         <template v-else>{{ filterItem.label }}</template>
@@ -79,7 +79,7 @@
                 })" :key="fw">
                     <tr v-if="
                         (fm.mainList) ? 
-                            fw.deviceFilterArr.includes(options.filterDev) :
+                            fw.deviceFilterArr.includes(options.filterDev) || options.filterDev == fm.deviceFilter[0].value :
                             fw.deviceFilterArr.some(r => options.filterDev.includes(r))
                     ">
 
@@ -199,8 +199,7 @@ export default {
                 filterDev: [],
                 showAll: {}
             },
-
-            defaultFilter: 'iPhone, iPad, iPod',
+            
             wrapImg: false,
 
             devicePath: '/device',
@@ -346,7 +345,6 @@ export default {
         }
         if (this.fm.mainList) {
             this.options.filterDev = this.fm.deviceFilter[0].value
-            if (this.fm.deviceFilter.map(x => x.value).includes(this.defaultFilter)) this.options.filterDev = this.defaultFilter
 
             document.getElementById("showDownloadColumnCheckbox").disabled = true
         }
