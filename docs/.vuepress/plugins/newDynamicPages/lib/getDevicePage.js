@@ -185,7 +185,7 @@ module.exports = function(args) {
         mainList: mainList,
         noJb: (!(osStr.some(r => hasJbArr.includes(r))) && !mainList),
         deviceFilter: (mainList) ? 
-            ['Filter'].concat(Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort()).map(x => {
+            ['Filter'].concat(Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort((a, b) => a.localeCompare(b))).map(x => {
                 return {
                     label: x,
                     value: x
