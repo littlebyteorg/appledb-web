@@ -193,7 +193,7 @@
 
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
-import json from '@temp/main'
+//import json from '@temp/main'
 
 String.prototype.format = function(vars) {
   let temp = this;

@@ -5,6 +5,25 @@ const iosList = require('../../../json/ios')
 const deviceList = require('../../../json/deviceList')
 const deviceGroups = require('../../../json/deviceGroups')
 const jbList = require('../../../json/jailbreak')
+const bigJson = {
+  ios: iosList,
+  jailbreak: jbList,
+  device: deviceList,
+  groups: deviceGroups.sort(function(a,b) {
+    const c = [a, b].map(x => JSON.stringify(x)).map(x => JSON.parse(x)) // don't ask
+
+    if (c[0].subtype) c[0].type = [c[0].type,c[0].subtype].join('')
+    if (c[1].subtype) c[1].type = [c[1].type,c[1].subtype].join('')
+
+    if (c[0].type < c[1].type) return -1
+    if (c[0].type > c[1].type) return 1
+    
+    if (c[0].order > c[1].order) return -1
+    if (c[0].order < c[1].order) return 1
+
+    return 0
+  })
+}
 
 var jbPath = '/jailbreak/'
 var devicePath = '/device'
@@ -157,6 +176,9 @@ module.exports = function() {
     name: 'vuepress-new-dynamic-pages',
     async onInitialized(app) {
       for (const p in pageList) app.pages.push(await createPage(app, pageList[p]))
+    },
+    onPrepared: async (app) => {
+      await app.writeTemp('main.js', `export default ${JSON.stringify(bigJson)}`)
     }
   }
 }
