@@ -89,7 +89,8 @@ export default {
                         "HomePod",
                         "AirPods",
                         "Apple Pencil",
-                        "AirTag"
+                        "AirTag",
+                        "Apple TV Remote"
                     ]
                 },
                 {
