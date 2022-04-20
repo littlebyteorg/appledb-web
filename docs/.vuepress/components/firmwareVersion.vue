@@ -6,6 +6,7 @@
     <div v-if="getReleasedDate != -1" v-html="releasedStr.format({releasedTime: getReleasedDate})"/>
     <div
       v-if="
+        devGroupArr &&
         devGroupArr[0] &&
         devGroupArr[0].devices[0].ipsw &&
         Array.from(new Set(devGroupArr.map(x => x.devices).flat().map(x => x.ipsw))).length == 1 &&
@@ -51,47 +52,49 @@
     </li>
   </ul>
 
-  <h2 v-if="devGroupArr.length > 0" v-html="devicesHeader"/>
-  <ul :style="(devGroupArr.filter(x=>x.devices.length > 1).length > 0) ? 'list-style-type: none' : ''">
-    <li v-for="g in devGroupArr" :key="g" :id="`liDev-${g.name.replace(/ /g, '-')}`" class="showOnHover">
-      <template v-if="devGroupArr.filter(x=>x.devices.length > 1).length > 0">
-        <input type="checkbox" :id="`toggleListDev-${g.name.replace(/ /g, '-')}`">
-        <i class="clickToHide fas fa-chevron-right chevron chevronPoint"/>
-        <i class="clickToShow fas fa-chevron-down chevron chevronPoint"/>
-      </template>
+  <div v-if="devGroupArr && devGroupArr.length > 0">
+    <h2 v-html="devicesHeader"/>
+    <ul :style="(devGroupArr.filter(x=>x.devices.length > 1).length > 0) ? 'list-style-type: none' : ''">
+      <li v-for="g in devGroupArr" :key="g" :id="`liDev-${g.name.replace(/ /g, '-')}`" class="showOnHover">
+        <template v-if="devGroupArr.filter(x=>x.devices.length > 1).length > 0">
+          <input type="checkbox" :id="`toggleListDev-${g.name.replace(/ /g, '-')}`">
+          <i class="clickToHide fas fa-chevron-right chevron chevronPoint"/>
+          <i class="clickToShow fas fa-chevron-down chevron chevronPoint"/>
+        </template>
 
-      <router-link :to="g.url" v-html="g.name"/>
+        <router-link :to="g.url" v-html="g.name"/>
 
-      <template v-if="g.devices.length > 1">
-        <div class="hoverElement" style="display: inline;">
-          <i class="fas fa-circle ml-" style="font-size: 0.3rem; opacity: 0.5; vertical-align: middle; margin-left: 2em; margin-right: 2em;"/>
-          <label :for="`toggleListDev-${g.name.replace(/ /g, '-')}`"><a style="cursor: pointer;" :id="`toggleShowDev-${g.name.replace(/ /g, '-')}`" v-html="showMoreStr" v-on:click="toggleShowDev(g.name.replace(/ /g, '-'))"/></label>
-        </div>
-        <div class="custom-container tip clickToShow">
-          <p>
-            <ul>
-              <li class="showOnHover" style="list-style-type: disc" v-for="d in g.devices" :key="d">
-                <router-link :to="d.url" v-html="d.name"/>
-                <a v-if="d.ipsw != 'none' && d.ipsw" class="hoverElement" :href="d.ipsw">
-                  <i class="fas fa-download chevron" style="margin-left: 0.8em; margin-right: 0.5em;"/>
-                  <span style="font-weight: 500;" v-html="downloadStr"/>
-                </a>
-              </li>
-            </ul>
-          </p>
-        </div>
-      </template>
-      <template v-else>
-        <span v-if="g.devices[0].ipsw != 'none' && g.devices[0].ipsw" class="hoverElement">
-          <i class="fas fa-circle ml-" style="font-size: 0.3rem; opacity: 0.5; vertical-align: middle; margin-left: 2em; margin-right: 2em;"/>
-          <a :href="g.devices[0].ipsw">
-            <i class="fas fa-download" style="margin-right: 0.5em;"></i>
-            <span style="font-weight: 500;">{{ downloadStr }}</span>
-          </a>
-        </span>
-      </template>
-    </li>
-  </ul>
+        <template v-if="g.devices.length > 1">
+          <div class="hoverElement" style="display: inline;">
+            <i class="fas fa-circle ml-" style="font-size: 0.3rem; opacity: 0.5; vertical-align: middle; margin-left: 2em; margin-right: 2em;"/>
+            <label :for="`toggleListDev-${g.name.replace(/ /g, '-')}`"><a style="cursor: pointer;" :id="`toggleShowDev-${g.name.replace(/ /g, '-')}`" v-html="showMoreStr" v-on:click="toggleShowDev(g.name.replace(/ /g, '-'))"/></label>
+          </div>
+          <div class="custom-container tip clickToShow">
+            <p>
+              <ul>
+                <li class="showOnHover" style="list-style-type: disc" v-for="d in g.devices" :key="d">
+                  <router-link :to="d.url" v-html="d.name"/>
+                  <a v-if="d.ipsw != 'none' && d.ipsw" class="hoverElement" :href="d.ipsw">
+                    <i class="fas fa-download chevron" style="margin-left: 0.8em; margin-right: 0.5em;"/>
+                    <span style="font-weight: 500;" v-html="downloadStr"/>
+                  </a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </template>
+        <template v-else>
+          <span v-if="g.devices[0].ipsw != 'none' && g.devices[0].ipsw" class="hoverElement">
+            <i class="fas fa-circle ml-" style="font-size: 0.3rem; opacity: 0.5; vertical-align: middle; margin-left: 2em; margin-right: 2em;"/>
+            <a :href="g.devices[0].ipsw">
+              <i class="fas fa-download" style="margin-right: 0.5em;"></i>
+              <span style="font-weight: 500;">{{ downloadStr }}</span>
+            </a>
+          </span>
+        </template>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -183,6 +186,7 @@ export default {
         if (!groupArr.includes(JSON.stringify(deviceArr[i].group)))
           groupArr.push(JSON.stringify(deviceArr[i].group))
       }
+      if (!groupArr || !groupArr[0]) return null
       groupArr = groupArr.map(x => JSON.parse(x))
       
       groupArr = groupArr.map(function(g) {
