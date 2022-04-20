@@ -90,7 +90,7 @@ export default {
                         "AirPods",
                         "Apple Pencil",
                         "AirTag",
-                        "Apple TV Remote"
+                        "Remote"
                     ]
                 },
                 {
