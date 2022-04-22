@@ -156,12 +156,12 @@ function versionCompare(v1, v2, options) {
   return 0;
 }
 
-iosArr = iosArr.sort((a,b) => {
+/*iosArr = iosArr.sort((a,b) => {
   function compareVal(v1, v2) {
     if (v1 < v2) return -1
     if (v1 > v2) return 1
     else return 0
-  }
+  }*/
   
   /*const typeDif = compareVal(a.osType, b.osType)
   if (typeDif != 0) return typeDif*/
@@ -170,12 +170,12 @@ iosArr = iosArr.sort((a,b) => {
   const verDif = versionCompare(...[a,b].map(x => getVerStr(x.version)))
   if (verDif != 0) return verDif*/
 
-  const dateDif = compareVal(new Date(a.released).valueOf(), new Date(b.released).valueOf())
-  if (dateDif != 0) return dateDif
+  /*const dateDif = compareVal(new Date(a.released).valueOf(), new Date(b.released).valueOf())
+  if (dateDif != 0) return dateDif*/
 
   /*const buildDif = compareVal(a.build, b.build)
   if (buildDif != 0) return buildDif*/
-})
+//})
 
 /*iosArr = iosArr.sort(function(a,b) {
   const osType = [a.osType, b.osType]

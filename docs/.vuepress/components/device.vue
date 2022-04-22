@@ -69,7 +69,12 @@
                 <tr>
                     <th v-for="header in tableHeaders" :key="header">{{ header }}</th>
                 </tr>
-                <template v-for="fw in fm.versionArr.filter(fw => {
+                <template v-for="fw in fm.versionArr.sort((a,b) => {
+                    const time = [a,b].map(x => x.released ? new Date(x.released).getTime() : 0)
+                    if (time[0] < time[1]) return 1
+                    if (time[0] > time[1]) return -1
+                    return 0
+                }).filter(fw => {
                     return (
                         (
                             (fw.beta && options.showBeta) ||
