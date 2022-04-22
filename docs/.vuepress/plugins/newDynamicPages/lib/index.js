@@ -127,7 +127,7 @@ pageList.push({
     description: 'AppleDB device list',
     layout: 'chartLayout',
     chartType: 'deviceList',
-    deviceList: deviceGroups,
+    deviceList: deviceList,
     sidebar: false,
     editLink: false,
     lastUpdated: false,
