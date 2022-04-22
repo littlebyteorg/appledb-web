@@ -90,7 +90,8 @@ export default {
                         "AirPods",
                         "Apple Pencil",
                         "AirTag",
-                        "Remote"
+                        "Remote",
+                        "Power"
                     ]
                 },
                 {
