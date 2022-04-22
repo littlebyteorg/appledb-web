@@ -32,6 +32,7 @@ var deviceObj = {};
 for (const file in deviceFiles) {
   const obj = require('.' + path.sep + deviceFiles[file])
   if (obj.board && !Array.isArray(obj.board)) obj.board = [obj.board]
+  if (!obj.identifier) obj.identifier = obj.name
   deviceObj[obj.identifier] = obj
 }
 
