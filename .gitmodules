@@ -4,3 +4,6 @@
 [submodule "docs/.vuepress/json/appledb"]
 	path = docs/.vuepress/json/appledb
 	url = https://github.com/emiyl/appledb
+[submodule "docs/.vuepress/public/assets/images/device"]
+	path = docs/.vuepress/public/assets/images/device
+	url = https://github.com/emiyl/apple-device-images.git
