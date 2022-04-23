@@ -111,10 +111,7 @@
 
                         <td v-if="options.showJailbreakColumn">
                             <template v-for="(jb, index) in fw.jailbreakArr" :key="jb">
-                                <a v-if="jb == 'Phœnix'" :href="`/jailbreak/${jb.replace(/ /g, '-')}.html`">
-                                    {{ jb }}
-                                </a>
-                                <router-link v-else :to="`/jailbreak/${jb.replace(/ /g, '-')}.html`">
+                                <router-link :to="encodeURI(`/jailbreak/${jb.replace(/ /g, '-')}.html`)">
                                     {{ jb }}
                                 </router-link>
                                 <template v-if="index < fw.jailbreakArr.length - 1">, </template>
