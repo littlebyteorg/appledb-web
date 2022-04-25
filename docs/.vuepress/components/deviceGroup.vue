@@ -66,7 +66,7 @@ export default {
             },
             releasedOn: "Released on ${released}",
             viewDeviceStr: 'View more',
-            iPhoneNote: 'Note that all "Plus", "Max", "Pro" and "mini" models of iPhones are functionally identical to the regular models.',
+            iPhoneNote: 'Note that all "Plus", "Max" and "mini" models of iPhones are functionally identical to the regular models.',
             frontmatter: usePageFrontmatter(),
         }
     },
