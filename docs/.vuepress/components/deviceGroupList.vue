@@ -5,8 +5,8 @@
         <h2>{{ o.label }}</h2>
     
         <table v-for="t in Math.ceil(o.types.length / colCount)" :key="t">
-            <tr>
-                <th v-for="c in colCount" :key="c">
+            <tr :style="`width: ${parseInt(100 / colCount)}%;`">
+                <th v-for="c in colCount" :key="c" :style="{'width': parseInt(100 / colCount) + '%'}">
                     <router-link v-if="o.types[(t - 1) * colCount + c - 1]" :to="
                         // (devCount[o.types[(t - 1) * colCount + c - 1]] > 1) ?
                         `/device-selection/${o.types[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`
@@ -150,7 +150,7 @@ export default {
             for (const o in overrides) firstDeviceObj[o] = overrides[o]
 
             var ret = {}
-            for (const d in firstDeviceObj) ret[d] = `/assets/images/device@256/${firstDeviceObj[d]}/0.png`
+            for (const d in firstDeviceObj) ret[d] = `https://raw.githubusercontent.com/emiyl/apple-device-images/gh-pages/device@256/${firstDeviceObj[d]}/0.png`
             
             return ret
         }
@@ -162,7 +162,8 @@ export default {
 table {
     table-layout: fixed;
 }
-tr {
-    width: 33%;
+
+td, th {
+    text-align: center;
 }
 </style>

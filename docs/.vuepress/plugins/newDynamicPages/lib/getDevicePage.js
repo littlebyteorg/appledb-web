@@ -1,7 +1,7 @@
-const iosList = require('../../../json/ios')
-const deviceList = require('../../../json/deviceList')
-const deviceGroups = require('../../../json/deviceGroups')
-const jbList = require('../../../json/jailbreak')
+const iosList = require('../../../../../grabData/ios')
+const deviceList = require('../../../../../grabData/deviceList')
+const deviceGroups = require('../../../../../grabData/deviceGroups')
+const jbList = require('../../../../../grabData/jailbreak')
 const bigJson = {
   ios: iosList,
   jailbreak: jbList,

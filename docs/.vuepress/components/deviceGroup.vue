@@ -5,7 +5,7 @@
     
     <table v-for="t in Math.ceil(deviceArr.length / colCount)" :key="t">
         <tr>
-            <th v-for="c in colCount" :key="c">
+            <th v-for="c in colCount" :key="c" :style="{'width': parseInt(100 / colCount) + '%'}">
                 <router-link v-if="deviceArr[(t - 1) * colCount + c - 1]" :to="`/device/${deviceArr[(t - 1) * colCount + c - 1].name.replace(/ /g, '-')}.html`">
                     {{ deviceArr[(t - 1) * colCount + c - 1].name.replace('generation', 'gen') }}
                 </router-link>
@@ -14,7 +14,7 @@
         <tr>
             <td v-for="c in colCount" :key="c">
                 <router-link v-if="deviceArr[(t - 1) * colCount + c - 1]" :to="`/device/${deviceArr[(t - 1) * colCount + c - 1].name.replace(/ /g, '-')}.html`">
-                    <img :src="`/assets/images/device@256/${deviceArr[(t - 1) * colCount + c - 1].devices[0]}/0.png`" style="max-height: 8em;">
+                    <img :src="`https://raw.githubusercontent.com/emiyl/apple-device-images/gh-pages/device@256/${deviceArr[(t - 1) * colCount + c - 1].devices[0]}/0.png`" style="max-height: 8em;">
                 </router-link>
             </td>
         </tr>
@@ -56,7 +56,8 @@ export default {
 table {
     table-layout: fixed;
 }
-tr {
-    width: 33%;
+
+td, th {
+    text-align: center;
 }
 </style>

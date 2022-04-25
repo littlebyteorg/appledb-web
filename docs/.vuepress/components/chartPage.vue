@@ -38,9 +38,9 @@ import {
   useSiteLocaleData,
 } from '@vuepress/client'
 import { computed } from 'vue'
-import type { DefaultThemeHomePageFrontmatter } from '../vuepress-theme/lib/shared'
+import type { DefaultThemeHomePageFrontmatter } from '@vuepress/theme-default/lib/shared'
 const frontmatter = usePageFrontmatter<DefaultThemeHomePageFrontmatter>()
-import { useThemeLocaleData } from '../vuepress-theme/lib/client/composables'
+import { useThemeLocaleData } from '@vuepress/theme-default/lib/client/composables'
 
 import firmwareVersion from './firmwareVersion.vue'
 import jailbreak from './jailbreak.vue'

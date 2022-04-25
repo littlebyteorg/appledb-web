@@ -1,26 +1,16 @@
 {
-    "dependencies": {
-        "@vuepress/bundler-vite": "2.0.0-beta.27",
-        "sharp": "^0.30.3",
-        "yarn": "^1.22.17"
-    },
-    "name": "appledb-web",
-    "version": "1.0.0",
-    "main": "index.js",
-    "repository": "github.com/emiyl/appledb-web",
-    "author": "emiyl <me@emiyl.com>",
-    "license": "MIT",
-    "devDependencies": {
-        "@vue/component-compiler-utils": "3.3.0",
-        "@vuepress/plugin-register-components": "2.0.0-beta.27",
-        "@vuepress/plugin-search": "2.0.0-beta.27",
-        "@vuepress/shared-utils": "1.8.2",
-        "markdown-it-include": "^2.0.0",
-        "vuepress": "2.0.0-beta.27"
-    },
-    "scripts": {
-        "dev": "vuepress dev docs",
-        "build": "node generateImages.js && vuepress build docs",
-        "ghbuild": "node generateImages.js && NODE_OPTIONS=--max_old_space_size=16384 vuepress build docs"
-    }
+  "name": "appledb-web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "emiyl <me@emiyl.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@vuepress/plugin-register-components": "^2.0.0-beta.38",
+    "@vuepress/plugin-search": "^2.0.0-beta.38",
+    "vuepress": "^2.0.0-beta.39"
+  },
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs"
+  }
 }
