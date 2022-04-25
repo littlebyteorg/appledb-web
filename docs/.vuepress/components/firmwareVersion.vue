@@ -1,10 +1,10 @@
 <template>
   <h2 v-html="infoHeader"/>
   <p>
-    <div v-html="verStr.format({ verNum: [frontmatter.build.osStr,frontmatter.build.version].join(' ') })"/>
-    <div v-if="frontmatter.build.build != frontmatter.build.version" v-html="buildStr.format({ buildId: frontmatter.build.build })"/>
+    <div v-html="verStr.format({ verNum: [frontmatter.osStr,frontmatter.version].join(' ') })"/>
+    <div v-if="frontmatter.build != frontmatter.version" v-html="buildStr.format({ buildId: frontmatter.build })"/>
     <div v-if="getReleasedDate != -1" v-html="releasedStr.format({releasedTime: getReleasedDate})"/>
-    <div
+    <!--<div
       v-if="
         devGroupArr &&
         devGroupArr[0] &&
@@ -13,10 +13,10 @@
         devGroupArr[0].devices[0].ipsw != 'none'
       "
       v-html="downloadInfoStr.format({ ipsw: devGroupArr[0].devices[0].ipsw, ipswStr: [devGroupArr[0].devices[0].ipsw.split('/')[devGroupArr[0].devices[0].ipsw.split('/').length-1]] })"
-    />
+    />-->
   </p>
 
-  <h2 v-if="frontmatter.build.relatedFirmwares && frontmatter.build.relatedFirmwares.length">{{relatedFirmwaresHeader}}</h2>
+  <!--<h2 v-if="frontmatter.build.relatedFirmwares && frontmatter.build.relatedFirmwares.length">{{relatedFirmwaresHeader}}</h2>
   <ul>
     <li v-for="fw in frontmatter.build.relatedFirmwares" :key="fw">
       <router-link :to="fw.path">
@@ -94,7 +94,7 @@
         </template>
       </li>
     </ul>
-  </div>
+  </div>-->
 </template>
 
 <script>
@@ -137,7 +137,7 @@ export default {
     }
   },
   methods: {
-    toggleShowDev: function (id, event) {
+    /*toggleShowDev: function (id, event) {
       var liID = `liDev-${id}`
       var liClassList = document.getElementById(liID).classList
       if (liClassList.contains('showOnHover')) liClassList.remove('showOnHover')
@@ -162,21 +162,21 @@ export default {
       if (toggleInner == this.showDevStr) toggleInner = this.hideDevStr
       else toggleInner = this.showDevStr
       document.getElementById(toggleID).innerHTML = toggleInner
-    },
+    },*/
   },
   computed: {
-    currentBuild() {
+    /*currentBuild() {
       return this.frontmatter.build
-    },
+    },*/
     getReleasedDate() {
-      if (!this.currentBuild.hasOwnProperty('released')) return -1
+      if (!this.frontmatter.released) return -1
 
-      const releasedArr = this.currentBuild.released.split('-')
+      const releasedArr = this.frontmatter.released.split('-')
       const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
-      const released = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(this.currentBuild.released))
+      const released = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(this.frontmatter.released))
       return released
     },
-    devGroupArr() {
+    /*devGroupArr() {
       const deviceArr = this.currentBuild.devices
       const path = this.devicePath
       const deviceList = json.device
@@ -262,7 +262,7 @@ export default {
         retArr.push(retDevArr)
       }
       return retArr
-    },
+    },*/
   }
 }
 </script>

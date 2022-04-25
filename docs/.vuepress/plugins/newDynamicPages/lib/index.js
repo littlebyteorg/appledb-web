@@ -39,7 +39,10 @@ for (const i of iosList) {
       description: `Information for ${i.osStr} version ${i.version}`,
       layout: 'chartLayout',
       chartType: 'firmware',
-      build: i,
+      osStr: i.osStr,
+      version: i.version,
+      released: i.released,
+      build: i.build,
       sidebar: false,
       editLink: false,
       lastUpdated: false,
@@ -195,7 +198,7 @@ module.exports = function() {
   return {
     name: 'vuepress-new-dynamic-pages',
     async onInitialized(app) {
-      for (const p in pageList) app.pages.push(await createPage(app, pageList[p]))
+      for (const p of pageList) app.pages.push(await createPage(app, p))
     },
     onPrepared: async (app) => {
       await app.writeTemp('main.js', `export default ${JSON.stringify(bigJson)}`)
