@@ -6,9 +6,9 @@
     <template v-for="(dev, index) in deviceArr" :key="dev">
         <div class="flexWrapper">
             <div class="devHead">
-                <router-link :to="`/device/${dev.name.replace(/ /g, '-')}.html`" style="color: initial;">
+                <router-link :to="`/device/${dev.name.replace(/ /g, '-')}.html`" style="color: inherit;">
                     <h3>{{dev.name}}</h3>
-                    <img :src="`https://img.appledb.dev/device@256/${dev.devices[0]}/0.png`" style="max-height: 8em;">
+                    <img v-for="i in Math.min(dev.img.count,3)" :key="i" :src="`https://img.appledb.dev/device@256/${dev.devices[0]}/${i-1}${isDarkMode && dev.img.dark ? '_dark' : ''}.png`" style="max-height: 8em; padding-right: .5em;">
                 </router-link>
             </div>
             <div class="flexWrapper flexColumn devInfo">
@@ -49,6 +49,7 @@
 
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
+import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 
 String.prototype.format = function(vars) {
   let temp = this;
@@ -70,6 +71,7 @@ export default {
             viewDeviceStr: 'View more',
             iPhoneNote: 'Note that all "Plus", "Max" and "mini" models of iPhones are functionally identical to the regular models.',
             frontmatter: usePageFrontmatter(),
+            isDarkMode: useDarkMode()
         }
     },
     computed: {

@@ -10,7 +10,7 @@
                 </li>
             </ul>
             <div style="user-select: none;">
-                <img v-on:click="imgCount++" id="flexImg" :src="`https://img.appledb.dev/device@512/${fm.device.map(x => x.identifier)[0]}/${imgCount}.png`" :style="`height: 9em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
+                <img v-for="i in Math.min(fm.img.count,3)" :key="i" id="flexImg" :src="`https://img.appledb.dev/device@512/${fm.device.map(x => x.identifier)[0]}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" :style="`height: 9em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : '.5em'}; padding-top: ${(wrapImg) ? '1em' : 0};`">
             </div>
         </p>
 
@@ -143,6 +143,7 @@
 
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
+import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 
 String.prototype.format = function(vars) {
   let temp = this;
@@ -208,7 +209,8 @@ export default {
             wrapImg: false,
 
             devicePath: '/device',
-            fm: usePageFrontmatter()
+            fm: usePageFrontmatter(),
+            isDarkMode: useDarkMode()
         }
     },
     computed: {

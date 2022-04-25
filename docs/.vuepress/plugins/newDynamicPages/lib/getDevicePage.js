@@ -153,6 +153,11 @@ module.exports = function(args) {
         return o
     })
 
+    const img = {
+        count: devArr[0].imgCount,
+        dark: devArr[0].imgDark
+    }
+
     const hasJbArr = [
         'iOS',
         'tvOS',
@@ -184,6 +189,7 @@ module.exports = function(args) {
         imgCount: imgCount,
         mainList: mainList,
         noJb: (!(osStr.some(r => hasJbArr.includes(r))) && !mainList),
+        img: img,
         deviceFilter: (mainList) ? 
             ['Filter'].concat(Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort((a, b) => a.localeCompare(b))).map(x => {
                 return {

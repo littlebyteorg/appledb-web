@@ -29,10 +29,49 @@ deviceFiles = deviceFiles.map(function(x) {
 })
 var deviceObj = {};
 
+let imgArr = []
+fs.readdirSync(path.resolve(__dirname, '../apple-device-images/images')).forEach(f => {
+  imgArr.push({
+    identifier: f.replace('.png',''),
+    imgCount: (f.endsWith('.png')) ? 1 : -1,
+    dark: false,
+  })
+})
+
+let folderArr = imgArr.filter(x => x.imgCount < 0)
+imgArr = imgArr.filter(x => x.imgCount > 0)
+
+for (const i of folderArr) {
+  let folderImgArr = []
+  fs.readdirSync(path.resolve(__dirname, `../apple-device-images/images/${i.identifier}`)).forEach(file => {
+    folderImgArr.push(file)
+  })
+  let folderImgCount = folderImgArr.filter(x => !x.endsWith('_dark.png')).length
+  let darkBool = folderImgArr.filter(x => x.endsWith('_dark.png')).length > 0
+  imgArr.push({
+    identifier: i.identifier,
+    imgCount: folderImgCount,
+    dark: darkBool
+  })
+}
+
 for (const file in deviceFiles) {
   const obj = require('..' + path.sep + deviceFiles[file])
+
   if (obj.board && !Array.isArray(obj.board)) obj.board = [obj.board]
   if (!obj.identifier) obj.identifier = obj.name
+  
+  let imgCount = 1
+  let imgDark = false
+  let devImgArr = imgArr.filter(x => x.identifier == obj.identifier)
+  if (devImgArr.length == 1) {
+    let devImg = devImgArr[0]
+    imgCount = devImg.imgCount
+    imgDark = devImg.dark
+  }
+  obj.imgCount = imgCount
+  obj.imgDark = imgDark
+  
   deviceObj[obj.identifier] = obj
 }
 

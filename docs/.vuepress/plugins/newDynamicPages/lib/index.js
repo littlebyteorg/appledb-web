@@ -161,6 +161,11 @@ Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
       type: t,
       group: deviceGroups.map(x => {
         const devArr = x.devices.map(y => deviceList[y])
+        
+        x.img = {
+          count: devArr[0].imgCount,
+          dark: devArr[0].imgDark
+        }
 
         const released = Array.from(new Set(devArr.map(y => y.released)))
         if (released.join() != '') x.released = released.map(y => {
