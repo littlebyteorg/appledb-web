@@ -1,3 +1,6 @@
 [submodule "appledb"]
 	path = appledb
 	url = https://github.com/emiyl/appledb
+[submodule "apple-device-images"]
+	path = apple-device-images
+	url = https://github.com/emiyl/apple-device-images
