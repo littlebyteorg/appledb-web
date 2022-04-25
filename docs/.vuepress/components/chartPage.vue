@@ -22,9 +22,9 @@ const chartType = frontmatter.value.chartType
     <slot name="top" />
 
     <div :class="(chartType == 'device' || chartType == 'deviceGroup') ? 'home' : 'theme-default-content'">
-      <h1>{{ pageTitle }}</h1>
+      <h1 id="pageTitle">{{ pageTitle }}</h1>
 
-      <firmwareVersion v-if="chartType == 'firmware'"/>
+      <firmwareVersion v-if="chartType == 'firmwareVersion'"/>
       <jailbreak v-else-if="chartType == 'jailbreak'"/>
       <device v-else-if="chartType == 'device'"/>
       <deviceList v-else-if="chartType == 'deviceList'"/>

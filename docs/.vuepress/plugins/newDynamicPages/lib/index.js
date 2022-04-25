@@ -30,26 +30,20 @@ var devicePath = '/device'
 
 var pageList = []
 
-for (const i of iosList) {
-  const url = '/' + [i.osStr.replace(/ /g, '-'),i.uniqueBuild].join('/') + '.html'
-  pageList.push({
-    path: url,
-    frontmatter: {
-      title: `${i.osStr} ${i.version} ${(i.build != i.version) ? `(${i.build})` : ''}`,
-      description: `Information for ${i.osStr} version ${i.version}`,
-      layout: 'chartLayout',
-      chartType: 'firmware',
-      osStr: i.osStr,
-      version: i.version,
-      released: i.released,
-      build: i.build,
-      sidebar: false,
-      editLink: false,
-      lastUpdated: false,
-      contributors: false,
-    }
-  })
-}
+pageList.push({
+  path: '/firmware.html',
+  frontmatter: {
+    title: `AppleDB Firmwares`,
+    description: `AppleDB firmware lookup`,
+    layout: 'chartLayout',
+    chartType: 'firmwareVersion',
+    iosList: iosList,
+    sidebar: false,
+    editLink: false,
+    lastUpdated: false,
+    contributors: false,
+  }
+})
 
 for (var jb in jbList) {
   var redirects = []
