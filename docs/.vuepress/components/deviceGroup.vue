@@ -6,8 +6,10 @@
     <template v-for="(dev, index) in deviceArr" :key="dev">
         <div class="flexWrapper">
             <div class="devHead">
-                <h3>{{dev.name}}</h3>
-                <img :src="`https://img.appledb.dev/device@256/${dev.devices[0]}/0.png`" style="max-height: 8em;">
+                <router-link :to="`/device/${dev.name.replace(/ /g, '-')}.html`" style="color: initial;">
+                    <h3>{{dev.name}}</h3>
+                    <img :src="`https://img.appledb.dev/device@256/${dev.devices[0]}/0.png`" style="max-height: 8em;">
+                </router-link>
             </div>
             <div class="flexWrapper flexColumn devInfo">
                 <p>
