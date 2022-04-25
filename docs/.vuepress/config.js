@@ -56,7 +56,7 @@ module.exports = {
     require('./plugins/createAdScript/lib')(adArr)
   ],
 
-  theme: path.resolve(__dirname, './vuepress-theme'),
+  theme: path.resolve(__dirname, 'vuepress-theme'),
   extendsMarkdown: (md) => {
       md.use(require('markdown-it-include'))
   },

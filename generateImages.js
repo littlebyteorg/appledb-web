@@ -6,8 +6,8 @@ const { create } = require('domain')
 const resizeArr = [256,512,1024]
 
 const imgPath = path.resolve(__dirname, "docs/.vuepress/public/assets/images/")
-const dirPath = path.join(imgPath, 'device')
-const lowResDirPath = path.join(imgPath, 'device-lowres')
+const dirPath = path.join(imgPath, 'device/images')
+const lowResDirPath = path.join(imgPath, 'device/images-lowres')
 
 function getDirContents(p) {
   return fs.readdirSync(p, function (err, files) {
