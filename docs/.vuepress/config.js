@@ -1,4 +1,5 @@
 const { path } = require('@vuepress/utils')
+const { searchPlugin } = require('@vuepress/plugin-search')
 
 module.exports = {
     lang: 'en-US',
@@ -31,15 +32,13 @@ module.exports = {
     },
 
     plugins: [
-      [
-        "@vuepress/plugin-search", {
-          locales: {
-            '/': {
-              placeholder: 'Search',
-            },
+      searchPlugin({
+        locales: {
+          '/': {
+            placeholder: 'Search',
           },
         }
-      ],
+      }),
       [
         '@vuepress/register-components',
         {
