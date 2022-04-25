@@ -5,14 +5,12 @@
       <li v-for="i in infoArr" :key="i">{{ i }}</li>
     </ul>
   </template>
-  <template>
-    <h2>{{ devicesHead }}</h2>
-    <ul>
-      <li v-for="d in deviceArr" :key="d" class="showOnHover">
-        <router-link :to="d.url">{{ d.name }}</router-link> <code class="hoverElement">{{ d.identifier }}</code>
-      </li>
-    </ul>
-  </template>
+  <h2>{{ devicesHead }}</h2>
+  <ul>
+    <li v-for="d in deviceArr" :key="d" class="showOnHover">
+      <router-link :to="d.url">{{ d.name }}</router-link> <code class="hoverElement">{{ d.identifier }}</code>
+    </li>
+  </ul>
 </template>
 
 <script>
