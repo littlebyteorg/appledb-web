@@ -2,7 +2,7 @@
   <main class="page">
     <slot name="top" />
 
-    <div :class="(chartType == 'device') ? 'home' : 'theme-default-content'">
+    <div :class="(chartType == 'device' || chartType == 'deviceGroup') ? 'home' : 'theme-default-content'">
       <h1>{{ pageTitle }}</h1>
       <div class="custom-container tip" v-if="discordNoticeText" v-html="discordNoticeText"/>
 
