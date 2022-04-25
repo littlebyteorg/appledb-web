@@ -12,6 +12,6 @@
   "scripts": {
     "dev": "vuepress dev docs",
     "build": "vuepress build docs",
-    "ghbuild": "NODE_OPTIONS=--max_old_space_size=16384 vuepress build docs"
+    "ghbuild": "NODE_OPTIONS=--max_old_space_size=16384 vuepress build docs --debug"
   }
 }
