@@ -1,0 +1,3 @@
+[submodule "appledb"]
+	path = appledb
+	url = https://github.com/emiyl/appledb
