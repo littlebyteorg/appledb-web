@@ -10,7 +10,7 @@
                 </li>
             </ul>
             <div style="user-select: none;">
-                <img v-on:click="imgCount++" id="flexImg" :src="`https://raw.githubusercontent.com/emiyl/apple-device-images/gh-pages/device@512/${fm.device.map(x => x.identifier)[0]}/${imgCount}.png`" :style="`height: 9em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
+                <img v-on:click="imgCount++" id="flexImg" :src="`https://img.appledb.dev/device@512/${fm.device.map(x => x.identifier)[0]}/${imgCount}.png`" :style="`height: 9em; max-width: 100%; margin-left: ${(wrapImg) ? 'auto' : 0}; margin-right: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};`">
             </div>
         </p>
 

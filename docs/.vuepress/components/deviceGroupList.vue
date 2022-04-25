@@ -150,7 +150,7 @@ export default {
             for (const o in overrides) firstDeviceObj[o] = overrides[o]
 
             var ret = {}
-            for (const d in firstDeviceObj) ret[d] = `https://raw.githubusercontent.com/emiyl/apple-device-images/gh-pages/device@256/${firstDeviceObj[d]}/0.png`
+            for (const d in firstDeviceObj) ret[d] = `https://img.appledb.dev/device@256/${firstDeviceObj[d]}/0.png`
             
             return ret
         }

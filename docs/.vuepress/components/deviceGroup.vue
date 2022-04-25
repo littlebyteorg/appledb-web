@@ -7,7 +7,7 @@
         <div class="flexWrapper">
             <div class="devHead">
                 <h3>{{dev.name}}</h3>
-                <img :src="`https://raw.githubusercontent.com/emiyl/apple-device-images/gh-pages/device@256/${dev.devices[0]}/0.png`" style="max-height: 8em;">
+                <img :src="`https://img.appledb.dev/device@256/${dev.devices[0]}/0.png`" style="max-height: 8em;">
             </div>
             <div class="flexWrapper flexColumn devInfo">
                 <p>
@@ -38,7 +38,7 @@
         <tr>
             <td v-for="c in colCount" :key="c">
                 <router-link v-if="deviceArr[(t - 1) * colCount + c - 1]" :to="`/device/${deviceArr[(t - 1) * colCount + c - 1].name.replace(/ /g, '-')}.html`">
-                    <img :src="`https://raw.githubusercontent.com/emiyl/apple-device-images/gh-pages/device@256/${deviceArr[(t - 1) * colCount + c - 1].devices[0]}/0.png`" style="max-height: 8em;">
+                    <img :src="`https://img.appledb.dev/device@256/${deviceArr[(t - 1) * colCount + c - 1].devices[0]}/0.png`" style="max-height: 8em;">
                 </router-link>
             </td>
         </tr>
