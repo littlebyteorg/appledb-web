@@ -5,7 +5,7 @@
       <li v-for="i in infoArr" :key="i">{{ i }}</li>
     </ul>
   </template>
-  <template v-if="deviceArr.length > 0">
+  <template>
     <h2>{{ devicesHead }}</h2>
     <ul>
       <li v-for="d in deviceArr" :key="d" class="showOnHover">
