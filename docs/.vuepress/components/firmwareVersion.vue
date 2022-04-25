@@ -1,14 +1,18 @@
 <template>
-  <h2>{{ infoHead }}</h2>
-  <ul style="padding-left: 0; list-style-type: none;">
-    <li v-for="i in infoArr" :key="i">{{ i }}</li>
-  </ul>
-  <h2>{{ devicesHead }}</h2>
-  <ul>
-    <li v-for="d in deviceArr" :key="d" class="showOnHover">
-      <router-link :to="d.url">{{ d.name }}</router-link> <code class="hoverElement">{{ d.identifier }}</code>
-    </li>
-  </ul>
+  <template v-if="infoArr.length > 0">
+    <h2>{{ infoHead }}</h2>
+    <ul style="padding-left: 0; list-style-type: none;">
+      <li v-for="i in infoArr" :key="i">{{ i }}</li>
+    </ul>
+  </template>
+  <template v-if="deviceArr.length > 0">
+    <h2>{{ devicesHead }}</h2>
+    <ul>
+      <li v-for="d in deviceArr" :key="d" class="showOnHover">
+        <router-link :to="d.url">{{ d.name }}</router-link> <code class="hoverElement">{{ d.identifier }}</code>
+      </li>
+    </ul>
+  </template>
 </template>
 
 <script>
@@ -56,22 +60,23 @@ export default {
   },
   mounted() {
     const versionObject = this.getQuery()
+    if (versionObject) {
+      const title = `${versionObject.osStr} ${versionObject.version} (${versionObject.build})`
+      document.title = `${title} | AppleDB`
+      document.getElementById("pageTitle").innerHTML = title
 
-    const title = `${versionObject.osStr} ${versionObject.version} (${versionObject.build})`
-    document.title = `${title} | AppleDB`
-    document.getElementById("pageTitle").innerHTML = title
+      const releasedArr = versionObject.released.split('-')
+      const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+      const releaseDate = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(versionObject.released))
 
-    const releasedArr = versionObject.released.split('-')
-    const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
-    const releaseDate = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(versionObject.released))
+      this.infoArr = [
+        this.versionStr.format({ version: [versionObject.osStr,versionObject.version].join(' ') }),
+        this.buildStr.format({ build: versionObject.build }),
+        this.releasedStr.format({ released: releaseDate })
+      ]
 
-    this.infoArr = [
-      this.versionStr.format({ version: [versionObject.osStr,versionObject.version].join(' ') }),
-      this.buildStr.format({ build: versionObject.build }),
-      this.releasedStr.format({ released: releaseDate })
-    ]
-
-    this.deviceArr = versionObject.devices
+      this.deviceArr = versionObject.devices
+    }
   }
 }
 </script>
