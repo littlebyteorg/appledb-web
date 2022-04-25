@@ -115,8 +115,6 @@ const HomeHeroImage: FunctionalComponent = () => {
 
 <style scoped>
     .heroImage {
-        padding-left: 1em;
-        padding-right: 1em;
         background-size: cover;
         background-repeat: none;
         background-position: center;
@@ -124,15 +122,23 @@ const HomeHeroImage: FunctionalComponent = () => {
         text-shadow: 1px 1px 4px rgba(0,0,0,.5);
     }
     .heroImage h1 {
+        padding-left: .5em;
+        padding-right: .5em;
         font-size: 3.3em;
         font-weight: 700;
         margin-top: 0;
         margin-bottom: .4em;
     }
     .heroImage .description {
+        padding-left: 1em;
+        padding-right: 1em;
         font-size: 1.5em;
         margin-top: 0;
         margin-bottom: 2em;
+    }
+    .heroImage .actions {
+      padding-left: 1.5em;
+      padding-right: 1.5em;
     }
     .heroImage a {
         color: #fff;
