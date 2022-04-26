@@ -3,15 +3,15 @@
   <p><div v-for="i in infoData" :key="i" v-html="i"/></p>
   <template v-if="getDeviceList"><h2 v-if="getDeviceList.length > 0" v-html="compatibilityHeader"/></template>
   <ul>
-    <li v-for="g in getDeviceList" :key="g" :id="`liCompat-${g.name.replace(/ /g, '-')}`" style="list-style-type: none;" class="showOnHover">
-      <input type="checkbox" :id="`toggleListCompat-${g.name.replace(/ /g, '-')}`">
+    <li v-for="g in getDeviceList" :key="g" :id="`liCompat-${g.name.replace(/ /g, '-').replace(/\//g,'%2F')}`" style="list-style-type: none;" class="showOnHover">
+      <input type="checkbox" :id="`toggleListCompat-${g.name.replace(/ /g, '-').replace(/\//g,'%2F')}`">
       <i class="fas fa-chevron-right chevron chevronPoint clickToHide"/>
       <i class="fas fa-chevron-down chevron chevronPoint clickToShow displayNone"/>
-      <router-link v-html="g.name" :to="`${devicePath}${g.name.replace(/ /g, '-')}.html`"/>
+      <router-link v-html="g.name" :to="`${devicePath}${g.name.replace(/ /g, '-').replace(/\//g,'%2F')}.html`"/>
       
       <div class="hoverElement" style="display: inline;">
         <i class="fas fa-circle ml-" style="font-size: 0.3rem; opacity: 0.5; vertical-align: middle; margin-left: 2em; margin-right: 2em;"/>
-        <label :for="`toggleListCompat-${g.name.replace(/ /g, '-')}`"><a style="cursor: pointer;" :id="`toggleShowCompat-${g.name.replace(/ /g, '-')}`" v-html="showMoreStr" v-on:click="toggleShowCompat(g.name.replace(/ /g, '-'))"/></label>
+        <label :for="`toggleListCompat-${g.name.replace(/ /g, '-').replace(/\//g,'%2F')}`"><a style="cursor: pointer;" :id="`toggleShowCompat-${g.name.replace(/ /g, '-').replace(/\//g,'%2F')}`" v-html="showMoreStr" v-on:click="toggleShowCompat(g.name.replace(/ /g, '-').replace(/\//g,'%2F'))"/></label>
       </div>
       <div class="clickToShow">
         <table>

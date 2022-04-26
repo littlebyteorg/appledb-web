@@ -3,10 +3,10 @@
 
     <div v-if="frontmatter.type == 'iPhone'" class="custom-container tip"><p>{{iPhoneNote}}</p></div>
 
-    <template v-for="(dev, index) in deviceArr" :key="dev">
+    <template v-for="(dev, index) in deviceArr" :key="dev"><template v-for="url in [`/device/${dev.name.replace(/ /g, '-').replace(/\//g,'%2F')}.html`]" :key="url">
         <div class="flexWrapper">
             <div class="devHead">
-                <router-link :to="`/device/${dev.name.replace(/ /g, '-')}.html`" style="color: inherit;">
+                <router-link :to="url" style="color: inherit;">
                     <h3>{{dev.name}}</h3>
                     <img v-for="i in Math.min(dev.img.count,3)" :key="i" :src="`https://img.appledb.dev/device@256/${dev.devices[0]}/${i-1}${isDarkMode && dev.img.dark ? '_dark' : ''}.png`" style="max-height: 8em; padding-right: .5em;">
                 </router-link>
@@ -15,9 +15,9 @@
                 <p>
                     <div v-for="i in infoObj[dev.name].slice(0,3)" :key="i">
                         {{ i.replace('...','') }}
-                        <router-link v-if="i.includes('...')" :to="`/device/${dev.name.replace(/ /g, '-')}.html`">...</router-link>
+                        <router-link v-if="i.includes('...')" :to="url">...</router-link>
                     </div>
-                    <div><router-link :to="`/device/${dev.name.replace(/ /g, '-')}.html`">{{ viewDeviceStr }}</router-link></div>
+                    <div><router-link :to="url">{{ viewDeviceStr }}</router-link></div>
                     <template v-if="infoObj[dev.name].length < 3"><br v-for="i in (3 - infoObj[dev.name].length)" :key="i"></template>
                 </p>
                 <p>
@@ -27,7 +27,7 @@
         </div>
         <br>
         <hr>
-    </template>
+    </template></template>
     
     <!--<table v-for="t in Math.ceil(deviceArr.length / colCount)" :key="t">
         <tr>

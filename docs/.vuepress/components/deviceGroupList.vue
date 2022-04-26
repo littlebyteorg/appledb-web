@@ -9,7 +9,7 @@
                 <th v-for="c in colCount" :key="c" :style="{'width': parseInt(100 / colCount) + '%'}">
                     <router-link v-if="o.types[(t - 1) * colCount + c - 1]" :to="
                         // (devCount[o.types[(t - 1) * colCount + c - 1]] > 1) ?
-                        `/device-selection/${o.types[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`
+                        `/device-selection/${o.types[(t - 1) * colCount + c - 1].replace(/ /g, '-').replace(/\//g,'%2F')}.html`
                         // : `/device/${groupList.filter(x => x.type == o.types[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`*/
                     ">
                         {{ o.types[(t - 1) * colCount + c - 1] }}
@@ -20,7 +20,7 @@
                 <td v-for="c in colCount" :key="c">
                     <router-link v-if="o.types[(t - 1) * colCount + c - 1]" :to="
                         // (devCount[o.types[(t - 1) * colCount + c - 1]] > 1) ?
-                        `/device-selection/${o.types[(t - 1) * colCount + c - 1].replace(/ /g, '-')}.html`
+                        `/device-selection/${o.types[(t - 1) * colCount + c - 1].replace(/ /g, '-').replace(/\//g,'%2F')}.html`
                         // : `/device/${groupList.filter(x => x.type == o.types[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`
                     ">
                         <img :src="imageObj[o.types[(t - 1) * colCount + c - 1]]" style="max-height: 8em;">

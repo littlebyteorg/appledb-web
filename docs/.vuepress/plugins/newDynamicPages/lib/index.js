@@ -76,7 +76,7 @@ for (var jb in jbList) {
 const getDevicePage = require('./getDevicePage')
 
 for (const d of Object.keys(deviceList).map(x => deviceList[x])) {
-  const urlPart = d.identifier.replace(/ /g, '-')
+  const urlPart = d.identifier.replace(/ /g, '-').replace(/\//g,'%2F')
   const url = [devicePath, urlPart].join('/') + '.html'
   pageList.push(
     getDevicePage({
@@ -89,7 +89,7 @@ for (const d of Object.keys(deviceList).map(x => deviceList[x])) {
 }
 
 for (const g of deviceGroups) {
-  const urlPart = g.name.replace(/ /g, '-')
+  const urlPart = g.name.replace(/ /g, '-').replace(/\//g,'%2F')
   const url = [devicePath, urlPart].join('/') + '.html'
   pageList.push(
     getDevicePage({
@@ -149,7 +149,7 @@ pageList.push({
 })
 
 Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
-  const urlPart = t.replace(/ /g, '-')
+  const urlPart = t.replace(/ /g, '-').replace(/\//g,'%2F')
   const url = `/device-selection/${urlPart}.html`
   pageList.push({
     path: url,
