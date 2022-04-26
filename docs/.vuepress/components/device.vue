@@ -9,7 +9,7 @@
                     <template v-else>{{ s }}</template>
                 </li>
             </ul>
-            <div style="user-select: none; max-width: 100%; margin-inline: ${(wrapImg) ? 'auto' : 0}; padding-top: ${(wrapImg) ? '1em' : 0};">
+            <div style="user-select: none; text-align: center; padding-top: ${(wrapImg) ? '1em' : 0}; height: 9em; overflow: hidden;">
                 <img v-for="i in Math.min(fm.img.count,3)" id="flexImg" :key="i" :src="`https://img.appledb.dev/device@512/${fm.device.map(x => x.identifier)[0]}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" :style="`height: 9em; margin-left: .5em;`">
             </div>
         </p>
