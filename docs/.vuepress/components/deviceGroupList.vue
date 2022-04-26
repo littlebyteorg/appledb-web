@@ -8,9 +8,7 @@
             <tr :style="`width: ${parseInt(100 / colCount)}%;`">
                 <th v-for="c in colCount" :key="c" :style="{'width': parseInt(100 / colCount) + '%'}">
                     <router-link v-if="o.types[(t - 1) * colCount + c - 1]" :to="
-                        // (devCount[o.types[(t - 1) * colCount + c - 1]] > 1) ?
                         `/device-selection/${o.types[(t - 1) * colCount + c - 1].replace(/ /g, '-').replace(/\//g,'%2F')}.html`
-                        // : `/device/${groupList.filter(x => x.type == o.types[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`*/
                     ">
                         {{ o.types[(t - 1) * colCount + c - 1] }}
                     </router-link>
@@ -19,9 +17,7 @@
             <tr>
                 <td v-for="c in colCount" :key="c">
                     <router-link v-if="o.types[(t - 1) * colCount + c - 1]" :to="
-                        // (devCount[o.types[(t - 1) * colCount + c - 1]] > 1) ?
                         `/device-selection/${o.types[(t - 1) * colCount + c - 1].replace(/ /g, '-').replace(/\//g,'%2F')}.html`
-                        // : `/device/${groupList.filter(x => x.type == o.types[(t - 1) * colCount + c - 1])[0].name.replace(/ /g, '-')}.html`
                     ">
                         <img :src="imageObj[o.types[(t - 1) * colCount + c - 1]]" style="max-height: 8em;">
                     </router-link>
@@ -35,6 +31,7 @@
 
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
+import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 
 export default {
     data() {
@@ -46,6 +43,7 @@ export default {
 
             colCount: 3,
             frontmatter: usePageFrontmatter(),
+            isDarkMode: useDarkMode()
         }
     },
     computed: {
@@ -139,7 +137,10 @@ export default {
             for (const g of groupList) {
                 if (tempTypeArr.includes(g.type)) continue
                 tempTypeArr.push(g.type)
-                firstDeviceObj[g.type] = g.devices[0]
+                firstDeviceObj[g.type] = {
+                    identifier: g.devices[0],
+                    dark: g.img.dark
+                }
             }
 
             const overrides = { 
@@ -147,10 +148,10 @@ export default {
                 AirPods: "AirPods1,1"
             }
             
-            for (const o in overrides) firstDeviceObj[o] = overrides[o]
+            for (const o in overrides) firstDeviceObj[o].identifier = overrides[o]
 
             var ret = {}
-            for (const d in firstDeviceObj) ret[d] = `https://img.appledb.dev/device@256/${firstDeviceObj[d]}/0.png`
+            for (const d in firstDeviceObj) ret[d] = `https://img.appledb.dev/device@256/${firstDeviceObj[d].identifier}/0${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}.png`
             
             return ret
         }
