@@ -8,7 +8,9 @@
             <div class="devHead">
                 <router-link :to="url" style="color: inherit;">
                     <h3>{{dev.name}}</h3>
-                    <img v-for="i in Math.min(dev.img.count,3)" :key="i" :src="`https://img.appledb.dev/device@256/${dev.devices[0]}/${i-1}${isDarkMode && dev.img.dark ? '_dark' : ''}.png`" style="max-height: 8em; padding-right: .5em;">
+                    <div class="flexWrapper flexImg">
+                        <img v-for="i in Math.min(dev.img.count,3)" :key="i" :src="`https://img.appledb.dev/device@256/${dev.devices[0]}/${i-1}${isDarkMode && dev.img.dark ? '_dark' : ''}.png`" style="max-height: 8em; padding-right: .5em;">
+                    </div>
                 </router-link>
             </div>
             <div class="flexWrapper flexColumn devInfo">
@@ -133,12 +135,17 @@ td, th {
     flex-wrap: wrap;
 }
 
+.flexImg {
+    overflow: hidden;
+    max-height: 8em;
+}
+
 .flexColumn {
     flex-direction: column;
 }
 
 .devHead {
     margin-right: 1em;
-    width: 50%;
+    min-width: 50%;
 }
 </style>
