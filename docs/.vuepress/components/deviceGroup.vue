@@ -108,6 +108,12 @@ export default {
 </script>
 
 <style scoped>
+h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 td, th {
     text-align: center;
 }
@@ -133,6 +139,6 @@ td, th {
 
 .devHead {
     margin-right: 1em;
-    min-width: 50%;
+    width: 50%;
 }
 </style>
