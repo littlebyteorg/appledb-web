@@ -111,7 +111,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 h3 {
     white-space: nowrap;
     overflow: hidden;
@@ -149,5 +149,9 @@ td, th {
 .devHead {
     margin-right: 1em;
     min-width: 50%;
+}
+
+.home {
+    padding-top: 0 !important;
 }
 </style>
