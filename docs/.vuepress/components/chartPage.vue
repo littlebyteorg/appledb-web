@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PageMeta from '@vuepress/theme-default/lib/client/components/PageMeta.vue'
-import PageNav from '@vuepress/theme-default/lib/client/components/PageNav.vue'
+import PageMeta from '@theme/PageMeta.vue'
+import PageNav from '@theme/PageNav.vue'
 
 import firmwareVersion from './firmwareVersion.vue'
 import jailbreak from './jailbreak.vue'
