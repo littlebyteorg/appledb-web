@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import Home from '@theme/Home.vue'
-import Navbar from '@theme/Navbar.vue'
 import Page from './chartPage.vue'
-import Sidebar from '@theme/Sidebar.vue'
 import { usePageData, usePageFrontmatter } from '@vuepress/client'
 import { computed, onMounted, onUnmounted, ref, Transition } from 'vue'
 import { useRouter } from 'vue-router'
 import type { DefaultThemePageFrontmatter } from '@vuepress/theme-default/lib/shared'
+import Home from '@vuepress/theme-default/lib/client/components/Home.vue'
+import Navbar from '@vuepress/theme-default/lib/client/components/Navbar.vue'
+import Sidebar from '@vuepress/theme-default/lib/client/components/Sidebar.vue'
 import {
   useScrollPromise,
   useSidebarItems,
