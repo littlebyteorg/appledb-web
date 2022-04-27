@@ -89,6 +89,7 @@ export default {
                         "Apple Pencil",
                         "AirTag",
                         "Remote",
+                        "Keyboard",
                         "Power"
                     ]
                 },
