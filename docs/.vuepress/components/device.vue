@@ -17,10 +17,13 @@
         <template v-if="!fm.hideChildren && groupedOrRelatedDevicesObj.devices.length > 1">
             <h2>{{ groupedOrRelatedDevicesObj.header }}</h2>
             <ul>
-                <li v-for="dev in groupedOrRelatedDevicesObj.devices" :key="dev">
+                <li v-for="dev in groupedOrRelatedDevicesObj.devices" :key="dev" class="showOnHover">
                     <router-link :to="dev.url">
                         {{ dev.name }}
                     </router-link>
+                    <div style="padding-left: .5em;" class="hoverElement"><code>
+                        {{ dev.identifier }}
+                    </code></div>
                 </li>
             </ul>
         </template>
