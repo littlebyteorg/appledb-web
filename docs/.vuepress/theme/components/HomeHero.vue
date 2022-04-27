@@ -114,6 +114,9 @@ const HomeHeroImage: FunctionalComponent = () => {
 </template>
 
 <style scoped>
+    .hero {
+        margin-bottom: 2em;
+    }
     .heroImage {
         background-size: cover;
         background-repeat: none;
