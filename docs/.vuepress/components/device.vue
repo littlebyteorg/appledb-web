@@ -50,11 +50,6 @@
                 </div>
             </li>
             <li v-if="!fm.hideChildren && fm.deviceFilter.length > 2">
-                <!--<label class="chartDropdown" for="deviceSelect">
-                    <i class="fas fa-filter"></i>
-                    {{ deviceStr }}
-                    <span class="arrow down" style="display: none;"></span>
-                </label>-->
                 <select v-model="options.filterDev" name="deviceSelect" id="deviceSelect" :style="`margin-left: .5em; ${(options.filterDev == fm.deviceFilter[0].value) ? 'color: gray;' : ''}`">
                     <option v-for="(filterItem, index) in fm.deviceFilter" :key="filterItem" :value="filterItem.value">
                         <template v-if="index == 0 && !fm.mainList" >{{ allDeviceStr }}</template>
@@ -322,7 +317,7 @@ export default {
             var flexImgWidth = 0
 
             flexImg.onload = () => {
-                flexImgWidth = flexImg.clientWidth * 3
+                flexImgWidth = flexImg.clientWidth * Math.min(this.fm.img.count,3)
                 this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
             }
 
