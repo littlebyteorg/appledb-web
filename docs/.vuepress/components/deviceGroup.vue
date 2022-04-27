@@ -25,7 +25,7 @@
                     <template v-if="infoObj[dev.name].length < 3"><br v-for="i in (3 - infoObj[dev.name].length)" :key="i"></template>
                 </p>
                 <p>
-                    <div v-if="dev.released">{{ releasedOn.format({ released: dev.released.join(', ') }) }}</div>
+                    <div v-if="dev.released">{{ releasedOn.format({ released: dev.released.slice(0,1).join(', ') }) }}<template v-if="dev.released.length > 1">, <router-link :to="url">...</router-link></template></div>
                 </p>
             </div>
         </div>

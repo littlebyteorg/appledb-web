@@ -9,8 +9,8 @@
                     <template v-else>{{ s }}</template>
                 </li>
             </ul>
-            <div style="user-select: none; text-align: center; padding-top: ${(wrapImg) ? '1em' : 0}; height: 9em; overflow: hidden;">
-                <img v-for="i in Math.min(fm.img.count,3)" id="flexImg" :key="i" :src="`https://img.appledb.dev/device@512/${fm.device.map(x => x.identifier)[0]}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" :style="`height: 9em; margin-left: .5em;`">
+            <div style="user-select: none; text-align: center; padding-top: ${(wrapImg) ? '1em' : 0}; height: 11em; overflow: hidden;">
+                <img v-for="i in Math.min(fm.img.count,3)" id="flexImg" :key="i" :src="`https://img.appledb.dev/device@512/${fm.device.map(x => x.identifier)[0]}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" :style="`height: 11em; margin-left: .5em;`">
             </div>
         </p>
 
@@ -157,6 +157,7 @@ export default {
         return {
             infoStrArr: [
                 "Identifier: ${identifier}",
+                "Released: ${released}",
                 "SoC: ${soc}",
                 "Arch: ${arch}",
                 "Model: ${model}",
@@ -216,9 +217,21 @@ export default {
     computed: {
         infoArr() {
             const dev = this.fm.device
-            const grabInfo = (property) => Array.from(new Set(dev.map(x => x[property]).flat())).sort().join(', ')
+            function grabInfo(property) {
+                return Array.from(new Set(dev.map(x => {
+                    if (property == 'released') {
+                        const releasedArr = x[property].split('-')
+                        const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+                        const date = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(x[property]))
+                        x[property] = date
+                    }
+                    return x[property]
+                }).flat()))
+                .sort()
+            }
             const propertyArr = [
                 'identifier',
+                'released',
                 'soc',
                 'arch',
                 'model',
@@ -227,7 +240,11 @@ export default {
             var retObj = {}
             for (var str of this.infoStrArr) {
                 const property = propertyArr.filter(x => str.includes(x))[0]
+
                 let info = grabInfo(property)
+                if (property == 'released' && info.length > 1) info = info.map(x => x.replace(',',''))
+                info = info.join(', ')
+
                 if (property == 'identifier' && info == this.fm.title) info = 'N/A'
                 if (info) retObj[property] = str.format({ [property]: info })
             }

@@ -167,7 +167,11 @@ Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
           dark: devArr[0].imgDark
         }
 
-        const released = Array.from(new Set(devArr.map(y => y.released)))
+        const released = Array.from(new Set(devArr.map(y => y.released))).sort((a,b) => {
+          if (new Date(a.released) < new Date(b.released)) return -1
+          if (new Date(a.released) > new Date(b.released)) return 1
+          return 0
+        })
         if (released.join() != '') x.released = released.map(y => {
           const releasedArr = y.split('-')
           const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
