@@ -10,7 +10,7 @@
                 </li>
             </ul>
             <div style="user-select: none; text-align: center; padding-top: ${(wrapImg) ? '1em' : 0}; height: 11em; overflow: hidden;">
-                <img v-for="i in Math.min(fm.img.count,3)" id="flexImg" :key="i" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.identifier)[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" :style="`height: 11em; margin-left: .5em;`">
+                <img v-for="i in Math.min(fm.img.count,3)" :key="i" :class="`flexImg flexImg${i}`" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.identifier)[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" :style="`margin-left: .5em;`">
             </div>
         </p>
 
@@ -231,7 +231,6 @@ export default {
     computed: {
         infoArr() {
             const dev = this.fm.device
-            console.log(dev)
             function grabInfo(property) {
                 return Array.from(new Set(dev.map(x => {
                     if (property == 'released' && x[property]) {
@@ -337,16 +336,18 @@ export default {
     },
     methods: {
         checkWrap: function() {
-            const flexImg = document.getElementById('flexImg')
+            const flexImgs = document.getElementsByClassName('flexImg')
             const flexInfoWidth = document.getElementById('flexInfo').getBoundingClientRect().width
 
             const homeElement = document.getElementsByClassName('home')[0]
             var totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
             var flexImgWidth = 0
 
-            flexImg.onload = () => {
-                flexImgWidth = flexImg.clientWidth * Math.min(this.fm.img.count,3)
-                this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
+            for (const i in flexImgs.length) {
+                flexImgs[i].onload = () => {
+                    flexImgWidth += flexImgs[i].clientWidth * Math.min(this.fm.img.count,3)
+                    this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
+                }
             }
 
             window.onresize = () => {
@@ -411,6 +412,11 @@ export default {
 </script>
 
 <style scoped>
+.flexImg1 {
+    max-width: 100%;
+    margin-left: 0 !important;
+}
+
 select {
   /* styling */
   background-color: inherit;
