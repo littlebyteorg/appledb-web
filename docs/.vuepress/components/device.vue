@@ -10,7 +10,7 @@
                 </li>
             </ul>
             <div style="user-select: none; text-align: center; padding-top: ${(wrapImg) ? '1em' : 0}; height: 11em; overflow: hidden;">
-                <img v-for="i in Math.min(fm.img.count,3)" id="flexImg" :key="i" :src="`https://img.appledb.dev/device@256/${fm.device.map(x => x.identifier)[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" :style="`height: 11em; margin-left: .5em;`">
+                <img v-for="i in Math.min(fm.img.count,3)" id="flexImg" :key="i" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.identifier)[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" :style="`height: 11em; margin-left: .5em;`">
             </div>
         </p>
 
