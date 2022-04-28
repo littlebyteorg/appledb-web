@@ -143,7 +143,7 @@
                             </div>
                         </td>
 
-                        <td v-if="options.showReleasedColumn" style="width: 7em;">{{ fw.releasedStr }}</td>
+                        <td v-if="options.showReleasedColumn" style="width: 7em;">{{ (fw.releasedStr) ? fw.releasedStr : unknownDateStr }}</td>
 
                     </tr>
                 </template>
@@ -191,6 +191,7 @@ export default {
             deviceStr: 'Device',
             allDeviceStr: 'Filter',
             naStr: 'N/A',
+            unknownDateStr: 'Unknown',
 
             optionsObjStr: {
                 showBuildColumn: "Show build numbers",
