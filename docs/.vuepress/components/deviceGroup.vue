@@ -3,14 +3,14 @@
 
     <div v-if="frontmatter.type == 'iPhone'" class="custom-container tip"><p>{{iPhoneNote}}</p></div>
 
-    <template v-for="(dev, index) in deviceArr" :key="dev"><template v-for="url in [`/device/${dev.name.replace(/ /g, '-').replace(/\//g,'%2F')}.html`]" :key="url">
+    <template v-for="dev in deviceArr" :key="dev"><template v-for="url in [`/device/${dev.name.replace(/ /g, '-').replace(/\//g,'%2F')}.html`]" :key="url">
         <div class="flexWrapper">
             <div class="devHead">
                 <router-link :to="url" style="color: inherit;">
                     <h3>{{dev.name}}</h3>
                     <div class="flexWrapper flexImg" style="user-select: none; height: 8em;">
                         <div style="text-align: center;">
-                            <img v-for="i in Math.min(dev.img.count,3)" :key="i" :src="`https://img.appledb.dev/device@256/${dev.devices[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && dev.img.dark ? '_dark' : ''}.png`" style="max-height: 8em; padding-right: .5em;">
+                            <img v-for="i in Math.min(dev.img.count,3)" :key="i" :src="`https://img.appledb.dev/device@128/${dev.devices[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && dev.img.dark ? '_dark' : ''}.png`" style="max-height: 8em; padding-right: .5em;">
                         </div>
                     </div>
                 </router-link>

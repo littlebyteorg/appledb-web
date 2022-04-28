@@ -152,7 +152,7 @@ export default {
             for (const o in overrides) firstDeviceObj[o].identifier = overrides[o]
 
             var ret = {}
-            for (const d in firstDeviceObj) ret[d] = `https://img.appledb.dev/device@256/${firstDeviceObj[d].identifier}/0${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}.png`
+            for (const d in firstDeviceObj) ret[d] = `https://img.appledb.dev/device@128/${firstDeviceObj[d].identifier}/0${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}.png`
             
             return ret
         }
