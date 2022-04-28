@@ -152,7 +152,7 @@ module.exports = function(args) {
         "meta",
         {
             property: "og:image",
-            content: `/assets/images/device@512/${devArr[0].identifier}/0.png`
+            content: `https://img.appledb.dev/device@256/${devArr[0].identifier}/0.png`
         }
         ]
     ]
