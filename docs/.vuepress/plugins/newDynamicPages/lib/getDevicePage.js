@@ -76,21 +76,28 @@ module.exports = function(args) {
     }
 
     const getVersionArr = devFwArr.map(i => {
-        let dlArr = Object.keys(i.devices)
-            .filter(x => devArr.map(x => x.identifier).includes(x))
-            .map(x => {
-                if (!i.devices[x] || !i.devices[x].ipsw || i.devices[x].ipsw == 'none') return undefined
-                return {
-                    deviceName: devArr.filter(y => y.identifier == x)[0].name,
-                    identifier: x,
-                    label: i.devices[x].ipsw.split('/')[i.devices[x].ipsw.split('/').length-1],
-                    url: i.devices[x].ipsw
+        function getDlArr(propertyName) {
+            let retArr = Object.keys(i.devices)
+                .filter(x => devArr.map(x => x.identifier).includes(x))
+                .map(x => {
+                    if (!i.devices[x] || !i.devices[x][propertyName] || i.devices[x][propertyName] == 'none') return undefined
+                    return {
+                        deviceName: devArr.filter(y => y.identifier == x)[0].name,
+                        identifier: x,
+                        label: i.devices[x][propertyName].split('/')[i.devices[x][propertyName].split('/').length-1],
+                        url: i.devices[x][propertyName]
+                    }
                 }
-            }
-        ).filter(x => x)
+            ).filter(x => x)
 
-        urlCount = Array.from(new Set(dlArr.map(x => x.url))).length
-        if (urlCount == 1) dlArr = [dlArr[0]]
+            urlCount = Array.from(new Set(retArr.map(x => x.url))).length
+            if (urlCount == 1) retArr = [retArr[0]]
+            
+            return retArr
+        }
+
+        const dlArr = getDlArr('ipsw')
+        const otaArr = getDlArr('ota')
 
         const devIdFwArr = Object.keys(i.devices).filter(x => devArr.map(x => x.identifier).includes(x))
         const devTypeArr = Array.from(
@@ -130,7 +137,8 @@ module.exports = function(args) {
                         .map(x => x ? x.name : x)
                 )
             ).filter(x => x),
-            downloads: dlArr
+            downloads: dlArr,
+            otas: otaArr
         }
     }).reverse()
 

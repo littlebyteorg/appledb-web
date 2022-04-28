@@ -118,16 +118,29 @@
                         </td>
 
                         <td v-if="options.showDownloadColumn">
-                            <div v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" class="showOnHover">
+                            <template v-if="getFilteredDownloads(fw.downloads).length == 0">
+                                {{ naStr }}
+                            </template>
+                            <div v-else v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" class="showOnHover">
                                 <template v-if="getFilteredDownloads(fw.downloads).length > 1">{{ dl.deviceName }}: </template>
                                 <a :href="dl.url">
                                     {{ dl.label }}
                                     <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
                                 </a>
                             </div>
-                            <template v-if="getFilteredDownloads(fw.downloads).length == 0">
+                        </td>
+
+                        <td v-if="options.showOtaColumn">
+                            <template v-if="getFilteredDownloads(fw.otas).length == 0">
                                 {{ naStr }}
                             </template>
+                            <div v-else v-for="dl in getFilteredDownloads(fw.otas)" :key="dl" class="showOnHover">
+                                <template v-if="getFilteredDownloads(fw.otas).length > 1">{{ dl.deviceName }}: </template>
+                                <a :href="dl.url">
+                                    {{ dl.label }}
+                                    <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
+                                </a>
+                            </div>
                         </td>
 
                         <td v-if="options.showReleasedColumn" style="width: 7em;">{{ fw.releasedStr }}</td>
@@ -171,6 +184,7 @@ export default {
                 version: "Version",
                 jailbreak: "Jailbreak",
                 download: "Download",
+                ota: "OTA Download",
                 released: "Released"
             },
             optionsStr: 'Options',
@@ -183,6 +197,7 @@ export default {
                 showVersionColumn: "Show version numbers",
                 showJailbreakColumn: "Show jailbreaks",
                 showDownloadColumn: "Show download links",
+                showOtaColumn: "Show OTA download links",
                 showReleasedColumn: "Show release dates",
                 showStable: "Show stable version",
                 showBeta: 'Show beta versions'
@@ -196,6 +211,7 @@ export default {
                 showVersionColumn: true,
                 showJailbreakColumn: true,
                 showDownloadColumn: false,
+                showOtaColumn: false,
                 showReleasedColumn: false,
 
                 showStable: true,
@@ -272,6 +288,7 @@ export default {
                     "showVersionColumn",
                     "showJailbreakColumn",
                     "showDownloadColumn",
+                    "showOtaColumn",
                     "showReleasedColumn"
                 ]
             ].map(x => {
@@ -302,6 +319,10 @@ export default {
                 {
                     label: this.tableHeadObj.download,
                     value: this.options.showDownloadColumn
+                },
+                {
+                    label: this.tableHeadObj.ota,
+                    value: this.options.showOtaColumn
                 },
                 {
                     label: this.tableHeadObj.released,

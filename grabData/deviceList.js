@@ -38,7 +38,7 @@ fs.readdirSync(path.resolve(__dirname, '../apple-device-images/images')).forEach
   })
 })
 
-let folderArr = imgArr.filter(x => x.imgCount < 0)
+let folderArr = imgArr.filter(x => x.imgCount < 0).filter(x => fs.lstatSync(path.resolve(__dirname, `../apple-device-images/images/${x.identifier}`)).isDirectory())
 imgArr = imgArr.filter(x => x.imgCount > 0)
 
 for (const i of folderArr) {
