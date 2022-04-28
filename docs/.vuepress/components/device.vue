@@ -231,13 +231,17 @@ export default {
     computed: {
         infoArr() {
             const dev = this.fm.device
+            console.log(dev)
             function grabInfo(property) {
                 return Array.from(new Set(dev.map(x => {
                     if (property == 'released' && x[property]) {
-                        const releasedArr = x[property].split('-')
-                        const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
-                        const date = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(x[property]))
-                        x[property] = date
+                        if (!Array.isArray(x[property])) x[property] = [x[property]]
+                        x[property] = x[property].map(y => {
+                            const releasedArr = y.split('-')
+                            const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+                            const date = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(y))
+                            return date
+                        })
                     }
                     return x[property]
                 }).flat()))

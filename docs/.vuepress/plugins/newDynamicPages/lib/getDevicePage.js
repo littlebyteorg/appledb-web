@@ -15,8 +15,8 @@ const bigJson = {
     if (c[0].type < c[1].type) return -1
     if (c[0].type > c[1].type) return 1
     
-    if (c[0].order > c[1].order) return -1
-    if (c[0].order < c[1].order) return 1
+    if (c[0].released > c[1].released) return -1
+    if (c[0].released < c[1].released) return 1
 
     return 0
   })

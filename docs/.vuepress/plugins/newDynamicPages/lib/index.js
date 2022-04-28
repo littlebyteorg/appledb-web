@@ -18,8 +18,8 @@ const bigJson = {
     if (c[0].type < c[1].type) return -1
     if (c[0].type > c[1].type) return 1
     
-    if (c[0].order > c[1].order) return -1
-    if (c[0].order < c[1].order) return 1
+    if (c[0].released > c[1].released) return -1
+    if (c[0].released < c[1].released) return 1
 
     return 0
   })
@@ -167,7 +167,7 @@ Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
           dark: devArr[0].imgDark
         }
 
-        const released = Array.from(new Set(devArr.map(y => y.released))).sort((a,b) => {
+        const released = Array.from(new Set(devArr.map(y => y.released))).flat().sort((a,b) => {
           if (new Date(a.released) < new Date(b.released)) return -1
           if (new Date(a.released) > new Date(b.released)) return 1
           return 0
