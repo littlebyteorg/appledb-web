@@ -18,6 +18,9 @@ const bigJson = {
     if (c[0].released > c[1].released) return -1
     if (c[0].released < c[1].released) return 1
 
+    if (c[0].name > c[1].name) return -1
+    if (c[0].name < c[1].name) return 1
+
     return 0
   })
 }
