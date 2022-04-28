@@ -16,39 +16,21 @@
                 </router-link>
             </div>
             <div class="flexWrapper flexColumn devInfo">
-                <p>
+                <p class="devInfo" style="position: absolute;">
                     <div v-for="i in infoObj[dev.name].slice(0,3)" :key="i">
                         {{ i.replace('...','') }}
                         <router-link v-if="i.includes('...')" :to="url">...</router-link>
                     </div>
                     <div><router-link :to="url">{{ viewDeviceStr }}</router-link></div>
-                    <template v-if="infoObj[dev.name].length < 3"><br v-for="i in (3 - infoObj[dev.name].length)" :key="i"></template>
                 </p>
-                <p>
+                <p class="devReleased" style="position: relative; top: 9em;">
                     <div v-if="dev.released">{{ releasedOn.format({ released: dev.released.slice(0,1).join(', ') }) }}<template v-if="dev.released.length > 1">, <router-link :to="url">...</router-link></template></div>
                 </p>
             </div>
         </div>
-        <br>
+        <span class="variablePadding"/>
         <hr>
     </template></template>
-    
-    <!--<table v-for="t in Math.ceil(deviceArr.length / colCount)" :key="t">
-        <tr>
-            <th v-for="c in colCount" :key="c" :style="{'width': parseInt(100 / colCount) + '%'}">
-                <router-link v-if="deviceArr[(t - 1) * colCount + c - 1]" :to="`/device/${deviceArr[(t - 1) * colCount + c - 1].name.replace(/ /g, '-')}.html`">
-                    {{ deviceArr[(t - 1) * colCount + c - 1].name.replace('generation', 'gen') }}
-                </router-link>
-            </th>
-        </tr>
-        <tr>
-            <td v-for="c in colCount" :key="c">
-                <router-link v-if="deviceArr[(t - 1) * colCount + c - 1]" :to="`/device/${deviceArr[(t - 1) * colCount + c - 1].name.replace(/ /g, '-')}.html`">
-                    <img :src="`https://img.appledb.dev/device@256/${deviceArr[(t - 1) * colCount + c - 1].devices[0]}/0.png`" style="max-height: 8em;">
-                </router-link>
-            </td>
-        </tr>
-    </table>-->
 </template>
 
 <script>
@@ -148,7 +130,31 @@ td, th {
 
 .devHead {
     margin-right: 1em;
-    min-width: 50%;
+    width: 50%;
+}
+
+.variablePadding {
+    display: block;
+    margin-bottom: 1em;
+}
+
+@media only screen and (max-width: 600px) {
+    .devHead {
+        width: 100%;
+    }
+    .devInfo {
+        position: static !important;
+    }
+    .devReleased {
+        position: static !important;
+    }
+    h3 {
+        white-space: normal;
+        overflow: visible;
+    }
+    .variablePadding {
+        display: none;
+    }
 }
 
 .home {
