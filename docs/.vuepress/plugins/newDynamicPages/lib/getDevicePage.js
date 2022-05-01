@@ -72,7 +72,7 @@ module.exports = function(args) {
     const duplicateVersionArr = devFwVersionArr.filter((fw, index) => index !== devFwVersionArr.indexOf(fw))
 
     function getDevType(type) {
-        if (type.includes('iPad') || type == 'iPhone' || type == 'iPod') return 'iPhone, iPad, iPod'
+        if (type.includes('iPad') || type == 'iPhone' || type == 'iPod touch') return 'iOS devices'
         if (type == 'AirPods' || type == 'Beats') return 'AirPods, Beats'
         if (type.includes('Mac') || type == 'Developer Transition Kit') return 'Mac'
         return type

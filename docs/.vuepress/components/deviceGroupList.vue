@@ -64,7 +64,7 @@ export default {
                         "iPad Air",
                         "iPad Pro",
                         "iPad mini",
-                        "iPod"
+                        "iPod touch"
                     ]
                 },
                 {
