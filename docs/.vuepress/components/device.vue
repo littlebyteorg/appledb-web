@@ -173,17 +173,18 @@ String.prototype.format = function(vars) {
 }
 
 String.prototype.formatExtraInfoTitle = function() {
-    function capitaliseFirstLetter(str) { return str.charAt(0).toUpperCase() + str.slice(1) }
-    return this.split('_').map(x => capitaliseFirstLetter(x)).join(' ')
+    /*function capitaliseFirstLetter(str) { return str.charAt(0).toUpperCase() + str.slice(1) }
+    return this.split('_').map(x => capitaliseFirstLetter(x)).join(' ')*/
+    return this.replace(/_/g, ' ')
 }
 
 Array.prototype.formatExtraInfoText = function(property) {
     let temp = this
 
-    if (property == 'resolution') temp = temp.map(x => x.x + ' x ' + x.y)
-    else if (property == 'screen_size') temp = temp.map(x => x + '"')
-    else if (property == 'refresh_rate') temp = temp.map(x => x + 'Hz')
-    else if (property == 'peak_brightness') temp = temp.map(x => x + ' nits')
+    if (property == 'Resolution') temp = temp.map(x => x.x + ' x ' + x.y)
+    else if (property == 'Screen_Size') temp = temp.map(x => x + '"')
+    else if (property == 'Refresh_Rate') temp = temp.map(x => x + 'Hz')
+    else if (property == 'Peak_Brightness') temp = temp.map(x => x + ' nits')
 
     return temp.join(', ')
     .replace(/true/g, 'Yes')

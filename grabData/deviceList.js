@@ -1,3 +1,4 @@
+const { info } = require('console');
 const fs = require('fs');
 const path = require('path');
 const p = './appledb/deviceFiles'
@@ -71,6 +72,25 @@ for (const file in deviceFiles) {
   }
   obj.imgCount = imgCount
   obj.imgDark = imgDark
+
+  if (obj.info) obj.info = obj.info.map(o => {
+    if (o.type != 'Display') return x
+    if (o.Resolution && o.Screen_Size) {
+      const diagRes = Math.sqrt(Math.pow(o.Resolution.x, 2) + Math.pow(o.Resolution.y, 2))
+      const size = o.Screen_Size
+      const ppi = Math.round(diagRes / size)
+
+      let newObj = {}
+      newObj.type = o.type
+      newObj.Resolution = o.Resolution
+      newObj.Screen_Size = o.Screen_Size
+      newObj.Pixels_per_Inch = ppi
+      for (const i of Object.keys(o).filter(x => x != 'Resolution' || x != 'Screen_Size'))
+        newObj[i] = o[i]
+
+      return newObj
+    }
+  })
   
   deviceObj[obj.identifier] = obj
 }
