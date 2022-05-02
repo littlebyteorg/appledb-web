@@ -509,7 +509,7 @@ export default {
             this.options.filterDev = this.fm.deviceFilter[0].value
         }
 
-        if (this.tabArr.length > 1) this.activeTab = this.tabArr[0]
+        if (this.tabArr.length > 0) this.activeTab = this.tabArr[0]
 
         this.maxImgCount = this.fm.imgCount
     },
