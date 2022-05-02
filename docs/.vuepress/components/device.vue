@@ -454,7 +454,7 @@ export default {
             this.options.filterDev = this.fm.deviceFilter[0].value
         }
 
-        this.activeTab = this.fm.extraInfo[0].type
+        if (fm.extraInfo && fm.extraInfo.length > 1) this.activeTab = this.fm.extraInfo[0].type
 
         this.maxImgCount = this.fm.imgCount
     },
