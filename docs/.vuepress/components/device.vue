@@ -204,11 +204,8 @@ Array.prototype.formatExtraInfoText = function(property) {
     let temp = this
 
     if (property == 'Resolution') temp = temp.map(x => x.x + ' x ' + x.y)
-    else if (property == 'Screen_Size') temp = temp.map(x => x + '"')
-    else if (property == 'Refresh_Rate') temp = temp.map(x => x + 'Hz')
-    else if (property == 'Peak_Brightness') temp = temp.map(x => x + ' nits')
 
-    return temp.join(', ')
+    return temp.flat().join(', ')
     .replace(/true/g, 'Yes')
     .replace(/false/g, 'No')
 }
