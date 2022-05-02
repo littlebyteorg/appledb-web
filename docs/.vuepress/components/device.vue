@@ -14,6 +14,15 @@
             </div>
         </p>
 
+        <template v-for="i in fm.extraInfo" :key="i">
+            <h3>{{ i.type.formatExtraInfoTitle() }}</h3>
+            <ul class="infoList">
+                <li v-for="property in Object.keys(i).filter(x => x != 'type')" :key="property">
+                    {{ property.formatExtraInfoTitle() }}: {{ i[property].formatExtraInfoText(property) }}
+                </li>
+            </ul>
+        </template>
+
         <template v-if="!fm.hideChildren && groupedOrRelatedDevicesObj.devices.length > 1">
             <h2>{{ groupedOrRelatedDevicesObj.header }}</h2>
             <ul>
@@ -157,10 +166,28 @@ import { usePageFrontmatter } from '@vuepress/client'
 import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 
 String.prototype.format = function(vars) {
-  let temp = this;
+  let temp = this
   for (let item in vars)
-    temp = temp.replace("${" + item + "}", vars[item]);
+    temp = temp.replace("${" + item + "}", vars[item])
   return temp
+}
+
+String.prototype.formatExtraInfoTitle = function() {
+    function capitaliseFirstLetter(str) { return str.charAt(0).toUpperCase() + str.slice(1) }
+    return this.split('_').map(x => capitaliseFirstLetter(x)).join(' ')
+}
+
+Array.prototype.formatExtraInfoText = function(property) {
+    let temp = this
+
+    if (property == 'resolution') temp = temp.map(x => x.x + ' x ' + x.y)
+    else if (property == 'screen_size') temp = temp.map(x => x + '"')
+    else if (property == 'refresh_rate') temp = temp.map(x => x + 'Hz')
+    else if (property == 'peak_brightness') temp = temp.map(x => x + ' nits')
+
+    return temp.join(', ')
+    .replace(/true/g, 'Yes')
+    .replace(/false/g, 'No')
 }
 
 export default {

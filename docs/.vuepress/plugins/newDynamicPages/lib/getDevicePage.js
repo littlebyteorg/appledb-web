@@ -164,6 +164,30 @@ module.exports = function(args) {
         return o
     })
 
+    var extraInfo = undefined
+    if (!mainList && devArr.map(x => x.info).filter(x => x).length > 0) {
+        let extraInfoObj = {}
+        for (const i of devArr) extraInfoObj[i.identifier] = i.info
+
+        extraInfo = []
+        for (const dev in extraInfoObj)
+        if (extraInfoObj[dev])
+        for (const i of extraInfoObj[dev]) {
+            if (!extraInfo.map(x => x.type).includes(i.type)) {
+                let retObj = {}
+                for (p in i) retObj[p] = p == 'type' ? i[p] : [i[p]] 
+                extraInfo.push(retObj)
+            } else {
+                let retObj = extraInfo.filter(x => x.type == i.type)[0]
+                let properties = Array.from(new Set(Object.keys(i).concat(Object.keys(retObj)).filter(x => x != 'type')))
+                for (p of properties) {
+                    if (!retObj.hasOwnProperty(p)) retObj[p] = [i[p]]
+                    else if (!retObj[p].map(x => JSON.stringify(x)).includes(JSON.stringify(i[p]))) retObj[p].push(i[p])
+                }
+            }
+        }
+    }
+
     const img = {
         count: devArr[0].imgCount,
         dark: devArr[0].imgDark
@@ -201,6 +225,7 @@ module.exports = function(args) {
         mainList: mainList,
         noJb: (!(osStr.some(r => hasJbArr.includes(r))) && !mainList),
         img: img,
+        extraInfo: extraInfo || undefined,
         deviceFilter: (mainList) ? 
             ['Filter'].concat(Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort((a, b) => a.localeCompare(b))).map(x => {
                 return {
