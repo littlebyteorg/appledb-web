@@ -205,7 +205,7 @@ Array.prototype.formatExtraInfoText = function(property) {
 
     if (property == 'Resolution') temp = temp.map(x => x.x + ' x ' + x.y)
 
-    return Array.from(new Set(temp.flat())).filter(x => x).sort().join(', ')
+    return Array.from(new Set(temp.flat())).filter(x => x || x === false).sort().join(', ')
     .replace(/true/g, 'Yes')
     .replace(/false/g, 'No')
 }
