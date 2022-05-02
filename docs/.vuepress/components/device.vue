@@ -14,14 +14,36 @@
             </div>
         </p>
 
-        <template v-for="i in fm.extraInfo" :key="i">
-            <h3>{{ i.type.formatExtraInfoTitle() }}</h3>
-            <ul class="infoList">
-                <li v-for="property in Object.keys(i).filter(x => x != 'type')" :key="property">
-                    {{ property.formatExtraInfoTitle() }}: {{ i[property].formatExtraInfoText(property) }}
-                </li>
-            </ul>
+        <template v-if="fm.extraInfo && fm.extraInfo.length == 1">
+            <template v-for="i in fm.extraInfo" :key="i">
+                <h3>{{ i.type.formatExtraInfoTitle() }}</h3>
+                <div style="overflow-x: scroll;">
+                    <table style="margin-top: 0;">
+                        <tr v-for="property in Object.keys(i).filter(x => x != 'type')" :key="property">
+                            <td style="width: 30%; min-width: 150px;">{{ property.formatExtraInfoTitle() }}</td>
+                            <td style="width: 70%; min-width: 150px;">{{ i[property].formatExtraInfoText(property) }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </template>
         </template>
+        
+        <div class="tab-container" v-else-if="fm.extraInfo && fm.extraInfo.length > 1">
+            <section v-for="i in fm.extraInfo" :key="i">
+                <input :id="i.type" type="radio" :checked="activeTab == i.type">
+                <label :for="i.type" class="tab-link" v-on:click="activeTab = i.type">
+                    {{ i.type.formatExtraInfoTitle() }}
+                </label>
+                <div class="tab" style="overflow-x: scroll;">
+                    <table style="margin: 0;">
+                        <tr v-for="property in Object.keys(i).filter(x => x != 'type')" :key="property">
+                            <td style="width: 30%; min-width: 150px;">{{ property.formatExtraInfoTitle() }}</td>
+                            <td style="width: 70%; min-width: 150px;">{{ i[property].formatExtraInfoText(property) }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+        </div>
 
         <template v-if="!fm.hideChildren && groupedOrRelatedDevicesObj.devices.length > 1">
             <h2>{{ groupedOrRelatedDevicesObj.header }}</h2>
@@ -220,6 +242,8 @@ export default {
             allDeviceStr: 'Filter',
             naStr: 'N/A',
             unknownDateStr: 'Unknown',
+
+            activeTab: '',
 
             optionsObjStr: {
                 showBuildColumn: "Show build numbers",
@@ -430,6 +454,8 @@ export default {
             this.options.filterDev = this.fm.deviceFilter[0].value
         }
 
+        this.activeTab = this.fm.extraInfo[0].type
+
         this.maxImgCount = this.fm.imgCount
     },
     watch: {
@@ -499,7 +525,6 @@ select:focus {
   color: var(--c-text-accent) !important;
   outline: 0;
 }
-
 
 select:-moz-focusring {
   color: transparent;
