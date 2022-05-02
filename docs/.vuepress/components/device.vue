@@ -1,6 +1,6 @@
 <template>
     <template v-if="!fm.mainList">
-        <p class="flexWrapper" :style="(wrapImg) ? 'flex-direction: column;' : 'flex-direction: row;'">
+        <div class="flexWrapper" :style="(wrapImg) ? 'flex-direction: column;' : 'flex-direction: row;'">
             <ul class="infoList" id="flexInfo">
                 <li v-for="(s, index) in infoArr" :key="s">
                     <template v-if="(infoArr[index].split(', ').length > 5 && !options.showAll[index])">
@@ -12,7 +12,7 @@
             <div style="user-select: none; text-align: center; padding-top: ${(wrapImg) ? '1em' : 0}; height: 11em; overflow: hidden;">
                 <img v-for="i in Math.min(fm.img.count,3)" :key="i" :class="`flexImg flexImg${i}`" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.identifier)[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" :style="`margin-left: .5em;`">
             </div>
-        </p>
+        </div>
 
         <div class="tab-container">
             <section v-for="tab in tabArr" :key="tab">
@@ -38,37 +38,6 @@
                 </div>
             </section>
         </div>
-
-        <!--<template v-if="tabArr.length == 1">
-            <template v-for="i in fm.extraInfo" :key="i">
-                <h3>{{ i.type.formatExtraInfoTitle() }}</h3>
-                <div style="overflow-x: scroll;">
-                    <table style="margin-top: 0;">
-                        <tr v-for="property in Object.keys(i).filter(x => x != 'type')" :key="property">
-                            <td style="width: 30%; min-width: 150px;">{{ property.formatExtraInfoTitle() }}</td>
-                            <td style="width: 70%; min-width: 150px;">{{ i[property].formatExtraInfoText(property) }}</td>
-                        </tr>
-                    </table>
-                </div>
-            </template>
-        </template>
-        
-        <div class="tab-container" v-else-if="tabArr.length > 1">
-            <section v-for="i in fm.extraInfo" :key="i">
-                <input :id="i.type" type="radio" :checked="activeTab == i.type">
-                <label :for="i.type" class="tab-link" v-on:click="activeTab = i.type">
-                    {{ i.type.formatExtraInfoTitle() }}
-                </label>
-                <div class="tab" style="overflow-x: scroll;">
-                    <table style="margin: 0;">
-                        <tr v-for="property in Object.keys(i).filter(x => x != 'type')" :key="property">
-                            <td style="width: 30%; min-width: 150px;">{{ property.formatExtraInfoTitle() }}</td>
-                            <td style="width: 70%; min-width: 150px;">{{ i[property].formatExtraInfoText(property) }}</td>
-                        </tr>
-                    </table>
-                </div>
-            </section>
-        </div>-->
 
         <template v-if="!fm.hideChildren && groupedOrRelatedDevicesObj.devices.length > 1">
             <h2>{{ groupedOrRelatedDevicesObj.header }}</h2>

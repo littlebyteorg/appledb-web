@@ -16,16 +16,16 @@
                 </router-link>
             </div>
             <div class="flexWrapper flexColumn devInfo">
-                <p class="devInfo" style="position: absolute;">
-                    <div v-for="i in infoObj[dev.name].slice(0,3)" :key="i">
+                <ul class="devInfo infoList" style="position: absolute;">
+                    <li v-for="i in infoObj[dev.name].slice(0,3)" :key="i">
                         {{ i.replace('...','') }}
                         <router-link v-if="i.includes('...')" :to="url">...</router-link>
-                    </div>
-                    <div><router-link :to="url">{{ viewDeviceStr }}</router-link></div>
-                </p>
-                <p class="devReleased" style="position: relative; top: 9em;">
-                    <div v-if="dev.released">{{ releasedOn.format({ released: dev.released.slice(0,1).join(', ') }) }}<template v-if="dev.released.length > 1">, <router-link :to="url">...</router-link></template></div>
-                </p>
+                    </li>
+                    <li><router-link :to="url">{{ viewDeviceStr }}</router-link></li>
+                </ul>
+                <ul class="devReleased infoList" style="position: relative; top: 9em;">
+                    <li v-if="dev.released">{{ releasedOn.format({ released: dev.released.slice(0,1).join(', ') }) }}<template v-if="dev.released.length > 1">, <router-link :to="url">...</router-link></template></li>
+                </ul>
             </div>
         </div>
         <span class="variablePadding"/>
@@ -163,5 +163,10 @@ td, th {
 
 .home {
     padding-top: 0 !important;
+}
+
+.infoList {
+    list-style-type: none;
+    padding-left: 0;
 }
 </style>
