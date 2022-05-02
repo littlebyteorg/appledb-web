@@ -164,7 +164,7 @@ module.exports = function(args) {
         return o
     })
 
-    var extraInfo = undefined
+    /*var extraInfo = undefined
     if (!mainList && devArr.map(x => x.info).filter(x => x).length > 0) {
         let extraInfoObj = {}
         for (const i of devArr) extraInfoObj[i.identifier] = i.info
@@ -186,6 +186,11 @@ module.exports = function(args) {
                 }
             }
         }
+    }*/
+    var extraInfo = undefined
+    if (!mainList && devArr.map(x => x.info).filter(x => x).length > 0) {
+        extraInfo = {}
+        for (const i of devArr) extraInfo[i.identifier] = i.info
     }
 
     const img = {

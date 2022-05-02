@@ -14,7 +14,32 @@
             </div>
         </p>
 
-        <template v-if="fm.extraInfo && fm.extraInfo.length == 1">
+        <div class="tab-container">
+            <section v-for="tab in tabArr" :key="tab">
+                <input :id="tab" type="radio" :checked="activeTab == tab">
+                <label :for="tab" class="tab-link" v-on:click="activeTab = tab">
+                    {{ tab.formatExtraInfoTitle() }}
+                </label>
+                <div class="tab" style="overflow-x: scroll;">
+                    <table style="margin: 0;">
+                        <tr v-if="Object.keys(fm.extraInfo).length > 1"><th/><th v-for="dev in Object.keys(fm.extraInfo)" :key="dev">{{ fm.device.filter(x => x.identifier == dev)[0].name }}</th></tr>
+                        <tr v-for="property in tabPropertyArr[tab]" :key="property">
+                            <td>{{ property.formatExtraInfoTitle() }}</td>
+                            <td v-if="Array.from(new Set(Object.keys(tabData).map(x => JSON.stringify(tabData[x][tab][property])))).length == 1 && Object.keys(tabData).map(x => JSON.stringify(tabData[x][tab][property])).length != 1" :colspan="Object.keys(fm.extraInfo).length">
+                                {{ tabData[Object.keys(tabData)[0]][tab][property].formatExtraInfoText(property) }}
+                            </td>
+                            <td v-else v-for="dev in tabData" :key="dev">
+                                <template v-if="dev[tab][property]">
+                                    {{ dev[tab][property].formatExtraInfoText(property) }}
+                                </template>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!--<template v-if="tabArr.length == 1">
             <template v-for="i in fm.extraInfo" :key="i">
                 <h3>{{ i.type.formatExtraInfoTitle() }}</h3>
                 <div style="overflow-x: scroll;">
@@ -28,7 +53,7 @@
             </template>
         </template>
         
-        <div class="tab-container" v-else-if="fm.extraInfo && fm.extraInfo.length > 1">
+        <div class="tab-container" v-else-if="tabArr.length > 1">
             <section v-for="i in fm.extraInfo" :key="i">
                 <input :id="i.type" type="radio" :checked="activeTab == i.type">
                 <label :for="i.type" class="tab-link" v-on:click="activeTab = i.type">
@@ -43,7 +68,7 @@
                     </table>
                 </div>
             </section>
-        </div>
+        </div>-->
 
         <template v-if="!fm.hideChildren && groupedOrRelatedDevicesObj.devices.length > 1">
             <h2>{{ groupedOrRelatedDevicesObj.header }}</h2>
@@ -279,6 +304,39 @@ export default {
         }
     },
     computed: {
+        tabArr() {
+            if (!this.fm.extraInfo) return []
+            return Array.from(
+                new Set(
+                    Object.keys(this.fm.extraInfo)
+                    .map(x => this.fm.extraInfo[x]).flat()
+                    .map(x => x.type)
+                )
+            )
+        },
+        tabPropertyArr() {
+            const arr = Object.keys(this.fm.extraInfo).map(x => this.fm.extraInfo[x]).flat()
+            let retObj = {}
+            for (const i of arr) {
+                if (!retObj.hasOwnProperty(i.type)) retObj[i.type] = Object.keys(i).filter(x => x != 'type')
+                else retObj[i.type].concat(Object.keys(i.type).filter(x => x != 'type'))
+            }
+            return retObj
+        },
+        tabData() {
+            let retObj = {}
+            for (const dev in this.fm.extraInfo) {
+                retObj[dev] = {}
+                for (const tab of this.fm.extraInfo[dev]) {
+                    retObj[dev][tab.type] = {}
+                    for (const property in tab) {
+                        if (property == 'type') continue
+                        retObj[dev][tab.type][property] = Array.isArray(tab[property]) ? tab[property] : [tab[property]]
+                    }
+                }
+            }
+            return retObj
+        },
         infoArr() {
             const dev = this.fm.device
             function grabInfo(property) {
@@ -451,7 +509,7 @@ export default {
             this.options.filterDev = this.fm.deviceFilter[0].value
         }
 
-        if (this.fm.extraInfo && this.fm.extraInfo.length > 1) this.activeTab = this.fm.extraInfo[0].type
+        if (this.tabArr.length > 1) this.activeTab = this.tabArr[0]
 
         this.maxImgCount = this.fm.imgCount
     },
