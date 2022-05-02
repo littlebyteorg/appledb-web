@@ -383,7 +383,7 @@ export default {
                     return {
                         name: x.name,
                         identifier: x.identifier,
-                        url: [this.devicePath,x.identifier].join('/') + '.html'
+                        url: [this.devicePath,x.identifier.replace(/ /g,'-')].join('/') + '.html'
                     }
                 })
             }
