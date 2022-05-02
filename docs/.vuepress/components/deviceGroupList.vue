@@ -94,6 +94,13 @@ export default {
                     ]
                 },
                 {
+                    label: "iPods",
+                    types: [
+                        'iPod touch',
+                        'iPod nano'
+                    ]
+                },
+                {
                     label: "Beats",
                     types: [
                         "Beats Earbuds",
