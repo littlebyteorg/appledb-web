@@ -472,6 +472,7 @@ export default {
             this.options.filterDev = this.fm.deviceFilter[0].value
 
             document.getElementById("showDownloadColumnCheckbox").disabled = true
+            document.getElementById("showOtaColumnCheckbox").disabled = true
         }
         else {
             this.checkWrap()
