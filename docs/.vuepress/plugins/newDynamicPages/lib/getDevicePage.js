@@ -220,8 +220,8 @@ module.exports = function(args) {
         frontmatter: {
         title: name,
         description: description || `Information lookup for ${name}`,
-        layout: 'chartLayout',
         chartType: 'device',
+        widePage: true,
         device: infoArr,
         versionArr: getVersionArr,
         grouped: grouped,

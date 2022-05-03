@@ -38,7 +38,6 @@ pageList.push({
   frontmatter: {
     title: `AppleDB Firmwares`,
     description: `AppleDB firmware lookup`,
-    layout: 'chartLayout',
     chartType: 'firmwareVersion',
     iosList: iosList,
     sidebar: false,
@@ -64,7 +63,6 @@ for (var jb in jbList) {
     frontmatter: {
       title: jbList[jb].name,
       description: `Compatible devices and software versions for ${jbList[jb].name}`,
-      layout: 'chartLayout',
       chartType: 'jailbreak',
       jailbreak: jbList[jb],
       redirect_from: redirects,
@@ -125,7 +123,6 @@ pageList.push({
   frontmatter: {
     title: 'Device List',
     description: 'AppleDB device list',
-    layout: 'chartLayout',
     chartType: 'deviceList',
     deviceList: deviceList,
     sidebar: false,
@@ -140,7 +137,6 @@ pageList.push({
   frontmatter: {
     title: 'Device Selection',
     description: 'AppleDB device selection',
-    layout: 'chartLayout',
     chartType: 'deviceGroupList',
     redirect_from: ['/devices','/devices.html','/device','/device.html'],
     groupList: deviceGroups,
@@ -159,8 +155,8 @@ Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
     frontmatter: {
       title: `Device Selection (${t})`,
       description: 'AppleDB device selection',
-      layout: 'chartLayout',
       chartType: 'deviceGroup',
+      widePage: true,
       type: t,
       group: deviceGroups.map(x => {
         const devArr = x.devices.map(y => deviceList[y])
