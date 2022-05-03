@@ -1,6 +1,6 @@
 const { path } = require('@vuepress/utils')
 const { searchPlugin } = require('@vuepress/plugin-search')
-const { localTheme } = require('./theme')
+const { localTheme } = require('../../emiyl-theme')
 
 module.exports = {
     lang: 'en-US',

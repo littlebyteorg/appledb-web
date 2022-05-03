@@ -5,7 +5,7 @@ home: true
 actions:
   - text: Devices
     link: device-selection.html
-    type: primary
+    type: secondary
   - text: Firmwares
     link: firmwares.html
     type: secondary
