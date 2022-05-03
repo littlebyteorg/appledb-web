@@ -22,7 +22,7 @@
                 </label>
                 <div class="tab" style="overflow-x: scroll;">
                     <table style="margin: 0;">
-                        <tr v-if="Object.keys(fm.extraInfo).length > 1"><th/><th v-for="dev in Object.keys(fm.extraInfo)" :key="dev">{{ fm.device.filter(x => x.identifier == dev)[0].name }}</th></tr>
+                        <tr v-if="Object.keys(fm.extraInfo).length > 1 && [Object.keys(tabData).map(x => tabData[x][tab])].map(d => Array.from(new Set(d.map(y => JSON.stringify(Object.keys(y).map(x => y[x]))))).length)[0] > 1"><th/><th v-for="dev in Object.keys(fm.extraInfo)" :key="dev">{{ fm.device.filter(x => x.identifier == dev)[0].name }}</th></tr>
                         <tr v-for="property in tabPropertyArr[tab]" :key="property">
                             <td>{{ property.formatExtraInfoTitle() }}</td>
                             <td v-if="Array.from(new Set(Object.keys(tabData).map(x => JSON.stringify(tabData[x][tab][property])))).length == 1 && Object.keys(tabData).map(x => JSON.stringify(tabData[x][tab][property])).length != 1" :colspan="Object.keys(fm.extraInfo).length">
@@ -35,6 +35,7 @@
                             </td>
                         </tr>
                     </table>
+
                 </div>
             </section>
         </div>
