@@ -97,7 +97,8 @@ export default {
                     label: "iPods",
                     types: [
                         'iPod touch',
-                        'iPod nano'
+                        'iPod nano',
+                        'iPod shuffle'
                     ]
                 },
                 {
