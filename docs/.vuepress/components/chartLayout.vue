@@ -126,3 +126,8 @@ const onBeforeLeave = scrollPromise.pending
     </slot>
   </div>
 </template>
+
+<style lang="scss">
+@use '../../../emiyl-theme/styles/index.scss';
+@use '../../../emiyl-theme/styles/palette.scss';
+</style>
