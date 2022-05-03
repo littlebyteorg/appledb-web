@@ -208,7 +208,6 @@ module.exports = function() {
     },
     onPrepared: async (app) => {
       await app.writeTemp('main.js', `export default ${JSON.stringify(bigJson)}`)
-    },
-    clientAppEnhanceFiles: path.resolve(__dirname, 'clientAppEnhance.js'),
+    }
   }
 }
