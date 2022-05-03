@@ -88,7 +88,7 @@
             </li>
         </ul>
 
-        <div class="tableContainer">
+        <div class="tableContainer" style="padding-top: 2em;">
             <table>
                 <tr>
                     <th v-for="header in tableHeaders" :key="header">{{ header }}</th>
