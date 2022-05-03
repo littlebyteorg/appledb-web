@@ -27,6 +27,8 @@
     </template>
 
     <p><router-link to="/device-list.html">{{ viewAllStr }}</router-link></p>
+
+    <p>AppleDB is not affiliated with Apple Inc.</p>
 </template>
 
 <script>

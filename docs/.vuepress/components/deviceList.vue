@@ -7,6 +7,8 @@
             <td>{{dev.board ? dev.board.join(', ') : ''}}</td>
         </tr>
     </table>
+
+    <p>AppleDB is not affiliated with Apple Inc.</p>
 </template>
 
 <script>

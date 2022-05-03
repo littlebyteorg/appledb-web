@@ -176,6 +176,8 @@
             </table>
         </div>
     </template>
+
+    <p>AppleDB is not affiliated with Apple Inc.</p>
 </template>
 
 <script>

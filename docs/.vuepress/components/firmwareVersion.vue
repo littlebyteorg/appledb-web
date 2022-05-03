@@ -11,6 +11,8 @@
       <router-link :to="d.url">{{ d.name }}</router-link> <code class="hoverElement">{{ d.identifier }}</code>
     </li>
   </ul>
+
+    <p>AppleDB is not affiliated with Apple Inc.</p>
 </template>
 
 <script>
