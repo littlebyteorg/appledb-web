@@ -35,7 +35,6 @@
                             </td>
                         </tr>
                     </table>
-
                 </div>
             </section>
         </div>
@@ -88,7 +87,7 @@
             </li>
         </ul>
 
-        <div class="tableContainer" style="padding-top: 2em;">
+        <div class="tableContainer">
             <table>
                 <tr>
                     <th v-for="header in tableHeaders" :key="header">{{ header }}</th>
