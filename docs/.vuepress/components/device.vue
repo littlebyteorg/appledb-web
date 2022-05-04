@@ -9,18 +9,18 @@
                     <template v-else>{{ s }}</template>
                 </li>
             </ul>
-            <div :style="`user-select: none; text-align: center; padding-top: 1em; padding-bottom: ${wrapImg ? '1em' : '0'}; height: 8em; overflow: hidden;`">
+            <div style="user-select: none; text-align: center; padding-top: 1em; padding-bottom: 1em; height: 8em; overflow: hidden;">
                 <img v-for="i in Math.min(fm.img.count,3)" :key="i" :class="`flexImg flexImg${i}`" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.identifier)[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" style="margin-left: .5em; height: 8em;">
             </div>
         </div>
 
         <div class="tab-container">
-            <section v-for="tab in tabArr" :key="tab">
+            <section v-for="(tab,index) in tabArr" :key="tab">
                 <input :id="tab" type="radio" :checked="activeTab == tab">
                 <label :for="tab" class="tab-link" v-on:click="activeTab = tab">
                     {{ tab.formatExtraInfoTitle() }}
                 </label>
-                <div class="tab" style="overflow-x: scroll;">
+                <div :class="`tab ${(index == tabArr.length - 1) ? 'tab-last' : ''}`" style="overflow-x: scroll;">
                     <table style="margin: 0;">
                         <tr v-if="Object.keys(fm.extraInfo).length > 1 && [Object.keys(tabData).map(x => tabData[x][tab])].map(d => Array.from(new Set(d.map(y => JSON.stringify(Object.keys(y).map(x => y[x]))))).length)[0] > 1"><th/><th v-for="dev in Object.keys(fm.extraInfo)" :key="dev">{{ fm.device.filter(x => x.identifier == dev)[0].name }}</th></tr>
                         <tr v-for="property in tabPropertyArr[tab]" :key="property">
