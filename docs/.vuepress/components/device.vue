@@ -337,11 +337,12 @@ export default {
             for (var str of this.infoStrArr) {
                 const property = propertyArr.filter(x => str.includes(x))[0]
 
-                let info = grabInfo(property)
+                const infoArr =  grabInfo(property)
+                let info = infoArr
                 if (property == 'released' && info.length > 1) info = info.map(x => x.replace(',',''))
                 info = info.join(', ')
 
-                if (property == 'identifier' && info == this.fm.title) info = 'N/A'
+                if (property == 'identifier' && infoArr.includes(this.fm.title)) info = 'N/A'
                 if (info) retObj[property] = str.format({ [property]: info })
             }
             return retObj
@@ -354,7 +355,7 @@ export default {
                     return {
                         name: x.name,
                         identifier: x.identifier,
-                        url: [this.devicePath,x.identifier.replace(/ /g,'-')].join('/') + '.html'
+                        url: [this.devicePath,'identifier',x.identifier.replace(/ /g,'-')].join('/') + '.html'
                     }
                 })
             }

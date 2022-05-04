@@ -218,46 +218,46 @@ module.exports = function(args) {
     return {
         path: devPath,
         frontmatter: {
-        title: name,
-        description: description || `Information lookup for ${name}`,
-        chartType: 'device',
-        widePage: true,
-        device: infoArr,
-        versionArr: getVersionArr,
-        grouped: grouped,
-        hideChildren: hideChildren,
-        imgCount: imgCount,
-        mainList: mainList,
-        noJb: (!(osStr.some(r => hasJbArr.includes(r))) && !mainList),
-        img: img,
-        extraInfo: extraInfo || undefined,
-        deviceFilter: (mainList) ? 
-            ['Filter'].concat(Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort((a, b) => a.localeCompare(b))).map(x => {
-                return {
-                    label: x,
-                    value: x
-                }
-            }) :
-            [devArr].map(x => {
-                const nameArr = x.map(y => y.name)
-                const idenArr = x.map(y => y.identifier)
-                return {
-                    label: nameArr.join(', '),
-                    value: idenArr
-                }
-            }).concat(devArr.map(x => {
-                return {
-                    label: x.name,
-                    value: [x.identifier]
-                }
-            })),
+            title: name,
+            description: description || `Information lookup for ${name}`,
+            chartType: 'device',
+            widePage: true,
+            device: infoArr,
+            versionArr: getVersionArr,
+            grouped: grouped,
+            hideChildren: hideChildren,
+            imgCount: imgCount,
+            mainList: mainList,
+            noJb: (!(osStr.some(r => hasJbArr.includes(r))) && !mainList),
+            img: img,
+            extraInfo: extraInfo || undefined,
+            deviceFilter: (mainList) ? 
+                ['Filter'].concat(Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort((a, b) => a.localeCompare(b))).map(x => {
+                    return {
+                        label: x,
+                        value: x
+                    }
+                }) :
+                [devArr].map(x => {
+                    const nameArr = x.map(y => y.name)
+                    const idenArr = x.map(y => y.identifier)
+                    return {
+                        label: nameArr.join(', '),
+                        value: idenArr
+                    }
+                }).concat(devArr.map(x => {
+                    return {
+                        label: x.name,
+                        value: [x.identifier]
+                    }
+                })),
 
-        head: head,
+            head: head,
 
-        sidebar: false,
-        editLink: false,
-        lastUpdated: false,
-        contributors: false
+            sidebar: false,
+            editLink: false,
+            lastUpdated: false,
+            contributors: false
         }
     }
 }

@@ -78,7 +78,7 @@ const getDevicePage = require('./getDevicePage')
 
 for (const d of Object.keys(deviceList).map(x => deviceList[x])) {
   const urlPart = d.identifier.replace(/ /g, '-').replace(/\//g,'%2F')
-  const url = [devicePath, urlPart].join('/') + '.html'
+  const url = [devicePath, 'identifier', urlPart].join('/') + '.html'
   pageList.push(
     getDevicePage({
       name: d.name,

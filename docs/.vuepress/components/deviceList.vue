@@ -3,7 +3,7 @@
         <tr><th v-for="h in tableHeaderArr" :key="h">{{h}}</th></tr>
         <tr v-for="dev in modelList.concat(modellessDevices)" :key="dev">
             <td>{{dev.model}}</td>
-            <td><router-link :to="'/device/' + dev.identifier.replace(/ /g,'-').replace(/\//g,'%2F') + '.html'">{{dev.name}}</router-link> <code v-if="dev.name != dev.identifier">{{dev.identifier}}</code></td>
+            <td><router-link :to="'/device/identifier/' + dev.identifier.replace(/ /g,'-').replace(/\//g,'%2F') + '.html'">{{dev.name}}</router-link> <code v-if="dev.name != dev.identifier">{{dev.identifier}}</code></td>
             <td>{{dev.board ? dev.board.join(', ') : ''}}</td>
         </tr>
     </table>
