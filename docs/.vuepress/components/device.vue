@@ -9,7 +9,7 @@
                     <template v-else>{{ s }}</template>
                 </li>
             </ul>
-            <div style="user-select: none; text-align: center; padding-top: 1em; padding-bottom: 1em; height: 8em; overflow: hidden;">
+            <div :style="`user-select: none; text-align: center; padding-top: ${wrapImg ? '1em' : '0'}; padding-bottom: 1em; height: 8em; overflow: hidden;`">
                 <img v-for="i in Math.min(fm.img.count,3)" :key="i" :class="`flexImg flexImg${i}`" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.identifier)[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" style="margin-left: .5em; height: 8em;">
             </div>
         </div>
@@ -572,6 +572,7 @@ select:-moz-focusring {
 .infoList {
     list-style-type: none;
     padding-left: 0;
+    margin-top: 0;
 }
 
 .showOnHover .hoverElement {
