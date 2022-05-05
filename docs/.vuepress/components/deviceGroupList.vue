@@ -77,8 +77,7 @@ export default {
                         "iMac",
                         "Mac mini",
                         "Mac Studio",
-                        "Developer Transition Kit",
-                        "Apple Display"
+                        "Display"
                     ]
                 },
                 {
