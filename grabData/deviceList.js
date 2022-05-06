@@ -78,6 +78,9 @@ for (const file in deviceFiles) {
     let devImg = devImgArr[0]
     imgCount = devImg.imgCount
     imgDark = devImg.dark
+  } else {
+    imgCount = 0
+    imgDark = false
   }
   obj.imgCount = imgCount
   obj.imgDark = imgDark
