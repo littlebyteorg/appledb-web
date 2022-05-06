@@ -11,7 +11,7 @@
                     <div class="flexWrapper flexImg" style="user-select: none; height: 8em;">
                         <div style="text-align: center;">
                             <template v-if="dev.img.count > 0"><img v-for="i in Math.min(dev.img.count,3)" :key="i" :class="`devImage${i}`" :src="`https://img.appledb.dev/device@preview/${dev.devices[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && dev.img.dark ? '_dark' : ''}.png`" style="max-height: 8em; padding-right: .5em;"></template>
-                            <template v-else><img class="devImage0" :src="`/assets/images/logo${isDarkMode && dev.img.dark ? '_dark' : ''}.png`" style="max-height: 8em; padding-right: .5em;"></template>
+                            <template v-else><img class="devImage0" :src="`/assets/images/logo${isDarkMode ? '_dark' : ''}.png`" style="max-height: 8em; padding-right: .5em;"></template>
                         </div>
                     </div>
                 </router-link>
