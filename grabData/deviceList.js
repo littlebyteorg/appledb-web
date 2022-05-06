@@ -30,8 +30,15 @@ deviceFiles = deviceFiles.map(function(x) {
 })
 var deviceObj = {};
 
+function isDir(p) {
+  return fs.lstatSync(p).isDirectory()
+}
+
 let imgArr = []
-fs.readdirSync(path.resolve(__dirname, '../apple-device-images/images')).forEach(f => {
+const imagePath = path.resolve(__dirname, '../apple-device-images/images')
+fs.readdirSync(imagePath)
+.filter(f => f.endsWith('.png') || isDir(path.join(imagePath, f)))
+.forEach(f => {
   imgArr.push({
     identifier: f.replace('.png',''),
     imgCount: (f.endsWith('.png')) ? 1 : -1,
@@ -39,12 +46,14 @@ fs.readdirSync(path.resolve(__dirname, '../apple-device-images/images')).forEach
   })
 })
 
-let folderArr = imgArr.filter(x => x.imgCount < 0).filter(x => fs.lstatSync(path.resolve(__dirname, `../apple-device-images/images/${x.identifier}`)).isDirectory())
+let folderArr = imgArr.filter(x => x.imgCount < 0).filter(x => isDir(path.resolve(__dirname, `../apple-device-images/images/${x.identifier}`)))
 imgArr = imgArr.filter(x => x.imgCount > 0)
 
 for (const i of folderArr) {
   let folderImgArr = []
-  fs.readdirSync(path.resolve(__dirname, `../apple-device-images/images/${i.identifier}`)).forEach(file => {
+  fs.readdirSync(path.resolve(__dirname, `../apple-device-images/images/${i.identifier}`))
+  .filter(f => f.endsWith('.png'))
+  .forEach(file => {
     folderImgArr.push(file)
   })
   let folderImgCount = folderImgArr.filter(x => !x.endsWith('_dark.png')).length
