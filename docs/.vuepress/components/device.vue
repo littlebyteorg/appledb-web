@@ -46,7 +46,7 @@
                     <router-link :to="dev.url">
                         {{ dev.name }}
                     </router-link>
-                    <div style="padding-left: .5em;" class="hoverElement"><code>
+                    <div v-if="dev.name != dev.identifier" style="padding-left: .5em;" class="hoverElement"><code>
                         {{ dev.identifier }}
                     </code></div>
                 </li>
