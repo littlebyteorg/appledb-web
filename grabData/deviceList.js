@@ -79,7 +79,7 @@ for (const file in deviceFiles) {
     imgCount = devImg.imgCount
     imgDark = devImg.dark
   } else {
-    imgCount = 0
+    imgCount = fs.existsSync(path.resolve(__dirname, `../apple-device-images/images-lowres/${obj.identifier}.png`)) ? 1 : 0
     imgDark = false
   }
   obj.imgCount = imgCount
