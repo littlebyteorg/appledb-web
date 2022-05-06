@@ -99,7 +99,9 @@ export default {
                     types: [
                         'iPod touch',
                         'iPod nano',
-                        'iPod shuffle'
+                        'iPod shuffle',
+                        'iPod mini',
+                        'iPod'
                     ]
                 },
                 {
