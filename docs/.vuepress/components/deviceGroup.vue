@@ -9,7 +9,7 @@
                 <router-link :to="url" style="color: inherit;">
                     <h3>{{dev.name}}</h3>
                     <div class="flexWrapper flexImg" style="user-select: none; height: 8em;">
-                        <div style="text-align: center;">
+                        <div style="text-align: center;" v-if="dev.img.count && dev.img.count > 0">
                             <img v-for="i in Math.min(dev.img.count,3)" :key="i" :class="`devImage${i}`" :src="`https://img.appledb.dev/device@preview/${dev.devices[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && dev.img.dark ? '_dark' : ''}.png`" style="max-height: 8em; padding-right: .5em;">
                         </div>
                     </div>
