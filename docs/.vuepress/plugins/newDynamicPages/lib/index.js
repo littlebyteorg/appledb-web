@@ -170,7 +170,7 @@ Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
           if (new Date(a.released) < new Date(b.released)) return -1
           if (new Date(a.released) > new Date(b.released)) return 1
           return 0
-        })
+        }).filter(x => x)
         if (released.join() != '') x.released = released.map(y => {
           const releasedArr = y.split('-')
           const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
