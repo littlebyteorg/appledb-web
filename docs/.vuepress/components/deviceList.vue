@@ -1,4 +1,10 @@
 <template>
+    <div class="navigator">
+        <router-link to="./">Home</router-link><span/>
+        <router-link to="/device-selection/">Device Selection</router-link><span/>
+        <router-link to="./device-list.html">Device List</router-link>
+    </div>
+
     <table>
         <tr><th v-for="h in tableHeaderArr" :key="h">{{h}}</th></tr>
         <tr v-for="dev in modelList.concat(modellessDevices)" :key="dev">
