@@ -337,7 +337,7 @@ export default {
             for (var str of this.infoStrArr) {
                 const property = propertyArr.filter(x => str.includes(x))[0]
 
-                const infoArr =  grabInfo(property)
+                const infoArr = grabInfo(property).filter(x => x)
                 let info = infoArr
                 if (property == 'released' && info.length > 1) info = info.map(x => x.replace(',',''))
                 info = info.join(', ')
