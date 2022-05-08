@@ -1,4 +1,10 @@
 <template>
+    <div class="navigator">
+        <router-link to="../">Home</router-link><span/>
+        <router-link to="./">Device Selection</router-link><span/>
+        <router-link :to="`./${frontmatter.type}`">{{ frontmatter.type }}</router-link>
+    </div>
+
     <p v-for="s in introStr" :key="s">{{ s }}</p>
 
     <div v-if="frontmatter.type == 'iPhone'" class="custom-container tip"><p>{{iPhoneNote}}</p></div>

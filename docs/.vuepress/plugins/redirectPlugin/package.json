@@ -1,0 +1,11 @@
+{
+  "name": "vuepress-redirect-plugin",
+  "version": "1.0.0",
+  "keywords": [
+    "vuepress-redirect-plugin"
+  ],
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ]
+}

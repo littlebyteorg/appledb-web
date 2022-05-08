@@ -4,7 +4,7 @@ description: A database of Apple software and devices.
 home: true
 actions:
   - text: Devices
-    link: device-selection.html
+    link: /device-selection/
     type: secondary
   - text: Firmwares
     link: firmwares.html

@@ -16,7 +16,7 @@ module.exports = {
       navbar: [
         {
           text: 'Devices',
-          link: '/device-selection.html'
+          link: '/device-selection/'
         },
         {
           text: 'Firmwares',
@@ -45,6 +45,7 @@ module.exports = {
         componentsDir: path.resolve(__dirname, './components'),
       }),
       require('./plugins/newDynamicPages/lib/'),
+      require('./plugins/redirectPlugin/lib')
     ],
   
     head: [

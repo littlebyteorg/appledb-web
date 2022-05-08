@@ -133,12 +133,12 @@ pageList.push({
 })
 
 pageList.push({
-  path: '/device-selection.html',
+  path: '/device-selection',
   frontmatter: {
     title: 'Device Selection',
     description: 'AppleDB device selection',
     chartType: 'deviceGroupList',
-    redirect_from: ['/devices','/devices.html','/device','/device.html'],
+    redirect_from: ['/devices','/devices.html','/device','/device.html','/device-selection.html'],
     groupList: deviceGroups,
     sidebar: false,
     editLink: false,
