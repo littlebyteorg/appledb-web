@@ -97,16 +97,10 @@
                     if (time[0] < time[1]) return 1
                     if (time[0] > time[1]) return -1
                     return 0
-                }).filter(fw => {
-                    return (
-                        (
-                            (fw.beta && options.showBeta) ||
-                            (!fw.beta && options.showStable) 
-                        )
-                    )
                 })" :key="fw">
                     <tr v-if="
-                        (fm.mainList) ? 
+                        fw.beta ? options.showBeta : options.showStable &&
+                        fm.mainList ? 
                             fw.deviceFilterArr.includes(options.filterDev) || options.filterDev == fm.deviceFilter[0].value :
                             fw.deviceFilterArr.some(r => options.filterDev.includes(r))
                     ">
@@ -145,6 +139,9 @@
                         <td v-if="options.showDownloadColumn">
                             <template v-if="getFilteredDownloads(fw.downloads).length == 0">
                                 {{ naStr }}
+                            </template>
+                            <template v-else-if="getFilteredDownloads(fw.downloads).length > 1 && fm.mainList">
+                                <router-link :to="fw.url">{{ viewAllStr }}</router-link>
                             </template>
                             <div v-else v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" class="showOnHover">
                                 <template v-if="getFilteredDownloads(fw.downloads).length > 1">{{ dl.deviceName }}: </template>
@@ -235,6 +232,7 @@ export default {
             allDeviceStr: 'Filter',
             naStr: 'N/A',
             unknownDateStr: 'Unknown',
+            viewAllStr: 'View all',
 
             activeTab: '',
 
@@ -479,6 +477,8 @@ export default {
         }
         if (this.fm.mainList) {
             this.options.filterDev = this.fm.deviceFilter[0].value
+            this.options.showDownloadColumn = true
+            this.options.showJailbreakColumn = false
 
             document.getElementById("showDownloadColumnCheckbox").disabled = true
             document.getElementById("showOtaColumnCheckbox").disabled = true

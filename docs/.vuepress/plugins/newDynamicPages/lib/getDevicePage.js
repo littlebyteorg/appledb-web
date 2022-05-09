@@ -57,7 +57,8 @@ module.exports = function(args) {
     const mainList = args.mainList
     const hideChildren = args.hideChildren
     
-    if (!mainList) devFwArr = iosList.filter(i => {
+    let devFwArr = iosList
+    if (!mainList) devFwArr = devFwArr.filter(i => {
         const fwDevArr = Object.keys(i.devices)
         const devIdArr = devArr.map(x => x.identifier)
         for (const id of devIdArr) if (fwDevArr.includes(id)) return true
@@ -74,29 +75,29 @@ module.exports = function(args) {
         return type
     }
 
-    const getVersionArr = devFwArr.map(i => {
-        function getDlArr(propertyName) {
-            let retArr = Object.keys(i.devices)
-                .filter(x => devArr.map(x => x.identifier).includes(x))
-                .map(x => {
-                    if (!i.devices[x] || !i.devices[x][propertyName] || i.devices[x][propertyName] == 'none') return undefined
-                    return {
-                        deviceName: devArr.filter(y => y.identifier == x)[0].name,
-                        identifier: x,
-                        label: i.devices[x][propertyName].split('/')[i.devices[x][propertyName].split('/').length-1],
-                        url: i.devices[x][propertyName]
-                    }
+    function getDlArr(propertyName, fw) {
+        let retArr = Object.keys(fw.devices)
+            .filter(x => devArr.map(x => x.identifier).includes(x))
+            .map(x => {
+                if (!fw.devices[x] || !fw.devices[x][propertyName] || fw.devices[x][propertyName] == 'none') return undefined
+                return {
+                    deviceName: devArr.filter(y => y.identifier == x)[0].name,
+                    identifier: x,
+                    label: fw.devices[x][propertyName].split('/')[fw.devices[x][propertyName].split('/').length-1],
+                    url: fw.devices[x][propertyName]
                 }
-            ).filter(x => x)
+            }
+        ).filter(x => x)
 
-            urlCount = Array.from(new Set(retArr.map(x => x.url))).length
-            if (urlCount == 1) retArr = [retArr[0]]
-            
-            return retArr
-        }
+        urlCount = Array.from(new Set(retArr.map(x => x.url))).length
+        if (urlCount == 1) retArr = [retArr[0]]
+        
+        return retArr
+    }
 
-        const dlArr = getDlArr('ipsw')
-        const otaArr = getDlArr('ota')
+    const getVersionArr = devFwArr.map(i => {
+        const dlArr = getDlArr('ipsw',i)
+        const otaArr = getDlArr('ota',i)
 
         const devIdFwArr = Object.keys(i.devices).filter(x => devArr.map(x => x.identifier).includes(x))
         const devTypeArr = Array.from(
