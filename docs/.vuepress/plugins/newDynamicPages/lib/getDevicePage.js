@@ -72,6 +72,7 @@ module.exports = function(args) {
         if (type.includes('iPad') || type == 'iPhone' || type == 'iPod touch') return 'iOS devices'
         if (type == 'AirPods' || type.includes('Beats')) return 'AirPods, Beats'
         if (type.includes('Mac') || type == 'Developer Transition Kit') return 'Mac'
+        if (type == 'Display' || type == 'Keyboard' || type == 'Remote') return type + 's'
         return type
     }
 
