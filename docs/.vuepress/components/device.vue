@@ -481,7 +481,6 @@ export default {
             this.options.showJailbreakColumn = false
 
             document.getElementById("showDownloadColumnCheckbox").disabled = true
-            document.getElementById("showOtaColumnCheckbox").disabled = true
         }
         else {
             this.checkWrap()
