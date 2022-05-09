@@ -77,6 +77,12 @@
                     </template>
                 </div>
             </li>
+            <li :style="`margin-right: 1.5em; ${(fm.deviceFilter.length > 2) ? 'padding-top: 0.15em;' : ''}`">
+                <label class="chartDropdown" v-on:click="versionArr.reverse()">
+                    <i class="fas fa-sort"></i>
+                    {{ sortStr }}
+                </label>
+            </li>
             <li v-if="!fm.hideChildren && fm.deviceFilter.length > 2">
                 <select v-model="options.filterDev" name="deviceSelect" id="deviceSelect" :style="`margin-left: .5em; ${(options.filterDev == fm.deviceFilter[0].value) ? 'color: gray;' : ''}`">
                     <option v-for="(filterItem, index) in fm.deviceFilter" :key="filterItem" :value="filterItem.value">
@@ -92,12 +98,7 @@
                 <tr>
                     <th v-for="header in tableHeaders" :key="header">{{ header }}</th>
                 </tr>
-                <template v-for="fw in fm.versionArr.sort((a,b) => {
-                    const time = [a,b].map(x => x.released ? new Date(x.released).getTime() : 0)
-                    if (time[0] < time[1]) return 1
-                    if (time[0] > time[1]) return -1
-                    return 0
-                })" :key="fw">
+                <template v-for="fw in versionArr" :key="fw">
                     <tr v-if="
                         fw.beta ? options.showBeta : options.showStable &&
                         fm.mainList ? 
@@ -228,6 +229,7 @@ export default {
                 released: "Released"
             },
             optionsStr: 'Options',
+            sortStr: 'Sort',
             deviceStr: 'Device',
             allDeviceStr: 'Filter',
             naStr: 'N/A',
@@ -266,6 +268,8 @@ export default {
             },
             
             wrapImg: false,
+            reverseSorting: false,
+            versionArr: [],
 
             devicePath: '/device',
             fm: usePageFrontmatter(),
@@ -466,6 +470,13 @@ export default {
         }
     },
     mounted() {
+        this.versionArr = this.fm.versionArr.sort((a,b) => {
+            const time = [a,b].map(x => x.released ? new Date(x.released).getTime() : 0)
+            if (time[0] < time[1]) return 1
+            if (time[0] > time[1]) return -1
+            return 0
+        })
+
         if (this.fm.noJb) {
             this.options.showReleasedColumn = true
             this.options.showJailbreakColumn = false
@@ -480,7 +491,7 @@ export default {
             this.options.showDownloadColumn = true
             this.options.showJailbreakColumn = false
 
-            document.getElementById("showDownloadColumnCheckbox").disabled = true
+            document.getElementById("showOtaColumnCheckbox").disabled = true
         }
         else {
             this.checkWrap()
