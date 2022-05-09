@@ -70,7 +70,7 @@ module.exports = function(args) {
 
     function getDevType(type) {
         if (type.includes('iPad') || type == 'iPhone' || type == 'iPod touch') return 'iOS devices'
-        if (type == 'AirPods' || type == 'Beats') return 'AirPods, Beats'
+        if (type == 'AirPods' || type.includes('Beats')) return 'AirPods, Beats'
         if (type.includes('Mac') || type == 'Developer Transition Kit') return 'Mac'
         return type
     }
