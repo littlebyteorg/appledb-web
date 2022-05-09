@@ -10,7 +10,7 @@
                 </li>
             </ul>
             <div v-if="fm.img.count && fm.img.count > 0" :style="`user-select: none; text-align: center; padding-top: ${wrapImg ? '1em' : '0'}; padding-bottom: 1em; height: 8em; overflow: hidden;`">
-                <img v-for="i in Math.min(fm.img.count,3)" :key="i" :class="`flexImg flexImg${i}`" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.identifier)[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" style="margin-left: .5em; height: 8em;">
+                <img v-for="i in Math.min(fm.img.count,3)" :key="i" :class="`flexImg flexImg${i}`" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.identifier)[0].replace(/\//g,'%252F').replace(/ü/g,'u')}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" style="margin-left: .5em; height: 8em;">
             </div>
         </div>
 
@@ -355,7 +355,13 @@ export default {
                     return {
                         name: x.name,
                         identifier: x.identifier,
-                        url: [this.devicePath,'identifier',x.identifier.replace(/ /g,'-')].join('/') + '.html'
+                        url: [
+                            this.devicePath,
+                            'identifier',
+                            x.identifier
+                                .replace(/ /g,'-')
+                                .replace(/ü/g,'u')
+                        ].join('/') + '.html'
                     }
                 })
             }

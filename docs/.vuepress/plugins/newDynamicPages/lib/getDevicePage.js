@@ -7,19 +7,17 @@ const bigJson = {
   jailbreak: jbList,
   device: deviceList,
   groups: deviceGroups.sort(function(a,b) {
-    const c = [a, b].map(x => JSON.stringify(x)).map(x => JSON.parse(x)) // don't ask
+    if (a.subtype) a.type = [a.type,a.subtype].join('')
+    if (b.subtype) b.type = [b.type,b.subtype].join('')
 
-    if (c[0].subtype) c[0].type = [c[0].type,c[0].subtype].join('')
-    if (c[1].subtype) c[1].type = [c[1].type,c[1].subtype].join('')
-
-    if (c[0].type < c[1].type) return -1
-    if (c[0].type > c[1].type) return 1
+    if (a.type < b.type) return -1
+    if (a.type > b.type) return 1
     
-    if (c[0].released > c[1].released) return -1
-    if (c[0].released < c[1].released) return 1
+    if (a.released > b.released) return -1
+    if (a.released < b.released) return 1
 
-    if (c[0].name > c[1].name) return -1
-    if (c[0].name < c[1].name) return 1
+    if (a.name > b.name) return -1
+    if (a.name < b.name) return 1
 
     return 0
   })
@@ -53,13 +51,11 @@ module.exports = function(args) {
     if (!Array.isArray(args.devArr)) args.devArr = [args.devArr]
     const devArr = args.devArr
     const name = args.name
-    const devPath = args.path
+    const devPath = encodeURI(args.path)
     const description = args.description
     const grouped = args.grouped
     const mainList = args.mainList
     const hideChildren = args.hideChildren
-
-    let devFwArr = iosList
     
     if (!mainList) devFwArr = iosList.filter(i => {
         const fwDevArr = Object.keys(i.devices)

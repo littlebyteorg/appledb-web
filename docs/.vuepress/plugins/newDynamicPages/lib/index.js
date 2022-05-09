@@ -10,19 +10,17 @@ const bigJson = {
   jailbreak: jbList,
   device: deviceList,
   groups: deviceGroups.sort(function(a,b) {
-    const c = [a, b].map(x => JSON.stringify(x)).map(x => JSON.parse(x)) // don't ask
+    if (a.subtype) a.type = [a.type,a.subtype].join('')
+    if (b.subtype) b.type = [b.type,b.subtype].join('')
 
-    if (c[0].subtype) c[0].type = [c[0].type,c[0].subtype].join('')
-    if (c[1].subtype) c[1].type = [c[1].type,c[1].subtype].join('')
-
-    if (c[0].type < c[1].type) return -1
-    if (c[0].type > c[1].type) return 1
+    if (a.type < b.type) return -1
+    if (a.type > b.type) return 1
     
-    if (c[0].released > c[1].released) return -1
-    if (c[0].released < c[1].released) return 1
+    if (a.released > b.released) return -1
+    if (a.released < b.released) return 1
 
-    if (c[0].name > c[1].name) return -1
-    if (c[0].name < c[1].name) return 1
+    if (a.name > b.name) return -1
+    if (a.name < b.name) return 1
 
     return 0
   })
@@ -76,8 +74,16 @@ for (var jb in jbList) {
 
 const getDevicePage = require('./getDevicePage')
 
-for (const d of Object.keys(deviceList).map(x => deviceList[x])) {
-  const urlPart = d.identifier.replace(/ /g, '-').replace(/\//g,'%2F')
+for (const d of Object.keys(deviceList).map(x => deviceList[x]).filter(x => {
+  return !(
+    process.env.NODE_ENV === 'development' &&
+    x.name === "Beats Solo³ Wireless Mickey's 90th Anniversary Edition"
+  )
+})) {
+  const urlPart = d.identifier
+  .replace(/ /g, '-')
+  .replace(/\//g,'%2F')
+  .replace(/ü/g,'u')
   const url = [devicePath, 'identifier', urlPart].join('/') + '.html'
   pageList.push(
     getDevicePage({

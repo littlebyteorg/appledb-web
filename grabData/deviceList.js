@@ -1,4 +1,4 @@
-const { info } = require('console');
+const { info, Console } = require('console');
 const fs = require('fs');
 const path = require('path');
 const p = './appledb/deviceFiles'
