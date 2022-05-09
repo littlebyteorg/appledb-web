@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const dev = require('./deviceList')
 const group = require('./deviceGroups')
-const devicePath = '/device/'
+const devicePath = '/device/identifier/'
 const p = './appledb/iosFiles'
 
 function getAllFiles(dirPath, arrayOfFiles) {
