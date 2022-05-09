@@ -157,6 +157,9 @@
                             <template v-if="getFilteredDownloads(fw.otas).length == 0">
                                 {{ naStr }}
                             </template>
+                            <template v-else-if="getFilteredDownloads(fw.otas).length > 1 && fm.mainList">
+                                <router-link :to="fw.url">{{ viewAllStr }}</router-link>
+                            </template>
                             <div v-else v-for="dl in getFilteredDownloads(fw.otas)" :key="dl" class="showOnHover">
                                 <template v-if="getFilteredDownloads(fw.otas).length > 1">{{ dl.deviceName }}: </template>
                                 <a :href="dl.url">
@@ -490,8 +493,6 @@ export default {
             this.options.filterDev = this.fm.deviceFilter[0].value
             this.options.showDownloadColumn = true
             this.options.showJailbreakColumn = false
-
-            document.getElementById("showOtaColumnCheckbox").disabled = true
         }
         else {
             this.checkWrap()
