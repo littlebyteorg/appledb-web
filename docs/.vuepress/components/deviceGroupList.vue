@@ -13,7 +13,7 @@
             <tr :style="`width: ${parseInt(100 / colCount)}%;`">
                 <th v-for="c in colCount" :key="c" :style="{'width': parseInt(100 / colCount) + '%'}">
                     <router-link v-if="o.types[(t - 1) * colCount + c - 1]" :to="
-                        `/device-selection/${o.types[(t - 1) * colCount + c - 1].replace(/ /g, '-').replace(/\//g,'%2F')}.html`
+                        `/device-selection/${o.types[(t - 1) * colCount + c - 1].fdn()}.html`
                     ">
                         {{ o.types[(t - 1) * colCount + c - 1] }}
                     </router-link>
@@ -22,7 +22,7 @@
             <tr>
                 <td v-for="c in colCount" :key="c">
                     <router-link v-if="o.types[(t - 1) * colCount + c - 1]" :to="
-                        `/device-selection/${o.types[(t - 1) * colCount + c - 1].replace(/ /g, '-').replace(/\//g,'%2F')}.html`
+                        `/device-selection/${o.types[(t - 1) * colCount + c - 1].fdn()}.html`
                     ">
                         <img :src="imageObj[o.types[(t - 1) * colCount + c - 1]]" style="max-height: 8em;">
                     </router-link>
@@ -39,6 +39,15 @@
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
 import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
+
+String.prototype.fdn = function() {
+  return this
+  .replace(/ /g, '-')
+  .replace(/\//g,'%2F')
+  .replace(/ü/g,'u')
+  .replace(/²/g,'2')
+  .replace(/³/g,'3')
+}
 
 export default {
     data() {

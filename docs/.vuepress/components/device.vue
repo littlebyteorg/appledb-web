@@ -207,6 +207,15 @@ Array.prototype.formatExtraInfoText = function(property) {
     .replace(/false/g, 'No')
 }
 
+function formatDeviceName(n) {
+  return n
+  .replace(/ /g, '-')
+  .replace(/\//g,'%2F')
+  .replace(/ü/g,'u')
+  .replace(/²/g,'2')
+  .replace(/³/g,'3')
+}
+
 export default {
     data() {
         return {
@@ -363,9 +372,7 @@ export default {
                         url: [
                             this.devicePath,
                             'identifier',
-                            x.identifier
-                                .replace(/ /g,'-')
-                                .replace(/ü/g,'u')
+                            formatDeviceName(x.identifier)
                         ].join('/') + '.html'
                     }
                 })

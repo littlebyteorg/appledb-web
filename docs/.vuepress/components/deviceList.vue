@@ -9,7 +9,7 @@
         <tr><th v-for="h in tableHeaderArr" :key="h">{{h}}</th></tr>
         <tr v-for="dev in modelList.concat(modellessDevices)" :key="dev">
             <td>{{dev.model}}</td>
-            <td><router-link :to="'/device/identifier/' + dev.identifier.replace(/ /g,'-').replace(/\//g,'%2F') + '.html'">{{dev.name}}</router-link> <code v-if="dev.name != dev.identifier">{{dev.identifier}}</code></td>
+            <td><router-link :to="'/device/identifier/' + dev.identifier.fdn() + '.html'">{{dev.name}}</router-link> <code v-if="dev.name != dev.identifier">{{dev.identifier}}</code></td>
             <td>{{dev.board ? dev.board.join(', ') : ''}}</td>
         </tr>
     </table>
@@ -19,6 +19,15 @@
 
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
+
+String.prototype.fdn = function() {
+  return this
+  .replace(/ /g, '-')
+  .replace(/\//g,'%2F')
+  .replace(/ü/g,'u')
+  .replace(/²/g,'2')
+  .replace(/³/g,'3')
+}
 
 String.prototype.format = function(vars) {
   let temp = this;

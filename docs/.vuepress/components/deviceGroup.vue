@@ -9,7 +9,7 @@
 
     <div v-if="frontmatter.type == 'iPhone'" class="custom-container tip"><p>{{iPhoneNote}}</p></div>
 
-    <template v-for="dev in deviceArr" :key="dev"><template v-for="url in [`/device/${dev.name.replace(/ /g, '-').replace(/\//g,'%2F')}.html`]" :key="url">
+    <template v-for="dev in deviceArr" :key="dev"><template v-for="url in [`/device/${dev.name.fdn()}.html`]" :key="url">
         <div class="flexWrapper">
             <div class="devHead">
                 <router-link :to="url" style="color: inherit;">
@@ -45,6 +45,15 @@
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
 import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
+
+String.prototype.fdn = function() {
+  return this
+  .replace(/ /g, '-')
+  .replace(/\//g,'%2F')
+  .replace(/ü/g,'u')
+  .replace(/²/g,'2')
+  .replace(/³/g,'3')
+}
 
 String.prototype.format = function(vars) {
   let temp = this;

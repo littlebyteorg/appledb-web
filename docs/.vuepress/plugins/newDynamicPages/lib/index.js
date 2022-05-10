@@ -1,6 +1,15 @@
 const { createPage } = require('@vuepress/core')
 const { path, fs } = require('@vuepress/utils')
 
+function formatDeviceName(n) {
+  return n
+  .replace(/ /g, '-')
+  .replace(/\//g,'%2F')
+  .replace(/ü/g,'u')
+  .replace(/²/g,'2')
+  .replace(/³/g,'3')
+}
+
 const iosList = require('../../../../../grabData/ios')
 const deviceList = require('../../../../../grabData/deviceList')
 const deviceGroups = require('../../../../../grabData/deviceGroups')
@@ -80,10 +89,7 @@ for (const d of Object.keys(deviceList).map(x => deviceList[x]).filter(x => {
     x.name === "Beats Solo³ Wireless Mickey's 90th Anniversary Edition"
   )
 })) {
-  const urlPart = d.identifier
-  .replace(/ /g, '-')
-  .replace(/\//g,'%2F')
-  .replace(/ü/g,'u')
+  const urlPart = formatDeviceName(d.identifier)
   const url = [devicePath, 'identifier', urlPart].join('/') + '.html'
   pageList.push(
     getDevicePage({
@@ -96,7 +102,7 @@ for (const d of Object.keys(deviceList).map(x => deviceList[x]).filter(x => {
 }
 
 for (const g of deviceGroups) {
-  const urlPart = g.name.replace(/ /g, '-').replace(/\//g,'%2F')
+  const urlPart = formatDeviceName(g.name)
   const url = [devicePath, urlPart].join('/') + '.html'
   pageList.push(
     getDevicePage({
@@ -154,7 +160,7 @@ pageList.push({
 })
 
 Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
-  const urlPart = t.replace(/ /g, '-').replace(/\//g,'%2F')
+  const urlPart = formatDeviceName(t)
   const url = `/device-selection/${urlPart}.html`
   pageList.push({
     path: url,

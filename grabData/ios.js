@@ -105,6 +105,15 @@ iosArr = iosArr.map(function(x) {
   return x
 })*/
 
+function formatDeviceName(n) {
+  return n
+  .replace(/ /g, '-')
+  .replace(/\//g,'%2F')
+  .replace(/ü/g,'u')
+  .replace(/²/g,'2')
+  .replace(/³/g,'3')
+}
+
 iosArr = iosArr.map(function(x) {
   if (x.devices) {
     var o = {}
@@ -114,7 +123,7 @@ iosArr = iosArr.map(function(x) {
       o[y].name = dev[y].name
       o[y].identifier = dev[y].identifier
       o[y].group = group.filter(g => g.devices.includes(y))[0]
-      o[y].url = devicePath + y + '.html'
+      o[y].url = devicePath + formatDeviceName(y) + '.html'
       o[y].ipsw = x.devices[y].ipsw
       o[y].ota = x.devices[y].ota
       return o
