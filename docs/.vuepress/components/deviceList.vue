@@ -8,9 +8,17 @@
     <table>
         <tr><th v-for="h in tableHeaderArr" :key="h">{{h}}</th></tr>
         <tr v-for="dev in modelList.concat(modellessDevices)" :key="dev">
-            <td>{{dev.model}}</td>
-            <td><router-link :to="'/device/identifier/' + dev.identifier.fdn() + '.html'">{{dev.name}}</router-link> <code v-if="dev.name != dev.identifier">{{dev.identifier}}</code></td>
-            <td>{{dev.board ? dev.board.join(', ') : ''}}</td>
+            <td>{{ dev.model }}</td>
+            <td>
+                <router-link :to="'/device/identifier/' + dev.identifier.fdn() + '.html'">
+                {{dev.name}}
+              </router-link>
+              <code v-if="dev.name != dev.identifier">
+                {{dev.identifier}}
+              </code>
+            </td>
+            <td>{{ dev.board ? dev.board.join(', ') : '' }}</td>
+            <td>{{ dev.soc ? Array.isArray(dev.soc) ? dev.soc.join(', ') : dev.soc : '' }}</td>
         </tr>
     </table>
 
@@ -42,7 +50,8 @@ export default {
       tableHeaderArr: [
           'Model',
           'Name',
-          'Board'
+          'Board',
+          'SoC'
       ],
       fm: usePageFrontmatter()
     }
@@ -80,7 +89,13 @@ export default {
       },
       modellessDevices() {
           const devList = Object.keys(this.fm.deviceList).map(x => this.fm.deviceList[x])
-          const noModelList = devList.filter(x => !x.hasOwnProperty('model') || !x.model || !x.model[0])
+          const noModelList = devList
+          .filter(x => !x.hasOwnProperty('model') || !x.model || !x.model[0])
+          .map(x => {
+            if (Array.isArray(x.model)) x.model = ''
+            return x
+          })
+
           return noModelList.sort((a,b) => {
             if (a.identifier.toLowerCase() < b.identifier.toLowerCase()) return -1
             if (a.identifier.toLowerCase() > b.identifier.toLowerCase()) return 1
