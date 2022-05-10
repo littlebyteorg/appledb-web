@@ -100,7 +100,7 @@
                 </tr>
                 <template v-for="fw in versionArr" :key="fw">
                     <tr v-if="
-                        fw.beta ? options.showBeta : options.showStable &&
+                        (fw.beta ? options.showBeta : options.showStable) &&
                         fm.mainList ? 
                             fw.deviceFilterArr.includes(options.filterDev) || options.filterDev == fm.deviceFilter[0].value :
                             fw.deviceFilterArr.some(r => options.filterDev.includes(r))
@@ -484,6 +484,9 @@ export default {
             const time = [a,b].map(x => x.released ? new Date(x.released).getTime() : 0)
             if (time[0] < time[1]) return 1
             if (time[0] > time[1]) return -1
+            const osStr = [a,b].map(x => x.osStr.toLowerCase())
+            if (osStr[0] < osStr[1]) return -1
+            if (osStr[0] > osStr[1]) return 1
             return 0
         })
 
@@ -498,6 +501,8 @@ export default {
         }
         if (this.fm.mainList) {
             this.options.filterDev = this.fm.deviceFilter[0].value
+
+            this.options.showBeta = true
             this.options.showDownloadColumn = true
             this.options.showJailbreakColumn = false
         }
