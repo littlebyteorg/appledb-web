@@ -101,9 +101,10 @@
                 <template v-for="fw in versionArr" :key="fw">
                     <tr v-if="
                         (fw.beta ? options.showBeta : options.showStable) &&
-                        fm.mainList ? 
+                        (fm.mainList ? 
                             fw.deviceFilterArr.includes(options.filterDev) || options.filterDev == fm.deviceFilter[0].value :
                             fw.deviceFilterArr.some(r => options.filterDev.includes(r))
+                        )
                     ">
 
                         <td v-if="options.showBuildColumn" class="showOnHover">
