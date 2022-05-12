@@ -35,10 +35,14 @@ for (const file in deviceFiles) {
 
 deviceGroupArr = deviceGroupArr.map(function(x) {
   if (x.devices) {
-    if (x.devices.map(y => require('./deviceList')[y]).filter(x => x).length < 1) return false
-    x.soc = Array.from(new Set(x.devices.map(y => require('./deviceList')[y]).map(y => y.soc)))
-    x.arch = Array.from(new Set(x.devices.map(y => require('./deviceList')[y]).map(y => y.arch)))
-    x.released = Array.from(new Set(x.devices.map(y => require('./deviceList')[y]).map(y => y.released))).flat()
+    const devArr = x.devices.map(y => {
+      const dev = require('./deviceList')[y]
+      if (!dev) console.log(`ERROR: Device '${y}' not found`)
+      return dev
+    }).filter(x => x)
+    x.soc = Array.from(new Set(devArr.map(y => y.soc)))
+    x.arch = Array.from(new Set(devArr.map(y => y.arch)))
+    x.released = Array.from(new Set(devArr.map(y => y.released))).flat()
     .map(x => new Date(x).valueOf()).sort()[0]
   }
 
