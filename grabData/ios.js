@@ -140,7 +140,7 @@ iosArr = iosArr.map(function(x) {
 
   if (x.deviceMap) {
     var o = {}
-    var devArr = x.deviceMap.sort()
+    var devArr = x.deviceMap
     .map(function(y) {
       o[y] = {}
       o[y].name = dev[y].name

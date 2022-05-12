@@ -7,7 +7,7 @@
   </template>
   <h2>{{ devicesHead }}</h2>
   <ul>
-    <li v-for="d in deviceArr" :key="d" class="showOnHover">
+    <li v-for="d in deviceObj" :key="d" class="showOnHover">
       <router-link :to="d.url">{{ d.name }}</router-link> <code class="hoverElement">{{ d.identifier }}</code>
     </li>
   </ul>
@@ -35,7 +35,7 @@ export default {
       infoArr: [],
 
       devicesHead: "Devices",
-      deviceArr: [],
+      deviceObj: {},
 
       frontmatter: usePageFrontmatter(),
       query: this.$route.query,
@@ -75,7 +75,7 @@ export default {
         this.releasedStr.format({ released: releaseDate })
       ]
 
-      this.deviceArr = versionObject.deviceMap
+      this.deviceObj = versionObject.deviceMap
     }
   }
 }

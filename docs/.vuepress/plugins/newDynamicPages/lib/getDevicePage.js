@@ -26,7 +26,7 @@ const bigJson = {
 var bigObj = {}
 for (const f of iosList) {
   const b = f.build
-  const devArr = ((f.devices) ? Object.keys(f.devices) : [])
+  const devArr = ((f.deviceMap) ? Object.keys(f.deviceMap) : [])
   bigObj[b] = {}
   for (const d of devArr) {
     bigObj[b][d] = []
