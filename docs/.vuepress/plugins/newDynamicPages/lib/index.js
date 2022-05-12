@@ -116,7 +116,7 @@ for (const g of deviceGroups) {
 }
 
 var devListFromFw = []
-for (const i of iosList.map(x => Object.keys(x.devices))) devListFromFw.push(...i)
+for (const i of iosList.map(x => Object.keys(x.deviceMap))) devListFromFw.push(...i)
 devListFromFw = Array.from(new Set(devListFromFw)).sort()
 
 pageList.push(

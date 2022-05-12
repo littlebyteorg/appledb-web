@@ -114,21 +114,44 @@ function formatDeviceName(n) {
   .replace(/³/g,'3')
 }
 
+function getLegacyDevicesObjectArray(ver) {
+  let obj = {}
+  ver.deviceMap.map(x => obj[x] = {})
+  if (!ver.sources) return obj
+
+  ver.deviceMap.map(x => {
+    const source = ver.sources.filter(y => y.deviceMap.includes(x))[0]
+    if (!source) return
+    const type = source.type
+    const hostArr = source.host
+    const propertyArr = hostArr.filter(x => x.hasOwnProperty('properties')).map(x => x.properties).flat()
+    const host = hostArr.filter(x => {
+      if (propertyArr.includes('preferred')) return x.properties.includes('preferred')
+      else return true
+    })[0].value
+    const path = host + source.path
+    obj[x][type] = path
+  })
+  return obj
+}
+
 iosArr = iosArr.map(function(x) {
-  if (x.devices) {
+  const dlObj = getLegacyDevicesObjectArray(x)
+
+  if (x.deviceMap) {
     var o = {}
-    var devArr = Object.keys(x.devices).sort()
+    var devArr = x.deviceMap.sort()
     .map(function(y) {
       o[y] = {}
       o[y].name = dev[y].name
       o[y].identifier = dev[y].identifier
       o[y].group = group.filter(g => g.devices.includes(y))[0]
       o[y].url = devicePath + formatDeviceName(y) + '.html'
-      o[y].ipsw = x.devices[y].ipsw
-      o[y].ota = x.devices[y].ota
+      o[y].ipsw = dlObj[y].ipsw
+      o[y].ota = dlObj[y].ota
       return o
     })
-    x.devices = o
+    x.deviceMap = o
   }
 
   return x

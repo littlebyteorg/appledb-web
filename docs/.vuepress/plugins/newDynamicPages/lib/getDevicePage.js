@@ -59,7 +59,7 @@ module.exports = function(args) {
     
     let devFwArr = iosList
     if (!mainList) devFwArr = devFwArr.filter(i => {
-        const fwDevArr = Object.keys(i.devices)
+        const fwDevArr = Object.keys(i.deviceMap)
         const devIdArr = devArr.map(x => x.identifier)
         for (const id of devIdArr) if (fwDevArr.includes(id)) return true
         return false
@@ -77,15 +77,15 @@ module.exports = function(args) {
     }
 
     function getDlArr(propertyName, fw) {
-        let retArr = Object.keys(fw.devices)
+        let retArr = Object.keys(fw.deviceMap)
             .filter(x => devArr.map(x => x.identifier).includes(x))
             .map(x => {
-                if (!fw.devices[x] || !fw.devices[x][propertyName] || fw.devices[x][propertyName] == 'none') return undefined
+                if (!fw.deviceMap[x] || !fw.deviceMap[x][propertyName] || fw.deviceMap[x][propertyName] == 'none') return undefined
                 return {
                     deviceName: devArr.filter(y => y.identifier == x)[0].name,
                     identifier: x,
-                    label: fw.devices[x][propertyName].split('/')[fw.devices[x][propertyName].split('/').length-1],
-                    url: fw.devices[x][propertyName]
+                    label: fw.deviceMap[x][propertyName].split('/')[fw.deviceMap[x][propertyName].split('/').length-1],
+                    url: fw.deviceMap[x][propertyName]
                 }
             }
         ).filter(x => x)
@@ -100,7 +100,7 @@ module.exports = function(args) {
         const dlArr = getDlArr('ipsw',i)
         const otaArr = getDlArr('ota',i)
 
-        const devIdFwArr = Object.keys(i.devices).filter(x => devArr.map(x => x.identifier).includes(x))
+        const devIdFwArr = Object.keys(i.deviceMap).filter(x => devArr.map(x => x.identifier).includes(x))
         const devTypeArr = Array.from(
             new Set(
                 devIdFwArr.map(x => devArr.filter(y => y.identifier == x)[0])
