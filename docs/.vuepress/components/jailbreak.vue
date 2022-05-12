@@ -181,7 +181,7 @@ export default {
           fwArr.push(fw)
         }
 
-        fwArr = fwArr.filter(x => Object.keys(x.devices).some(r=> dev.includes(r)))
+        fwArr = fwArr.filter(x => Object.keys(x.deviceMap).some(r=> dev.includes(r)))
 
         x.firmwares = fwArr
         return x
@@ -193,11 +193,12 @@ export default {
       const compat = this.frontmatter.jailbreak.compatibility
       var devObj = {}
       this.getDeviceList.map(function(x) {
+        console.log(x)
         for (var d in x.devices) {
           const dev = x.devices[d]
           devObj[dev] = {}
           for (var fw in x.firmwares) {
-            if (!Object.keys(x.firmwares[fw].devices).includes(dev)) continue
+            if (!Object.keys(x.firmwares[fw].deviceMap).includes(dev)) continue
             const firmware = x.firmwares[fw].uniqueBuild
             for (var i in compat) {
               devObj[dev][firmware] = 0
