@@ -75,7 +75,7 @@ export default {
         this.releasedStr.format({ released: releaseDate })
       ]
 
-      this.deviceArr = versionObject.devices
+      this.deviceArr = versionObject.deviceMap
     }
   }
 }
