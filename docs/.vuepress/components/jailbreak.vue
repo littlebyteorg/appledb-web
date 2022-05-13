@@ -202,11 +202,12 @@ export default {
 
             deviceMap = Array.isArray(deviceMap) ? deviceMap : Object.keys(deviceMap)
             if (!deviceMap.includes(dev)) continue
-            
+
             const firmware = x.firmwares[fw].uniqueBuild
-            for (var i in compat) {
+            for (var c of compat) {
               devObj[dev][firmware] = false
-              if (compat[i].firmwares.includes(firmware) && compat[i].devices.includes(dev)) {
+              if (!c.firmwares || !c.devices) continue
+              if (c.firmwares.includes(firmware) && c.devices.includes(dev)) {
                 devObj[dev][firmware] = true
                 break
               }
@@ -214,7 +215,6 @@ export default {
           }
         }
       })
-      console.log(devObj)
       return devObj
     }
   }
