@@ -35,7 +35,7 @@ const bigJson = {
   })
 }
 
-var jbPath = '/jailbreak/'
+var jbPath = '/jailbreak'
 var devicePath = '/device'
 
 var pageList = []
