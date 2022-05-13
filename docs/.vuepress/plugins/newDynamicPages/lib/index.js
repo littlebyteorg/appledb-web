@@ -59,7 +59,7 @@ for (var jb in jbList) {
   if (jbList[jb].hasOwnProperty('alias')) {
     redirects = jb.alias
     if (!Array.isArray(redirects)) redirects = [redirects]
-    redirects = redirects.map(x=> jbPath + x)
+    redirects = redirects.map(x => [jbPath, x].join('/') + '.html')
   }
 
   const urlPart = jbList[jb].name.replace(/ /g, '-')

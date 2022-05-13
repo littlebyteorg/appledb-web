@@ -193,7 +193,6 @@ export default {
       const compat = this.frontmatter.jailbreak.compatibility
       var devObj = {}
       this.getDeviceList.map(function(x) {
-        console.log(x)
         for (var d in x.devices) {
           const dev = x.devices[d]
           devObj[dev] = {}
