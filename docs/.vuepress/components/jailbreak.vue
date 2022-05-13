@@ -197,18 +197,24 @@ export default {
         for (var dev of x.devices) {
           devObj[dev] = {}
           for (var fw in x.firmwares) {
-            if (!Object.keys(x.firmwares[fw].deviceMap).includes(dev)) continue
+            let deviceMap = x.firmwares[fw].deviceMap
+            if (!deviceMap) continue
+
+            deviceMap = Array.isArray(deviceMap) ? deviceMap : Object.keys(deviceMap)
+            if (!deviceMap.includes(dev)) continue
+            
             const firmware = x.firmwares[fw].uniqueBuild
             for (var i in compat) {
-              devObj[dev][firmware] = 0
+              devObj[dev][firmware] = false
               if (compat[i].firmwares.includes(firmware) && compat[i].devices.includes(dev)) {
-                devObj[dev][firmware] = 1
+                devObj[dev][firmware] = true
                 break
               }
             }
           }
         }
       })
+      console.log(devObj)
       return devObj
     }
   }
