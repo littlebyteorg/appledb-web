@@ -65,12 +65,18 @@ If I forgot you here, contact me and I'll add your name.
 <pre>
   + ipsw.me
   + theiphonewiki.com
+  + EveryMac.com
+  + MacTracker
   + m1stadev
   + TheMasterOfMike
   + nyuszika7h
   + joshuah345
   + zachary7829
   + Superuser
+  + Cameron Katri
+  + amber
+  + Siguza
+  + DhinakG
 </pre>
 
 AppleDB is not affiliated with Apple Inc.
