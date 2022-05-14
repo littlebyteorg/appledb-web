@@ -13,6 +13,7 @@ module.exports = {
       selectLanguageText: '<i class="fas fa-globe"/>',
       logo: '/assets/images/logo.png',
       logoDark: '/assets/images/logo_dark.png',
+      repoLabel: '<i class="fab fa-github"></i>',
       navbar: [
         {
           text: 'Devices',
