@@ -130,11 +130,11 @@ export default {
 </script>
 
 <style scoped>
-@media (max-width: 720px) {
-  .search-box {
-    margin-left: 0;
-  }
+.search-box {
+  margin-left: 0;
+}
 
+@media (max-width: 720px) {
   .search-box input {
     cursor: initial;
     width: initial;
