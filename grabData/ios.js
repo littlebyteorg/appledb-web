@@ -129,6 +129,7 @@ function getLegacyDevicesObjectArray(ver) {
       if (propertyArr.includes('preferred')) return x.properties.includes('preferred')
       else return true
     })[0].value
+    if (!host || !source.path) return
     const path = host + source.path
     obj[x][type] = path
   })
