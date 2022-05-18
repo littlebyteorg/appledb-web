@@ -67,6 +67,8 @@ If I forgot you here, contact me and I'll add your name.
   + theiphonewiki.com
   + EveryMac.com
   + MacTracker
+  + Hack Different
+  + ipsw.dev
   + m1stadev
   + TheMasterOfMike
   + nyuszika7h
