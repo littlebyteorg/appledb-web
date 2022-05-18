@@ -23,29 +23,28 @@ const bigJson = {
   })
 }
 
-var bigObj = {}
+let bigObj = {}
+const osStrArr = Array.from(new Set(iosList.map(x => x.osStr)))
+osStrArr.map(x => bigObj[x] = {})
+
 for (const f of iosList) {
-  const b = f.build
-  const devArr = ((f.deviceMap) ? Object.keys(f.deviceMap) : [])
-  bigObj[b] = {}
-  for (const d of devArr) {
-    bigObj[b][d] = []
-    var jbStringArr = []
-    for (const jb of jbList) {
-      if (!jb.hasOwnProperty('compatibility')) continue
-      for (const c of jb.compatibility) {
-        if (!c.firmwares.includes(b)) continue
-        if (!c.devices.includes(d)) continue
+    if (!f.deviceMap) continue
+    const devArr = Object.keys(f.deviceMap)
 
-        const jbString = JSON.stringify(jb)
-        if (jbStringArr.includes(jbString)) continue
-        jbStringArr.push(jbString)
-
-        bigObj[b][d].push(jb)
-      }
-    }
-  }
+    bigObj[f.osStr][f.build] = {}
+    for (const d of devArr) bigObj[f.osStr][f.build][d] = []
 }
+
+for (const o of Object.keys(bigObj))
+for (const b of Object.keys(bigObj[o]))
+for (const d of Object.keys(bigObj[o][b])) {
+    bigObj[o][b][d] = jbList.filter(jb => {
+        if (!jb.compatibility) return false
+        const compat = jb.compatibility.map(x => x.firmwares.includes(b) && x.devices.includes(d))
+        return compat.filter(x => x).length > 0
+    })
+}
+
 
 module.exports = function(args) {
     if (!Array.isArray(args.devArr)) args.devArr = [args.devArr]
@@ -133,7 +132,7 @@ module.exports = function(args) {
             jailbreakArr: Array.from(
                 new Set(
                 devArr.map(d => d.identifier)
-                        .map(d => bigObj[i.build][d])
+                        .map(d => bigObj[i.osStr][i.build][d])
                         .flat()
                         .map(x => x ? x.name : x)
                 )
