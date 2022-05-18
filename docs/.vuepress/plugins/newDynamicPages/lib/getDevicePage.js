@@ -23,28 +23,15 @@ const bigJson = {
   })
 }
 
-let bigObj = {}
-const osStrArr = Array.from(new Set(iosList.map(x => x.osStr)))
-osStrArr.map(x => bigObj[x] = {})
-
-for (const f of iosList) {
-    if (!f.deviceMap) continue
-    const devArr = Object.keys(f.deviceMap)
-
-    bigObj[f.osStr][f.build] = {}
-    for (const d of devArr) bigObj[f.osStr][f.build][d] = []
-}
-
-for (const o of Object.keys(bigObj))
-for (const b of Object.keys(bigObj[o]))
-for (const d of Object.keys(bigObj[o][b])) {
-    bigObj[o][b][d] = jbList.filter(jb => {
-        if (!jb.compatibility) return false
-        const compat = jb.compatibility.map(x => x.firmwares.includes(b) && x.devices.includes(d))
-        return compat.filter(x => x).length > 0
-    })
-}
-
+const hasJbArr = [
+    'iOS',
+    'tvOS',
+    'audioOS',
+    'watchOS',
+    'iPhoneOS',
+    'iPadOS',
+    'Apple TV Software'
+]
 
 module.exports = function(args) {
     if (!Array.isArray(args.devArr)) args.devArr = [args.devArr]
@@ -116,6 +103,19 @@ module.exports = function(args) {
             released = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(i.released))
         }
 
+        let jbArr = []
+        if (hasJbArr.includes(i.osStr)) jbArr = Array.from(
+            new Set(
+                devArr.map(d => jbList.filter(jb => {
+                    if (!jb.compatibility) return false
+                    const compat = jb.compatibility.map(x => x.firmwares.includes(i.build) && x.devices.includes(d.identifier))
+                    return compat.filter(x => x).length > 0
+                }))
+            .flat()
+            .map(x => x ? x.name : x)
+            )
+        ).filter(x => x)
+
         return {
             osStr: i.osStr,
             version: i.version,
@@ -129,14 +129,7 @@ module.exports = function(args) {
             deviceFilterArr: (mainList) ?
                 devTypeArr :
                 devIdFwArr,
-            jailbreakArr: Array.from(
-                new Set(
-                devArr.map(d => d.identifier)
-                        .map(d => bigObj[i.osStr][i.build][d])
-                        .flat()
-                        .map(x => x ? x.name : x)
-                )
-            ).filter(x => x),
+            jailbreakArr: jbArr,
             downloads: dlArr,
             otas: otaArr
         }
@@ -194,16 +187,6 @@ module.exports = function(args) {
         count: devArr[0].imgCount,
         dark: devArr[0].imgDark
     }
-
-    const hasJbArr = [
-        'iOS',
-        'tvOS',
-        'audioOS',
-        'watchOS',
-        'iPhoneOS',
-        'iPadOS',
-        'Apple TV Software'
-    ]
 
     var imgCount = 0
     try {
