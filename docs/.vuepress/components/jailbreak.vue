@@ -21,7 +21,7 @@
           </tr>
           <tr v-for="fw in g.firmwares.reverse()" :key="fw">
             <td>{{fw.version}} (<router-link v-html="fw.build" :to="fw.path"/>)</td>
-            <td v-for="d in g.devices" :key="d" v-html="getCompat[d][fw.uniqueBuild] ? compatibleStr : notCompatibleStr"/>
+            <td v-for="d in g.devices" :key="d" v-html="getCompat[d][fw.uniqueBuild]"/>
           </tr>
         </table>
       </div>
@@ -73,6 +73,7 @@ export default {
       versionStr: 'Version',
       compatibleStr: 'Compatible',
       notCompatibleStr: 'Not compatible',
+      naStr: 'N/A',
       
       frontmatter: usePageFrontmatter(),
       devices: json.device,
@@ -191,24 +192,32 @@ export default {
     },
     getCompat() {
       const compat = this.frontmatter.jailbreak.compatibility
+      let compatStrObj = {
+        compatible: this.compatibleStr,
+        notCompatible: this.notCompatibleStr,
+        na: this.naStr
+      }
       var devObj = {}
       this.getDeviceList.map(function(x) {
         if (!x.hasOwnProperty('devices')) return
         for (var dev of x.devices) {
           devObj[dev] = {}
-          for (var fw in x.firmwares) {
-            let deviceMap = x.firmwares[fw].deviceMap
+          for (var fw of x.firmwares) {
+            const firmware = fw.uniqueBuild
+            devObj[dev][firmware] = compatStrObj.na
+
+            let deviceMap = fw.deviceMap
             if (!deviceMap) continue
 
             deviceMap = Array.isArray(deviceMap) ? deviceMap : Object.keys(deviceMap)
             if (!deviceMap.includes(dev)) continue
 
-            const firmware = x.firmwares[fw].uniqueBuild
+            devObj[dev][firmware] = compatStrObj.notCompatible
+
             for (var c of compat) {
-              devObj[dev][firmware] = false
               if (!c.firmwares || !c.devices) continue
               if (c.firmwares.includes(firmware) && c.devices.includes(dev)) {
-                devObj[dev][firmware] = true
+                devObj[dev][firmware] = compatStrObj.compatible
                 break
               }
             }
