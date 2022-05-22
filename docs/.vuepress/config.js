@@ -48,6 +48,8 @@ module.exports = {
       require('./plugins/newDynamicPages/lib/'),
       require('./plugins/redirectPlugin/lib')
     ],
+
+    shouldPrefetch: false,
   
     head: [
       [ 'meta', { property: 'og:image', content: '/assets/images/splash-23aaron-logo.jpg' } ],
