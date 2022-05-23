@@ -6,7 +6,7 @@
                     <template v-if="(infoArr[index].split(', ').length > 5 && !options.showAll[index])">
                         {{ s.replace(infoArr[index], infoArr[index].split(', ').slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="options.showAll[index] = true">...</a>
                     </template>
-                    <template v-else>{{ s }}</template>
+                    <template v-else v-once>{{ s }}</template>
                 </li>
             </ul>
             <div v-if="fm.img.count && fm.img.count > 0" :style="`user-select: none; text-align: center; padding-top: ${wrapImg ? '1em' : '0'}; padding-bottom: 1em; height: 8em; overflow: hidden;`">
