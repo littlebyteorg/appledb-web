@@ -208,6 +208,35 @@ Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
   })
 })
 
+const osStrArr = Array.from(new Set(iosList.map(x => x.osStr)))
+
+let latestVersionArr = []
+for (const bool of [true,false]) {
+  for (const str of osStrArr.filter(x => x != 'macOS'))
+  latestVersionArr.push({ osStr: str, beta: bool })
+
+  for (const startsWith of ['11','12'])
+  latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: startsWith})
+}
+
+const latestVersions = latestVersionArr
+.map(x => iosList.filter(y => {
+  const check = y.osStr == x.osStr && y.beta == x.beta
+  let startsWith = x.startsWith
+  if (startsWith) {
+    startsWith = y.version.startsWith(startsWith)
+    return check && startsWith
+  }
+  return check
+})
+.sort((a,b) => {
+  const date = [a,b].map(x => new Date(x.released))
+  if (date[0] < date[1]) return 1
+  if (date[0] > date[1]) return -1
+  return 0
+})[0])
+.filter(x => x)
+
 module.exports = function() {
   return {
     name: 'vuepress-new-dynamic-pages',
@@ -216,6 +245,7 @@ module.exports = function() {
     },
     onPrepared: async (app) => {
       await app.writeTemp('main.js', `export default ${JSON.stringify(bigJson)}`)
+      await app.writeTemp('latestVersion.js', `export default ${JSON.stringify(latestVersions)}`)
     }
   }
 }
