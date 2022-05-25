@@ -1,7 +1,7 @@
 <template>
     <div class="flexContainer">
         <div class="flexImg"><a :href="`/firmware.html?os=${latestVersion.osStr}&build=${latestVersion.build}`">
-            <img :src="`/assets/images@lowres/${image}_firmware_release${isDarkMode && dark ? '_dark' : ''}.png`" style="max-height: 7em; padding: 2em; padding-right: 3em;">
+            <img :src="`/assets/images@lowres/${image}_firmware_release${isDarkMode && dark ? '_dark' : ''}.png`" style="height: 7em; padding: 2em; padding-right: 3em;">
         </a></div>
         <div class="flexText">
             <h2 style="border-bottom: none; padding-bottom: 0; margin-block-end: 0;">{{ latestVersion.osStr }} {{ latestVersion.version }} ({{ latestVersion.build }})</h2>
