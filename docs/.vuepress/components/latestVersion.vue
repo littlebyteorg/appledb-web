@@ -52,6 +52,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     height: 11em;
+    padding-top: 1em;
 }
 
 .flexFwReleaseImg {
