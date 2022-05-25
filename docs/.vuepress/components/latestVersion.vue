@@ -51,6 +51,7 @@ export default {
 .flexContainer {
     display: flex;
     flex-wrap: wrap;
+    height: 11em;
 }
 
 .flexImg {
