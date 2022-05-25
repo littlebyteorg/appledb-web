@@ -1,11 +1,11 @@
 <template>
-    <div class="flexContainer">
+    <div class="flexContainer" style="display: flex;">
         <div class="flexImg"><a :href="`/firmware.html?os=${latestVersion.osStr}&build=${latestVersion.build}`">
-            <img :src="`/assets/images@lowres/${image}_firmware_release${isDarkMode && dark ? '_dark' : ''}.png`" style="max-height: 7em;">
+            <img :src="`/assets/images@lowres/${image}_firmware_release${isDarkMode && dark ? '_dark' : ''}.png`" style="max-height: 7em; padding: 2em; padding-right: 3em;">
         </a></div>
         <div class="flexText">
-            <h2>{{ latestVersion.osStr }} {{ latestVersion.version }} ({{ latestVersion.build }})</h2>
-            <p>{{ new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'}).format(new Date(latestVersion.released)) }}</p>
+            <h2 style="border-bottom: none; padding-bottom: 0; margin-block-end: 0;">{{ latestVersion.osStr }} {{ latestVersion.version }} ({{ latestVersion.build }})</h2>
+            <p style="margin-block-start: .5em;">{{ new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'}).format(new Date(latestVersion.released)) }}</p>
             <a :href="`/firmware.html?os=${latestVersion.osStr}&build=${latestVersion.build}`">View more</a>
         </div>
     </div>
@@ -47,29 +47,10 @@ export default {
 }
 </script>
 
-<style scoped>
-.flexContainer {
-    display: flex;
-}
-
-img {
-    padding: 2em;
-    padding-right: 3em;
-}
-
-h2 {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-block-end: 0;
-}
-
-p {
-    margin-block-start: .5em;
-}
-
+<style>
 .flexImg {
-    min-width: 14.5em;
-    min-height: 11em;
+    width: 14.5em;
+    height: 11em;
     text-align: center;
 }
 
