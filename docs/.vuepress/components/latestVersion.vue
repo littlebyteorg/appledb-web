@@ -1,6 +1,6 @@
 <template>
     <div class="flexContainer">
-        <div class="flexImg"><a :href="`/firmware.html?os=${latestVersion.osStr}&build=${latestVersion.build}`">
+        <div class="flexFwReleaseImg"><a :href="`/firmware.html?os=${latestVersion.osStr}&build=${latestVersion.build}`">
             <img :src="`/assets/images@lowres/${image}_firmware_release${isDarkMode && dark ? '_dark' : ''}.png`" style="height: 7em; padding: 2em; padding-right: 3em;">
         </a></div>
         <div class="flexText">
@@ -54,7 +54,7 @@ export default {
     height: 11em;
 }
 
-.flexImg {
+.flexFwReleaseImg {
     width: 14.5em;
     height: 11em;
     text-align: center;
