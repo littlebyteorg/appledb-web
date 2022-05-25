@@ -68,8 +68,8 @@ p {
 }
 
 .flexImg {
-    width: 14.5em;
-    height: 11em;
+    min-width: 14.5em;
+    min-height: 11em;
     text-align: center;
 }
 
