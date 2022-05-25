@@ -62,7 +62,6 @@ export default {
 .flexText {
     padding-bottom: 1em;
     border-bottom: 1px solid var(--c-border);
-    white-space: nowrap;
     flex-grow: 2;
 }
 </style>
