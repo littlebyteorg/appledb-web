@@ -1,9 +1,9 @@
 <template>
-    <div class="flexContainer">
-        <div class="flexFwReleaseImg"><a :href="`/firmware.html?os=${latestVersion.osStr}&build=${latestVersion.build}`">
+    <div class="releasefw--flexContainer">
+        <div class="releasefw--flexImg"><a :href="`/firmware.html?os=${latestVersion.osStr}&build=${latestVersion.build}`">
             <img :src="`/assets/images@lowres/${image}_firmware_release${isDarkMode && dark ? '_dark' : ''}.png`" style="height: 7em; padding: 2em; padding-right: 3em;">
         </a></div>
-        <div class="flexText">
+        <div class="releasefw--flexText">
             <h2 style="border-bottom: none; padding-bottom: 0; margin-block-end: 0;">{{ latestVersion.osStr }} {{ latestVersion.version }} ({{ latestVersion.build }})</h2>
             <p style="margin-block-start: .5em;">{{ new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'}).format(new Date(latestVersion.released)) }}</p>
             <a :href="`/firmware.html?os=${latestVersion.osStr}&build=${latestVersion.build}`">View more</a>
@@ -48,20 +48,19 @@ export default {
 </script>
 
 <style>
-.flexContainer {
+.releasefw--flexContainer {
     display: flex;
     flex-wrap: wrap;
-    height: 11em;
     padding-top: 1em;
 }
 
-.flexFwReleaseImg {
+.releasefw--flexImg {
     width: 14.5em;
     height: 11em;
     text-align: center;
 }
 
-.flexText {
+.releasefw--flexText {
     padding-bottom: 1em;
     border-bottom: 1px solid var(--c-border);
     flex-grow: 2;
