@@ -66,12 +66,14 @@ module.exports = function(args) {
         let retArr = Object.keys(fw.deviceMap)
             .filter(x => devArr.map(x => x.identifier).includes(x))
             .map(x => {
-                if (!fw.deviceMap[x] || !fw.deviceMap[x][propertyName] || fw.deviceMap[x][propertyName] == 'none') return undefined
+                if (!fw.deviceMap[x] || !fw.deviceMap[x][propertyName]) return undefined
+                const url = fw.deviceMap[x][propertyName].url
+                if (!url) return undefined
                 return {
                     deviceName: devArr.filter(y => y.identifier == x)[0].name,
                     identifier: x,
-                    label: fw.deviceMap[x][propertyName].split('/')[fw.deviceMap[x][propertyName].split('/').length-1],
-                    url: fw.deviceMap[x][propertyName]
+                    label: url.split('/')[url.split('/').length-1],
+                    url: url
                 }
             }
         ).filter(x => x)
