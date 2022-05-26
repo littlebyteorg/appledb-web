@@ -219,6 +219,8 @@ for (const bool of [true,false]) {
   latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: startsWith})
 }
 
+latestVersionArr.push({ osStr: 'iOS', beta: false, startsWith: '12'})
+
 const latestVersions = latestVersionArr
 .map(x => iosList.filter(y => {
   const check = y.osStr == x.osStr && y.beta == x.beta

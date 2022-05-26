@@ -14,6 +14,8 @@ heroImageDark: https://appledb.dev/assets/images/splash-23aaron-0.jpg
 heroFilter: 0.3
 ---
 
+# New releases
+
 <latestVersion/>
 
 Created by [emiyl](https://twitter.com/emiyl0). Please contribute to the database at [github.com/emiyl/appledb](https://github.com/emiyl/appledb).
