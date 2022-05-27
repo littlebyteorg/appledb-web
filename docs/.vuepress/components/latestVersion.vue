@@ -109,14 +109,6 @@ export default {
 
     .releasefw--flexImg {
         width: 100%;
-        height: auto;
-        padding-bottom: 1em;
-    }
-
-    .releasefw--flexText {
-        padding-bottom: 0;
-        border-bottom: none;
-        flex-grow: 1;
     }
 }
 </style>
