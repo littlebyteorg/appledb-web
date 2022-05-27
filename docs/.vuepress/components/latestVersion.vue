@@ -101,4 +101,22 @@ export default {
     border-bottom: 1px solid var(--c-border);
     flex-grow: 2;
 }
+
+@media (max-width: 720px) {
+    .releasefw--flexContainer {
+        flex-direction: column;
+    }
+
+    .releasefw--flexImg {
+        width: 100%;
+        height: auto;
+        padding-bottom: 1em;
+    }
+
+    .releasefw--flexText {
+        padding-bottom: 0;
+        border-bottom: none;
+        flex-grow: 1;
+    }
+}
 </style>
