@@ -65,15 +65,19 @@ export default {
       document.title = `${title} | AppleDB`
       document.getElementById("pageTitle").innerHTML = title
 
-      const releasedArr = versionObject.released.split('-')
-      const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
-      const releaseDate = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(versionObject.released))
+      let rel = false
+      if (versionObject.released) {
+        const releasedArr = versionObject.released.split('-')
+        const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+        const releaseDate = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(versionObject.released))
+        rel = this.releasedStr.format({ released: releaseDate })
+      }
 
       this.infoArr = [
         this.versionStr.format({ version: [versionObject.osStr,versionObject.version].join(' ') }),
         this.buildStr.format({ build: versionObject.build }),
-        this.releasedStr.format({ released: releaseDate })
-      ]
+        rel
+      ].filter(x => x)
 
       this.deviceObj = versionObject.deviceMap
     }

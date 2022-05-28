@@ -1,18 +1,16 @@
 <template>
-    <template v-for="version in latestVersion" :key="version">
+    <template v-for="version in latestVersion" :key="version"><template v-for="url in [`/firmware.html?os=${version.osStr}&build=${version.build}`]" :key="url"><template v-for="props in [properties.filter(x => x.osStr == version.osStr && (x.startsWith ? version.version.startsWith(x.startsWith) : true))[0]]" :key="props">
         <div class="releasefw--flexContainer">
-            <template v-for="url in [`/firmware.html?os=${version.osStr}&build=${version.build}`]" :key="url"><template v-for="props in [properties.filter(x => x.osStr == version.osStr && (x.startsWith ? version.version.startsWith(x.startsWith) : true))[0]]" :key="props">
-                <div class="releasefw--flexImg"><a :href="url">
-                    <img :src="`/assets/images@lowres/${props.image}_firmware_release${isDarkMode && props.dark ? '_dark' : ''}.png`" style="height: 7em; padding: 2em; padding-right: 3em;">
-                </a></div>
-                <div class="releasefw--flexText">
-                    <h2 style="border-bottom: none; padding-bottom: 0; margin-block-end: 0;">{{ version.osStr }} {{ version.version }} ({{ version.build }})</h2>
-                    <p style="margin-block-start: .5em;">{{ new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'}).format(new Date(version.released)) }}</p>
-                    <a :href="url">View more</a>
-                </div>
-            </template></template>
+            <div class="releasefw--flexImg"><a :href="url">
+                <img :src="`/assets/images@lowres/${props.image}_firmware_release${isDarkMode && props.dark ? '_dark' : ''}.png`" style="height: 7em; padding: 2em; padding-right: 3em;">
+            </a></div>
+            <div class="releasefw--flexText">
+                <h2 style="border-bottom: none; padding-bottom: 0; margin-block-end: 0;">{{ version.osStr }} {{ version.version }} ({{ version.build }})</h2>
+                <p style="margin-block-start: .5em;">{{ new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'}).format(new Date(version.released)) }}</p>
+                <a :href="url">View more</a>
+            </div>
         </div>
-    </template>
+    </template></template></template>
 </template>
 
 <script>
