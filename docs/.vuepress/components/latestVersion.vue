@@ -52,12 +52,6 @@ export default {
                 },
                 {
                     osStr: 'iOS',
-                    image: 'ios12',
-                    startsWith: '12',
-                    dark: false
-                },
-                {
-                    osStr: 'iOS',
                     image: 'ios15',
                     startsWith: '15',
                     dark: false
