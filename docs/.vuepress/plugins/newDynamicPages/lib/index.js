@@ -215,7 +215,8 @@ for (const bool of [true,false]) {
   for (const str of osStrArr)
   latestVersionArr.push({ osStr: str, beta: bool })
 
-  latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: '11'})
+  for (const startsWith of ['11','12'])
+  latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: startsWith})
 
   for (const os of ['iOS','watchOS','tvOS'])
   latestVersionArr.push({ osStr: os, beta: bool, startsWith: '15'})

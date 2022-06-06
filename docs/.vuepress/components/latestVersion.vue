@@ -97,6 +97,9 @@ export default {
 
                 if (a.osStr < b.osStr) return -1
                 if (a.osStr > b.osStr) return 1
+
+                if (a.version < b.version) return 1
+                if (a.version > b.version) return -1
                 return 0
             }).filter((value, index, self) =>
                 index === self.findIndex((t) => (
