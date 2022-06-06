@@ -25,6 +25,12 @@ export default {
                 {
                     osStr: 'audioOS',
                     image: 'audio',
+                    startsWith: '15',
+                    dark: false
+                },
+                {
+                    osStr: 'audioOS',
+                    image: 'audio',
                     dark: false
                 },
                 {
@@ -40,6 +46,11 @@ export default {
                     dark: true
                 },
                 {
+                    osStr: 'macOS',
+                    image: 'ventura',
+                    dark: true
+                },
+                {
                     osStr: 'iOS',
                     image: 'ios12',
                     startsWith: '12',
@@ -47,12 +58,30 @@ export default {
                 },
                 {
                     osStr: 'iOS',
-                    image: 'iphone',
+                    image: 'ios15',
+                    startsWith: '15',
+                    dark: false
+                },
+                {
+                    osStr: 'iOS',
+                    image: 'ios16',
                     dark: true
                 },
                 {
                     osStr: 'watchOS',
                     image: 'watch',
+                    startsWith: '8',
+                    dark: false
+                },
+                {
+                    osStr: 'watchOS',
+                    image: 'watch',
+                    dark: false
+                },
+                {
+                    osStr: 'tvOS',
+                    image: 'tv',
+                    startsWith: '15',
                     dark: false
                 },
                 {
