@@ -212,14 +212,13 @@ const osStrArr = Array.from(new Set(iosList.map(x => x.osStr)))
 
 let latestVersionArr = []
 for (const bool of [true,false]) {
-  for (const str of osStrArr.filter(x => x != 'macOS'))
+  for (const str of osStrArr)
   latestVersionArr.push({ osStr: str, beta: bool })
+  
+  latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: '11'})
 
-  for (const startsWith of ['11','12'])
-  latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: startsWith})
-
-  for (const startsWith of ['15']) for (const os of ['iOS','watchOS','tvOS'])
-  latestVersionArr.push({ osStr: os, beta: bool, startsWith: startsWith})
+  for (const os of ['iOS','watchOS','tvOS'])
+  latestVersionArr.push({ osStr: os, beta: bool, startsWith: '15'})
 }
 
 latestVersionArr.push({ osStr: 'iOS', beta: false, startsWith: '12'})
