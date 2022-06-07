@@ -172,10 +172,22 @@ export default {
 
             const overrides = { 
                 iPhone: "iPhone14,2",
-                AirPods: "AirPods1,1"
+                AirPods: "AirPods1,1",
+                "MacBook Pro": "MacBookPro18,1"
             }
             
-            for (const o in overrides) firstDeviceObj[o].identifier = overrides[o]
+            for (const o in overrides) {
+                const group = groupList.filter(x => {
+                    if (!x.identifier) return false
+                    return x.identifier.includes(overrides[o])
+                })[0]
+                if (!group) continue
+                firstDeviceObj[o] = {
+                    identifier: group.devices[0],
+                    imageBool: group.img.count > 0,
+                    dark: group.img.dark
+                }
+            }
 
             var ret = {}
             for (const d in firstDeviceObj) ret[d] = firstDeviceObj[d].imageBool ? `https://img.appledb.dev/device@preview/${firstDeviceObj[d].identifier}/0${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}.png` : `/assets/images/logo${this.isDarkMode ? '_dark' : ''}.png`
