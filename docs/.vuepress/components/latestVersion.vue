@@ -122,8 +122,8 @@ export default {
 }
 
 .releasefw--flexImg {
-    width: 14.5em;
-    height: 11em;
+    width: 16.5em;
+    max-height: 11em;
     text-align: center;
 }
 
