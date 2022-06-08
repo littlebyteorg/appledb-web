@@ -6,7 +6,7 @@
             </a></div>
             <div class="releasefw--flexText">
                 <h2 style="border-bottom: none; padding-bottom: 0; margin-block-end: 0;">{{ version.osStr }} {{ version.version }} ({{ version.build }})</h2>
-                <p style="margin-block-start: .5em;">{{ new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'}).format(new Date(version.released)) }}</p>
+                <p style="margin-block-start: .5em;">{{ new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'}).format(version.released) }}</p>
                 <a :href="url">View more</a>
             </div>
         </div>
@@ -89,10 +89,19 @@ export default {
     computed: {
         latestVersion() {
             return latestVersion
-            .filter(x => this.properties.map(y => y.osStr)
-            .includes(x.osStr))
+            .filter(x => 
+                this.properties.map(y => y.osStr)
+                .includes(x.osStr)
+            )
+            .map(x => {
+                const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
+                const currentDate = new Date(x.released).valueOf()
+                const adjustedDate = new Date(currentDate + dateOffset)
+                x.released = adjustedDate
+                return x
+            })
             .sort((a,b) => {
-                const dateRel = new Date(b.released) - new Date(a.released)
+                const dateRel = b.released - a.released
                 if (dateRel != 0) return dateRel
 
                 if (a.osStr < b.osStr) return -1
