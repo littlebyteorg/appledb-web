@@ -114,8 +114,7 @@ export default {
                 index === self.findIndex((t) => (
                     t.osStr === value.osStr &&
                     t.version === value.version &&
-                    t.build === value.build &&
-                    t.released === value.released
+                    t.build === value.build
                 ))
             )
         }
