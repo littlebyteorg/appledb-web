@@ -326,6 +326,18 @@ export default {
         infoArr() {
             const dev = this.fm.device
             function grabInfo(property) {
+                if (property == 'released') {
+                    const dateArr = Array.from(new Set(dev.map(x => x[property]).flat())).sort().map(x => {
+                        const releasedArr = x.split('-')
+                        const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+                        const date = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(x))
+                        return date
+                    })
+                    return dateArr
+                }
+
+                return Array.from(new Set(dev.map(x => x[property]).flat())).sort()
+
                 return Array.from(new Set(dev.map(x => {
                     if (property == 'released' && x[property]) {
                         if (!Array.isArray(x[property])) x[property] = [x[property]]
