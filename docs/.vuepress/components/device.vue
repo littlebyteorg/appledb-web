@@ -528,6 +528,7 @@ export default {
     user-select: none;
     text-align: center;
     padding-bottom: 1em;
+    margin-bottom: 1em;
     height: 7em;
 }
 
