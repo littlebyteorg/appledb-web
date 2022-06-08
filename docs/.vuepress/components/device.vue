@@ -442,7 +442,7 @@ export default {
 
             for (let i = 0; i < flexImgs.length; i++) {
                 flexImgs[i].onload = () => {
-                    flexImgWidth += flexImgs[i].clientWidth * Math.min(this.fm.img.count,3)
+                    flexImgWidth += flexImgs[i].clientWidth
                     this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
                 }
             }
