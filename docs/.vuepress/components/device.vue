@@ -9,7 +9,7 @@
                     <template v-else v-once>{{ s }}</template>
                 </li>
             </ul>
-            <div v-if="fm.img.count && fm.img.count > 0" :style="`user-select: none; text-align: center; padding-top: ${wrapImg ? '1em' : '0'}; padding-bottom: 1em; height: 8em; overflow: hidden;`">
+            <div v-if="fm.img.count && fm.img.count > 0" :style="`padding-top: ${wrapImg ? '1em' : '0'};`" class="devFlexImgWrapper">
                 <img v-for="i in Math.min(fm.img.count,3)" :key="i" :class="`flexImg flexImg${i}`" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.identifier)[0].replace(/\//g,'%252F').replace(/ü/g,'u')}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" style="margin-left: .5em; height: 8em;">
             </div>
         </div>
@@ -337,20 +337,6 @@ export default {
                 }
 
                 return Array.from(new Set(dev.map(x => x[property]).flat())).sort()
-
-                return Array.from(new Set(dev.map(x => {
-                    if (property == 'released' && x[property]) {
-                        if (!Array.isArray(x[property])) x[property] = [x[property]]
-                        x[property] = x[property].map(y => {
-                            const releasedArr = y.split('-')
-                            const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
-                            const date = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(y))
-                            return date
-                        })
-                    }
-                    return x[property]
-                }).flat()))
-                .sort()
             }
             const propertyArr = [
                 'identifier',
@@ -537,6 +523,14 @@ export default {
 </script>
 
 <style scoped>
+.devFlexImgWrapper {
+    overflow: hidden;
+    user-select: none;
+    text-align: center;
+    padding-bottom: 1em;
+    height: 7em;
+}
+
 .flexImg1 {
     max-width: 100%;
     margin-left: 0 !important;
