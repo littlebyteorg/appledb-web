@@ -440,7 +440,7 @@ export default {
             var totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
             var flexImgWidth = 0
 
-            for (const i in flexImgs.length) {
+            for (let i = 0; i < flexImgs.length; i++) {
                 flexImgs[i].onload = () => {
                     flexImgWidth += flexImgs[i].clientWidth * Math.min(this.fm.img.count,3)
                     this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
