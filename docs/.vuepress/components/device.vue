@@ -367,7 +367,7 @@ export default {
                 devices: this.fm.device.map(x => {
                     return {
                         name: x.name,
-                        key: x.key,
+                        identifier: x.identifier,
                         url: [
                             this.devicePath,
                             'identifier',
