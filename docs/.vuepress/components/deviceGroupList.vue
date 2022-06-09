@@ -164,7 +164,7 @@ export default {
                 if (tempTypeArr.includes(g.type)) continue
                 tempTypeArr.push(g.type)
                 firstDeviceObj[g.type] = {
-                    identifier: g.devices[0],
+                    key: g.devices[0],
                     imageBool: g.img.count > 0,
                     dark: g.img.dark
                 }
@@ -178,19 +178,19 @@ export default {
             
             for (const o in overrides) {
                 const group = groupList.filter(x => {
-                    if (!x.identifier) return false
-                    return x.identifier.includes(overrides[o])
+                    if (!x.key) return false
+                    return x.key.includes(overrides[o])
                 })[0]
                 if (!group) continue
                 firstDeviceObj[o] = {
-                    identifier: group.devices[0],
+                    key: group.devices[0],
                     imageBool: group.img.count > 0,
                     dark: group.img.dark
                 }
             }
 
             var ret = {}
-            for (const d in firstDeviceObj) ret[d] = firstDeviceObj[d].imageBool ? `https://img.appledb.dev/device@preview/${firstDeviceObj[d].identifier}/0${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}.png` : `/assets/images/logo${this.isDarkMode ? '_dark' : ''}.png`
+            for (const d in firstDeviceObj) ret[d] = firstDeviceObj[d].imageBool ? `https://img.appledb.dev/device@preview/${firstDeviceObj[d].key}/0${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}.png` : `/assets/images/logo${this.isDarkMode ? '_dark' : ''}.png`
             
             return ret
         }

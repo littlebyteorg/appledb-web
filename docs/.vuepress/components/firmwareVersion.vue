@@ -56,8 +56,6 @@ export default {
       return false
     }
   },
-  computed: {
-  },
   mounted() {
     const versionObject = this.getQuery()
     if (versionObject) {

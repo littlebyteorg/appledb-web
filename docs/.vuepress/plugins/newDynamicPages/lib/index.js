@@ -89,8 +89,8 @@ for (const d of Object.keys(deviceList).map(x => deviceList[x]).filter(x => {
     x.name === "Beats Solo³ Wireless Mickey's 90th Anniversary Edition"
   )
 })) {
-  const urlPart = formatDeviceName(d.identifier)
-  const url = [devicePath, 'identifier', urlPart].join('/') + '.html'
+  const urlPart = formatDeviceName(d.key)
+  const url = [devicePath, 'key', urlPart].join('/') + '.html'
   pageList.push(
     getDevicePage({
       name: d.name,
@@ -197,6 +197,8 @@ Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
 
         const identifier = Array.from(new Set(devArr.map(y => (y.identifier != y.name) ? y.identifier : undefined).flat()))
         if (identifier.join() != '') x.identifier = identifier
+
+        x.key = Array.from(new Set(devArr.map(y => y.key).flat()))
 
         return x
       }).filter(x => x.type == t),

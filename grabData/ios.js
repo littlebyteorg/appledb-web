@@ -141,6 +141,7 @@ iosArr = iosArr.map(function(x) {
       o[y] = {}
       o[y].name = dev[y].name
       o[y].identifier = dev[y].identifier
+      o[y].key = dev[y].key
       o[y].group = group.filter(g => g.devices.includes(y))[0]
       o[y].url = devicePath + formatDeviceName(y) + '.html'
       o[y].ipsw = dlObj[y].ipsw

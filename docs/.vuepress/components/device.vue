@@ -10,7 +10,7 @@
                 </li>
             </ul>
             <div v-if="fm.img.count && fm.img.count > 0" :style="`padding-top: ${wrapImg ? '1em' : '0'};`" class="devFlexImgWrapper">
-                <img v-for="i in Math.min(fm.img.count,3)" :key="i" :class="`flexImg flexImg${i}`" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.identifier)[0].replace(/\//g,'%252F').replace(/ü/g,'u')}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" style="margin-left: .5em; height: 8em;">
+                <img v-for="i in Math.min(fm.img.count,3)" :key="i" :class="`flexImg flexImg${i}`" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.key)[0].replace(/\//g,'%252F').replace(/ü/g,'u')}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" style="margin-left: .5em; height: 8em;">
             </div>
         </div>
 
@@ -22,7 +22,7 @@
                 </label>
                 <div :class="`tab ${(index == tabArr.length - 1) ? 'tab-last' : ''}`" style="overflow-x: scroll;">
                     <table style="margin: 0;">
-                        <tr v-if="Object.keys(fm.extraInfo).length > 1 && [Object.keys(tabData).map(x => tabData[x][tab])].map(d => Array.from(new Set(d.map(y => JSON.stringify(Object.keys(y).map(x => y[x]))))).length)[0] > 1"><th/><th v-for="dev in Object.keys(fm.extraInfo)" :key="dev">{{ fm.device.filter(x => x.identifier == dev)[0].name }}</th></tr>
+                        <tr v-if="Object.keys(fm.extraInfo).length > 1 && [Object.keys(tabData).map(x => tabData[x][tab])].map(d => Array.from(new Set(d.map(y => JSON.stringify(Object.keys(y).map(x => y[x]))))).length)[0] > 1"><th/><th v-for="dev in Object.keys(fm.extraInfo)" :key="dev">{{ fm.device.filter(x => x.key == dev)[0].name }}</th></tr>
                         <tr v-for="property in tabPropertyArr[tab]" :key="property">
                             <td>{{ property.formatExtraInfoTitle() }}</td>
                             <td v-if="Array.from(new Set(Object.keys(tabData).map(x => JSON.stringify(tabData[x][tab][property])))).length == 1 && Object.keys(tabData).map(x => JSON.stringify(tabData[x][tab][property])).length != 1" :colspan="Object.keys(fm.extraInfo).length">
@@ -367,11 +367,11 @@ export default {
                 devices: this.fm.device.map(x => {
                     return {
                         name: x.name,
-                        identifier: x.identifier,
+                        key: x.key,
                         url: [
                             this.devicePath,
                             'identifier',
-                            formatDeviceName(x.identifier)
+                            formatDeviceName(x.key)
                         ].join('/') + '.html'
                     }
                 })
@@ -471,7 +471,7 @@ export default {
                 this.fm.mainList
             ) return dlArr
             
-            const retArr = dlArr.filter(x => filterDev.includes(x.identifier))
+            const retArr = dlArr.filter(x => filterDev.includes(x.key))
             const urlCount = Array.from(new Set(retArr.map(x => x.url))).length
 
             if (urlCount == 1) return [retArr[0]]

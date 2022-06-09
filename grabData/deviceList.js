@@ -40,18 +40,18 @@ fs.readdirSync(imagePath)
 .filter(f => f.endsWith('.png') || isDir(path.join(imagePath, f)))
 .forEach(f => {
   imgArr.push({
-    identifier: f.replace('.png',''),
+    key: f.replace('.png',''),
     imgCount: (f.endsWith('.png')) ? 1 : -1,
     dark: false,
   })
 })
 
-let folderArr = imgArr.filter(x => x.imgCount < 0).filter(x => isDir(path.resolve(__dirname, `../apple-device-images/images/${x.identifier}`)))
+let folderArr = imgArr.filter(x => x.imgCount < 0).filter(x => isDir(path.resolve(__dirname, `../apple-device-images/images/${x.key}`)))
 imgArr = imgArr.filter(x => x.imgCount > 0)
 
 for (const i of folderArr) {
   let folderImgArr = []
-  fs.readdirSync(path.resolve(__dirname, `../apple-device-images/images/${i.identifier}`))
+  fs.readdirSync(path.resolve(__dirname, `../apple-device-images/images/${i.key}`))
   .filter(f => f.endsWith('.png'))
   .forEach(file => {
     folderImgArr.push(file)
@@ -59,7 +59,7 @@ for (const i of folderArr) {
   let folderImgCount = folderImgArr.filter(x => !x.endsWith('_dark.png')).length
   let darkBool = folderImgArr.filter(x => x.endsWith('_dark.png')).length > 0
   imgArr.push({
-    identifier: i.identifier,
+    key: i.key,
     imgCount: folderImgCount,
     dark: darkBool
   })
@@ -70,16 +70,17 @@ for (const file in deviceFiles) {
 
   if (obj.board && !Array.isArray(obj.board)) obj.board = [obj.board]
   if (!obj.identifier) obj.identifier = obj.name
+  if (!obj.key) obj.key = obj.identifier
   
   let imgCount = 1
   let imgDark = false
-  let devImgArr = imgArr.filter(x => x.identifier == obj.identifier)
+  let devImgArr = imgArr.filter(x => x.key == obj.key)
   if (devImgArr.length == 1) {
     let devImg = devImgArr[0]
     imgCount = devImg.imgCount
     imgDark = devImg.dark
   } else {
-    imgCount = fs.existsSync(path.resolve(__dirname, `../apple-device-images/images-lowres/${obj.identifier}.png`)) ? 1 : 0
+    imgCount = fs.existsSync(path.resolve(__dirname, `../apple-device-images/images-lowres/${obj.key}.png`)) ? 1 : 0
     imgDark = false
   }
   obj.imgCount = imgCount
@@ -104,7 +105,7 @@ for (const file in deviceFiles) {
     }
   })
   
-  deviceObj[obj.identifier] = obj
+  deviceObj[obj.key] = obj
 }
 
 module.exports = deviceObj;

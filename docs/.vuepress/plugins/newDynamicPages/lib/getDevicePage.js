@@ -46,7 +46,7 @@ module.exports = function(args) {
     let devFwArr = iosList
     if (!mainList) devFwArr = devFwArr.filter(i => {
         const fwDevArr = Object.keys(i.deviceMap)
-        const devIdArr = devArr.map(x => x.identifier)
+        const devIdArr = devArr.map(x => x.key)
         for (const id of devIdArr) if (fwDevArr.includes(id)) return true
         return false
     })
@@ -64,14 +64,14 @@ module.exports = function(args) {
 
     function getDlArr(propertyName, fw) {
         let retArr = Object.keys(fw.deviceMap)
-            .filter(x => devArr.map(x => x.identifier).includes(x))
+            .filter(x => devArr.map(x => x.key).includes(x))
             .map(x => {
                 if (!fw.deviceMap[x] || !fw.deviceMap[x][propertyName]) return undefined
                 const url = fw.deviceMap[x][propertyName].url
                 if (!url) return undefined
                 return {
-                    deviceName: devArr.filter(y => y.identifier == x)[0].name,
-                    identifier: x,
+                    deviceName: devArr.filter(y => y.key == x)[0].name,
+                    key: x,
                     label: url.split('/')[url.split('/').length-1],
                     url: url
                 }
@@ -88,10 +88,10 @@ module.exports = function(args) {
         const dlArr = getDlArr('ipsw',i)
         const otaArr = getDlArr('ota',i)
 
-        const devIdFwArr = Object.keys(i.deviceMap).filter(x => devArr.map(x => x.identifier).includes(x))
+        const devIdFwArr = Object.keys(i.deviceMap).filter(x => devArr.map(x => x.key).includes(x))
         const devTypeArr = Array.from(
             new Set(
-                devIdFwArr.map(x => devArr.filter(y => y.identifier == x)[0])
+                devIdFwArr.map(x => devArr.filter(y => y.key == x)[0])
                         .map(x => x.type)
                         .map(x => getDevType(x))
             )
@@ -110,7 +110,7 @@ module.exports = function(args) {
             new Set(
                 devArr.map(d => jbList.filter(jb => {
                     if (!jb.compatibility) return false
-                    const compat = jb.compatibility.map(x => x.firmwares.includes(i.build) && x.devices.includes(d.identifier))
+                    const compat = jb.compatibility.map(x => x.firmwares.includes(i.build) && x.devices.includes(d.key))
                     return compat.filter(x => x).length > 0
                 }))
             .flat()
@@ -144,12 +144,12 @@ module.exports = function(args) {
         "meta",
         {
             property: "og:image",
-            content: `https://img.appledb.dev/device@256/${devArr[0].identifier}/0.png`
+            content: `https://img.appledb.dev/device@256/${devArr[0].key}/0.png`
         }
         ]
     ]
 
-    const propertyArr = ['name','identifier','released','soc','arch','model','board']
+    const propertyArr = ['name','identifier','key','released','soc','arch','model','board']
     const infoArr = devArr.map(x => {
         var o = {}
         for (const p of propertyArr) if (x[p]) o[p] = x[p]
@@ -182,7 +182,7 @@ module.exports = function(args) {
     var extraInfo = undefined
     if (!mainList && devArr.map(x => x.info).filter(x => x).length > 0) {
         extraInfo = {}
-        for (const i of devArr) extraInfo[i.identifier] = i.info
+        for (const i of devArr) extraInfo[i.key] = i.info
     }
 
     const img = {
@@ -192,7 +192,7 @@ module.exports = function(args) {
 
     var imgCount = 0
     try {
-        imgCount = fs.readdirSync(`docs/.vuepress/public/assets/images/device@256/${devArr[0].identifier}/`).length
+        imgCount = fs.readdirSync(`docs/.vuepress/public/assets/images/device@256/${devArr[0].key}/`).length
     } catch {
         imgCount = 0
     }
