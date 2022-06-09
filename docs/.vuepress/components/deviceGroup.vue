@@ -47,12 +47,12 @@ import { usePageFrontmatter } from '@vuepress/client'
 import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 
 String.prototype.fdn = function() {
-  return this
+  return encodeURI(this
   .replace(/ /g, '-')
   .replace(/\//g,'%2F')
   .replace(/ü/g,'u')
   .replace(/²/g,'2')
-  .replace(/³/g,'3')
+  .replace(/³/g,'3'))
 }
 
 String.prototype.format = function(vars) {
