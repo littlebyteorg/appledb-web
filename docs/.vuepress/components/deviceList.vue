@@ -83,6 +83,7 @@ export default {
 
         modelDevArr.push({
           name: dev.name,
+          identifier: dev.identifier,
           key: dev.key,
           model: x,
           released: dev.released,
@@ -104,8 +105,8 @@ export default {
       })
 
       return noModelList.sort((a,b) => {
-        if (a.key.toLowerCase() < b.key.toLowerCase()) return -1
-        if (a.key.toLowerCase() > b.key.toLowerCase()) return 1
+        if (a.identifier.toLowerCase() < b.identifier.toLowerCase()) return -1
+        if (a.identifier.toLowerCase() > b.identifier.toLowerCase()) return 1
         return 0
       })
     },
