@@ -77,7 +77,7 @@ export default {
         rel
       ].filter(x => x)
 
-      let deviceObj = versionObject.deviceMap
+      let deviceObj = { ...versionObject.deviceMap }
       let deviceMap = Object.keys(deviceObj).map(x => deviceObj[x])
 
       for (let device of deviceMap) {
