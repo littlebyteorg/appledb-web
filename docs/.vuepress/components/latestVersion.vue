@@ -83,6 +83,11 @@ export default {
                     image: 'tv',
                     dark: false
                 },
+                {
+                    osStr: 'Bluetooth Headset Firmware',
+                    image: 'airpods',
+                    dark: false
+                },
             ]
         }
     },
@@ -94,6 +99,7 @@ export default {
                 .includes(x.osStr)
             )
             .map(x => {
+                if (!x.released) return x
                 const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
                 const currentDate = new Date(x.released).valueOf()
                 const adjustedDate = new Date(currentDate + dateOffset)

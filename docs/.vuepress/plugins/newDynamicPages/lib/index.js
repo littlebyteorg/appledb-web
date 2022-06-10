@@ -222,11 +222,15 @@ for (const bool of [true,false]) {
 
   for (const os of ['iOS','watchOS','tvOS'])
   latestVersionArr.push({ osStr: os, beta: bool, startsWith: '15'})
+
+  latestVersionArr.push({ osStr: 'Bluetooth Headset Firmware', beta: bool })
 }
 
 const latestVersions = latestVersionArr
 .map(x => iosList.filter(y => {
-  const check = y.osStr == x.osStr && y.beta == x.beta
+  const osStrCheck = y.hasOwnProperty('osStr') ? y.osStr == x.osStr : 1
+  const betaCheck = y.hasOwnProperty('beta') ? y.beta == x.beta : 1
+  const check = osStrCheck && betaCheck
   let startsWith = x.startsWith
   if (startsWith) {
     startsWith = y.version.startsWith(startsWith)
@@ -234,6 +238,7 @@ const latestVersions = latestVersionArr
   }
   return check
 })
+.filter(x => x.released)
 .sort((a,b) => {
   const date = [a,b].map(x => new Date(x.released))
   if (date[0] < date[1]) return 1
