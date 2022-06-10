@@ -110,8 +110,8 @@ export default {
                 const dateRel = b.released - a.released
                 if (dateRel != 0) return dateRel
 
-                if (a.osStr < b.osStr) return -1
-                if (a.osStr > b.osStr) return 1
+                if (a.osStr.toLowerCase() < b.osStr.toLowerCase()) return -1
+                if (a.osStr.toLowerCase() > b.osStr.toLowerCase()) return 1
 
                 if (a.version < b.version) return 1
                 if (a.version > b.version) return -1
