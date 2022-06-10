@@ -8,7 +8,7 @@
   <h2>{{ devicesHead }}</h2>
   <ul>
     <li v-for="d in deviceObj" :key="d" class="showOnHover">
-      <router-link :to="d.url">{{ d.name }}</router-link> <code class="hoverElement">{{ d.identifier }}</code>
+      <router-link :to="d.url">{{ d.name }}</router-link> <code v-if="d.name != d.identifier" class="hoverElement">{{ d.identifier }}</code>
     </li>
   </ul>
 
@@ -77,7 +77,39 @@ export default {
         rel
       ].filter(x => x)
 
-      this.deviceObj = versionObject.deviceMap
+      let deviceObj = versionObject.deviceMap
+      let deviceMap = Object.keys(deviceObj).map(x => deviceObj[x])
+
+      for (let device of deviceMap) {
+        const group = device.group
+        const identArr = group.identifier
+
+        let pass = true
+        if (identArr.length > 1) for (const ident of identArr) if (!Object.keys(deviceObj).includes(ident)) {
+          pass = false
+          break
+        }
+
+        if (!pass) continue
+        
+        device.name = group.name
+        device.identifier = group.name
+        device.children = group.identifier.map(x => {
+          let obj = { ...deviceObj[x] }
+          delete obj.group
+          return obj
+        })
+        device.url = `/device/${group.name.replace(/ /g,'-')}`
+      }
+
+      deviceMap = deviceMap.filter((value, index, self) =>
+          index === self.findIndex((d) => (
+              d.name === value.name &&
+              d.url === value.url
+          ))
+      )
+
+      this.deviceObj = deviceMap
     }
   }
 }
