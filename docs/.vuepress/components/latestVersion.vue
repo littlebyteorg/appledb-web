@@ -51,10 +51,21 @@ export default {
                     dark: true
                 },
                 {
+                    osStr: 'iPadOS',
+                    image: 'ipados15',
+                    startsWith: '15',
+                    dark: true
+                },
+                {
+                    osStr: 'iPadOS',
+                    image: 'ipados16',
+                    dark: true
+                },
+                {
                     osStr: 'iOS',
                     image: 'ios15',
                     startsWith: '15',
-                    dark: false
+                    dark: true
                 },
                 {
                     osStr: 'iOS',

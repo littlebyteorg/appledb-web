@@ -220,10 +220,8 @@ for (const bool of [true,false]) {
   for (const startsWith of ['11','12'])
   latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: startsWith})
 
-  for (const os of ['iOS','watchOS','tvOS'])
+  for (const os of ['iOS','watchOS','tvOS','iPadOS'])
   latestVersionArr.push({ osStr: os, beta: bool, startsWith: '15'})
-
-  latestVersionArr.push({ osStr: 'Bluetooth Headset Firmware', beta: bool })
 }
 
 const latestVersions = latestVersionArr
