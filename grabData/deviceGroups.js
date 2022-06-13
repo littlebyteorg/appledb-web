@@ -47,6 +47,7 @@ deviceGroupArr = deviceGroupArr.map(function(x) {
   }
 
   return x
-}).filter(x => x)
+})
+.filter(x => x)
 
 module.exports = deviceGroupArr;

@@ -66,6 +66,7 @@ export default {
     data() {
         return {
             labels: {
+                identifier: "Identifier: ${identifier}",
                 soc: "SoC: ${soc}",
                 arch: "Architecture: ${arch}",
                 model: "Model: ${model}",
@@ -90,7 +91,7 @@ export default {
         infoObj() {
             let o = {}
             for (const dev of this.deviceArr) {
-                let attr = ['soc','arch','model','board']
+                let attr = ['identifier','soc','arch','model','board']
                 .map(x => {
                     return {
                         type: x,

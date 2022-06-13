@@ -201,7 +201,8 @@ Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
         x.key = Array.from(new Set(devArr.map(y => y.key).flat()))
 
         return x
-      }).filter(x => x.type == t),
+      })
+      .filter(x => x.type == t),
       sidebar: false,
       editLink: false,
       lastUpdated: false,
