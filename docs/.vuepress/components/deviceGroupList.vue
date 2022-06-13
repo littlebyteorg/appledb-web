@@ -105,6 +105,8 @@ export default {
                         "AirTag",
                         "Remote",
                         "Keyboard",
+                        "Mouse",
+                        "Trackpad",
                         "Power"
                     ]
                 },
