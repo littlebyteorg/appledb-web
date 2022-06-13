@@ -5,7 +5,7 @@
                 <img :src="`/assets/images@lowres/${props.image}_firmware_release${isDarkMode && props.dark ? '_dark' : ''}.png`" style="height: 7em; padding: 2em; padding-right: 3em;">
             </a></div>
             <div class="releasefw--flexText">
-                <h2 style="border-bottom: none; padding-bottom: 0; margin-block-end: 0;">{{ version.osStr }} {{ version.version }} ({{ version.build }})</h2>
+                <h2 class="releasefw--title">{{ version.osStr }} {{ version.version }} ({{ version.build }})</h2>
                 <p style="margin-block-start: .5em;">{{ new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'}).format(version.released) }}</p>
                 <a :href="url">View more</a>
             </div>
@@ -144,6 +144,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     padding-top: 1em;
+    justify-content: space-around;
 }
 
 .releasefw--flexImg {
@@ -158,7 +159,13 @@ export default {
     flex-grow: 2;
 }
 
-@media (max-width: 720px) {
+.releasefw--title {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-block-end: 0;
+}
+
+@media (max-width: 866px) {
     .releasefw--flexContainer {
         flex-direction: column;
     }
