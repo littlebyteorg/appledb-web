@@ -15,10 +15,8 @@
                 <router-link :to="url" style="color: inherit;">
                     <h3>{{dev.name}}</h3>
                     <div class="flexWrapper flexImg" style="user-select: none; height: 8em;">
-                        <div>
-                            <template v-if="dev.img.count > 0"><img v-for="i in Math.min(dev.img.count,3)" :key="i" :class="`devImage${i}`" :src="`https://img.appledb.dev/device@preview/${dev.devices[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && dev.img.dark ? '_dark' : ''}.png`" style="max-height: 8em; padding-right: .5em;"></template>
-                            <template v-else><img class="devImage0" :src="`/assets/images/logo${isDarkMode ? '_dark' : ''}.png`" style="max-height: 8em; padding-right: .5em;"></template>
-                        </div>
+                        <template v-if="dev.img.count > 0"><div v-for="i in Math.min(dev.img.count,3)" :key="i" :class="`imgWrapper imgWrapper${i}`"><img :class="`devImage devImage${i}`" :src="`https://img.appledb.dev/device@preview/${dev.devices[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && dev.img.dark ? '_dark' : ''}.png`"></div></template>
+                        <div v-else class="imgWrapper imgWrapper0"><img class="devImage devImage0" :src="`/assets/images/logo${isDarkMode ? '_dark' : ''}.png`"></div>
                     </div>
                 </router-link>
             </div>
@@ -140,7 +138,7 @@ td, th {
 
 .flexImg {
     overflow: hidden;
-    max-height: 8em;
+    height: 8em;
 }
 
 .flexColumn {
@@ -152,8 +150,17 @@ td, th {
     width: 50%;
 }
 
-.devImage1 {
+.imgWrapper {
+    height: 8em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.devImage {
     max-width: 100%;
+    max-height: 8em;
+    padding-right: .5em;
 }
 
 .variablePadding {
