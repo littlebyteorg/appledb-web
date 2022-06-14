@@ -48,6 +48,7 @@ export default {
                 {
                     osStr: 'macOS',
                     image: 'ventura',
+                    startsWith: '13',
                     dark: true
                 },
                 {
@@ -59,6 +60,7 @@ export default {
                 {
                     osStr: 'iPadOS',
                     image: 'ipados16',
+                    startsWith: '16',
                     dark: true
                 },
                 {
@@ -70,6 +72,7 @@ export default {
                 {
                     osStr: 'iOS',
                     image: 'ios16',
+                    startsWith: '16',
                     dark: true
                 },
                 {
@@ -81,6 +84,7 @@ export default {
                 {
                     osStr: 'watchOS',
                     image: 'watch',
+                    startsWith: '9',
                     dark: false
                 },
                 {
@@ -92,6 +96,7 @@ export default {
                 {
                     osStr: 'tvOS',
                     image: 'tv',
+                    startsWith: '16',
                     dark: false
                 },
                 {
