@@ -40,11 +40,51 @@ module.exports = function(args) {
     const devFwVersionArr = devFwArr.map(x => [x.osStr,x.version].join(' '))
     const duplicateVersionArr = devFwVersionArr.filter((fw, index) => index !== devFwVersionArr.indexOf(fw))
 
+    const mergingDeviceTypes = [
+        {
+            label: "iPhone, iPad, iPod touch",
+            types: [
+                "iPad",
+                "iPad Air",
+                "iPad mini",
+                "iPad Pro",
+                "iPhone",
+                "iPod touch"
+            ]
+        },
+        {
+            label: "AirPods, Beats",
+            types: [
+                "AirPods",
+                "Beats Headphones",
+                "Beats Speakers",
+                "Beats Earbuds"
+            ]
+        },
+        {
+            label: "Mac",
+            types: [
+                "MacBook",
+                "MacBook Air",
+                "MacBook Pro",
+                "iMac",
+                "Mac Pro",
+                "Mac mini",
+                "Mac Studio",
+                "Developer Transition Kit"
+            ]
+        }
+    ]
+
+    const pluralise = [
+        "Display",
+        "Keyboard",
+        "Remote"
+    ]
+
     function getDevType(type) {
-        if (type.includes('iPad') || type == 'iPhone' || type == 'iPod touch') return 'iOS devices'
-        if (type == 'AirPods' || type.includes('Beats')) return 'AirPods, Beats'
-        if (type.includes('Mac') || type == 'Developer Transition Kit') return 'Mac'
-        if (type == 'Display' || type == 'Keyboard' || type == 'Remote') return type + 's'
+        for (const devType of mergingDeviceTypes) if (devType.types.includes(type)) return devType.label
+        if (pluralise.includes(type)) return type + 's'
         return type
     }
 
