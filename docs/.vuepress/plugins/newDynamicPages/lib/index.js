@@ -18,21 +18,7 @@ const bigJson = {
   ios: iosList,
   jailbreak: jbList,
   device: deviceList,
-  groups: deviceGroups.sort(function(a,b) {
-    if (a.subtype) a.type = [a.type,a.subtype].join('')
-    if (b.subtype) b.type = [b.type,b.subtype].join('')
-
-    if (a.type < b.type) return -1
-    if (a.type > b.type) return 1
-    
-    if (a.released > b.released) return -1
-    if (a.released < b.released) return 1
-
-    if (a.name > b.name) return -1
-    if (a.name < b.name) return 1
-
-    return 0
-  })
+  groups: deviceGroups
 }
 
 var jbPath = '/jailbreak'

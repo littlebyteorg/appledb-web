@@ -91,6 +91,7 @@ export default {
                         "iMac",
                         "Mac mini",
                         "Mac Studio",
+                        "MacBook",
                         "Display"
                     ]
                 },

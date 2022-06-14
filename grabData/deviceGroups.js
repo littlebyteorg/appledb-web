@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { release } = require('os');
 const path = require('path');
 const p = './appledb/deviceGroupFiles'
 
@@ -33,10 +34,25 @@ for (const file in deviceFiles) {
   deviceGroupArr.push(require('..' + path.sep + deviceFiles[file]));
 }
 
-deviceGroupArr = deviceGroupArr.map(function(x) {
+const deviceObj = require('./deviceList')
+const deviceArr = Object.keys(deviceObj).map(key => deviceObj[key])
+
+const devicesInDeviceGroups = deviceGroupArr.map(x => x.devices).flat()
+const ungroupedDevices = deviceArr.filter(x => !devicesInDeviceGroups.includes(x.key) && x.group !== false)
+const nowPutThemInGroups = ungroupedDevices.map(x => {
+  return {
+    name: x.name,
+    type: x.type,
+    devices: [x.key]
+  }
+})
+
+deviceGroupArr = deviceGroupArr
+.concat(nowPutThemInGroups)
+.map(function(x) {
   if (x.devices) {
     const devArr = x.devices.map(y => {
-      const dev = require('./deviceList')[y]
+      const dev = deviceObj[y]
       if (!dev) console.log(`ERROR: Device '${y}' not found`)
       return dev
     }).filter(x => x)
@@ -50,4 +66,40 @@ deviceGroupArr = deviceGroupArr.map(function(x) {
 })
 .filter(x => x)
 
-module.exports = deviceGroupArr;
+deviceGroupsWithoutReleaseDate = deviceGroupArr
+.filter(x => !x.released)
+.sort((a,b) => {
+  if (a.subtype) a.type = [a.type,a.subtype].join('')
+  if (b.subtype) b.type = [b.type,b.subtype].join('')
+
+  if (a.type < b.type) return -1
+  if (a.type > b.type) return 1
+
+  if (a.name > b.name) return -1
+  if (a.name < b.name) return 1
+
+  return 0
+})
+
+deviceGroupsWithReleaseDate = deviceGroupArr
+.filter(x => x.released)
+.sort((a,b) => {
+  if (a.subtype) a.type = [a.type,a.subtype].join('')
+  if (b.subtype) b.type = [b.type,b.subtype].join('')
+
+  if (a.type < b.type) return -1
+  if (a.type > b.type) return 1
+
+  if (a.released < b.released) return 1
+  if (a.released > b.released) return -1
+
+  if (a.name > b.name) return -1
+  if (a.name < b.name) return 1
+
+  return 0
+})
+
+module.exports = [
+  ...deviceGroupsWithReleaseDate,
+  ...deviceGroupsWithoutReleaseDate
+];
