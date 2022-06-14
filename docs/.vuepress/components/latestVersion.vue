@@ -6,7 +6,7 @@
             </a></div>
             <div class="releasefw--flexText">
                 <h2 class="releasefw--title">{{ version.osStr }} {{ version.version }} ({{ version.build }})</h2>
-                <p style="margin-block-start: .5em;">{{ new Intl.DateTimeFormat('en-US', { dateStyle: 'medium'}).format(version.released) }}</p>
+                <p style="margin-block-start: .5em;">{{ new Intl.DateTimeFormat('en-US', { dateStyle: 'long'}).format(version.released) }}</p>
                 <a :href="url">View more</a>
             </div>
         </div>
