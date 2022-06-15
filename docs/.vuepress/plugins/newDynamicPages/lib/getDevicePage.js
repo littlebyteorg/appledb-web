@@ -42,14 +42,19 @@ module.exports = function(args) {
 
     const mergingDeviceTypes = [
         {
-            label: "iPhone, iPad, iPod touch",
+            label: "iPhone, iPod touch",
+            types: [
+                "iPhone",
+                "iPod touch"
+            ]
+        },
+        {
+            label: "iPad",
             types: [
                 "iPad",
                 "iPad Air",
                 "iPad mini",
-                "iPad Pro",
-                "iPhone",
-                "iPod touch"
+                "iPad Pro"
             ]
         },
         {
