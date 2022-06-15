@@ -86,13 +86,12 @@ export default {
                 {
                     label: "macOS Devices",
                     types: [
-                        "MacBook",
                         "MacBook Air",
                         "MacBook Pro",
+                        "MacBook",
                         "iMac",
                         "Mac mini",
-                        "Mac Studio",
-                        "Display"
+                        "Mac Studio"
                     ]
                 },
                 {
@@ -104,10 +103,11 @@ export default {
                         "AirPods",
                         "Apple Pencil",
                         "AirTag",
-                        "Remote",
-                        "Keyboard",
                         "Mouse",
                         "Trackpad",
+                        "Keyboard",
+                        "Display",
+                        "Remote",
                         "Power"
                     ]
                 },
