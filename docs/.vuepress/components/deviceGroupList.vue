@@ -86,12 +86,12 @@ export default {
                 {
                     label: "macOS Devices",
                     types: [
+                        "MacBook",
                         "MacBook Air",
                         "MacBook Pro",
                         "iMac",
                         "Mac mini",
                         "Mac Studio",
-                        "MacBook",
                         "Display"
                     ]
                 },
