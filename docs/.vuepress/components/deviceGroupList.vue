@@ -101,12 +101,12 @@ export default {
                         "Apple TV",
                         "HomePod",
                         "AirPods",
+                        "Display",
                         "Apple Pencil",
                         "AirTag",
                         "Mouse",
                         "Trackpad",
                         "Keyboard",
-                        "Display",
                         "Remote",
                         "Power"
                     ]
