@@ -82,7 +82,7 @@ export default {
 
       for (let device of deviceMap) {
         const group = device.group
-        const identArr = group.identifier
+        const identArr = group.key
 
         let pass = true
         if (identArr.length > 1) for (const ident of identArr) if (!Object.keys(deviceObj).includes(ident)) {
@@ -93,8 +93,8 @@ export default {
         if (!pass) continue
         
         device.name = group.name
-        device.identifier = group.name
-        device.children = group.identifier.map(x => {
+        device.key = group.name
+        device.children = group.key.map(x => {
           let obj = { ...deviceObj[x] }
           delete obj.group
           return obj
