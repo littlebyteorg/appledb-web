@@ -39,6 +39,8 @@ iosArr = iosArr.map(function(x) {
   if (x.osStr == 'iPhoneOS' || x.osStr == 'iPadOS') x.osType = 'iOS'
   else if (x.osStr == 'Apple TV Software') x.osType = 'tvOS'
 
+  if (!x.deviceMap) x.deviceMap = []
+
   if (!x.uniqueBuild) x.uniqueBuild = x.build/*
   return x
 })
