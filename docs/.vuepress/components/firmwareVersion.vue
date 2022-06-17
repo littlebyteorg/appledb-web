@@ -82,6 +82,7 @@ export default {
 
       for (let device of deviceMap) {
         const group = device.group
+        if (!group) continue
         const identArr = group.key
 
         let pass = true
