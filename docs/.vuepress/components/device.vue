@@ -371,7 +371,7 @@ export default {
                         url: [
                             this.devicePath,
                             'identifier',
-                            x.key
+                            x.key.replace(/ /g,'-')
                         ].join('/') + '.html'
                     }
                 })
