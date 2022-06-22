@@ -31,6 +31,7 @@ export default {
                 {
                     osStr: 'audioOS',
                     image: 'audio',
+                    startsWith: '16',
                     dark: false
                 },
                 {
