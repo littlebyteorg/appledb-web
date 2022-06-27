@@ -20,6 +20,6 @@ heroFilter: 0.3
 
 Created by [emiyl](https://twitter.com/emiyl0). Please contribute to the database at [github.com/emiyl/appledb](https://github.com/emiyl/appledb).
 
-Splash images created by [23Aaron](https://twitter.com/23Aaron_).
+Splash images created by [23 Aaron](https://twitter.com/23Aaron_).
 
 AppleDB is not affiliated with Apple Inc.
