@@ -438,12 +438,17 @@ export default {
 
             const homeElement = document.getElementsByClassName('home')[0]
             var totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
-            var flexImgWidth = 0
+            let flexImgWidth = 0
 
-            for (let i = 0; i < flexImgs.length; i++) {
+            const flexImgsLength = flexImgs.length
+            let counter = 0
+
+            for (let i = 0; i < flexImgsLength; i++) {
                 flexImgs[i].onload = () => {
+                    if (counter >= flexImgsLength) return
                     flexImgWidth += flexImgs[i].clientWidth
                     this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
+                    counter++
                 }
             }
 
