@@ -39,6 +39,7 @@
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
 import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
+import deviceTypeGroups from '@temp/deviceTypeGroups'
 
 String.prototype.fdn = function() {
   return this
@@ -71,65 +72,7 @@ export default {
         },
         groupObj() {
             var presetTypeArr = []
-            var presetOrder = [
-                {
-                    label: "iOS Devices",
-                    types: [
-                        "iPhone",
-                        "iPad",
-                        "iPad Air",
-                        "iPad Pro",
-                        "iPad mini",
-                        "iPod touch"
-                    ]
-                },
-                {
-                    label: "macOS Devices",
-                    types: [
-                        "MacBook Air",
-                        "MacBook Pro",
-                        "MacBook",
-                        "iMac",
-                        "Mac mini",
-                        "Mac Studio"
-                    ]
-                },
-                {
-                    label: "Home and Accessories",
-                    types: [
-                        "Apple Watch",
-                        "Apple TV",
-                        "HomePod",
-                        "AirPods",
-                        "Display",
-                        "Apple Pencil",
-                        "AirTag",
-                        "Mouse",
-                        "Trackpad",
-                        "Keyboard",
-                        "Remote",
-                        "Power"
-                    ]
-                },
-                {
-                    label: "iPods",
-                    types: [
-                        'iPod touch',
-                        'iPod nano',
-                        'iPod shuffle',
-                        'iPod mini',
-                        'iPod'
-                    ]
-                },
-                {
-                    label: "Beats",
-                    types: [
-                        "Beats Earbuds",
-                        "Beats Headphones",
-                        "Beats Speakers"
-                    ]
-                }
-            ].map(x => {
+            var presetOrder = deviceTypeGroups.map(x => {
                 x.types = x.types.filter(y => this.typeArr.includes(y))
                 for (const t of x.types) presetTypeArr.push(t)
                 return x
