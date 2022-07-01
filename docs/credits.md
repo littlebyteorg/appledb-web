@@ -79,6 +79,7 @@ If I forgot you here, contact me and I'll add your name.
   + amber
   + Siguza
   + DhinakG
+  + pierre_blzqz
 </pre>
 
 AppleDB is not affiliated with Apple Inc.
