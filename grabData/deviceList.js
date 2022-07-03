@@ -68,9 +68,10 @@ for (const i of folderArr) {
 for (const file in deviceFiles) {
   const obj = require('..' + path.sep + deviceFiles[file])
 
+  obj.name = obj.name || obj.identifier || obj.key
+  obj.key = obj.key || obj.identifier || obj.name
+
   if (obj.board && !Array.isArray(obj.board)) obj.board = [obj.board]
-  if (!obj.identifier) obj.identifier = obj.name
-  if (!obj.key) obj.key = obj.identifier
   
   let imgCount = 1
   let imgDark = false
