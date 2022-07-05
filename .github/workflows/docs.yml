@@ -19,15 +19,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          # choose node.js version to use
           node-version: '16'
 
-      # install dependencies if the cache did not hit
-      - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
+      - name: Install Yarn
+        run: npm install --global yarn
 
-      # run build script
+      - name: Install dependencies
+        run: yarn
+
       - name: Build VuePress site
         run: yarn ghbuild
 
