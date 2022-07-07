@@ -1,5 +1,5 @@
 <template>
-    <template v-for="version in latestVersion" :key="version"><template v-for="url in [`/${version.osStr}/${version.build}.html`]" :key="url"><template v-for="props in [properties.filter(x => x.osStr == version.osStr && (x.startsWith ? version.version.startsWith(x.startsWith) : true))[0]]" :key="props">
+    <template v-for="version in latestVersion" :key="version"><template v-for="url in [`/firmware.html?os=${version.osStr}&build=${version.build}`]" :key="url"><template v-for="props in [properties.filter(x => x.osStr == version.osStr && (x.startsWith ? version.version.startsWith(x.startsWith) : true))[0]]" :key="props">
         <div class="releasefw--flexContainer">
             <div class="releasefw--flexImg"><a :href="url">
                 <img :src="`/assets/images@lowres/${props.image}_firmware_release${isDarkMode && props.dark ? '_dark' : ''}.png`" style="height: 7em; padding: 2em; padding-right: 3em;">
