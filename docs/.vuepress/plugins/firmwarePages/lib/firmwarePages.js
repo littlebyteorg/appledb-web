@@ -16,7 +16,7 @@ pageList.push({
     }
 })
   
-for (const i of iosList) {
+/*for (const i of iosList) {
     const url = '/' + [i.osStr.replace(/ /g, '-'),i.uniqueBuild].join('/') + '.html'
     pageList.push({
         path: url,
@@ -31,6 +31,6 @@ for (const i of iosList) {
         contributors: false,
         }
     })
-}
+}*/
 
 module.exports = pageList
