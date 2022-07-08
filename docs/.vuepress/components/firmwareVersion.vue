@@ -234,11 +234,15 @@ export default {
     jailbreakArr() {
       const build = this.currentBuild.uniqueBuild
       return json.jailbreak.filter(function(jb) {
-        for (var c in jb.compatibility) {
-          if (jb.compatibility[c].firmwares.includes(build))
-            return 1
+        try {
+          for (var c in jb.compatibility) {
+            if (jb.compatibility[c].firmwares.includes(build))
+              return 1
+          }
+          return 0
+        } catch {
+          return 0
         }
-        return 0
       })
     },
     jbDevArr() {

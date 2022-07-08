@@ -1,13 +1,5 @@
 const iosList = require('../../../../../grabData/ios')
-const deviceList = require('../../../../../grabData/deviceList')
-const deviceGroups = require('../../../../../grabData/deviceGroups')
 const jbList = require('../../../../../grabData/jailbreak')
-const bigJson = {
-  ios: iosList,
-  jailbreak: jbList,
-  device: deviceList,
-  groups: deviceGroups
-}
 
 const hasJbArr = [
     'iOS',
