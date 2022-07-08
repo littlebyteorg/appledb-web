@@ -1,4 +1,4 @@
-const getDevicePage = require('./getDevicePage')
+const getDevicePage = require('../../writeTemp/lib/getDevicePage')
 const deviceList = require('../../../../../grabData/deviceList')
 const deviceGroups = require('../../../../../grabData/deviceGroups')
 const iosList = require('../../../../../grabData/ios')
@@ -12,7 +12,7 @@ for (const d of Object.keys(deviceList).map(x => deviceList[x]).filter(x => {
     x.name === "Beats Solo³ Wireless Mickey's 90th Anniversary Edition"
   )
 })) {
-  const urlPart = require('./formatDeviceName')(d.key)
+  const urlPart = require('../../writeTemp/lib/formatDeviceName')(d.key)
   const url = [devicePath, 'identifier', urlPart].join('/') + '.html'
   pageList.push(
     getDevicePage({
@@ -25,7 +25,7 @@ for (const d of Object.keys(deviceList).map(x => deviceList[x]).filter(x => {
 }
 
 for (const g of deviceGroups) {
-  const urlPart = require('./formatDeviceName')(g.name)
+  const urlPart = require('../../writeTemp/lib/formatDeviceName')(g.name)
   const url = [devicePath, urlPart].join('/') + '.html'
   pageList.push(
     getDevicePage({

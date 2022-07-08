@@ -1,8 +1,8 @@
 {
-  "name": "vuepress-new-dynamic-pages",
+  "name": "write-temp",
   "version": "1.0.0",
   "keywords": [
-    "vuepress-new-dynamic-pages"
+    "write-temp"
   ],
   "main": "lib/index.js",
   "files": [

@@ -33,7 +33,7 @@ pageList.push({
 })
   
 Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
-    const urlPart = require('./formatDeviceName')(t)
+    const urlPart = require('../../writeTemp/lib/formatDeviceName')(t)
     const url = `/device-selection/${urlPart}.html`
     pageList.push({
         path: url,

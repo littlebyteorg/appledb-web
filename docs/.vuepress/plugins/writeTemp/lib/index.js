@@ -12,22 +12,12 @@ const bigJson = {
   groups: deviceGroups
 }
 
-var pageList = [
-  ...require('./devicePages'),
-  ...require('./firmwarePages'),
-  ...require('./jailbreakPages'),
-  ...require('./deviceListPages')
-]
-
 const latestVersions = require('./latestVersions')
 const deviceTypeGroups = require('../../../../../appledb/appledb-web/deviceTypeGroups.json')
 
 module.exports = function() {
   return {
-    name: 'vuepress-new-dynamic-pages',
-    async onInitialized(app) {
-      for (const p of pageList) app.pages.push(await createPage(app, p))
-    },
+    name: 'write-temp',
     onPrepared: async (app) => {
       await app.writeTemp('main.js', `export default ${JSON.stringify(bigJson)}`)
       await app.writeTemp('latestVersion.js', `export default ${JSON.stringify(latestVersions)}`)

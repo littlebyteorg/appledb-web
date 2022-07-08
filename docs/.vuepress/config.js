@@ -45,8 +45,12 @@ module.exports = {
       registerComponentsPlugin({
         componentsDir: path.resolve(__dirname, './components'),
       }),
-      require('./plugins/newDynamicPages/lib/'),
-      require('./plugins/redirectPlugin/lib')
+      require('./plugins/deviceListPages/lib'),
+      require('./plugins/devicePages/lib'),
+      require('./plugins/firmwarePages/lib'),
+      require('./plugins/jailbreakPages/lib'),
+      require('./plugins/redirectPlugin/lib'),
+      require('./plugins/writeTemp/lib/')
     ],
 
     shouldPrefetch: false,
