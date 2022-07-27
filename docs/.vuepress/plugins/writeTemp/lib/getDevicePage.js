@@ -68,7 +68,8 @@ module.exports = function(args) {
                 "Mac Pro",
                 "Mac mini",
                 "Mac Studio",
-                "Developer Transition Kit"
+                "Developer Transition Kit",
+                "Virtual Machine"
             ]
         }
     ]
