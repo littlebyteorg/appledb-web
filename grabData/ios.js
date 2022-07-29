@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const dev = require('./deviceList')
 const group = require('./deviceGroups')
+const { create } = require('domain')
 const devicePath = '/device/identifier/'
 const p = './appledb/iosFiles'
 
@@ -34,7 +35,24 @@ var iosArr = [];
 
 for (const file in iosFiles) iosArr.push(require('..' + path.sep + iosFiles[file]));
 
-iosArr = iosArr.map(function(x) {
+let createDuplicateEntriesArray = []
+
+for (let i of iosArr) {
+  if (!i.hasOwnProperty('createDuplicateEntries')) continue
+  for (const entry of i.createDuplicateEntries) {
+    let ver = { ...i }
+    delete ver.createDuplicateEntries
+    for (const property in entry) {
+      ver[property] = entry[property]
+    }
+    createDuplicateEntriesArray.push(ver)
+  }
+  delete i.createDuplicateEntries
+}
+
+iosArr = iosArr
+.concat(createDuplicateEntriesArray)
+.map(function(x) {
   x.osType = x.osStr
   if (x.osStr == 'iPhoneOS' || x.osStr == 'iPadOS') x.osType = 'iOS'
   else if (x.osStr == 'Apple TV Software') x.osType = 'tvOS'
