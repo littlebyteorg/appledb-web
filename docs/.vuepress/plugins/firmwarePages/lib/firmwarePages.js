@@ -21,14 +21,14 @@ pageList.push({
     pageList.push({
         path: url,
         frontmatter: {
-        title: `${i.osStr} ${i.version} ${(i.build != i.version) ? `(${i.build})` : ''}`,
-        description: `Information for ${i.osStr} version ${i.version}`,
-        chartType: 'firmwareVersion',
-        build: i,
-        sidebar: false,
-        editLink: false,
-        lastUpdated: false,
-        contributors: false,
+            title: `${i.osStr} ${i.version} ${(i.build != i.version) ? `(${i.build})` : ''}`,
+            description: `Information for ${i.osStr} version ${i.version}`,
+            chartType: 'firmwareVersion',
+            build: i,
+            sidebar: false,
+            editLink: false,
+            lastUpdated: false,
+            contributors: false,
         }
     })
 }*/
