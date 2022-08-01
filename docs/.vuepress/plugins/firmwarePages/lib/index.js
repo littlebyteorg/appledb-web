@@ -2,7 +2,7 @@ const { createPage } = require('@vuepress/core')
 
 var pageList = require('./firmwarePages')
 
-const osArr = require('../../../../../grabData/ios')
+/*const osArr = require('../../../../../grabData/ios')
 osArr.forEach(os => {
   pageList.push({
     path: `/test/firmware/${os.osStr}/${os.uniqueBuild}.html`,
@@ -16,7 +16,7 @@ osArr.forEach(os => {
     },
     content: `${os.osStr} ${os.version} (${os.build})`,
   })
-})
+})*/
 
 module.exports = function() {
   return {
