@@ -8,7 +8,8 @@ const hasJbArr = [
     'watchOS',
     'iPhoneOS',
     'iPadOS',
-    'Apple TV Software'
+    'Apple TV Software',
+    'bridgeOS'
 ]
 
 module.exports = function(args) {
