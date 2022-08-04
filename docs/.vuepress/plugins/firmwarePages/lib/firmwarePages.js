@@ -80,7 +80,7 @@ function getJailbreakArr(uniqueBuild) {
     return jailbreakList.filter(function(jb) {
       try {
         for (var c in jb.compatibility) {
-          if (jb.compatibility[c].firmwares.includes(build))
+          if (jb.compatibility[c].firmwares.includes(uniqueBuild))
             return 1
         }
         return 0
@@ -97,10 +97,8 @@ function getJbDevArr(jailbreakArr, devArr, uniqueBuild) {
       var retDevArr = []
       for (var c in compat) {
         if (!compat[c].firmwares.includes(uniqueBuild)) continue
-        for (var d in compat[c].devices) {
-          var device = compat[c].devices[d]
-          if (Object.keys(devArr).includes(device)) continue
-          if (!Object.keys(this.currentBuild.devices).includes(device)) continue
+        for (var device of compat[c].devices) {
+          if (!Object.keys(devArr).includes(device)) continue
           device = devArr[Object.keys(devArr).filter(d => d == device)[0]]
           retDevArr.push(device)
         }
