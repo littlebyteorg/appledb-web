@@ -1,24 +1,24 @@
 <template>
   <h2 v-html="infoHeader"/>
   <p>
-    <div v-html="verStr.format({ verNum: [frontmatter.build.osStr,frontmatter.build.version].join(' ') })"/>
-    <div v-if="frontmatter.build.build != frontmatter.build.version" v-html="buildStr.format({ buildId: frontmatter.build.build })"/>
-    <div v-if="getReleasedDate != -1" v-html="releasedStr.format({releasedTime: getReleasedDate})"/>
+    <div v-html="verStr.format({ verNum: [fm.build.osStr,fm.build.version].join(' ') })"/>
+    <div v-if="fm.build.build != fm.build.version" v-html="buildStr.format({ buildId: fm.build.build })"/>
+    <div v-if="fm.released != -1" v-html="releasedStr.format({releasedTime: fm.released})"/>
     <div
       v-if="
-        devGroupArr &&
-        devGroupArr[0] &&
-        devGroupArr[0].devices[0].ipsw &&
-        Array.from(new Set(devGroupArr.map(x => x.devices).flat().map(x => x.ipsw))).length == 1 &&
-        devGroupArr[0].devices[0].ipsw != 'none'
+        fm.devGroupArr &&
+        fm.devGroupArr[0] &&
+        fm.devGroupArr[0].devices[0].ipsw &&
+        Array.from(new Set(fm.devGroupArr.map(x => x.devices).flat().map(x => x.ipsw))).length == 1 &&
+        fm.devGroupArr[0].devices[0].ipsw != 'none'
       "
-      v-html="downloadInfoStr.format({ ipsw: devGroupArr[0].devices[0].ipsw, ipswStr: [devGroupArr[0].devices[0].ipsw.split('/')[devGroupArr[0].devices[0].ipsw.split('/').length-1]] })"
+      v-html="downloadInfoStr.format({ ipsw: fm.devGroupArr[0].devices[0].ipsw, ipswStr: [fm.devGroupArr[0].devices[0].ipsw.split('/')[fm.devGroupArr[0].devices[0].ipsw.split('/').length-1]] })"
     />
   </p>
 
-  <h2 v-if="frontmatter.build.relatedFirmwares && frontmatter.build.relatedFirmwares.length">{{relatedFirmwaresHeader}}</h2>
+  <h2 v-if="fm.build.relatedFirmwares && fm.build.relatedFirmwares.length">{{relatedFirmwaresHeader}}</h2>
   <ul>
-    <li v-for="fw in frontmatter.build.relatedFirmwares" :key="fw">
+    <li v-for="fw in fm.build.relatedFirmwares" :key="fw">
       <router-link :to="fw.path">
         {{fw.osStr}} {{fw.version}} 
         <span v-if="fw.duplicateVersion">({{ fw.build }})</span>
@@ -26,15 +26,15 @@
     </li>
   </ul>
 
-  <h2 v-if="jailbreakArr.length > 0" v-html="jailbreaksHeader"/>
+  <h2 v-if="fm.jailbreakArr.length > 0" v-html="jailbreaksHeader"/>
   <ul>
-    <li v-for="(jb, index) in jailbreakArr" :key="jb" :id="`liJb-${jb.name.replace(/ /g, '-')}`" style="list-style-type: none;" class="showOnHover">
+    <li v-for="(jb, index) in fm.jailbreakArr" :key="jb" :id="`liJb-${jb.name.replace(/ /g, '-')}`" style="list-style-type: none;" class="showOnHover">
       <input type="checkbox" :id="`toggleListJb-${jb.name.replace(/ /g, '-')}`">
       <i class="fas fa-chevron-right chevron chevronPoint clickToHide"/>
       <i class="fas fa-chevron-down chevron chevronPoint clickToShow displayNone"/>
       <router-link v-html="jb.name" :to="`${jailbreakPath}${jb.name}.html`"/>
       
-      <template v-if="jbDevArr[index].length > 0">
+      <template v-if="fm.jbDevArr[index].length > 0">
         <div class="hoverElement" style="display: inline;">
           <i class="fas fa-circle ml-" style="font-size: 0.3rem; opacity: 0.5; vertical-align: middle; margin-left: 2em; margin-right: 2em;"/>
           <label :for="`toggleListJb-${jb.name.replace(/ /g, '-')}`"><a style="cursor: pointer;" :id="`toggleShowJb-${jb.name.replace(/ /g, '-')}`" v-html="showDevStr" v-on:click="toggleShowJb(jb.name.replace(/ /g, '-'))"/></label>
@@ -42,7 +42,7 @@
         <div class="custom-container tip clickToShow">
           <p>
             <ul>
-              <li class="showOnHover" style="list-style-type: disc" v-for="d in jbDevArr[index]" :key="d">
+              <li class="showOnHover" style="list-style-type: disc" v-for="d in fm.jbDevArr[index]" :key="d">
                 <router-link :to="d.url" v-html="d.name"/>
               </li>
             </ul>
@@ -52,14 +52,20 @@
     </li>
   </ul>
 
-  <div v-if="devGroupArr && devGroupArr.length > 0">
+  <div v-if="fm.devGroupArr && fm.devGroupArr.length > 0">
     <h2 v-html="devicesHeader"/>
-    <ul :style="(devGroupArr.filter(x=>x.devices.length > 1).length > 0) ? 'list-style-type: none' : ''">
-      <li v-for="g in devGroupArr" :key="g" :id="`liDev-${g.name.replace(/ /g, '-')}`" class="showOnHover">
-        <template v-if="devGroupArr.filter(x=>x.devices.length > 1).length > 0">
+    <ul :style="(fm.devGroupArr.filter(x=>x.devices.length > 1).length > 0) ? 'list-style-type: none' : ''">
+      <li v-for="g in fm.devGroupArr" :key="g" :id="`liDev-${g.name.replace(/ /g, '-')}`" class="showOnHover">
+        <template v-if="
+          fm.devGroupArr.filter(x=>x.devices.length > 1).length > 0 &&
+          g.devices.length > 1
+        ">
           <input type="checkbox" :id="`toggleListDev-${g.name.replace(/ /g, '-')}`">
           <i class="clickToHide fas fa-chevron-right chevron chevronPoint"/>
           <i class="clickToShow fas fa-chevron-down chevron chevronPoint"/>
+        </template>
+        <template v-else>
+          <i class="fas fa-circle circle chevronPoint"/>
         </template>
 
         <router-link :to="g.url" v-html="g.name"/>
@@ -99,7 +105,6 @@
 
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
-import json from '@temp/main'
 
 String.prototype.format = function(vars) {
   let temp = this;
@@ -133,7 +138,7 @@ export default {
       showDevStr: 'Show Devices',
       hideDevStr: 'Hide Devices',
       
-      frontmatter: usePageFrontmatter(),
+      fm: usePageFrontmatter(),
     }
   },
   methods: {
@@ -163,110 +168,6 @@ export default {
       else toggleInner = this.showDevStr
       document.getElementById(toggleID).innerHTML = toggleInner
     },
-  },
-  computed: {
-    currentBuild() {
-      return this.frontmatter.build
-    },
-    getReleasedDate() {
-      if (!this.currentBuild.hasOwnProperty('released')) return -1
-
-      const releasedArr = this.currentBuild.released.split('-')
-      const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
-      const released = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(this.currentBuild.released))
-      return released
-    },
-    devGroupArr() {
-      const deviceArr = this.currentBuild.deviceMap
-      const path = this.devicePath
-      const deviceList = json.device
-
-      var groupArr = []
-      for (const i in deviceArr) {
-        if (!groupArr.includes(JSON.stringify(deviceArr[i].group)))
-          groupArr.push(JSON.stringify(deviceArr[i].group))
-      }
-      if (!groupArr || !groupArr[0]) return null
-      groupArr = groupArr.filter(x => x).map(x => JSON.parse(x))
-      
-      groupArr = groupArr.map(function(g) {
-        const devices = g.devices.map(function(d) {
-          var ipsw
-          try { ipsw = deviceArr[d].ipsw.url } catch { ipsw = null; }
-          
-          return {
-            name: deviceList[d].name,
-            url: `${path + d.replace(/ /g, '-')}`,
-            ipsw: ipsw,
-          }
-        })
-
-        var type = g.type
-        if (g.hasOwnProperty('subtype') && g.subtype != g.type) type += ' ' + g.subtype
-        
-        return {
-          name: g.name,
-          url: `${path + g.name.replace(/ /g, '-')}`,
-          devices: devices,
-          order: g.order,
-          type: type,
-        }
-      })
- 
-      return groupArr.sort(function(a,b) {
-        if (a.type == 'iPhone' && b.type != 'iPhone') return 1
-        if (a.type != 'iPhone' && b.type == 'iPhone') return -1
-
-        function alphaSort(x, y, attr) {
-          if (x[attr] < y[attr]) return -1
-          if (x[attr] > y[attr]) return 1
-          return 0
-        }
-        const sortArr = [
-          'type',
-          'order',
-          'name'
-        ]
-        for (var i of sortArr) if (alphaSort(a, b, i) != 0) return alphaSort(a, b, i)
-        return 0
-      }).reverse()
-    },
-    jailbreakArr() {
-      const build = this.currentBuild.uniqueBuild
-      return json.jailbreak.filter(function(jb) {
-        try {
-          for (var c in jb.compatibility) {
-            if (jb.compatibility[c].firmwares.includes(build))
-              return 1
-          }
-          return 0
-        } catch {
-          return 0
-        }
-      })
-    },
-    jbDevArr() {
-      const jailbreakArr = this.jailbreakArr
-      const devArr = this.currentBuild.devices
-      const build = this.currentBuild.uniqueBuild
-      var retArr = []
-      for (var jb in jailbreakArr) {
-        var compat = jailbreakArr[jb].compatibility
-        var retDevArr = []
-        for (var c in compat) {
-          if (!compat[c].firmwares.includes(build)) continue
-          for (var d in compat[c].devices) {
-            var device = compat[c].devices[d]
-            if (Object.keys(devArr).includes(device)) continue
-            if (!Object.keys(this.currentBuild.devices).includes(device)) continue
-            device = devArr[Object.keys(devArr).filter(d => d == device)[0]]
-            retDevArr.push(device)
-          }
-        }
-        retArr.push(retDevArr)
-      }
-      return retArr
-    },
   }
 }
 </script>
@@ -281,6 +182,12 @@ export default {
   padding-right: 0.23em;
   margin-top: 0.8em;
   font-size: 0.7em;
+}
+
+.circle {
+  margin-left: -2.6em;
+  margin-top: 1.7em;
+  font-size: 0.4em;
 }
 
 .showOnHover .hoverElement {
