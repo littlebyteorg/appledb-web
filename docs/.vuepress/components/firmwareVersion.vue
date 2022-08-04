@@ -186,7 +186,7 @@ export default {
 
 .circle {
   margin-left: -2.6em;
-  margin-top: 1.7em;
+  margin-top: 1.8em;
   font-size: 0.4em;
 }
 
