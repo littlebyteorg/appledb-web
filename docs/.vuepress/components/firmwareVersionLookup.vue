@@ -1,5 +1,6 @@
 <template>
-  <template v-if="infoArr.length > 0">
+  <p>Redirecting...</p>
+  <!--<template v-if="infoArr.length > 0">
     <h2>{{ infoHead }}</h2>
     <ul style="padding-left: 0; list-style-type: none;">
       <li v-for="i in infoArr" :key="i">{{ i }}</li>
@@ -10,7 +11,7 @@
     <li v-for="d in deviceObj" :key="d" class="showOnHover">
       <router-link :to="d.url">{{ d.name }}</router-link> <code v-if="d.name != d.identifier" class="hoverElement">{{ d.identifier }}</code>
     </li>
-  </ul>
+  </ul>-->
 
     <p>AppleDB is not affiliated with Apple Inc.</p>
 </template>
@@ -50,6 +51,13 @@ export default {
       const osStr = query.os
       const build = query.build
 
+      const retObj = {
+        osStr: osStr,
+        uniqueBuild: build
+      }
+
+      return retObj
+
       const ver = iosList.filter(x => x.osStr == osStr && x.uniqueBuild == build)[0]
       if (ver) return ver
 
@@ -59,7 +67,10 @@ export default {
   mounted() {
     const versionObject = this.getQuery()
     if (versionObject) {
-      const title = `${versionObject.osStr} ${versionObject.version} (${versionObject.build})`
+      let url = "/" + versionObject.osStr + "/" + versionObject.uniqueBuild
+      window.location.href = url;
+
+      /*const title = `${versionObject.osStr} ${versionObject.version} (${versionObject.build})`
       document.title = `${title} | AppleDB`
       document.getElementById("pageTitle").innerHTML = title
 
@@ -110,7 +121,9 @@ export default {
           ))
       )
 
-      this.deviceObj = deviceMap
+      this.deviceObj = deviceMap */
+    } else {
+      window.location.href = "/firmwares.html"
     }
   }
 }

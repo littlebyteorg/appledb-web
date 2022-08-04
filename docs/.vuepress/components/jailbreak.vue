@@ -56,7 +56,6 @@ export default {
   data() {
     return {
       devicePath: '/device/',
-      firmwarePath: '/firmware/',
 
       infoHeader: 'Info',
       websiteStr: 'Website: ${websiteLink}',
