@@ -35,7 +35,7 @@
         <i class="fas fa-chevron-down chevron chevronPoint clickToShow displayNone"/>
       </template>
       <template v-else>
-        <i class="fas fa-circle circle chevronPoint"/>
+        <i class="fas fa-circle circle"/>
       </template>
       <router-link v-html="jb.name" :to="`${jailbreakPath}${jb.name}.html`"/>
       
@@ -70,7 +70,7 @@
           <i class="clickToShow fas fa-chevron-down chevron chevronPoint"/>
         </template>
         <template v-else>
-          <i class="fas fa-circle circle chevronPoint"/>
+          <i class="fas fa-circle circle"/>
         </template>
 
         <router-link :to="g.url" v-html="g.name"/>
@@ -190,6 +190,7 @@ export default {
 }
 
 .circle {
+  float: left;
   margin-left: -2.6em;
   margin-top: 1.8em;
   font-size: 0.4em;
