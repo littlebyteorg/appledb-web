@@ -29,9 +29,14 @@
   <h2 v-if="fm.jailbreakArr.length > 0" v-html="jailbreaksHeader"/>
   <ul>
     <li v-for="(jb, index) in fm.jailbreakArr" :key="jb" :id="`liJb-${jb.name.replace(/ /g, '-')}`" style="list-style-type: none;" class="showOnHover">
-      <input type="checkbox" :id="`toggleListJb-${jb.name.replace(/ /g, '-')}`">
-      <i class="fas fa-chevron-right chevron chevronPoint clickToHide"/>
-      <i class="fas fa-chevron-down chevron chevronPoint clickToShow displayNone"/>
+      <template v-if="fm.jbDevArr[index].length > 0">
+        <input type="checkbox" :id="`toggleListJb-${jb.name.replace(/ /g, '-')}`">
+        <i class="fas fa-chevron-right chevron chevronPoint clickToHide"/>
+        <i class="fas fa-chevron-down chevron chevronPoint clickToShow displayNone"/>
+      </template>
+      <template v-else>
+        <i class="fas fa-circle circle chevronPoint"/>
+      </template>
       <router-link v-html="jb.name" :to="`${jailbreakPath}${jb.name}.html`"/>
       
       <template v-if="fm.jbDevArr[index].length > 0">
