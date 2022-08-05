@@ -65,6 +65,7 @@ module.exports = function(args) {
                 "MacBook Air",
                 "MacBook Pro",
                 "iMac",
+                "iMac Pro",
                 "Mac Pro",
                 "Mac mini",
                 "Mac Studio",
