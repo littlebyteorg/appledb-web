@@ -148,7 +148,7 @@ module.exports = function(args) {
             version: i.version,
             build: i.build,
             duplicateVersion: duplicateVersionArr.includes([i.osStr,i.version].join(' ')),
-            url: `/${i.osStr}/${i.uniqueBuild}`,
+            url: `/${i.osStr.replace(/ /g,'-')}/${i.uniqueBuild}`,
             released: i.released,
             beta: i.beta,
             releasedStr: released,

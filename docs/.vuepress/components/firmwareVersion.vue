@@ -16,16 +16,6 @@
     />
   </ul>
 
-  <h2 v-if="fm.build.relatedFirmwares && fm.build.relatedFirmwares.length">{{relatedFirmwaresHeader}}</h2>
-  <ul>
-    <li v-for="fw in fm.build.relatedFirmwares" :key="fw">
-      <router-link :to="fw.path">
-        {{fw.osStr}} {{fw.version}} 
-        <span v-if="fw.duplicateVersion">({{ fw.build }})</span>
-      </router-link>
-    </li>
-  </ul>
-
   <h2 v-if="fm.jailbreakArr.length > 0" v-html="jailbreaksHeader"/>
   <ul>
     <li v-for="(jb, index) in fm.jailbreakArr" :key="jb" :id="`liJb-${jb.name.replace(/ /g, '-')}`" style="list-style-type: none;" class="showOnHover">
