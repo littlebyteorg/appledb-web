@@ -18,6 +18,8 @@ for (const bool of [true,false]) {
   }
 }
 
+latestVersionArr.push({ osStr: 'iOS', beta: false, startsWith: '12'})
+
 const latestVersions = latestVersionArr
 .map(x => iosList.filter(y => {
   const osStrCheck = y.hasOwnProperty('osStr') ? y.osStr == x.osStr : 1
