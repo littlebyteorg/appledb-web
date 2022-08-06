@@ -1,10 +1,10 @@
 <template>
   <h2 v-html="infoHeader"/>
-  <p>
-    <div v-html="verStr.format({ verNum: [fm.build.osStr,fm.build.version].join(' ') })"/>
-    <div v-if="fm.build.build != fm.build.version" v-html="buildStr.format({ buildId: fm.build.build })"/>
-    <div v-if="fm.released != -1" v-html="releasedStr.format({releasedTime: fm.released})"/>
-    <div
+  <ul style="list-style-type: none; padding-left: 0;">
+    <li v-html="verStr.format({ verNum: [fm.build.osStr,fm.build.version].join(' ') })"/>
+    <li v-if="fm.build.build != fm.build.version" v-html="buildStr.format({ buildId: fm.build.build })"/>
+    <li v-if="fm.released != -1" v-html="releasedStr.format({releasedTime: fm.released})"/>
+    <li
       v-if="
         fm.devGroupArr &&
         fm.devGroupArr[0] &&
@@ -14,7 +14,7 @@
       "
       v-html="downloadInfoStr.format({ ipsw: fm.devGroupArr[0].devices[0].ipsw, ipswStr: [fm.devGroupArr[0].devices[0].ipsw.split('/')[fm.devGroupArr[0].devices[0].ipsw.split('/').length-1]] })"
     />
-  </p>
+  </ul>
 
   <h2 v-if="fm.build.relatedFirmwares && fm.build.relatedFirmwares.length">{{relatedFirmwaresHeader}}</h2>
   <ul>
