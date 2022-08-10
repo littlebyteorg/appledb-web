@@ -12,9 +12,10 @@
   "scripts": {
     "dev": "vuepress dev docs",
     "build": "vuepress build docs",
-    "ghbuild": "NODE_OPTIONS=--max_old_space_size=16384 vuepress build docs --debug"
+    "ghbuild": "NODE_OPTIONS=--max_old_space_size=16384 vuepress build docs && node generatePageData/generatePageStubs.js"
   },
   "dependencies": {
+    "node-html-parser": "^5.4.1",
     "object-hash": "^3.0.0"
   }
 }
