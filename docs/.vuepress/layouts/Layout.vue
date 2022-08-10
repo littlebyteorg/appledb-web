@@ -171,4 +171,83 @@ html.dark {
 	margin: 1rem 0;
 	border-radius: 8px;
 }
+
+@media (min-width: 720px) {
+    .navbar-dropdown-wrapper .navbar-dropdown {
+        display: block !important;
+        border-width: 0px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.08);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-4px);
+        transition: visibility 0s, opacity .25s, visibility .25s, transform .25s;
+    }
+
+    html.dark {
+        .navbar-dropdown-wrapper .navbar-dropdown {
+            border-width: 1px;
+        }
+    }
+
+    .navbar-item .fab {
+        font-size: 1.25rem;
+        vertical-align: bottom;
+        padding-bottom: 1px;
+    }
+
+    .navbar-dropdown-wrapper .fas {
+        font-size: 1.25rem;
+        vertical-align: bottom;
+        padding-bottom: 1px;
+    }
+}
+
+@media (max-width: 629px) {
+    .navbar-item .icon {
+        visibility: hidden;
+        font-family: var(--c-font-family);
+        font-size: 1px;
+        letter-spacing: -1px;
+    }
+
+    .navbar-item i::after { 
+        visibility: visible;
+        font-size: 1rem;
+        letter-spacing: normal;
+    }
+
+    .navbar-item .fa-globe::after { 
+        content: "Language";
+        padding-left: .5em;
+    }
+
+    .navbar-item .fa-github::after { 
+        content: "GitHub";
+        padding-left: .5em;
+    }
+}
+
+.navbar-dropdown-wrapper:hover .navbar-dropdown, .navbar-dropdown-wrapper.open .navbar-dropdown {
+    opacity: 1 !important;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.navbar-item, .navbar-item a, .navbar-item .title {
+    transition: color .25s;
+}
+
+.navbar-item:hover .title, .navbar-item.router-link-active .title {
+    border-bottom: 0px;
+    color: var(--c-text-lightest);  
+}
+
+.navbar-item>a:hover, .navbar-item>a.router-link-active {
+    border-bottom: 0px;
+    color: var(--c-text-accent);  
+}
+
+.navbar-item .external-link-icon {
+    display: none;
+}
 </style>
