@@ -20,7 +20,7 @@ for (const os of osArr) {
     parsedPage.querySelector('h1').innerHTML = `${os.osStr} ${os.version} ${(os.build != os.version) ? `(${os.build})` : ''}`
     parsedPage.querySelector('blockquote').innerHTML = 'Retrieving data...'
 
-    fs.writeFile(`./docs/.vuepress/dist/firmware/${os.osStr}/${os.uniqueBuild}.html`, parsedPage.toString(), (err) => {
+    fs.writeFile(`./docs/.vuepress/dist/firmware/${os.osStr.replace(/ /g,'-')}/${os.uniqueBuild}.html`, parsedPage.toString(), (err) => {
         if (err) console.log(err)
     })
 }
