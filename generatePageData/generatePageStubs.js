@@ -1,16 +1,22 @@
 const fs = require('fs')
 const { parse } = require('node-html-parser')
-
-let page = parse(fs.readFileSync('./docs/.vuepress/dist/404.html', 'utf8'))
-
-page.querySelectorAll('meta').find(x => x.rawAttrs.includes('description')).rawAttrs = `name="description" content="iOS 14.3 18C66"`
-page.querySelector('title').innerHTML = 'Title'
+const { appInit } = require('vuepress')
+const osArr = require('./grabData/firmware')
 
 function mkdirSync(dir) { if (!fs.existsSync(dir)) { fs.mkdirSync(dir) } }
 
-[
-    './docs/.vuepress/dist/firmware',
-    './docs/.vuepress/dist/firmware/iOS'
-].map(x => mkdirSync(x))
+mkdirSync('./docs/.vuepress/dist/firmware')
+Array.from(new Set(osArr.map(x => x.osStr))).map(x => mkdirSync(`./docs/.vuepress/dist/firmware/${x}`))
+const page = fs.readFileSync('./docs/.vuepress/dist/404.html', 'utf8').replace('Looks like we&#39;ve got some broken links.','Retrieving data...')
 
-fs.writeFileSync('./docs/.vuepress/dist/firmware/iOS/18C66.html', page.toString())
+for (const os of osArr) {
+    let parsedPage = parse(page)
+
+    parsedPage.querySelectorAll('meta').find(x => x.rawAttrs.includes('name="description"')).rawAttrs = `name="description" content="Information for ${os.osStr} version ${os.version}"`
+    parsedPage.querySelector('title').innerHTML = `${os.osStr} ${os.version} ${(os.build != os.version) ? `(${os.build})` : ''}`
+    parsedPage.querySelector('h1').innerHTML = `${os.osStr} ${os.version} ${(os.build != os.version) ? `(${os.build})` : ''}`
+
+    fs.writeFile(`./docs/.vuepress/dist/firmware/${os.osStr}/${os.uniqueBuild}.html`, parsedPage.toString(), (err) => {
+        if (err) console.log(err)
+    })
+}
