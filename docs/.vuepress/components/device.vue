@@ -10,7 +10,7 @@
                 </li>
             </ul>
             <div v-if="fm.img.count && fm.img.count > 0" :style="`padding-top: ${wrapImg ? '1em' : '0'};`" class="devFlexImgWrapper">
-                <img v-for="i in Math.min(fm.img.count,3)" :key="i" :class="`flexImg flexImg${i}`" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.key)[0]}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.png`" style="margin-left: .5em; max-height: 8em;">
+                <img v-for="i in Math.min(fm.img.count,3)" :key="i" :class="`flexImg flexImg${i}`" :src="`https://img.appledb.dev/device@main/${fm.device.map(x => x.key)[0]}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}.webp`" style="margin-left: .5em; max-height: 8em;">
             </div>
         </div>
 
