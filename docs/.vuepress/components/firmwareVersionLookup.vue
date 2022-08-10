@@ -67,7 +67,7 @@ export default {
   mounted() {
     const versionObject = this.getQuery()
     if (versionObject) {
-      let url = "/" + versionObject.osStr.replace(/ /g,'-') + "/" + versionObject.uniqueBuild
+      let url = "/firmware/" + versionObject.osStr.replace(/ /g,'-') + "/" + versionObject.uniqueBuild
       window.location.href = url;
 
       /*const title = `${versionObject.osStr} ${versionObject.version} (${versionObject.build})`

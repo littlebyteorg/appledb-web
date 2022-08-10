@@ -3,6 +3,8 @@ const { registerComponentsPlugin } = require('@vuepress/plugin-register-componen
 const { searchPlugin } = require('@vuepress/plugin-search')
 const { localTheme } = require('../../emiyl-theme')
 
+require('../../generatePageData')
+
 module.exports = {
     lang: 'en-US',
     title: 'AppleDB',
@@ -47,7 +49,7 @@ module.exports = {
       }),
       require('./plugins/deviceListPages/lib'),
       require('./plugins/devicePages/lib'),
-      require('./plugins/firmwarePages/lib'),
+      //require('./plugins/firmwarePages/lib'),
       require('./plugins/jailbreakPages/lib'),
       require('./plugins/redirectPlugin/lib'),
       require('./plugins/writeTemp/lib/')
