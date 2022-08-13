@@ -13,8 +13,8 @@ module.exports = {
     theme: localTheme({
       repo: 'emiyl/appledb',
       selectLanguageText: '<i class="fas fa-globe"/>',
-      logo: '/assets/images/logo.webp',
-      logoDark: '/assets/images/logo_dark.webp',
+      logo: '/assets/images/logo.png',
+      logoDark: '/assets/images/logo_dark.png',
       repoLabel: '<i class="fab fa-github icon"></i>',
       navbar: [
         {

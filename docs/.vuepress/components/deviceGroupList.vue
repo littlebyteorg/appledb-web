@@ -24,7 +24,11 @@
                     <router-link v-if="o.types[(t - 1) * colCount + c - 1]" :to="
                         `/device-selection/${o.types[(t - 1) * colCount + c - 1].fdn()}.html`
                     ">
-                        <img :src="imageObj[o.types[(t - 1) * colCount + c - 1]]" style="max-height: 8em;">
+                        <picture>
+                            <source :srcset="imageObj[o.types[(t - 1) * colCount + c - 1]] + '.avif'" type="image/avif">
+                            <source :srcset="imageObj[o.types[(t - 1) * colCount + c - 1]] + '.webp'" type="image/webp">
+                            <img :src="imageObj[o.types[(t - 1) * colCount + c - 1]] + '.png'" style="max-height: 8em;">
+                        </picture>
                     </router-link>
                 </td>
             </tr>
@@ -136,7 +140,7 @@ export default {
             }
 
             var ret = {}
-            for (const d in firstDeviceObj) ret[d] = firstDeviceObj[d].imageBool ? `https://img.appledb.dev/device@preview/${firstDeviceObj[d].key}/0${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}.webp` : `/assets/images/logo${this.isDarkMode ? '_dark' : ''}.webp`
+            for (const d in firstDeviceObj) ret[d] = firstDeviceObj[d].imageBool ? `https://img.appledb.dev/device@preview/${firstDeviceObj[d].key}/0${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}` : `/assets/images/logo${this.isDarkMode ? '_dark' : ''}`
             
             return ret
         }
