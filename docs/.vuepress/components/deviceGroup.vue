@@ -14,7 +14,7 @@
             <div class="devHead">
                 <router-link :to="url" style="color: inherit;">
                     <h3>{{dev.name}}</h3>
-                    <div class="flexWrapper flexImg" style="user-select: none; height: 8em;">
+                    <div class="flexWrapper flexImg" style="user-select: none;">
                         <div
                             v-for="i in Math.min(dev.img.count,3)"
                             :key="i"
@@ -29,7 +29,6 @@
                                 <img
                                     :src="imgUrl + '.png'"
                                     :class="`devImage devImage${i}`"
-                                    style="margin-left: .5em; max-height: 8em;"
                                 >
                             </picture>
                         </div>
@@ -173,7 +172,6 @@ td, th {
 }
 
 .imgWrapper {
-    height: 8em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -182,7 +180,7 @@ td, th {
 .devImage {
     max-width: 100%;
     max-height: 8em;
-    padding-right: .5em;
+    padding-right: 0.5em;
 }
 
 .variablePadding {
