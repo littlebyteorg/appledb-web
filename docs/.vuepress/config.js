@@ -1,5 +1,4 @@
-const path = require('path')
-
+const { path } = require('@vuepress/utils')
 const { registerComponentsPlugin } = require('@vuepress/plugin-register-components')
 const { searchPlugin } = require('@vuepress/plugin-search')
 const { localTheme } = require('../../emiyl-theme')
