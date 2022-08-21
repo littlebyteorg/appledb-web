@@ -248,7 +248,7 @@ module.exports = function(args) {
                 }) :
                 [devArr].map(x => {
                     const nameArr = x.map(y => y.name)
-                    const idenArr = x.map(y => y.identifier)
+                    const idenArr = x.map(y => y.key)
                     return {
                         label: nameArr.join(', '),
                         value: idenArr
@@ -256,7 +256,7 @@ module.exports = function(args) {
                 }).concat(devArr.map(x => {
                     return {
                         label: x.name,
-                        value: [x.identifier]
+                        value: [x.key]
                     }
                 })),
 
