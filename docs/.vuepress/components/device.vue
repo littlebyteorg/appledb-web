@@ -164,7 +164,7 @@
                             <div v-else v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" class="showOnHover">
                                 <template v-if="getFilteredDownloads(fw.downloads).length > 1">{{ dl.deviceName }}: </template>
                                 <a :href="dl.url">
-                                    {{ dl.label }}
+                                    {{ dl.label.slice(0,50) }}{{ dl.label.length > 50 ? '...' : '' }}
                                     <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
                                 </a>
                             </div>
