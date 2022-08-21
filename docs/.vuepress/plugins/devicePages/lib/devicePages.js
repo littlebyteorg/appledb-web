@@ -25,7 +25,7 @@ for (const d of Object.keys(deviceList).map(x => deviceList[x]).filter(x => {
 }
 
 for (const g of deviceGroups) {
-  const urlPart = require('../../writeTemp/lib/formatDeviceName')(g.name)
+  const urlPart = require('../../writeTemp/lib/formatDeviceName')(g.groupKey)
   const url = [devicePath, urlPart].join('/') + '.html'
   pageList.push(
     getDevicePage({

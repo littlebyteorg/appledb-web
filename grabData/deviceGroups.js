@@ -31,7 +31,9 @@ deviceFiles = deviceFiles.map(function(x) {
 var deviceGroupArr = [];
 
 for (const file in deviceFiles) {
-  deviceGroupArr.push(require('..' + path.sep + deviceFiles[file]));
+  const deviceGroup = require('..' + path.sep + deviceFiles[file])
+  if (deviceGroup.key) deviceGroup.groupKey = deviceGroup.key
+  deviceGroupArr.push(deviceGroup);
 }
 
 const deviceObj = require('./deviceList')
@@ -102,4 +104,7 @@ deviceGroupsWithReleaseDate = deviceGroupArr
 module.exports = [
   ...deviceGroupsWithReleaseDate,
   ...deviceGroupsWithoutReleaseDate
-];
+].map(x => {
+  if (!x.groupKey) x.groupKey = x.name
+  return x
+});

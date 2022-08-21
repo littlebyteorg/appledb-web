@@ -9,7 +9,7 @@
 
     <div v-if="frontmatter.type == 'iPhone'" class="custom-container tip"><p>{{iPhoneNote}}</p></div>
 
-    <template v-for="dev in deviceArr" :key="dev"><template v-for="url in [`/device/${dev.name.fdn()}.html`]" :key="url">
+    <template v-for="dev in deviceArr" :key="dev"><template v-for="url in [`/device/${dev.groupKey.fdn()}.html`]" :key="url">
         <div class="flexWrapper">
             <div class="devHead">
                 <router-link :to="url" style="color: inherit;">

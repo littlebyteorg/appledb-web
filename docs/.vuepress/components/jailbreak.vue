@@ -7,7 +7,7 @@
       <input type="checkbox" :id="`toggleListCompat-${g.name}`">
       <i class="fas fa-chevron-right chevron chevronPoint clickToHide"/>
       <i class="fas fa-chevron-down chevron chevronPoint clickToShow displayNone"/>
-      <router-link v-html="g.name" :to="`${devicePath}${g.name.fdn()}.html`"/>
+      <router-link v-html="g.name" :to="`${devicePath}${g.groupKey.fdn()}.html`"/>
       
       <div class="hoverElement" style="display: inline;">
         <i class="fas fa-circle ml-" style="font-size: 0.3rem; opacity: 0.5; vertical-align: middle; margin-left: 2em; margin-right: 2em;"/>

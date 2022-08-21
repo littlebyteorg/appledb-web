@@ -135,7 +135,7 @@ function getDeviceList(os) {
 
         groupArr.push({
             name: deviceGroup.name,
-            key: deviceGroup.name.replace(/ /g,'-'),
+            key: deviceGroup.groupKey.replace(/ /g,'-'),
             children: children,
             type: groupData.type,
             released: groupData.released,

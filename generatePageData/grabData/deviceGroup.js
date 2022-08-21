@@ -30,7 +30,11 @@ deviceGroupFiles = deviceGroupFiles.map(function(x) {
 })
 
 var devGroupArr = []
-for (const file in deviceGroupFiles) devGroupArr.push(require('../../' + deviceGroupFiles[file]))
+for (const file in deviceGroupFiles) {
+  const group = require('../../' + deviceGroupFiles[file])
+  if (group.key) group.groupKey = group.key
+  devGroupArr.push(group)
+}
 
 const devArr = require('./device')
 
@@ -100,6 +104,7 @@ module.exports = [
   ...deviceGroupsWithReleaseDate,
   ...deviceGroupsWithoutReleaseDate
 ].map(x => {
+  if (!x.groupKey) x.groupKey = x.name
   x.hash = hash(x)
   return x
 })
