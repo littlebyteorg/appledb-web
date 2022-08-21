@@ -35,7 +35,10 @@
                         <div v-if="dev.img.count == 0" class="imgWrapper imgWrapper0">
                             <picture>
                                 <source :srcset="`/assets/images/logo${isDarkMode ? '_dark' : ''}.webp`" type="image/webp">
-                                <img :src="`/assets/images/logo${isDarkMode ? '_dark' : ''}.png`">
+                                <img
+                                    :src="`/assets/images/logo${isDarkMode ? '_dark' : ''}.png`"
+                                    :class="`devImage devImage0`"
+                                >
                             </picture>
                         </div>
                     </div>
