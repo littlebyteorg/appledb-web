@@ -193,7 +193,7 @@
                 </template>
             </table>
 
-            <div v-if="!this.fm.noJb && this.fm.jbCount < 1" class="custom-container tip"><p>There are no jailbreak tools compatible with this device.</p></div>
+            <div v-if="!fm.noJb && fm.jbCount < 1" class="custom-container tip"><p>There are no jailbreak tools compatible with this device.</p></div>
         </div>
     </template>
 
