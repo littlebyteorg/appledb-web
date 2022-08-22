@@ -110,6 +110,7 @@
         </ul>
 
         <div class="tableContainer">
+            
             <table>
                 <tr>
                     <th v-for="header in tableHeaders" :key="header">{{ header }}</th>
@@ -191,6 +192,8 @@
                     </tr>
                 </template>
             </table>
+
+            <div v-if="!this.fm.noJb && this.fm.jbCount < 1" class="custom-container tip"><p>There are no jailbreak tools compatible with this device.</p></div>
         </div>
     </template>
 
@@ -510,14 +513,16 @@ export default {
             return 0
         })
 
-        if (this.fm.noJb) {
+        const noJailbreaks = this.fm.noJb || this.fm.jbCount < 1
+
+        if (noJailbreaks) {
             this.options.showReleasedColumn = true
             this.options.showJailbreakColumn = false
             this.options.showDownloadColumn = false
         }
         if (window.screen.width > 650) {
             this.options.showReleasedColumn = true
-            if (this.fm.noJb) this.options.showDownloadColumn = true
+            if (noJailbreaks) this.options.showDownloadColumn = true
         }
         if (this.fm.mainList) {
             this.options.filterDev = this.fm.deviceFilter[0].value

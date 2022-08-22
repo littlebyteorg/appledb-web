@@ -237,6 +237,7 @@ module.exports = function(args) {
             imgCount: imgCount,
             mainList: mainList,
             noJb: (!(osStr.some(r => hasJbArr.includes(r))) && !mainList),
+            jbCount: getVersionArr.map(x => x.jailbreakArr).flat().length,
             img: img,
             extraInfo: extraInfo || undefined,
             deviceFilter: (mainList) ? 
