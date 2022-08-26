@@ -14,11 +14,12 @@ function getReleaseDate(released) {
 }
 
 function getInfoObj(os) {
-    return [
-        `Version: ${[os.osStr,os.version].filter(x => x).join(' ')}`,
-        `Build: ${os.build}`,
-        `Released: ${getReleaseDate(os.released)}`,
-    ].map(x => {
+    const verStr = `Version: ${[os.osStr,os.version].filter(x => x).join(' ')}`
+    const buildStr = `Build: ${os.build}`
+    const relStr = getReleaseDate(os.released) == -1 ? null : `Released: ${getReleaseDate(os.released)}`
+    return [verStr, buildStr, relStr]
+    .filter(x => x)
+    .map(x => {
         return {
             text: x,
             link: null
