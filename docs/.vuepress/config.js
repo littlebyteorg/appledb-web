@@ -16,6 +16,10 @@ module.exports = {
       logo: '/assets/images/logo.png',
       logoDark: '/assets/images/logo_dark.png',
       repoLabel: '<i class="fab fa-github icon"></i>',
+      adUnits: [
+        "13840",
+        "13841"
+      ],
       navbar: [
         {
           text: 'Devices',
@@ -60,5 +64,6 @@ module.exports = {
     head: [
       [ 'meta', { property: 'og:image', content: '/assets/images/splash-23aaron-logo.jpg' } ],
       [ 'link', { rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.6.1/css/all.css' } ],
+      [ 'script', { type: 'text/javascript', src: '//cdn.thisiswaldo.com/static/js/13821.js' }]
     ],
 }
