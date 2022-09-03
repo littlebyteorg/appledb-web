@@ -53,6 +53,8 @@ for (let i of iosArr) {
 iosArr = iosArr
 .concat(createDuplicateEntriesArray)
 .map(function(x) {
+  if (!x.build) x.build = x.version
+
   x.osType = x.osStr
   if (x.osStr == 'iPhoneOS' || x.osStr == 'iPadOS') x.osType = 'iOS'
   else if (x.osStr == 'Apple TV Software') x.osType = 'tvOS'
