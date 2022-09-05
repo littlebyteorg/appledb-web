@@ -57,9 +57,13 @@ Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
                 return 0
             }).filter(x => x)
             if (released.join() != '') x.released = released.map(y => {
+                const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
+                const currentDate = new Date(y).valueOf()
+                const adjustedDate = new Date(currentDate + dateOffset)
+
                 const releasedArr = y.split('-')
                 const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
-                return new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(y))
+                return new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustedDate)
             })
     
             const model = Array.from(new Set(devArr.map(y => y.model).flat()))

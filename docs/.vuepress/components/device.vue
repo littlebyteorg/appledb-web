@@ -351,9 +351,14 @@ export default {
             function grabInfo(property) {
                 if (property == 'released') {
                     const dateArr = Array.from(new Set(dev.map(x => x[property]).flat())).filter(x => x).sort().map(x => {
+                        const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
+                        const currentDate = new Date(x).valueOf()
+                        const adjustedDate = new Date(currentDate + dateOffset)
+
                         const releasedArr = x.split('-')
                         const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
-                        const date = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(x))
+                        const date = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustedDate)
+                        
                         return date
                     })
                     return dateArr
