@@ -8,9 +8,14 @@ fs.mkdirSync('./docs/.vuepress/public/pageData/firmware')
 
 function getReleaseDate(released) {
     if (!released) return -1
+
+    const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
+    const currentDate = new Date(released).valueOf()
+    const adjustedDate = new Date(currentDate + dateOffset)
+
     const releasedArr = released.split('-')
     const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
-    return new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(released))
+    return new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustedDate)
 }
 
 function getInfoObj(os) {
