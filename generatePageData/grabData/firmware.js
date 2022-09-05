@@ -49,9 +49,8 @@ for (let i of osArr) {
 module.exports = osArr
 .concat(createDuplicateEntriesArray)
 .map(function(x) {
-    if (!x.build) x.build = x.version
     if (!x.deviceMap) x.deviceMap = []
-    if (!x.uniqueBuild) x.uniqueBuild = x.build
+    if (!x.uniqueBuild) x.uniqueBuild = x.build || x.version
     if (!x.beta) x.beta = false
     return x
 })

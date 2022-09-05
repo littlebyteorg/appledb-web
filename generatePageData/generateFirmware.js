@@ -15,7 +15,7 @@ function getReleaseDate(released) {
 
 function getInfoObj(os) {
     const verStr = `Version: ${[os.osStr,os.version].filter(x => x).join(' ')}`
-    const buildStr = `Build: ${os.build}`
+    const buildStr = os.build ? `Build: ${os.build}` : null
     const relStr = getReleaseDate(os.released) == -1 ? null : `Released: ${getReleaseDate(os.released)}`
     return [verStr, buildStr, relStr]
     .filter(x => x)
@@ -221,7 +221,7 @@ function getJailbreakPageData(os) {
 }
 
 for (const os of osArr) {
-    let title = `${os.osStr} ${os.version} (${os.build})`
+    let title = `${os.osStr} ${os.version}${os.build ? ' (' + os.build + ')' : ''}`
 
     getJailbreakPageData(os)
 
