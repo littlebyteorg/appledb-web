@@ -234,7 +234,6 @@ for (const os of osArr) {
         title: title,
         sections: [
             {
-                title: 'Info',
                 type: 'list',
                 class: 'noPadding noListDisc',
                 content: getInfoObj(os)

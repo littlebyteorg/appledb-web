@@ -1,5 +1,4 @@
 <template>
-  <h2 v-if="infoData.length > 0" v-html="infoHeader"/>
   <p><div v-for="i in infoData" :key="i" v-html="i"/></p>
   <template v-if="getDeviceList"><h2 v-if="getDeviceList.length > 0" v-html="compatibilityHeader"/></template>
   <ul>

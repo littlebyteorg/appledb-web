@@ -4,7 +4,7 @@
       <h1>{{ pageTitle }}</h1>
       <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
       <template v-for="section in sections" :key="section.title">
-        <h2>{{ section.title }}</h2>
+        <h2 v-if="section.title">{{ section.title }}</h2>
         <vueSection :section="section"/>
       </template>
       <div v-if="adUnits && adUnits.length > 1" :id="`waldo-tag-${adUnits[1]}`"></div>
