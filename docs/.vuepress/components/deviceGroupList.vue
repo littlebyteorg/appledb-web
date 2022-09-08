@@ -110,8 +110,10 @@ export default {
             var tempTypeArr = []
             var firstDeviceObj = {}
 
+            const typeArr = Array.from(new Set(groupList.map(x => x.type)))
+
             for (const g of groupList) {
-                if (tempTypeArr.includes(g.type)) continue
+                if (tempTypeArr.includes(g.type) || g.img.count < 1) continue
                 tempTypeArr.push(g.type)
                 firstDeviceObj[g.type] = {
                     key: g.devices[0],
@@ -120,8 +122,17 @@ export default {
                 }
             }
 
+            const missingTypes = typeArr.filter(x => !Object.keys(firstDeviceObj).includes(x))
+            for (const type of missingTypes) {
+                const firstGroup = groupList.filter(x => x.type == type)[0]
+                firstDeviceObj[type] = {
+                    key: firstGroup.devices[0],
+                    imageBool: g.img.count > 0,
+                    dark: g.img.dark
+                }
+            }
+
             const overrides = { 
-                iPhone: "iPhone14,2",
                 AirPods: "AirPods1,1",
                 "MacBook Pro": "MacBookPro18,1"
             }
