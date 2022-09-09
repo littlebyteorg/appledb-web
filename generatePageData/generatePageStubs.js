@@ -6,7 +6,7 @@ const osArr = require('./grabData/firmware')
 function mkdirSync(dir) { if (!fs.existsSync(dir)) { fs.mkdirSync(dir) } }
 
 mkdirSync('./docs/.vuepress/dist/firmware')
-Array.from(new Set(osArr.map(x => x.osStr))).map(x => mkdirSync(`./docs/.vuepress/dist/firmware/${x}`))
+Array.from(new Set(osArr.map(x => x.osStr.replace(/ /g,'-')))).map(x => mkdirSync(`./docs/.vuepress/dist/firmware/${x}`))
 const page = fs.readFileSync('./docs/.vuepress/dist/404.html', 'utf8')
 .replace('<div class="theme-container">','<div class="theme-container no-sidebar">')
 .replace('<div class="not-found-section theme-default-content">','<main class="page"><div class="theme-default-content">')
