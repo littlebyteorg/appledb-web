@@ -53,7 +53,7 @@
                     <li><router-link :to="url">{{ viewDeviceStr }}</router-link></li>
                 </ul>
                 <ul class="devReleased infoList" style="position: relative; top: 9em;">
-                    <li v-if="dev.released">{{ releasedOn.format({ released: dev.released.slice(0,1).join(', ') }) }}<template v-if="dev.released.length > 1">, <router-link :to="url">...</router-link></template></li>
+                    <li v-if="dev.released">{{ releasedOn.format({ suffix: (new Date() < new Date(dev.released[0])) ? 'ing' : 'ed', released: dev.released.slice(0,1).join(', ') }) }}<template v-if="dev.released.length > 1">, <router-link :to="url">...</router-link></template></li>
                 </ul>
             </div>
         </div>
@@ -94,7 +94,7 @@ export default {
                 model: "Model: ${model}",
                 board: "Board: ${board}"
             },
-            releasedOn: "Released on ${released}",
+            releasedOn: "Releas${suffix} on ${released}",
             viewDeviceStr: 'View more',
             iPhoneNote: 'Note that all "Plus", "Max" and "mini" models of iPhones are functionally identical to the regular models.',
             frontmatter: usePageFrontmatter(),
