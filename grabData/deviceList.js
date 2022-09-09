@@ -68,10 +68,13 @@ for (const i of folderArr) {
 for (const file in deviceFiles) {
   const obj = require('..' + path.sep + deviceFiles[file])
 
-  obj.name = obj.name || obj.identifier || obj.key
-  obj.key = obj.key || obj.identifier || obj.name
+  for (const p of ['model','board','identifier']) {
+    if (!obj[p]) obj[p] = []
+    if (!Array.isArray(obj[p])) obj[p] = [obj[p]]
+  }
 
-  if (obj.board && !Array.isArray(obj.board)) obj.board = [obj.board]
+  obj.name = obj.name || obj.identifier[0] || obj.key
+  obj.key = obj.key || obj.identifier[0] || obj.name
   
   let imgCount = 1
   let imgDark = false

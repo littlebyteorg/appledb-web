@@ -63,7 +63,7 @@
                         {{ dev.name }}
                     </router-link>
                     <div v-if="dev.name != dev.identifier" style="padding-left: .5em;" class="hoverElement"><code>
-                        {{ dev.identifier }}
+                        {{ dev.identifier.join(', ') }}
                     </code></div>
                 </li>
             </ul>
