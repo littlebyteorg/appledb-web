@@ -11,8 +11,8 @@
         <router-link :to="'/device/identifier/' + dev.key.fdn() + '.html'">
           {{dev.name}}
         </router-link>
-        <code v-if="dev.identifier && dev.name != dev.identifier">
-          {{ dev.identifier }}
+        <code v-if="dev.identifier[0] && dev.name != dev.identifier">
+          {{ dev.identifier.join(', ') }}
         </code>
       </td>
       <td>{{ dev.board ? dev.board.join(', ') : '' }}</td>
@@ -105,7 +105,7 @@ export default {
       })
 
       return noModelList.sort((a,b) => {
-        const sortBy = [a,b].map(x => x.identifier || x.name || x.key)
+        const sortBy = [a,b].map(x => x.identifier[0] || x.name || x.key)
         if (sortBy[0].toLowerCase() < sortBy[1].toLowerCase()) return -1
         if (sortBy[0].toLowerCase() > sortBy[1].toLowerCase()) return 1
         return 0
