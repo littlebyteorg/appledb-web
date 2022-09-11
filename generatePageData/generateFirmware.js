@@ -98,6 +98,7 @@ function getDeviceList(os) {
 
     function getDeviceData(device) {
         let d = deviceArr.find(x => x.key === device)
+        if (!d) console.log(`ERROR: Device '${device}' not found in ${os.osStr} ${os.version} (${os.build})`)
 
         let hoverLink = getDownloadLink(device) || null
         
