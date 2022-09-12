@@ -113,7 +113,7 @@ export default {
         infoObj() {
             let o = {}
             for (const dev of this.deviceArr) {
-                let attr = ['identifier','soc','arch','model','board']
+                let attr = ['identifier','soc','model','board','arch']
                 .map(x => {
                     return {
                         type: x,
