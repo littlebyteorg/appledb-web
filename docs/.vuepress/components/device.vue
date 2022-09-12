@@ -167,9 +167,13 @@
                                 <router-link :to="fw.url">{{ viewAllStr }}</router-link>
                             </template>
                             <div v-else v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" class="showOnHover">
-                                <template v-if="getFilteredDownloads(fw.downloads).length > 1">{{ dl.deviceName }}: </template>
                                 <a :href="dl.url">
-                                    {{ dl.label.slice(0,50) }}{{ dl.label.length > 50 ? '...' : '' }}
+                                    <template v-if="getFilteredDownloads(fw.downloads).length > 1">
+                                        {{ dl.deviceName }}
+                                    </template>
+                                    <template v-else>
+                                        {{ dl.label.slice(0,50) }}{{ dl.label.length > 50 ? '...' : '' }}
+                                    </template>
                                     <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
                                 </a>
                             </div>
