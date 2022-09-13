@@ -8,7 +8,10 @@
                 </picture>
             </a></div>
             <div class="releasefw--flexText">
-                <h2 class="releasefw--title">{{ version.osStr }} {{ version.version }} ({{ version.build }})</h2>
+                <h2 class="releasefw--title">
+                    {{ version.osStr }} {{ version.version }}
+                    <template v-if="version.build"> ({{ version.build }})</template>
+                </h2>
                 <p style="margin-block-start: .5em;">{{ version.released }}</p>
                 <a :href="url">View more</a>
             </div>
