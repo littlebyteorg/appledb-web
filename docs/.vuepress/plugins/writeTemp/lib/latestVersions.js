@@ -40,5 +40,19 @@ const latestVersions = latestVersionArr
   return 0
 })[0])
 .filter(x => x)
+.map(x => {
+  if (!x.released) return x
+  if (x.released.includes(' ')) return x
+
+  const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
+  const currentDate = new Date(x.released).valueOf()
+  const adjustedDate = new Date(currentDate + dateOffset)
+
+  const releasedArr = x.released.split('-')
+  const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+  x.released =  new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustedDate)
+
+  return x
+})
 
 module.exports = latestVersions

@@ -9,7 +9,7 @@
             </a></div>
             <div class="releasefw--flexText">
                 <h2 class="releasefw--title">{{ version.osStr }} {{ version.version }} ({{ version.build }})</h2>
-                <p style="margin-block-start: .5em;">{{ new Intl.DateTimeFormat('en-US', { dateStyle: 'long'}).format(version.released) }}</p>
+                <p style="margin-block-start: .5em;">{{ version.released }}</p>
                 <a :href="url">View more</a>
             </div>
         </div>
@@ -124,16 +124,8 @@ export default {
                 this.properties.map(y => y.osStr)
                 .includes(x.osStr)
             )
-            .map(x => {
-                if (!x.released) return x
-                const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
-                const currentDate = new Date(x.released).valueOf()
-                const adjustedDate = new Date(currentDate + dateOffset)
-                x.released = adjustedDate
-                return x
-            })
             .sort((a,b) => {
-                const dateRel = b.released - a.released
+                const dateRel = new Date(b.released) - new Date(a.released)
                 if (dateRel != 0) return dateRel
 
                 if (a.osStr.toLowerCase() < b.osStr.toLowerCase()) return -1
