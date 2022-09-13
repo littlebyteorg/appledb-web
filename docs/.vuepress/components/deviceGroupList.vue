@@ -127,8 +127,8 @@ export default {
                 const firstGroup = groupList.filter(x => x.type == type)[0]
                 firstDeviceObj[type] = {
                     key: firstGroup.devices[0],
-                    imageBool: g.img.count > 0,
-                    dark: g.img.dark
+                    imageBool: firstGroup.img.count > 0,
+                    dark: firstGroup.img.dark
                 }
             }
 
