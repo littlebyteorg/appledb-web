@@ -140,7 +140,7 @@
                                 <router-link v-else :to="fw.url">{{ fw.osStr }} {{ fw.version }}</router-link>
                             </template>
                             <div v-else class="showOnHover">
-                                <router-link :to="fw.url">{{ fw.osStr }} {{ fw.version }}<template v-if="fw.duplicateVersion"> ({{ fw.build }})</template></router-link>
+                                <router-link :to="fw.url">{{ fw.osStr }} {{ fw.version }}<template v-if="fw.duplicateVersion && fw.build"> ({{ fw.build }})</template></router-link>
                                 <template v-if="getFilteredDownloads(fw.downloads).length == 1 && !options.showDownloadColumn">
                                     <a v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" :href="dl.url">
                                         <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
