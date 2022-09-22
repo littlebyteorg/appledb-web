@@ -16,12 +16,16 @@
                     <h3>{{dev.name}}</h3>
                     <div class="flexWrapper flexImg" style="user-select: none;">
                         <div
-                            v-for="i in Math.min(dev.img.count,3)"
+                            v-for="i in (Math.min(dev.img.count,3) || 1)"
                             :key="i"
                             :class="`imgWrapper imgWrapper${i}`"
                         >
                             <picture
-                                v-for="imgUrl in [`https://img.appledb.dev/device@main/${dev.devices[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && dev.img.dark ? '_dark' : ''}`]"
+                                v-for="imgUrl in [
+                                    dev.img.count ?
+                                        `https://img.appledb.dev/device@main/${dev.devices[0].replace(/\//g,'%252F')}/${i-1}${isDarkMode && dev.img.dark ? '_dark' : ''}` :
+                                        `https://img.appledb.dev/device@main/logo/0${isDarkMode ? '_dark' : ''}`
+                                ]"
                                 :key="imgUrl"
                             >
                                 <source :srcset="imgUrl + '.avif'" type="image/avif">
@@ -29,15 +33,6 @@
                                 <img
                                     :src="imgUrl + '.png'"
                                     :class="`devImage devImage${i}`"
-                                >
-                            </picture>
-                        </div>
-                        <div v-if="dev.img.count == 0" class="imgWrapper imgWrapper0">
-                            <picture>
-                                <source :srcset="`/assets/images/logo${isDarkMode ? '_dark' : ''}.webp`" type="image/webp">
-                                <img
-                                    :src="`/assets/images/logo${isDarkMode ? '_dark' : ''}.png`"
-                                    :class="`devImage devImage0`"
                                 >
                             </picture>
                         </div>

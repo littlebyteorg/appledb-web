@@ -151,7 +151,9 @@ export default {
             }
 
             var ret = {}
-            for (const d in firstDeviceObj) ret[d] = firstDeviceObj[d].imageBool ? `https://img.appledb.dev/device@preview/${firstDeviceObj[d].key}/0${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}` : `/assets/images/logo${this.isDarkMode ? '_dark' : ''}`
+            for (const d in firstDeviceObj) ret[d] = firstDeviceObj[d].imageBool ?
+                `https://img.appledb.dev/device@preview/${firstDeviceObj[d].key}/0${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}` :
+                `https://img.appledb.dev/device@preview/logo/0${this.isDarkMode ? '_dark' : ''}`
             
             return ret
         }
