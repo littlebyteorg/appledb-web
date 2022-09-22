@@ -5,17 +5,17 @@
             <i v-else class="fas fa-circle listCircle"/>
         </template>
         
-        <span v-if="!item.link" v-html="item.text" />
-        <a v-else-if="item.link.startsWith('http')" :href="item.link" target="_blank" v-html="item.text" />
-        <router-link v-else :to="item.link" v-html="item.text" />
+        <span v-if="!item.link"><listItemContent :text="item.text" :data="item.data"/></span>
+        <a v-else-if="item.link.startsWith('http')" :href="item.link" target="_blank"><listItemContent :text="item.text" :data="item.data"/></a>
+        <router-link v-else :to="item.link"><listItemContent :text="item.text" :data="item.data"/></router-link>
 
         <span v-if="item.children || item.hoverLink" :class="(expanded || (item.hoverLink && item.hoverLink.hideWhenInactive === false)) ? '' : 'showOnHover'">
             <i :class="`fas fa-${(item.hoverLink && item.hoverLink.icon) ? item.hoverLink.icon + ' spaceIcon' : 'circle spaceCircle'}`" />
             <a v-if="item.children" class="expandButton" v-on:click="expanded = !expanded">{{ expanded ? item.showLess || 'Show less' : item.showMore || 'Show more'}}</a>
             <template v-else-if="item.hoverLink">
-                <span v-if="!item.hoverLink.link" v-html="item.hoverLink.text" />
-                <a v-else-if="item.hoverLink.link.startsWith('http')" :href="item.hoverLink.link" target="_blank" v-html="item.hoverLink.text" />
-                <router-link v-else :to="item.hoverLink.link" v-html="item.hoverLink.text" />
+                <span v-if="!item.hoverLink.link"><listItemContent :text="item.hoverLink.text" :data="item.hoverLink.data"/></span>
+                <a v-else-if="item.hoverLink.link.startsWith('http')" :href="item.hoverLink.link" target="_blank"><listItemContent :text="item.hoverLink.text" :data="item.hoverLink.data"/></a>
+                <router-link v-else :to="item.hoverLink.link"><listItemContent :text="item.hoverLink.text" :data="item.hoverLink.data"/></router-link>
             </template>
         </span>
     </span>

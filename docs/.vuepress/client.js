@@ -8,5 +8,15 @@ export default defineClientConfig({
       name: 'firmware',
       component: Layout
     })
+    /*router.addRoute({
+      path: '/device/identifier/:key',
+      name: 'device/identifier',
+      component: Layout
+    })
+    router.addRoute({
+      path: '/device/:groupKey',
+      name: 'device',
+      component: Layout
+    })*/
   },
 })

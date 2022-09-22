@@ -6,4 +6,5 @@ if (!fs.existsSync('./docs/.vuepress/public/pageData')) fs.mkdirSync('./docs/.vu
 fs.rmSync('./docs/.vuepress/public/pageData', { recursive: true });
 fs.mkdirSync('./docs/.vuepress/public/pageData')
 
-const osArr = require('./generateFirmware')
+require('./generateFirmware')
+//require('./generateDevicePage')

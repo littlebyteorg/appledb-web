@@ -1,5 +1,5 @@
 <template>
-    <list v-if="section.type == 'list'" :content="section.content" :sectionClass="section.class"/>
+    <list v-if="section.type == 'list'" :content="section.content" :sectionClass="section.class || ''"/>
 </template>
 
 <script>
