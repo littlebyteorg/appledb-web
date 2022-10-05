@@ -4,7 +4,7 @@ const dev = require('./deviceList')
 const group = require('./deviceGroups')
 const { create } = require('domain')
 const devicePath = '/device/identifier/'
-const p = './appledb/iosFiles'
+const p = './appledb/osFiles'
 
 function getAllFiles(dirPath, arrayOfFiles) {
   files = fs.readdirSync(dirPath)
@@ -22,10 +22,10 @@ function getAllFiles(dirPath, arrayOfFiles) {
   return arrayOfFiles
 }
 
-var iosFiles = [];
-iosFiles = getAllFiles(p, iosFiles)
-iosFiles = iosFiles.filter(file => file.endsWith('.json'));
-iosFiles = iosFiles.map(function(x) {
+var osFiles = [];
+osFiles = getAllFiles(p, osFiles)
+osFiles = osFiles.filter(file => file.endsWith('.json'));
+osFiles = osFiles.map(function(x) {
   const filePathStr = x.split(path.sep)
   const pathStrLength = p.split('/').length - 3
   
@@ -33,7 +33,7 @@ iosFiles = iosFiles.map(function(x) {
 })
 var iosArr = [];
 
-for (const file in iosFiles) iosArr.push(require('..' + path.sep + iosFiles[file]));
+for (const file in osFiles) iosArr.push(require('..' + path.sep + osFiles[file]));
 
 let createDuplicateEntriesArray = []
 

@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const p = './appledb/iosFiles'
+const p = './appledb/osFiles'
 
 function getAllFiles(dirPath, arrayOfFiles) {
     files = fs.readdirSync(dirPath)
