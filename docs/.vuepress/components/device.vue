@@ -36,15 +36,15 @@
                 <label :for="tab" class="tab-link" v-on:click="activeTab = tab">
                     {{ tab.formatExtraInfoTitle() }}
                 </label>
-                <div :class="`tab ${(index == tabArr.length - 1) ? 'tab-last' : ''}`" style="overflow-x: scroll;">
+                <div :class="`tab ${(index == tabArr.length - 1) ? 'tab-last' : ''}`" style="overflow-x: auto; padding: 0;">
                     <table style="margin: 0;">
-                        <tr v-if="Object.keys(fm.extraInfo).length > 1 && [Object.keys(tabData).map(x => tabData[x][tab])].map(d => Array.from(new Set(d.map(y => JSON.stringify(Object.keys(y).map(x => y[x]))))).length)[0] > 1"><th/><th v-for="dev in Object.keys(fm.extraInfo)" :key="dev">{{ fm.device.filter(x => x.key == dev)[0].name }}</th></tr>
-                        <tr v-for="property in tabPropertyArr[tab]" :key="property">
-                            <td>{{ property.formatExtraInfoTitle() }}</td>
-                            <td v-if="Array.from(new Set(Object.keys(tabData).map(x => JSON.stringify(tabData[x][tab][property])))).length == 1 && Object.keys(tabData).map(x => JSON.stringify(tabData[x][tab][property])).length != 1" :colspan="Object.keys(fm.extraInfo).length">
+                        <tr style="border: none;" v-if="Object.keys(fm.extraInfo).length > 1 && [Object.keys(tabData).map(x => tabData[x][tab])].map(d => Array.from(new Set(d.map(y => JSON.stringify(Object.keys(y).map(x => y[x]))))).length)[0] > 1"><th/><th v-for="dev in Object.keys(fm.extraInfo)" :key="dev">{{ fm.device.filter(x => x.key == dev)[0].name }}</th></tr>
+                        <tr style="border: none;" v-for="property in tabPropertyArr[tab]" :key="property">
+                            <td style="border: none;">{{ property.formatExtraInfoTitle() }}</td>
+                            <td style="border: none;" v-if="Array.from(new Set(Object.keys(tabData).map(x => JSON.stringify(tabData[x][tab][property])))).length == 1 && Object.keys(tabData).map(x => JSON.stringify(tabData[x][tab][property])).length != 1" :colspan="Object.keys(fm.extraInfo).length">
                                 {{ tabData[Object.keys(tabData)[0]][tab][property].formatExtraInfoText(property) }}
                             </td>
-                            <td v-else v-for="dev in tabData" :key="dev">
+                            <td style="border: none;" v-else v-for="dev in tabData" :key="dev">
                                 <template v-if="dev[tab][property]">
                                     {{ dev[tab][property].formatExtraInfoText(property) }}
                                 </template>
@@ -789,5 +789,28 @@ select:-moz-focusring {
 
 td, th {
     text-align: center;
+}
+
+@media screen and (max-width: 575px) {
+    .tab-container section .tab-link {
+        width: 100%;
+    }
+
+    .tab-container section:last-of-type .tab-link  {
+        border-bottom-width: 1px;
+        border-radius: 0 0 0.25rem 0.25rem;
+    }
+
+    .tab-container section:first-of-type .tab-link {
+        border-radius: 0.25rem 0.25rem 0 0 !important;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .tab-container .tab {
+        border-radius: 0;
+        border-bottom-width: 0;
+        order: 0;
+    }
 }
 </style>
