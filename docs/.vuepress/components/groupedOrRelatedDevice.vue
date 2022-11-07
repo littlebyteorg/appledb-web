@@ -71,6 +71,7 @@ export default {
             font-weight: 600;
             font-size: 1.2em;
             padding-bottom: 6px;
+            width: calc(100% - 2em);
         }
     }
 }
