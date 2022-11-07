@@ -31,7 +31,7 @@ export default {
     },
     methods: {
         getDate(date) {
-            const dateArr = [date].map(x => {
+            const dateArr = [date].flat().map(x => {
                 const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
                 const currentDate = new Date(x).valueOf()
                 const adjustedDate = new Date(currentDate + dateOffset)

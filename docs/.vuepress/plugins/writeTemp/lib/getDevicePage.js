@@ -159,7 +159,7 @@ module.exports = function(args) {
             duplicateVersion: duplicateVersionArr.includes([i.osStr,i.version].join(' ')),
             url: `/firmware/${i.osStr.replace(/ /g,'-')}/${i.uniqueBuild}`,
             released: i.released,
-            preinstalled: i.preinstalled,
+            preinstalled: Array.isArray(i.preinstalled) ? i.preinstalled : i.preinstalled ? devIdFwArr : [],
             beta: i.beta,
             releasedStr: released,
             devices: devIdFwArr,

@@ -425,6 +425,7 @@ export default {
         }
     },
     mounted() {
+        const devKeyList = this.fm.device.map(x => x.key)
         this.versionArr = this.fm.versionArr.sort((a,b) => {
             const time = [a,b].map(x => x.released ? new Date(x.released).getTime() : 0)
             if (time[0] < time[1]) return 1
@@ -435,8 +436,9 @@ export default {
             return 0
         }).sort((a,b) => {
             if (this.fm.mainList) return 0
-            if (!a.preinstalled < !b.preinstalled) return 1
-            if (!a.preinstalled === true > !b.preinstalled) return -1
+            const compare = [a,b].map(x => x.preinstalled.some(r => devKeyList.includes(r)))
+            if (compare[0] < compare[1]) return -1
+            if (compare[0] > compare[1]) return 1
             return 0
         })
 
