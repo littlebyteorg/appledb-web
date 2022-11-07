@@ -68,7 +68,7 @@ export default {
 
     .info {
         .title {
-            font-weight: 700;
+            font-weight: 600;
             font-size: 1.2em;
             padding-bottom: 6px;
         }
