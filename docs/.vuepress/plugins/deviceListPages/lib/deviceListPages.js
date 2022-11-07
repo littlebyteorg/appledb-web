@@ -41,7 +41,7 @@ Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
             title: `Device Selection (${t})`,
             description: 'AppleDB device selection',
             chartType: 'deviceGroup',
-            widePage: true,
+            widePage: false,
             type: t,
             group: deviceGroups.map(x => {
             const devArr = x.devices.map(y => deviceList[y])

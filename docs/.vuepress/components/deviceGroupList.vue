@@ -1,38 +1,19 @@
 <template>
-    <!--<div class="navigator">
-        <router-link to="../">Home</router-link><span/>
-        <router-link to="./">Device Selection</router-link>
-    </div>-->
-
     <p v-for="s in introStr" :key="s">{{ s }}</p>
 
     <template v-for="o in groupObj" :key="o">
-        <h2>{{ o.label }}</h2>
-    
-        <table v-for="t in Math.ceil(o.types.length / colCount)" :key="t">
-            <tr :style="`width: ${parseInt(100 / colCount)}%;`">
-                <th v-for="c in colCount" :key="c" :style="{'width': parseInt(100 / colCount) + '%'}">
-                    <router-link v-if="o.types[(t - 1) * colCount + c - 1]" :to="
-                        `/device-selection/${o.types[(t - 1) * colCount + c - 1].fdn()}.html`
-                    ">
-                        {{ o.types[(t - 1) * colCount + c - 1] }}
-                    </router-link>
-                </th>
-            </tr>
-            <tr>
-                <td v-for="c in colCount" :key="c">
-                    <router-link v-if="o.types[(t - 1) * colCount + c - 1]" :to="
-                        `/device-selection/${o.types[(t - 1) * colCount + c - 1].fdn()}.html`
-                    ">
-                        <picture>
-                            <source :srcset="imageObj[o.types[(t - 1) * colCount + c - 1]] + '.avif'" type="image/avif">
-                            <source :srcset="imageObj[o.types[(t - 1) * colCount + c - 1]] + '.webp'" type="image/webp">
-                            <img :src="imageObj[o.types[(t - 1) * colCount + c - 1]] + '.png'" style="max-height: 8em;">
-                        </picture>
-                    </router-link>
-                </td>
-            </tr>
-        </table>
+        <h2 style="margin-bottom: 1.5em; ">{{ o.label }}</h2>
+
+        <div class="gridWrapper">
+            <div v-for="t in o.types" :key="t" class="gridItem"><router-link :to="`/device-selection/${t.fdn()}.html`">
+                <div class="imgWrapper"><picture>
+                    <source :srcset="imageObj[t] + '.avif'" type="image/avif">
+                    <source :srcset="imageObj[t] + '.webp'" type="image/webp">
+                    <img :src="imageObj[t] + '.png'">
+                </picture></div>
+                <div class="title">{{t}}</div>
+            </router-link></div>
+        </div>
     </template>
 
     <p><router-link to="/device-list.html">{{ viewAllStr }}</router-link></p>
@@ -62,7 +43,6 @@ export default {
             ],
             viewAllStr: 'View all devices',
 
-            colCount: 3,
             frontmatter: usePageFrontmatter(),
             isDarkMode: useDarkMode()
         }
@@ -161,12 +141,48 @@ export default {
 }
 </script>
 
-<style scoped>
-table {
-    table-layout: fixed;
+<style scoped lang="scss">
+.gridWrapper {
+    display: grid;
+    text-align: center;
+    gap: 0 3em;
+    padding-bottom: 1em;
+    
+    .imgWrapper {
+        display: grid;
+        align-items: center;
+        height: 8em;
+
+        img {
+            max-height: 8em;
+            margin-block: auto;
+        }
+    }
 }
 
-td, th {
-    text-align: center;
+.gridItem {
+    .title {
+        color: var(--c-text);
+        font-weight: 600;
+        font-size: 1.2em;
+        padding-top: 1em;
+    }
+
+    padding-bottom: 2em;
+    margin-bottom: 2em;
+    border-bottom: 1px solid var(--c-border);
+}
+@media screen and (min-width: 576px) {
+    .gridWrapper {
+        width: calc(100% - 6em);
+        grid-template-columns: 33% 34% 33%;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .gridWrapper {
+        width: calc(100% - 3em);
+        grid-template-columns: 50% 50%;
+    }
 }
 </style>

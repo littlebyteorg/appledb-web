@@ -12,6 +12,14 @@ const hasJbArr = [
     'bridgeOS'
 ]
 
+function getFilteredDownloads(dlArr) {
+    const retArr = dlArr
+    const urlCount = Array.from(new Set(retArr.map(x => x.url))).length
+
+    if (urlCount == 1) return [retArr[0]]
+    else return retArr
+}
+
 module.exports = function(args) {
     if (!Array.isArray(args.devArr)) args.devArr = [args.devArr]
     const devArr = args.devArr
@@ -151,6 +159,7 @@ module.exports = function(args) {
             duplicateVersion: duplicateVersionArr.includes([i.osStr,i.version].join(' ')),
             url: `/firmware/${i.osStr.replace(/ /g,'-')}/${i.uniqueBuild}`,
             released: i.released,
+            preinstalled: i.preinstalled,
             beta: i.beta,
             releasedStr: released,
             devices: devIdFwArr,
@@ -159,7 +168,9 @@ module.exports = function(args) {
                 devIdFwArr,
             jailbreakArr: jbArr,
             downloads: dlArr,
-            otas: otaArr
+            filteredDownloads: getFilteredDownloads(dlArr),
+            otas: otaArr,
+            filteredOtas: getFilteredDownloads(otaArr)
         }
     }).reverse()
 
@@ -229,7 +240,7 @@ module.exports = function(args) {
             title: name,
             description: description || `Information lookup for ${name}`,
             chartType: 'device',
-            widePage: true,
+            widePage: false,
             device: infoArr,
             versionArr: getVersionArr,
             grouped: grouped,

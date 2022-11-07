@@ -57,24 +57,14 @@
 
         <template v-if="!fm.hideChildren && groupedOrRelatedDevicesObj.devices.length > 1">
             <h2>{{ groupedOrRelatedDevicesObj.header }}</h2>
-            <ul>
-                <li v-for="dev in groupedOrRelatedDevicesObj.devices" :key="dev" class="showOnHover">
-                    <router-link :to="dev.url">
-                        {{ dev.name }}
-                    </router-link>
-                    <div v-if="dev.name != dev.identifier" style="padding-left: .5em;" class="hoverElement"><code>
-                        {{ dev.identifier.join(', ') }}
-                    </code></div>
-                </li>
-            </ul>
+            <div class="groupedOrRelatedDevicesWrapper"><groupedOrRelatedDevice v-for="dev in groupedOrRelatedDevicesObj.devices" :key="dev.url" :device="dev"/></div>
         </template>
     </template>
 
-    <h2 v-if="fm.versionArr && fm.versionArr.length > 0 && !fm.mainList">{{ versionHeaderStr }}</h2>
-
     <template v-if="fm.versionArr && fm.versionArr.length > 0">
+        <h2 v-if="!fm.mainList" style="margin-bottom: .3em;">{{ versionHeaderStr }}</h2>
 
-        <ul class="tableOptionsWrapper">
+        <div><ul class="tableOptionsWrapper" >
             <li :style="`margin-right: 1.5em; ${(fm.deviceFilter.length > 2) ? 'padding-top: 0.15em;' : ''}`">
                 <label class="chartDropdown">
                     <i class="fas fa-cog"></i>
@@ -83,13 +73,11 @@
                 </label>
                 <div class="chartDropdownBox">
                     <template v-for="(optionSection, index) in optionsObj.filter(x => x.filter(y => y.display).length > 0)" :key="optionSection">
-                        <ul>
-                            <li v-for="option in optionSection.filter(x => x.display)" :key="option">
-                                <input type="checkbox" v-model="options[option.model]" :id="option.id">
-                                <label :for="option.id">{{ option.label }}</label>
-                            </li>
-                        </ul>
-                        <template v-if="index < optionsObj.length - 1"><ul><li style="padding: 0;"><hr></li></ul></template>
+                        <ul v-for="option in optionSection.filter(x => x.display)" :key="option"><li>
+                            <input type="checkbox" v-model="options[option.model]" :id="option.id">
+                            <label :for="option.id">{{ option.label }}</label>
+                        </li></ul>
+                        <template v-if="index < optionsObj.length - 1"><ul><li style="padding: 0;"></li></ul></template>
                     </template>
                 </div>
             </li>
@@ -99,110 +87,20 @@
                     {{ sortStr }}
                 </label>
             </li>
-            <li v-if="!fm.hideChildren && fm.deviceFilter.length > 2">
-                <select v-model="options.filterDev" name="deviceSelect" id="deviceSelect" :style="`margin-left: .5em; ${(options.filterDev == fm.deviceFilter[0].value) ? 'color: gray;' : ''}`">
-                    <option v-for="(filterItem, index) in fm.deviceFilter" :key="filterItem" :value="filterItem.value">
-                        <template v-if="index == 0 && !fm.mainList" >{{ allDeviceStr }}</template>
-                        <template v-else>{{ filterItem.label }}</template>
-                    </option>
-                </select>
-            </li>
-        </ul>
+        </ul></div>
 
-        <div class="tableContainer">
-            
-            <table>
-                <tr>
-                    <th v-for="header in tableHeaders" :key="header">{{ header }}</th>
-                </tr>
-                <template v-for="fw in versionArr" :key="fw">
-                    <tr v-if="
-                        (fw.beta ? options.showBeta : options.showStable) &&
-                        (fm.mainList ? 
-                            fw.deviceFilterArr.includes(options.filterDev) || options.filterDev == fm.deviceFilter[0].value :
-                            fw.deviceFilterArr.some(r => options.filterDev.includes(r))
-                        )
-                    ">
-
-                        <td v-if="options.showBuildColumn" class="showOnHover">
-                            <router-link v-if="fw.build" :to="fw.url">{{ fw.build }}</router-link>
-                            <template v-else>N/A</template>
-                            <template v-if="getFilteredDownloads(fw.downloads).length == 1 && !options.showDownloadColumn">
-                                <a v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" :href="dl.url">
-                                    <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
-                                </a>
-                            </template>
-                        </td>
-                        
-                        <td v-if="options.showVersionColumn">
-                            <template v-if="options.showBuildColumn">
-                                <template v-if="fw.build">{{ fw.osStr }} {{ fw.version }}</template>
-                                <router-link v-else :to="fw.url">{{ fw.osStr }} {{ fw.version }}</router-link>
-                            </template>
-                            <div v-else class="showOnHover">
-                                <router-link :to="fw.url">{{ fw.osStr }} {{ fw.version }}<template v-if="fw.duplicateVersion && fw.build"> ({{ fw.build }})</template></router-link>
-                                <template v-if="getFilteredDownloads(fw.downloads).length == 1 && !options.showDownloadColumn">
-                                    <a v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" :href="dl.url">
-                                        <i class="fas fa-download hoverElement" style="margin-left: .4em; position: absolute;"></i>
-                                    </a>
-                                </template>
-                            </div>
-                        </td>
-
-                        <td v-if="options.showJailbreakColumn">
-                            <template v-for="(jb, index) in fw.jailbreakArr" :key="jb">
-                                <router-link :to="encodeURI(`/jailbreak/${jb.replace(/ /g, '-')}.html`)">
-                                    {{ jb }}
-                                </router-link>
-                                <template v-if="index < fw.jailbreakArr.length - 1">, </template>
-                            </template>
-                            <template v-if="fw.jailbreakArr.length == 0">{{ naStr }}</template>
-                        </td>
-
-                        <td v-if="options.showDownloadColumn">
-                            <template v-if="getFilteredDownloads(fw.downloads).length == 0">
-                                {{ naStr }}
-                            </template>
-                            <template v-else-if="getFilteredDownloads(fw.downloads).length > 1 && fm.mainList">
-                                <router-link :to="fw.url">{{ viewAllStr }}</router-link>
-                            </template>
-                            <div v-else v-for="dl in getFilteredDownloads(fw.downloads)" :key="dl" class="showOnHover">
-                                <a :href="dl.url">
-                                    <template v-if="getFilteredDownloads(fw.downloads).length > 1">
-                                        {{ dl.deviceName }}
-                                    </template>
-                                    <template v-else>
-                                        {{ dl.label.slice(0,50) }}{{ dl.label.length > 50 ? '...' : '' }}
-                                    </template>
-                                    <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
-                                </a>
-                            </div>
-                        </td>
-
-                        <td v-if="options.showOtaColumn">
-                            <template v-if="getFilteredDownloads(fw.otas).length == 0">
-                                {{ naStr }}
-                            </template>
-                            <template v-else-if="getFilteredDownloads(fw.otas).length > 1 && fm.mainList">
-                                <router-link :to="fw.url">{{ viewAllStr }}</router-link>
-                            </template>
-                            <div v-else v-for="dl in getFilteredDownloads(fw.otas)" :key="dl" class="showOnHover">
-                                <template v-if="getFilteredDownloads(fw.otas).length > 1">{{ dl.deviceName }}: </template>
-                                <a :href="dl.url">
-                                    {{ dl.label }}
-                                    <i class="fas fa-download opaqueHoverElement" style="margin-left: .4em; position: absolute;"></i>
-                                </a>
-                            </div>
-                        </td>
-
-                        <td v-if="options.showReleasedColumn" style="width: 7em;">{{ (fw.releasedStr) ? fw.releasedStr : unknownDateStr }}</td>
-
-                    </tr>
-                </template>
-            </table>
-
-            <div v-if="!fm.noJb && fm.jbCount < 1" class="custom-container tip"><p>There are no jailbreak tools compatible with this device.</p></div>
-        </div>
+        <div><template v-for="filteredFirmwares in [
+            versionArr.filter(fw =>
+                fw.beta ? options.showBeta : options.showStable
+            )
+        ]">
+        <firmwareVersionTableElement
+            v-for="fw in filteredFirmwares"
+            :key="fw"
+            :fw="fw"
+            :options="options"
+            :showSingleDownloads="filteredFirmwares.map(x => x.filteredDownloads).filter(x => x.length == 1).length > 0"
+        /></template></div>
     </template>
 
     <p>AppleDB is not affiliated with Apple Inc.</p>
@@ -247,6 +145,8 @@ function formatDeviceName(n) {
 export default {
     data() {
         return {
+            loadedFirmwares: [0,25],
+
             infoStrArr: [
                 "Identifier: ${identifier}",
                 "Released: ${released}",
@@ -309,6 +209,7 @@ export default {
             
             wrapImg: false,
             reverseSorting: false,
+            unslicedVersionArr: [],
             versionArr: [],
 
             devicePath: '/device',
@@ -400,6 +301,10 @@ export default {
                     return {
                         name: x.name,
                         identifier: x.identifier,
+                        key: x.key,
+                        released: x.released,
+                        imgCount: this.fm.img.count,
+                        imgDark: this.fm.img.dark,
                         url: [
                             this.devicePath,
                             'identifier',
@@ -416,12 +321,7 @@ export default {
                     "showBeta",
                 ],
                 [
-                    "showBuildColumn",
-                    "showVersionColumn",
-                    "showJailbreakColumn",
-                    "showDownloadColumn",
-                    "showOtaColumn",
-                    "showReleasedColumn"
+                    "showBuildColumn"
                 ]
             ].map(x => {
                 return x.map(y => {
@@ -439,26 +339,6 @@ export default {
                 {
                     label: this.tableHeadObj.build,
                     value: this.options.showBuildColumn
-                },
-                {
-                    label: this.tableHeadObj.version,
-                    value: this.options.showVersionColumn
-                },
-                {
-                    label: this.tableHeadObj.jailbreak,
-                    value: this.options.showJailbreakColumn
-                },
-                {
-                    label: this.tableHeadObj.download,
-                    value: this.options.showDownloadColumn
-                },
-                {
-                    label: this.tableHeadObj.ota,
-                    value: this.options.showOtaColumn
-                },
-                {
-                    label: this.tableHeadObj.released,
-                    value: this.options.showReleasedColumn
                 }
             ].filter(x => x.value).map(x => x.label)
         }
@@ -468,8 +348,8 @@ export default {
             const flexImgs = document.getElementsByClassName('flexImg')
             const flexInfoWidth = document.getElementById('flexInfo').getBoundingClientRect().width
 
-            const homeElement = document.getElementsByClassName('home')[0]
-            var totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
+            const element = document.getElementsByClassName('home')[0] || document.getElementsByClassName('theme-default-content')[0]
+            var totalWidth = element.clientWidth - parseFloat(window.getComputedStyle(element).paddingLeft) - parseFloat(window.getComputedStyle(element).paddingRight)
             let flexImgWidth = 0
 
             const flexImgsLength = flexImgs.length
@@ -485,9 +365,35 @@ export default {
             }
 
             window.onresize = () => {
-                totalWidth = totalWidth = homeElement.clientWidth - parseFloat(window.getComputedStyle(homeElement).paddingLeft) - parseFloat(window.getComputedStyle(homeElement).paddingRight)
+                totalWidth = totalWidth = element.clientWidth - parseFloat(window.getComputedStyle(element).paddingLeft) - parseFloat(window.getComputedStyle(element).paddingRight)
                 this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
             }
+        },
+        checkScroll: function() {
+            const loadRows = this.loadedFirmwares[1] - this.loadedFirmwares[0]
+            
+            if (this.versionArr.length >= loadRows) window.addEventListener("scroll", (event) => {
+                const pageElement = document.getElementsByClassName('home')[0] || document.getElementsByClassName('theme-default-content')[0]
+
+                let scroll = window.scrollY
+                let pageHeight = pageElement.clientHeight
+                let tableHeight = document.getElementsByClassName('firmwareVersionTableElement')[0].clientHeight
+                
+                if (scroll >= pageHeight - (tableHeight * loadRows) && this.loadedFirmwares[1] <= this.versionArr.length + loadRows) {
+                    this.loadedFirmwares[1] += loadRows
+                    if (this.loadedFirmwares[1] - this.loadedFirmwares[0] > loadRows * 4) {
+                        this.loadedFirmwares[0] += loadRows
+                        window.scrollBy(0, -tableHeight * loadRows)
+                    }
+                }
+                if (scroll < (tableHeight * loadRows) && this.loadedFirmwares[0] >= loadRows) {
+                    this.loadedFirmwares[0] -= loadRows
+                    if (this.loadedFirmwares[1] - this.loadedFirmwares[0] > loadRows * 4) {
+                        this.loadedFirmwares[1] -= loadRows
+                        window.scrollBy(0, tableHeight * loadRows)
+                    }
+                }
+            })
         },
         validateJSON(text) {
             if (typeof text !== "string") {
@@ -524,25 +430,18 @@ export default {
             if (osStr[0] < osStr[1]) return -1
             if (osStr[0] > osStr[1]) return 1
             return 0
+        }).sort((a,b) => {
+            if (this.fm.mainList) return 0
+            if (!a.preinstalled < !b.preinstalled) return 1
+            if (!a.preinstalled === true > !b.preinstalled) return -1
+            return 0
         })
 
         const noJailbreaks = this.fm.noJb || this.fm.jbCount < 1
 
-        if (noJailbreaks) {
-            this.options.showReleasedColumn = true
-            this.options.showJailbreakColumn = false
-            this.options.showDownloadColumn = false
-        }
-        if (window.screen.width > 650) {
-            this.options.showReleasedColumn = true
-            if (noJailbreaks) this.options.showDownloadColumn = true
-        }
         if (this.fm.mainList) {
             this.options.filterDev = this.fm.deviceFilter[0].value
-
-            this.options.showBeta = true
-            this.options.showDownloadColumn = true
-            this.options.showJailbreakColumn = false
+            //this.options.showBeta = true
         }
         else {
             this.checkWrap()
@@ -552,6 +451,9 @@ export default {
         if (this.tabArr.length > 0) this.activeTab = this.tabArr[0]
 
         this.maxImgCount = this.fm.imgCount
+    },
+    updated() {
+        //if (this.versionArr.length > 200) this.checkScroll()
     },
     watch: {
         imgCount(val) {
@@ -761,14 +663,8 @@ select:-moz-focusring {
 }
 
 .tableOptionsWrapper li {
-  float: left;
-  margin: 0em 1.5em .5em 0em;
-}
-
-@media (min-width: 951px) {
-  .tableOptionsWrapper {
-      margin-bottom: 2.1em;
-  }
+    display: inline;
+    margin: 0em 1.5em .5em 0em;
 }
 
 .tableOptionsWrapper li {
@@ -811,6 +707,17 @@ td, th {
         border-radius: 0;
         border-bottom-width: 0;
         order: 0;
+    }
+}
+
+.groupedOrRelatedDevicesWrapper {
+    display: grid;
+        grid-template-columns: 50% 50%;
+}
+
+@media screen and (max-width: 575px) {
+    .groupedOrRelatedDevicesWrapper {
+        grid-template-columns: 100%;
     }
 }
 </style>
