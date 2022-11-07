@@ -7,7 +7,7 @@
         }"
     >
         <div><a style="cursor: pointer;">{{ [fw.osStr, fw.version].join(' ') }}
-            <template v-for="tag in [[fw.preinstalled ? 'Preinstalled' : false, fw.duplicateVersion || options.showBuildColumn ? fw.build : false].filter(x => x)]" :key="tag">
+            <template v-for="tag in [[fw.duplicateVersion || options.showBuildColumn ? fw.build : false, fw.preinstalled ? 'Preinstalled' : false].filter(x => x)]" :key="tag">
                 <span v-if="tag.length"> ({{tag.join(', ')}})</span>
             </template>
         </a></div>

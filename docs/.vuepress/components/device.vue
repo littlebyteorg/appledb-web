@@ -63,31 +63,27 @@
 
     <template v-if="fm.versionArr && fm.versionArr.length > 0">
         <h2 v-if="!fm.mainList" style="margin-bottom: .3em;">{{ versionHeaderStr }}</h2>
-
-        <div><ul class="tableOptionsWrapper" >
-            <li :style="`margin-right: 1.5em; ${(fm.deviceFilter.length > 2) ? 'padding-top: 0.15em;' : ''}`">
-                <label class="chartDropdown">
-                    <i class="fas fa-cog"></i>
-                    {{ optionsStr }}
-                    <span class="arrow down"></span>
-                </label>
-                <div class="chartDropdownBox">
-                    <template v-for="(optionSection, index) in optionsObj.filter(x => x.filter(y => y.display).length > 0)" :key="optionSection">
-                        <ul v-for="option in optionSection.filter(x => x.display)" :key="option"><li>
-                            <input type="checkbox" v-model="options[option.model]" :id="option.id">
-                            <label :for="option.id">{{ option.label }}</label>
-                        </li></ul>
-                        <template v-if="index < optionsObj.length - 1"><ul><li style="padding: 0;"></li></ul></template>
-                    </template>
-                </div>
-            </li>
-            <li :style="`margin-right: 1.5em; ${(fm.deviceFilter.length > 2) ? 'padding-top: 0.15em;' : ''}`">
-                <label class="chartDropdown" v-on:click="versionArr.reverse()">
-                    <i class="fas fa-sort"></i>
-                    {{ sortStr }}
-                </label>
-            </li>
-        </ul></div>
+        
+        <div class="optionsWrapper">
+            <div
+                :class="[options.showStable ? 'active' : '', 'stable']"
+                v-on:click="options.showStable = !options.showStable"
+            >
+                <i class="fas fa-circle stable"></i> Stable
+            </div>
+            <div
+                :class="[options.showBeta ? 'active' : '', 'beta']"
+                v-on:click="options.showBeta = !options.showBeta"
+            >
+                <i class="fas fa-circle beta"></i> Beta
+            </div>
+            <div
+                v-on:click="versionArr.reverse()"
+                style="margin-left: auto;"
+            >
+                <i class="fas fa-sort"></i> Sort
+            </div>
+        </div>
 
         <div><template v-for="filteredFirmwares in [
             versionArr.filter(fw =>
@@ -463,7 +459,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .devFlexImgWrapper {
     overflow: hidden;
     user-select: none;
@@ -511,41 +507,86 @@ select {
     5px 5px,
     1px 1.5em;
   background-repeat: no-repeat;
-}
 
-select:focus {
-  background-image:
-    linear-gradient(45deg, var(--c-text-accent) 50%, transparent 50%),
-    linear-gradient(135deg, transparent 50%, var(--c-text-accent) 50%),
-    linear-gradient(to right, var(--c-text-accent), var(--c-text-accent));
-  background-position:
-    calc(100% - 13px) 1.1em,
-    calc(100% - 18px) 1.1em,
-    calc(100% - 2.5em) 0.55em;
-  background-size:
-    5px 5px,
-    5px 5px,
-    1px 1.5em;
-  background-repeat: no-repeat;
-  border-color: var(--c-text-accent);
-  color: var(--c-text-accent) !important;
-  outline: 0;
-}
+  &:focus {
+    background-image:
+        linear-gradient(45deg, var(--c-text-accent) 50%, transparent 50%),
+        linear-gradient(135deg, transparent 50%, var(--c-text-accent) 50%),
+        linear-gradient(to right, var(--c-text-accent), var(--c-text-accent));
+    background-position:
+        calc(100% - 13px) 1.1em,
+        calc(100% - 18px) 1.1em,
+        calc(100% - 2.5em) 0.55em;
+    background-size:
+        5px 5px,
+        5px 5px,
+        1px 1.5em;
+    background-repeat: no-repeat;
+    border-color: var(--c-text-accent);
+    color: var(--c-text-accent) !important;
+    outline: 0;
+    }
 
-select:-moz-focusring {
-  color: transparent;
-  text-shadow: 0 0 0 #000;
+    &:-moz-focusring {
+        color: transparent;
+        text-shadow: 0 0 0 #000;
+    }
 }
 
 .flexWrapper {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
+    img {
+        align-self: center;
+        margin-right: 0;
+        margin-left: 0;
+    }
 }
 
-.flexWrapper img {
-  align-self: center;
-  margin-right: 0;
-  margin-left: 0;
+.optionsWrapper {
+    display: flex;
+    transition: 50ms background ease-in-out;
+    align-content: space-between;
+
+    .active {
+        background: var(--c-border);
+    }
+
+    .active.stable {
+        background: rgb(3, 155, 229, 0.1);
+    }
+    .active.beta {
+        background: rgb(171, 71, 189, 0.1);
+    }
+
+    div {
+        padding: .7em;
+        padding-inline: 1em;
+        margin: .3em;
+        border-radius: 6px;
+        cursor: pointer;
+        user-select: none;
+        transition: 50ms background ease-in-out;
+
+        &:hover {
+            background: var(--c-border);
+        }
+
+        .fa-circle {
+            font-size: .5em;
+            vertical-align: middle;
+            padding-bottom: 2px;
+            padding-right: 4px;
+        }
+
+        .stable {
+            color: #039be5;
+        }
+
+        .beta {
+            color: #ab47bc;
+        }
+    }
 }
 
 .infoList {
@@ -554,121 +595,117 @@ select:-moz-focusring {
     margin-top: 0;
 }
 
-.showOnHover .hoverElement {
-  opacity: 0;
-  display: none !important;
-}
+.showOnHover {
+    .hoverElement, .opaqueHoverElement {
+        opacity: 0;
+        display: none !important;
+    }
 
-.showOnHover .opaqueHoverElement {
-  opacity: 0;
-  display: none !important;
-}
+    &:hover {
+        .hoverElement, .opaqueHoverElement {
+            transition-property: opacity;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 100ms;
+            display: inline !important;
 
-.showOnHover:hover .hoverElement {
-  opacity: 0.3;
-  transition-property: opacity;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 100ms;
-  display: inline !important;
-}
+        }
+        .hoverElement {
+            opacity: 0.3;
+        }
 
-.showOnHover:hover .opaqueHoverElement {
-  opacity: 1;
-  transition-property: opacity;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 100ms;
-  display: inline !important;
+        .opaqueHoverElement {
+            opacity: 1;
+        }
+    }
 }
 
 .hoverElement:hover {
-  opacity: 1 !important;
-  display: inline !important;
+    opacity: 1 !important;
+    display: inline !important;
 }
 
 .chartDropdown {
-  font-size: 0.9rem;
-  line-height: 1.4rem;
-  font-weight: 500;
-  cursor: pointer;
-  user-select: none;
+    font-size: .9rem;
+    line-height: 1.4rem;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+
+    :hover + .chartDropdownBox {
+        left: auto;
+        top: auto;
+        padding: 1.5em 0.8em 1.5em 0em;
+        box-shadow: 0px 1px 6px var(--dropdown-shadow);
+        max-height: 100%;
+        transition: 300ms ease-in-out;
+    }
+
+    :hover + .chartDropdownBox li {
+        opacity: 1 !important;
+        padding: 0em 1em;
+        max-height: 100%;
+    }
+
+    :hover li {
+        opacity: 1;
+        padding: 0em 1em;
+        max-height: 100%;
+    }
+
+    li {
+        list-style-type: none;
+        float: none !important;
+        margin: 0 !important;
+
+        overflow: hidden;
+        padding: 0px;
+        opacity: 0;
+        max-height: 0px;
+        transition: 300ms ease-in-out;
+    }
 }
 
 .chartDropdownBox {
-  position: absolute;
-  height: auto !important;
-  box-sizing: border-box;
-  background-color: var(--c-bg-navbar);
-  border-bottom-color: var(--c-border-dark);
-  text-align: left;
-  border-radius: 0.25rem;
-  white-space: nowrap;
-  top: auto;
-  user-select: none;
-  border: 0px solid var(--c-border);
+    opacity: 0;
+    position: absolute;
+    height: auto !important;
+    box-sizing: border-box;
+    background-color: var(--c-bg-navbar);
+    border-bottom-color: var(--c-border-dark);
+    text-align: left;
+    border-radius: 0.25rem;
+    white-space: nowrap;
+    top: auto;
+    user-select: none;
+    border: 0px solid var(--c-border);
 
-  padding: 0;
-  max-height: 0px;
-  transition: 300ms ease-in-out;
-}
+    padding: 0;
+    max-height: 0px;
+    transition: 300ms ease-in-out;
+    
+    input[type="checkbox"] {
+        position: static;
+        left: 0px;
+        opacity: 1;
+        margin-right: .5em;
+    }
 
-.chartDropdownBox input[type="checkbox"] {
-  position: static;
-  left: 0px;
-  opacity: 1;
-  margin-right: .5em;
-}
-
-.chartDropdown:hover + div.chartDropdownBox {
-  left: auto;
-  top: auto;
-  padding: 1.5em 0.8em 1.5em 0em;
-  /*border: 1px solid var(--c-border);*/
-  box-shadow: 0px 1px 6px var(--dropdown-shadow);
-  max-height: 100%;
-  transition: 300ms ease-in-out;
-}
-
-.chartDropdownBox:hover {
-  left: auto;
-  top: auto;
-  padding: 1.5em 0.8em 1.5em 0em;
-  /*border: 1px solid var(--c-border);*/
-  box-shadow: 0px 1px 6px var(--dropdown-shadow);
-  max-height: 100%;
-  transition: 300ms ease-in-out;
-}
-
-.chartDropdown:hover + div.chartDropdownBox li {
-  opacity: 1;
-  padding: 0em 1em;
-  max-height: 100%;
-}
-
-.chartDropdownBox:hover li {
-  opacity: 1;
-  padding: 0em 1em;
-  max-height: 100%;
-}
-
-.chartDropdownBox li {
-  list-style-type: none;
-  float: none !important;
-  margin: 0 !important;
-
-  overflow: hidden;
-  padding: 0px;
-  opacity: 0;
-  max-height: 0px;
-  transition: 300ms ease-in-out;
+    :hover {
+        left: auto;
+        top: auto;
+        padding: 1.5em 0.8em 1.5em 0em;
+        /*border: 1px solid var(--c-border);*/
+        box-shadow: 0px 1px 6px var(--dropdown-shadow);
+        max-height: 100%;
+        transition: 300ms ease-in-out;
+        opacity: 1;
+    }
 }
 
 .tableOptionsWrapper li {
     display: inline;
     margin: 0em 1.5em .5em 0em;
-}
-
-.tableOptionsWrapper li {
-  list-style-type: none;
+    list-style-type: none;
 }
 
 .chartDropdown button {
