@@ -54,7 +54,7 @@
             </ul>
         </template>
     </div>
-    <div v-if="!expanded" style="border-bottom: 1px solid var(--c-border); width: calc(100% - 24px); margin: auto; margin-top: -1px;"/>
+    <div v-if="!expanded" style="border-bottom: 1px solid var(--c-border); width: calc(100% - 24px); margin: auto; margin-block: -1px;"/>
 </template>
 
 <script>
