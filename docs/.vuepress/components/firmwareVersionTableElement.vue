@@ -81,7 +81,7 @@ export default {
         this.getSigningStatus(this.fw.build, this.fw.devices)
     },
     methods: {
-        getSigningStatus(buildid, identifiers) {
+        async getSigningStatus(buildid, identifiers) {
             var request = new XMLHttpRequest()
 
             request.open('GET', `https://api.ipsw.me/v4/ipsw/${identifiers[0]}/${buildid}`)
