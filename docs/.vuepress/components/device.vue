@@ -557,6 +557,7 @@ select {
 
     .active {
         background: var(--c-border);
+        font-weight: 600;
     }
 
     .active.stable {
