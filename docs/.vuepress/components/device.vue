@@ -88,7 +88,7 @@
         <div><template v-for="filteredFirmwares in [
             versionArr.filter(fw =>
                 fw.beta ? options.showBeta : options.showStable
-            )
+            ).slice(loadedFirmwares[0], loadedFirmwares[1])
         ]">
         <firmwareVersionTableElement
             v-for="fw in filteredFirmwares"
@@ -97,6 +97,13 @@
             :options="options"
             :showSingleDownloads="filteredFirmwares.map(x => x.filteredDownloads).filter(x => x.length == 1).length > 0"
         /></template></div>
+
+        <template v-if="loadedFirmwares[1] < versionArr.filter(fw => fw.beta ? options.showBeta : options.showStable).length">
+            <div style="display: flex; padding: 1em; padding-top: 1.5em;">
+                <div>Displaying {{ loadedFirmwares[1] }} firmwares out of {{ versionArr.filter(fw => fw.beta ? options.showBeta : options.showStable).length }}.</div>
+                <div style="margin-left: auto;"><a style="cursor: pointer;" v-on:click="loadedFirmwares[1] += 500">Load more</a></div>
+            </div>
+        </template>
     </template>
 
     <p>AppleDB is not affiliated with Apple Inc.</p>
@@ -141,7 +148,7 @@ function formatDeviceName(n) {
 export default {
     data() {
         return {
-            loadedFirmwares: [0,25],
+            loadedFirmwares: [0,100],
 
             infoStrArr: [
                 "Identifier: ${identifier}",
@@ -437,7 +444,7 @@ export default {
 
         if (this.fm.mainList) {
             this.options.filterDev = this.fm.deviceFilter[0].value
-            //this.options.showBeta = true
+            this.options.showBeta = true
         }
         else {
             this.checkWrap()
