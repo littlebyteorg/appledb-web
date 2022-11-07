@@ -159,7 +159,7 @@ export default {
             groupedHeaderStr: 'Grouped Devices',
             relatedHeaderStr: 'Related Devices',
 
-            versionHeaderStr: 'Version Table',
+            versionHeaderStr: 'Firmware Versions',
             tableHeadObj: {
                 build: "Build",
                 version: "Version",
