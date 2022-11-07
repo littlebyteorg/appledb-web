@@ -6,11 +6,17 @@
             'grid-template-columns': showSingleDownloads ? '50% calc(50% - 4em) 2em 2em' : '50% calc(50% - 2em) 2em'
         }"
     >
-        <div><a style="cursor: pointer;">{{ [fw.osStr, fw.version].join(' ') }}
-            <template v-for="tag in [[fw.duplicateVersion || options.showBuildColumn ? fw.build : false, fw.preinstalled ? 'Preinstalled' : false].filter(x => x)]" :key="tag">
-                <span v-if="tag.length"> ({{tag.join(', ')}})</span>
-            </template>
-        </a></div>
+        <div>
+            <a style="cursor: pointer;">{{ [fw.osStr, fw.version].join(' ') }}
+                <template v-for="tag in [[fw.duplicateVersion || options.showBuildColumn ? fw.build : false, fw.preinstalled ? 'Preinstalled' : false].filter(x => x)]" :key="tag">
+                    <span v-if="tag.length"> ({{tag.join(', ')}})</span>
+                </template>
+            </a>
+            <div class="signingStatus">
+                <i :id="`signing-status-${fw.build}`" class="fas"></i>
+                <span :id="`signing-text-${fw.build}`" class="signingText"></span>
+            </div>
+        </div>
         <div style="text-align: right;">{{ fw.releasedStr }}</div>
         <div style="text-align: right;">
             <a style="cursor: pointer;">
@@ -67,13 +73,87 @@ export default {
     },
     data() {
         return {
-            expanded: false
+            expanded: false,
+            signed: 'unknown'
+        }
+    },
+    mounted() {
+        this.getSigningStatus(this.fw.build, this.fw.devices)
+    },
+    methods: {
+        getSigningStatus(buildid, identifiers) {
+            var request = new XMLHttpRequest()
+
+            request.open('GET', `https://api.ipsw.me/v4/ipsw/${identifiers[0]}/${buildid}`)
+
+            request.setRequestHeader('Accept', 'application/json')
+
+            request.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    if (this.status == 200) {
+                        const response = JSON.parse(this.responseText)
+                        var statusElement = document.getElementById(`signing-status-${buildid}`)
+                        var statusText = document.getElementById(`signing-text-${buildid}`)
+                        
+                        if (response.signed) {
+                            statusElement.classList.add('fa-check')
+                            statusText.innerHTML = 'Signed'
+                        }
+                        else {
+                            statusElement.classList.add('fa-times')
+                            statusText.innerHTML = 'Not signed'
+                        }
+                    }
+                }
+            }
+
+            request.send()
         }
     }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.signingStatus {
+    display: inline;
+
+    &:hover {
+        .signingText {
+            opacity: 0.8;
+            margin-left: 0px;
+        }
+    }
+
+    i {
+        font-size: .7em;
+        padding-left: 4px;
+        padding-bottom: 2px;
+        vertical-align: middle;
+    }
+
+    .signingText {
+        position: absolute;
+        padding-left: .5em;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 1px;
+        font-size: .7em;
+        opacity: 0;
+        transition: 150ms opacity ease-in-out, 150ms margin ease-in-out;
+        padding-top: 3.5px;
+        margin-left: -10px;
+    }
+
+    .fa-check {
+        color: rgb(76, 175, 80, 0.7);
+    }
+
+    .fa-times {
+        font-size: .8em;
+        padding-bottom: 0;
+        color: rgb(244, 67, 54, 0.7);
+    }
+}
 .wrapper {
     display: grid;
     padding: 1em;
