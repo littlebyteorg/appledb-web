@@ -2,7 +2,7 @@
   <main class="page">
     <div class="theme-default-content">
       <h1>{{ pageTitle }}</h1>
-      <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
+      <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`" style="margin-bottom: 1em;"></div>
       <template v-for="section in sections" :key="section.title">
         <h2 v-if="section.title">{{ section.title }}</h2>
         <vueSection :section="section"/>
