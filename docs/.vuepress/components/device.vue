@@ -84,10 +84,16 @@
                 <i class="fas fa-sort"></i> Sort
             </div>
         </div>
+        
+        <deviceFilter v-if="fm.mainList" :filterOptions="fm.deviceFilter" :options="options"/>
 
         <div><template v-for="filteredFirmwares in [
             versionArr.filter(fw =>
-                fw.beta ? options.showBeta : options.showStable
+                (fw.beta ? options.showBeta : options.showStable) &&
+                (fm.mainList ? 
+                    fw.deviceFilterArr.some(r => options.filterDev.includes(r)) :
+                    /*fw.deviceFilterArr.some(r => options.filterDev.includes(r))*/ true
+                )
             ).slice(loadedFirmwares[0], loadedFirmwares[1])
         ]">
         <firmwareVersionTableElement
@@ -445,12 +451,12 @@ export default {
         const noJailbreaks = this.fm.noJb || this.fm.jbCount < 1
 
         if (this.fm.mainList) {
-            this.options.filterDev = this.fm.deviceFilter[0].value
+            this.options.filterDev = this.fm.deviceFilter.map(x => x.value)
             this.options.showBeta = true
         }
         else {
             this.checkWrap()
-            this.options.filterDev = this.fm.deviceFilter[0].value
+            //this.options.filterDev = this.fm.deviceFilter.map(x => x.value)
         }
 
         if (this.tabArr.length > 0) this.activeTab = this.tabArr[0]

@@ -252,7 +252,7 @@ module.exports = function(args) {
             img: img,
             extraInfo: extraInfo || undefined,
             deviceFilter: (mainList) ? 
-                ['Filter'].concat(Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort((a, b) => a.localeCompare(b))).map(x => {
+                Array.from(new Set(devArr.map(x => getDevType(x.type)))).sort((a, b) => a.localeCompare(b)).map(x => {
                     return {
                         label: x,
                         value: x
