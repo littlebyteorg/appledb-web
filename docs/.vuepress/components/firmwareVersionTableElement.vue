@@ -117,13 +117,6 @@ export default {
 .signingStatus {
     display: inline;
 
-    &:hover {
-        .signingText {
-            opacity: 0.8;
-            margin-left: 0px;
-        }
-    }
-
     i {
         font-size: .7em;
         padding-left: 4px;
@@ -160,6 +153,14 @@ export default {
     cursor: pointer;
     border-radius: 12px;
     transition: background 75ms ease-in-out;
+
+
+    &:hover {
+        .signingText {
+            opacity: 0.8;
+            margin-left: 2px;
+        }
+    }
 }
 
 .wrapper:hover {
