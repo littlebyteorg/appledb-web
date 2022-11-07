@@ -35,7 +35,6 @@
     <div v-if="expanded" class="custom-container">
         <h5>Firmware</h5>
         <ul style="padding-left: 0; list-style-type: none;">
-            <li>Version: {{ [fw.osStr, fw.version].join(' ') }}</li>
             <li v-if="fw.build">Build: {{ fw.build }}</li>
             <li v-if="fw.releasedStr" class="releasedInfo">Released{{ fw.releasedStr.includes(',') ? ' on' : ':'}} {{ fw.releasedStr }}</li>
             <li><router-link :to="fw.url">View more</router-link></li>
