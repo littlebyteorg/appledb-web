@@ -17,7 +17,7 @@
                 <span :id="`signing-text-${fw.build}`" class="signingText"></span>
             </div>
         </div>
-        <div style="text-align: right;">{{ fw.releasedStr }}</div>
+        <div style="text-align: right;" class="releasedStr">{{ fw.releasedStr }}</div>
         <div style="text-align: right;">
             <a style="cursor: pointer;">
                 <i :class="[
@@ -37,6 +37,7 @@
         <ul style="padding-left: 0; list-style-type: none;">
             <li>Version: {{ [fw.osStr, fw.version].join(' ') }}</li>
             <li v-if="fw.build">Build: {{ fw.build }}</li>
+            <li v-if="fw.releasedStr" class="releasedInfo">Released{{ fw.releasedStr.includes(',') ? ' on' : ':'}} {{ fw.releasedStr }}</li>
             <li><router-link :to="fw.url">View more</router-link></li>
         </ul>
         <template v-if="fw.filteredDownloads.length">
@@ -170,5 +171,22 @@ export default {
 h5 {
     margin-top: 1.5em;
     padding-top: 0;
+}
+
+.releasedInfo {
+    display: none;
+}
+
+@media screen and (max-width: 575px) {
+    .releasedStr {
+        opacity: 0;
+        height: 0;
+        width: 0;
+        user-select: none;
+    }
+
+    .releasedInfo {
+        display: block;
+    }
 }
 </style>
