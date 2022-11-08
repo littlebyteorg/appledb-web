@@ -89,11 +89,8 @@
 
         <div><template v-for="filteredFirmwares in [
             versionArr.filter(fw =>
-                (fw.beta ? options.showBeta : options.showStable) &&
-                (fm.mainList ? 
-                    fw.deviceFilterArr.some(r => options.filterDev.includes(r)) :
-                    /*fw.deviceFilterArr.some(r => options.filterDev.includes(r))*/ true
-                )
+                (fw.beta ? options.showBeta : options.showStable)
+                /*&& fw.deviceFilterArr.some(r => options.filterDev.includes(r))*/
             ).slice(loadedFirmwares[0], loadedFirmwares[1])
         ]">
         <firmwareVersionTableElement
