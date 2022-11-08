@@ -2,9 +2,6 @@
     <div
         class="wrapper firmwareVersionTableElement"
         v-on:click="expanded = !expanded"
-        :style="{
-            'grid-template-columns': showSingleDownloads ? '50% calc(50% - 4em) 2em 2em' : '50% calc(50% - 2em) 2em'
-        }"
     >
         <div>
             <a style="cursor: pointer;">{{ [fw.osStr, fw.version].join(' ') }}
@@ -17,8 +14,12 @@
                 <span :id="`signing-text-${fw.build}`" class="signingText"></span>
             </div>
         </div>
-        <div style="text-align: right;" class="releasedStr">{{ fw.releasedStr }}</div>
-        <div style="text-align: right;">
+        <div style="text-align: right; margin-left: auto;" class="releasedStr" v-if="fw.releasedStr">{{ fw.releasedStr }}</div>
+        <div :style="{
+            'text-align': 'right',
+            'margin-left': fw.releasedStr ? 0 : 'auto',
+            'width': '1em'
+        }" class="expandChevron">
             <a style="cursor: pointer;">
                 <i :class="[
                     'fas',
@@ -30,6 +31,9 @@
             <a :href="fw.filteredDownloads[0].url">
                 <i class="fas fa-download"/>
             </a>
+        </div>
+        <div v-else-if="showSingleDownloads">
+            <i style="opacity: 0;" class="fas fa-download"/>
         </div>
     </div>
     <div v-if="expanded" class="custom-container">
@@ -148,12 +152,23 @@ export default {
     }
 }
 .wrapper {
-    display: grid;
+    display: flex;
     padding: 1em;
     cursor: pointer;
     border-radius: 12px;
     transition: background 75ms ease-in-out;
 
+    div {
+        padding-inline: .5em;
+
+        &:first-child {
+            padding-left: 0;
+        }
+
+        &:last-child {
+            padding-right: 0;
+        }
+    }
 
     &:hover {
         .signingText {
@@ -178,10 +193,11 @@ h5 {
 
 @media screen and (max-width: 575px) {
     .releasedStr {
-        opacity: 0;
-        height: 0;
-        width: 0;
-        user-select: none;
+        display: none;
+    }
+
+    .expandChevron {
+        margin-left: auto !important;
     }
 
     .releasedInfo {
