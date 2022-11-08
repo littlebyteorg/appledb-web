@@ -27,7 +27,7 @@ const latestVersions = latestVersionArr
   const hideCheck = y.hideFromLatestVersions
   const check = osStrCheck && betaCheck && !hideCheck
   let startsWith = x.startsWith
-  if (startsWith) {
+  if (startsWith && y.version) {
     startsWith = y.version.startsWith(startsWith)
     return check && startsWith
   }
