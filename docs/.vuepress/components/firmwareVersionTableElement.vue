@@ -123,7 +123,6 @@ export default {
 
     i {
         font-size: .7em;
-        padding-left: 4px;
         padding-bottom: 2px;
         vertical-align: middle;
     }
