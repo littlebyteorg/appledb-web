@@ -85,7 +85,7 @@
             </div>
         </div>
         
-        <deviceFilter v-if="fm.mainList" :filterOptions="fm.deviceFilter" :options="options"/>
+        <!--<deviceFilter v-if="fm.mainList" :filterOptions="fm.deviceFilter" :options="options"/>-->
 
         <div><template v-for="filteredFirmwares in [
             versionArr.filter(fw =>
