@@ -10,8 +10,8 @@
                 </template>
             </a>
             <div class="signingStatus">
-                <i :id="`signing-status-${fw.build}`" class="fas"></i>
-                <span :id="`signing-text-${fw.build}`" class="signingText"></span>
+                <i :id="`signing-status-${fw.osStr}-${fw.build}`" class="fas"></i>
+                <span :id="`signing-text-${fw.osStr}-${fw.build}`" class="signingText"></span>
             </div>
         </div>
         <div style="text-align: right; margin-left: auto;" class="releasedStr" v-if="fw.releasedStr">{{ fw.releasedStr }}</div>
@@ -82,10 +82,10 @@ export default {
         }
     },
     mounted() {
-        this.getSigningStatus(this.fw.build, this.fw.devices)
+        this.getSigningStatus(this.fw.build, this.fw.devices, this.fw.osStr)
     },
     methods: {
-        async getSigningStatus(buildid, identifiers) {
+        async getSigningStatus(buildid, identifiers, osStr) {
             var request = new XMLHttpRequest()
 
             request.open('GET', `https://api.ipsw.me/v4/ipsw/${identifiers[0]}/${buildid}`)
@@ -96,8 +96,8 @@ export default {
                 if (this.readyState === 4) {
                     if (this.status == 200) {
                         const response = JSON.parse(this.responseText)
-                        var statusElement = document.getElementById(`signing-status-${buildid}`)
-                        var statusText = document.getElementById(`signing-text-${buildid}`)
+                        var statusElement = document.getElementById(`signing-status-${osStr}-${buildid}`)
+                        var statusText = document.getElementById(`signing-text-${osStr}-${buildid}`)
                         
                         if (response.signed) {
                             statusElement.classList.add('fa-check')
