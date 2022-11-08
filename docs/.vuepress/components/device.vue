@@ -64,7 +64,7 @@
     <template v-if="fm.versionArr && fm.versionArr.length > 0">
         <h2 v-if="!fm.mainList" style="margin-bottom: .3em;">{{ versionHeaderStr }}</h2>
         
-        <div class="optionsWrapper">
+        <div class="optionsWrapper" style="margin-bottom: .3em;">
             <div
                 :class="[options.showStable ? 'active' : '', 'stable']"
                 v-on:click="options.showStable = !options.showStable"
