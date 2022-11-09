@@ -42,7 +42,7 @@
                     </template>
                 </div>
             </div>
-            <div v-on:click="expanded = !expanded" v-else-if="fw.filteredDownloads.length == 1 || fw.filteredOtas.length == 1">
+            <!--<div v-on:click="expanded = !expanded" v-else-if="fw.filteredDownloads.length == 1 || fw.filteredOtas.length == 1">
                 <template v-if="fw.filteredDownloads.length == 1">
                     <a :href="fw.filteredDownloads[0].url">
                         <i class="fas fa-download"/>
@@ -53,7 +53,7 @@
                         <i class="fas fa-download"/>
                     </a>
                 </template>
-            </div>
+            </div>-->
             <div style="opacity: 0;" v-else-if="showSingleDownloads">
                 <i class="fas fa-download"/>
             </div>
