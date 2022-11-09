@@ -486,65 +486,6 @@ export default {
     max-width: 100%;
 }
 
-select {
-  /* styling */
-  background-color: inherit;
-  border: thin solid var(--c-border-dark);
-  border-radius: 8px;
-  display: inline-block;
-  font: inherit;
-  line-height: 1em;
-  font-size: .8em;
-  padding: 0.8em 3.5em 0.8em 1em;
-
-  /* reset */
-
-  margin: 0;      
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  background-image:
-    linear-gradient(45deg, transparent 50%, gray 50%),
-    linear-gradient(135deg, gray 50%, transparent 50%),
-    linear-gradient(to right, var(--c-border-dark), var(--c-border-dark));
-  background-position:
-    calc(100% - 18px) calc(1em + 2px),
-    calc(100% - 13px) calc(1em + 2px),
-    calc(100% - 2.5em) 0.55em;
-  background-size:
-    5px 5px,
-    5px 5px,
-    1px 1.5em;
-  background-repeat: no-repeat;
-
-  &:focus {
-    background-image:
-        linear-gradient(45deg, var(--c-text-accent) 50%, transparent 50%),
-        linear-gradient(135deg, transparent 50%, var(--c-text-accent) 50%),
-        linear-gradient(to right, var(--c-text-accent), var(--c-text-accent));
-    background-position:
-        calc(100% - 13px) 1.1em,
-        calc(100% - 18px) 1.1em,
-        calc(100% - 2.5em) 0.55em;
-    background-size:
-        5px 5px,
-        5px 5px,
-        1px 1.5em;
-    background-repeat: no-repeat;
-    border-color: var(--c-text-accent);
-    color: var(--c-text-accent) !important;
-    outline: 0;
-    }
-
-    &:-moz-focusring {
-        color: transparent;
-        text-shadow: 0 0 0 #000;
-    }
-}
-
 .flexWrapper {
     display: flex;
     justify-content: space-between;
@@ -557,7 +498,6 @@ select {
 
 .optionsWrapper {
     display: flex;
-    transition: 50ms background ease-in-out;
     align-content: space-between;
 
     .active {
@@ -574,15 +514,15 @@ select {
 
     div {
         padding: .7em;
-        padding-inline: 1em;
+        padding-inline: 1.2em;
         margin: .3em;
         border-radius: 6px;
         cursor: pointer;
-        user-select: none;
-        transition: 50ms background ease-in-out;
+        transition: 100ms background ease-in-out, transform 150ms ease-in-out;
 
         &:hover {
             background: var(--c-border);
+            transform: scale(1.05);
         }
 
         .fa-circle {
@@ -608,134 +548,6 @@ select {
     margin-top: 0;
 }
 
-.showOnHover {
-    .hoverElement, .opaqueHoverElement {
-        opacity: 0;
-        display: none !important;
-    }
-
-    &:hover {
-        .hoverElement, .opaqueHoverElement {
-            transition-property: opacity;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 100ms;
-            display: inline !important;
-
-        }
-        .hoverElement {
-            opacity: 0.3;
-        }
-
-        .opaqueHoverElement {
-            opacity: 1;
-        }
-    }
-}
-
-.hoverElement:hover {
-    opacity: 1 !important;
-    display: inline !important;
-}
-
-.chartDropdown {
-    font-size: .9rem;
-    line-height: 1.4rem;
-    font-weight: 500;
-    cursor: pointer;
-    user-select: none;
-
-    :hover + .chartDropdownBox {
-        left: auto;
-        top: auto;
-        padding: 1.5em 0.8em 1.5em 0em;
-        box-shadow: 0px 1px 6px var(--dropdown-shadow);
-        max-height: 100%;
-        transition: 300ms ease-in-out;
-    }
-
-    :hover + .chartDropdownBox li {
-        opacity: 1 !important;
-        padding: 0em 1em;
-        max-height: 100%;
-    }
-
-    :hover li {
-        opacity: 1;
-        padding: 0em 1em;
-        max-height: 100%;
-    }
-
-    li {
-        list-style-type: none;
-        float: none !important;
-        margin: 0 !important;
-
-        overflow: hidden;
-        padding: 0px;
-        opacity: 0;
-        max-height: 0px;
-        transition: 300ms ease-in-out;
-    }
-}
-
-.chartDropdownBox {
-    opacity: 0;
-    position: absolute;
-    height: auto !important;
-    box-sizing: border-box;
-    background-color: var(--c-bg-navbar);
-    border-bottom-color: var(--c-border-dark);
-    text-align: left;
-    border-radius: 0.25rem;
-    white-space: nowrap;
-    top: auto;
-    user-select: none;
-    border: 0px solid var(--c-border);
-
-    padding: 0;
-    max-height: 0px;
-    transition: 300ms ease-in-out;
-    
-    input[type="checkbox"] {
-        position: static;
-        left: 0px;
-        opacity: 1;
-        margin-right: .5em;
-    }
-
-    :hover {
-        left: auto;
-        top: auto;
-        padding: 1.5em 0.8em 1.5em 0em;
-        /*border: 1px solid var(--c-border);*/
-        box-shadow: 0px 1px 6px var(--dropdown-shadow);
-        max-height: 100%;
-        transition: 300ms ease-in-out;
-        opacity: 1;
-    }
-}
-
-.tableOptionsWrapper li {
-    display: inline;
-    margin: 0em 1.5em .5em 0em;
-    list-style-type: none;
-}
-
-.chartDropdown button {
-  cursor: pointer;
-  border: none;
-  background-color: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  font-weight: inherit;
-  font-family: inherit;
-  color: inherit;
-  padding: inherit;
-}
-
-td, th {
-    text-align: center;
-}
 
 @media screen and (max-width: 575px) {
     .tab-container section .tab-link {

@@ -4,11 +4,11 @@
         v-on:click="expanded = !expanded"
     >
         <div>
-            <a style="cursor: pointer;">{{ [fw.osStr, fw.version].join(' ') }}
+            <span style="font-weight: 600;">{{ [fw.osStr, fw.version].join(' ') }}
                 <template v-for="tag in [[fw.duplicateVersion || options.showBuildColumn ? fw.build : false, fw.preinstalled.some(r => fw.devices.includes(r)) ? 'Preinstalled' : false].filter(x => x)]" :key="tag">
                     <span v-if="tag.length"> ({{tag.join(', ')}})</span>
                 </template>
-            </a>
+            </span>
             <div class="signingStatus">
                 <i :id="`signing-status-${fw.osStr}-${fw.build}`" class="fas"></i>
                 <span :id="`signing-text-${fw.osStr}-${fw.build}`" class="signingText"></span>
@@ -18,22 +18,53 @@
         <div :style="{
             'text-align': 'right',
             'margin-left': fw.releasedStr ? 0 : 'auto',
-            'width': '1em'
-        }" class="expandChevron">
+        }" class="downloadIcon">
+            <div v-on:click="openDownloadDropdown()" v-if="fw.filteredDownloads.length || fw.filteredOtas.length">
+                <a style="cursor: pointer;"><i class="downloadIcon fas fa-download"/></a>
+                <div :class="[
+                    'downloadDropdown',
+                    'custom-container',
+                    showDownloadDropdown ? 'active' : ''
+                ]">
+                    <template v-if="fw.filteredDownloads.length">
+                        <h5>Download</h5>
+                        <ul :style="`${fw.filteredDownloads.length == 1 ? 'padding-left: 0; list-style-type: none;' : ''}`">
+                            <li v-if="fw.filteredDownloads.length == 1"><a :href="fw.filteredDownloads[0].url">{{ fw.filteredDownloads[0].label.slice(0,60) }}{{ fw.filteredDownloads[0].label.length > 60 ? '...' : '' }}</a></li>
+                            <li v-else v-for="dl in fw.filteredDownloads" :key="dl"><a :href="dl.url">{{ dl.deviceName }}</a></li>
+                        </ul>
+                    </template>
+                    <template v-if="fw.filteredOtas.length">
+                        <h5>Download (OTA)</h5>
+                        <ul :style="`${fw.filteredOtas.length == 1 ? 'padding-left: 0; list-style-type: none;' : ''}`">
+                            <li v-if="fw.filteredOtas.length == 1"><a :href="fw.filteredOtas[0].url">{{ fw.filteredOtas[0].label.slice(0,60) }}{{ fw.filteredOtas[0].label.length > 60 ? '...' : '' }}</a></li>
+                            <li v-else v-for="dl in fw.filteredOtas" :key="dl"><a :href="dl.url">{{ dl.deviceName }}</a></li>
+                        </ul>
+                    </template>
+                </div>
+            </div>
+            <div v-on:click="expanded = !expanded" v-else-if="fw.filteredDownloads.length == 1 || fw.filteredOtas.length == 1">
+                <template v-if="fw.filteredDownloads.length == 1">
+                    <a :href="fw.filteredDownloads[0].url">
+                        <i class="fas fa-download"/>
+                    </a>
+                </template>
+                <template v-else>
+                    <a :href="fw.filteredOtas[0].url">
+                        <i class="fas fa-download"/>
+                    </a>
+                </template>
+            </div>
+            <div style="opacity: 0;" v-else-if="showSingleDownloads">
+                <i class="fas fa-download"/>
+            </div>
+        </div>
+        <div style="width: 1em;" class="expandChevron">
             <a style="cursor: pointer;">
                 <i :class="[
                     'fas',
                     expanded ? 'fa-chevron-right' : 'fa-chevron-down'
                 ]"/>
             </a>
-        </div>
-        <div v-on:click="expanded = !expanded" style="text-align: right;" v-if="fw.filteredDownloads.length == 1">
-            <a :href="fw.filteredDownloads[0].url">
-                <i class="fas fa-download"/>
-            </a>
-        </div>
-        <div v-else-if="showSingleDownloads">
-            <i style="opacity: 0;" class="fas fa-download"/>
         </div>
     </div>
     <div v-if="expanded" class="custom-container">
@@ -43,20 +74,6 @@
             <li v-if="fw.releasedStr" class="releasedInfo">Released{{ fw.releasedStr.includes(',') ? ' on' : ':'}} {{ fw.releasedStr }}</li>
             <li><router-link :to="fw.url">View more</router-link></li>
         </ul>
-        <template v-if="fw.filteredDownloads.length">
-            <h5>Download</h5>
-            <ul :style="`${fw.filteredDownloads.length == 1 ? 'padding-left: 0; list-style-type: none;' : ''}`">
-                <li v-if="fw.filteredDownloads.length == 1"><a :href="fw.filteredDownloads[0].url">{{ fw.filteredDownloads[0].label.slice(0,60) }}{{ fw.filteredDownloads[0].label.length > 60 ? '...' : '' }}</a></li>
-                <li v-else v-for="dl in fw.filteredDownloads" :key="dl"><a :href="dl.url">{{ dl.deviceName }}</a></li>
-            </ul>
-        </template>
-        <template v-if="fw.filteredOtas.length">
-            <h5>Download (OTA)</h5>
-            <ul :style="`${fw.filteredOtas.length == 1 ? 'padding-left: 0; list-style-type: none;' : ''}`">
-                <li v-if="fw.filteredOtas.length == 1"><a :href="fw.filteredOtas[0].url">{{ fw.filteredOtas[0].label.slice(0,60) }}{{ fw.filteredOtas[0].label.length > 60 ? '...' : '' }}</a></li>
-                <li v-else v-for="dl in fw.filteredOtas" :key="dl"><a :href="dl.url">{{ dl.deviceName }}</a></li>
-            </ul>
-        </template>
         <template v-if="fw.jailbreakArr.length">
             <h5>Jailbreaks</h5>
             <ul>
@@ -78,6 +95,7 @@ export default {
     data() {
         return {
             expanded: false,
+            showDownloadDropdown: false,
             signed: 'unknown'
         }
     },
@@ -112,7 +130,14 @@ export default {
             }
 
             request.send()
-        }
+        },
+        openDownloadDropdown() {
+            var elements = document.getElementsByClassName('downloadDropdown active')
+            for (let element of elements) element.classList.remove('active')
+
+            this.expanded = !this.expanded
+            this.showDownloadDropdown = !this.showDownloadDropdown
+        } 
     }
 }
 </script>
@@ -195,12 +220,56 @@ h5 {
         display: none;
     }
 
-    .expandChevron {
+    .downloadIcon {
         margin-left: auto !important;
     }
 
     .releasedInfo {
         display: block;
+    }
+}
+
+.downloadDropdown {
+    text-align: left;
+    padding: 1em 2em !important;
+    box-shadow: 0px 2px 12px rgba(0,0,0,0.1);
+    transition: opacity 200ms ease-in-out, margin-top 200ms ease-in-out;
+    position: absolute;
+    word-wrap: break-word;
+
+    max-width: 70%;
+
+    opacity: 0;
+
+    font-size: 0;
+    padding: 0;
+    margin: 0;
+
+    h5 {
+        margin-top: 1em;
+        font-size: 0;
+    }
+
+    right: calc(calc(100vw - var(--content-width)) / 2);
+    margin-top: -10px;
+}
+
+@media screen and (max-width: 740px) {
+    .downloadDropdown {
+        right: 20px;
+    }
+}
+
+.downloadIcon:hover .downloadDropdown {
+    opacity: 1;
+    margin-top: initial;
+
+    font-size: initial;
+    margin: initial;
+    padding: initial;
+
+    h5 {
+        font-size: initial;
     }
 }
 </style>
