@@ -251,19 +251,20 @@ h5 {
         padding-bottom: .5em;
     }
 
-    right: calc(calc(100vw - var(--content-width)) / 2);
-    margin-top: -10px;
+    right: calc(calc(calc(100vw - var(--content-width)) / 2) + 3em);
+    margin-top: 0px;
 }
 
 @media screen and (max-width: 740px) {
     .downloadDropdown {
-        right: 20px;
+        right: 4.5em;
+        max-width: 60%;
     }
 }
 
 .downloadIcon:hover .downloadDropdown {
     opacity: 1;
-    margin-top: initial;
+    margin-top: 10px;
     transform: scale(1);
 }
 </style>
