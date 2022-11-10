@@ -233,21 +233,22 @@ h5 {
     text-align: left;
     padding: 1em 2em !important;
     box-shadow: 0px 2px 12px rgba(0,0,0,0.1);
-    transition: opacity 200ms ease-in-out, margin-top 200ms ease-in-out;
+    transition: opacity 200ms ease-in-out, margin-top 200ms ease-in-out, transform 300ms ease-in-out;
     position: absolute;
     word-wrap: break-word;
 
     max-width: 70%;
-
     opacity: 0;
-
-    font-size: 0;
-    padding: 0;
-    margin: 0;
+    transform: scale(0);
+    transform-origin: top right;
 
     h5 {
         margin-top: 1em;
-        font-size: 0;
+    }
+
+    div {
+        padding-left: 0;
+        padding-bottom: .5em;
     }
 
     right: calc(calc(100vw - var(--content-width)) / 2);
@@ -263,13 +264,6 @@ h5 {
 .downloadIcon:hover .downloadDropdown {
     opacity: 1;
     margin-top: initial;
-
-    font-size: initial;
-    margin: initial;
-    padding: initial;
-
-    h5 {
-        font-size: initial;
-    }
+    transform: scale(1);
 }
 </style>
