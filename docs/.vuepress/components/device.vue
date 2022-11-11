@@ -62,9 +62,21 @@
     </template>
 
     <template v-if="fm.versionArr && fm.versionArr.length > 0">
-        <h2 v-if="!fm.mainList" style="margin-bottom: .3em;">{{ versionHeaderStr }}</h2>
+        <h2 v-if="!fm.mainList" style="margin-bottom: .3em;">
+            {{ versionHeaderStr }}
+            <i
+                v-if="!fm.hasFirmwareFilters"
+                class="fas fa-sort"
+                style="
+                    margin-left: 5px;
+                    margin-bottom: .6em;
+                    font-size: .7em;
+                    cursor: pointer;
+                " v-on:click="versionArr.reverse()"
+            ></i>
+        </h2>
         
-        <div class="optionsWrapper" style="margin-bottom: .3em;">
+        <div class="optionsWrapper" style="margin-bottom: .3em;" v-if="fm.hasFirmwareFilters">
             <div
                 :class="[options.showStable ? 'active' : '', 'stable']"
                 v-on:click="options.showStable = !options.showStable; filterVersions()"

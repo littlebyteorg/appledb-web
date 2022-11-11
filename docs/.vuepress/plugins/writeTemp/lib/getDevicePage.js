@@ -250,6 +250,12 @@ module.exports = function(args) {
         return 0
     })
 
+    const hasFirmwares = {
+        stable: getVersionArr.filter(x => !x.beta).length > 0,
+        beta: getVersionArr.filter(x => x.beta).length > 0,
+        internal: getVersionArr.filter(x => x.internal).length > 0
+    }
+
     return {
         path: devPath,
         frontmatter: {
@@ -259,11 +265,8 @@ module.exports = function(args) {
             widePage: false,
             device: infoArr,
             versionArr: getVersionArr,
-            hasFirmwares: {
-                stable: getVersionArr.filter(x => !x.beta).length > 0,
-                beta: getVersionArr.filter(x => x.beta).length > 0,
-                internal: getVersionArr.filter(x => x.internal).length > 0
-            },
+            hasFirmwares: hasFirmwares,
+            hasFirmwareFilters: Object.keys(hasFirmwares).map(x => hasFirmwares[x]).reduce((a,b) => a + b) > 1,
             grouped: grouped,
             hideChildren: hideChildren,
             imgCount: imgCount,
