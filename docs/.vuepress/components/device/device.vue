@@ -47,7 +47,7 @@
             <div
                 :class="[options.showInternal ? 'active' : '', 'internal']"
                 v-on:click="options.showInternal = !options.showInternal; filterVersions()"
-                v-if="fm.hasFirmwares.internal"
+                v-if="fm.hasFirmwares.internal || 1"
             >
                 <i class="fas fa-circle internal"></i> Internal
             </div>
@@ -352,7 +352,7 @@ html.dark .optionsWrapper div {
 .optionsWrapper {
     display: flex;
     align-content: space-between;
-
+    flex-wrap: wrap;
 
     .active {
         background: var(--c-border);
