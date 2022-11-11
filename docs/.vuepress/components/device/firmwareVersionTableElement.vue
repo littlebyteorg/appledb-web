@@ -31,7 +31,7 @@
                     'downloadDropdown',
                     'custom-container',
                     showDownloadDropdown ? 'active' : ''
-                ]">
+                ]" style="cursor: initial;">
                     <template v-if="fw.filteredDownloads.length">
                         <h5>Download</h5>
                         <ul :style="`${fw.filteredDownloads.length == 1 ? 'padding-left: 0; list-style-type: none;' : ''}`">
