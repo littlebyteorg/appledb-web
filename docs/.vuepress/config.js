@@ -51,6 +51,9 @@ module.exports = {
       registerComponentsPlugin({
         componentsDir: path.resolve(__dirname, './components'),
       }),
+      registerComponentsPlugin({
+        componentsDir: path.resolve(__dirname, './components/device'),
+      }),
       require('./plugins/deviceListPages/lib'),
       require('./plugins/devicePages/lib'),
       //require('./plugins/firmwarePages/lib'),

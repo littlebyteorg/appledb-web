@@ -1,59 +1,12 @@
 <template>
     <template v-if="!fm.mainList">
-        <div class="flexWrapper" :style="(wrapImg) ? 'flex-direction: column;' : 'flex-direction: row;'">
-            <ul class="infoList" id="flexInfo">
-                <li v-for="(s, index) in infoArr" :key="s">
-                    <template v-if="(infoArr[index].split(', ').length > 5 && !options.showAll[index])">
-                        {{ s.replace(infoArr[index], infoArr[index].split(', ').slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="options.showAll[index] = true">...</a>
-                    </template>
-                    <template v-else v-once>{{ s }}</template>
-                </li>
-            </ul>
-            <div v-if="fm.img.count && fm.img.count > 0" :style="`padding-top: ${wrapImg ? '1em' : '0'};`" class="devFlexImgWrapper">
-                <template
-                    v-for="i in Math.min(fm.img.count,3)"
-                    :key="i"
-                >
-                    <picture
-                        v-for="url in [`https://img.appledb.dev/device@main/${fm.device.map(x => x.key)[0]}/${i-1}${isDarkMode && fm.img.dark ? '_dark' : ''}`]"
-                        :key="url"
-                    >
-                        <source :srcset="url + '.avif'" type="image/avif">
-                        <source :srcset="url + '.webp'" type="image/webp">
-                        <img
-                            :src="url + '.png'"
-                            :class="`flexImg flexImg${i}`"
-                            style="margin-left: .5em; max-height: 8em;"
-                        >
-                    </picture>
-                </template>
-            </div>
-        </div>
+        <deviceInfo :infoArr="infoArr" :options="options" :img="{
+            count: fm.img.count,
+            dark: fm.img.dark,
+            key: fm.device.map(x => x.key)[0]
+        }"/>
 
-        <div class="tab-container">
-            <section v-for="(tab,index) in tabArr" :key="tab">
-                <input :id="tab" type="radio" :checked="activeTab == tab">
-                <label :for="tab" class="tab-link" v-on:click="activeTab = tab">
-                    {{ tab.formatExtraInfoTitle() }}
-                </label>
-                <div :class="`tab ${(index == tabArr.length - 1) ? 'tab-last' : ''}`" style="overflow-x: auto; padding: 0;">
-                    <table style="margin: 0;">
-                        <tr style="border: none;" v-if="Object.keys(fm.extraInfo).length > 1 && [Object.keys(tabData).map(x => tabData[x][tab])].map(d => Array.from(new Set(d.map(y => JSON.stringify(Object.keys(y).map(x => y[x]))))).length)[0] > 1"><th/><th v-for="dev in Object.keys(fm.extraInfo)" :key="dev">{{ fm.device.filter(x => x.key == dev)[0].name }}</th></tr>
-                        <tr style="border: none;" v-for="property in tabPropertyArr[tab]" :key="property">
-                            <td style="border: none;">{{ property.formatExtraInfoTitle() }}</td>
-                            <td style="border: none;" v-if="Array.from(new Set(Object.keys(tabData).map(x => JSON.stringify(tabData[x][tab][property])))).length == 1 && Object.keys(tabData).map(x => JSON.stringify(tabData[x][tab][property])).length != 1" :colspan="Object.keys(fm.extraInfo).length">
-                                {{ tabData[Object.keys(tabData)[0]][tab][property].formatExtraInfoText(property) }}
-                            </td>
-                            <td style="border: none;" v-else v-for="dev in tabData" :key="dev">
-                                <template v-if="dev[tab][property]">
-                                    {{ dev[tab][property].formatExtraInfoText(property) }}
-                                </template>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </section>
-        </div>
+        <deviceTabs :extraInfo="fm.extraInfo" :device="fm.device"/>
 
         <template v-if="!fm.hideChildren && groupedOrRelatedDevicesObj.devices.length > 1">
             <h2>{{ groupedOrRelatedDevicesObj.header }}</h2>
@@ -126,76 +79,23 @@
 
     <p v-on:click="devOptions = true">AppleDB is not affiliated with Apple Inc.</p>
 
-    <div v-if="devOptions" class="hiddenArea">
-        <div class="custom-container">
-            <h4>Hidden area</h4>
-            <p>Welcome to the spooky hidden area. Here's a collection of options that I haven't finished, but are still nice to have.</p>
-            <p><a style="cursor: pointer;" v-on:click="devOptions = false">Hide me!</a></p>
-        </div>
-        <div class="custom-container">
-            <h4>Options</h4>
-            <div class="toggleBubbleWrapper">
-                <div
-                    v-for="option in optionsObj" :key="option"
-                    v-on:click="options[option.model] = !options[option.model]"
-                    :class="[
-                        'toggleBubbleItem',
-                        options[option.model] ? 'active' : ''
-                    ]"
-                >
-                    {{ option.label }}
-                </div>
-            </div>
-        </div>
-        <div class="custom-container">
-            <h4>Device filters</h4>
-            <div class="toggleBubbleWrapper">
-                <div
-                    v-for="filter in fm.deviceFilter"
-                    :key="filter"
-                    :class="[
-                        'toggleBubbleItem',
-                        options.filterDev.includes(filter.value) ? 'active' : ''
-                    ]" v-on:click="
-                    options.filterDev = options.filterDev.includes(filter.value) ?
-                        options.filterDev.filter(x => x != filter.value) :
-                        options.filterDev.concat(filter.value);
-                    filterVersions()
-                ">{{ filter.label }}</div>
-            </div>
-            <p>
-                <a style="cursor: pointer;" v-on:click="options.filterDev = []">Clear filters</a>
-                <a style="cursor: pointer; float: right;" v-on:click="options.filterDev = fm.deviceFilter.map(x => x.value)">Select all</a>
-            </p>
-        </div>
-    </div>
+    <hiddenOptions
+        :options="options"
+        :optionsObj="optionsObj"
+        :showDevOptions="devOptions"
+        :deviceFilter="fm.deviceFilter"
+        :filterVersions="filterVersions"
+    />
 </template>
 
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
-import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 
 String.prototype.format = function(vars) {
   let temp = this
   for (let item in vars)
     temp = temp.replace("${" + item + "}", vars[item])
   return temp
-}
-
-String.prototype.formatExtraInfoTitle = function() {
-    /*function capitaliseFirstLetter(str) { return str.charAt(0).toUpperCase() + str.slice(1) }
-    return this.split('_').map(x => capitaliseFirstLetter(x)).join(' ')*/
-    return this.replace(/_/g, ' ')
-}
-
-Array.prototype.formatExtraInfoText = function(property) {
-    let temp = this
-
-    if (property == 'Resolution') temp = temp.map(x => x.x + ' x ' + x.y)
-
-    return Array.from(new Set(temp.flat())).filter(x => x || x === false)/*.sort()*/.join(', ')
-    .replace(/true/g, 'Yes')
-    .replace(/false/g, 'No')
 }
 
 function formatDeviceName(n) {
@@ -267,50 +167,15 @@ export default {
                 showAll: {}
             },
             
-            wrapImg: false,
             reverseSorting: false,
             devOptions: false,
             versionArr: [],
 
             devicePath: '/device',
             fm: usePageFrontmatter(),
-            isDarkMode: useDarkMode()
         }
     },
     computed: {
-        tabArr() {
-            if (!this.fm.extraInfo) return []
-            return Array.from(
-                new Set(
-                    Object.keys(this.fm.extraInfo)
-                    .map(x => this.fm.extraInfo[x]).flat()
-                    .map(x => x.type)
-                )
-            )
-        },
-        tabPropertyArr() {
-            const arr = Object.keys(this.fm.extraInfo).map(x => this.fm.extraInfo[x]).flat()
-            let retObj = {}
-            for (const i of arr) {
-                if (!retObj.hasOwnProperty(i.type)) retObj[i.type] = Object.keys(i).filter(x => x != 'type')
-                else retObj[i.type].concat(Object.keys(i.type).filter(x => x != 'type'))
-            }
-            return retObj
-        },
-        tabData() {
-            let retObj = {}
-            for (const dev in this.fm.extraInfo) {
-                retObj[dev] = {}
-                for (const tab of this.fm.extraInfo[dev]) {
-                    retObj[dev][tab.type] = {}
-                    for (const property in tab) {
-                        if (property == 'type') continue
-                        retObj[dev][tab.type][property] = Array.isArray(tab[property]) ? tab[property] : [tab[property]]
-                    }
-                }
-            }
-            return retObj
-        },
         infoArr() {
             const dev = this.fm.device
             function grabInfo(property) {
@@ -398,31 +263,6 @@ export default {
         }
     },
     methods: {
-        checkWrap: function() {
-            const flexImgs = document.getElementsByClassName('flexImg')
-            const flexInfoWidth = document.getElementById('flexInfo').getBoundingClientRect().width
-
-            const element = document.getElementsByClassName('home')[0] || document.getElementsByClassName('theme-default-content')[0]
-            var totalWidth = element.clientWidth - parseFloat(window.getComputedStyle(element).paddingLeft) - parseFloat(window.getComputedStyle(element).paddingRight)
-            let flexImgWidth = 0
-
-            const flexImgsLength = flexImgs.length
-            let counter = 0
-
-            for (let i = 0; i < flexImgsLength; i++) {
-                flexImgs[i].onload = () => {
-                    if (counter >= flexImgsLength) return
-                    flexImgWidth += flexImgs[i].clientWidth
-                    this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
-                    counter++
-                }
-            }
-
-            window.onresize = () => {
-                totalWidth = totalWidth = element.clientWidth - parseFloat(window.getComputedStyle(element).paddingLeft) - parseFloat(window.getComputedStyle(element).paddingRight)
-                this.wrapImg = totalWidth < flexInfoWidth + flexImgWidth + 10
-            }
-        },
         checkScroll: function() {
             const loadRows = this.loadedFirmwares[1] - this.loadedFirmwares[0]
             
@@ -485,19 +325,14 @@ export default {
     mounted() {
         const noJailbreaks = this.fm.noJb || this.fm.jbCount < 1
 
+        this.options.filterDev = this.fm.deviceFilter.map(x => x.value)
+
         if (this.fm.mainList) {
-            this.options.filterDev = this.fm.deviceFilter.map(x => x.value)
             this.options.showBeta = true
             this.options.showInternal = true
         }
-        else {
-            this.checkWrap()
-            this.options.filterDev = this.fm.deviceFilter.map(x => x.value)
-        }
 
         this.filterVersions()
-
-        if (this.tabArr.length > 0) this.activeTab = this.tabArr[0]
 
         this.maxImgCount = this.fm.imgCount
     },
@@ -510,29 +345,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.devFlexImgWrapper {
-    overflow: hidden;
-    user-select: none;
-    text-align: center;
-    padding-bottom: 1em;
-    margin-bottom: 1em;
-    max-height: 7em;
-}
-
-.flexImg0 {
-    margin-left: 0 !important;
-    max-width: 100%;
-}
-
-.flexWrapper {
-    display: flex;
-    justify-content: space-between;
-    img {
-        align-self: center;
-        margin-right: 0;
-        margin-left: 0;
-    }
-}
 
 .optionsWrapper {
     display: flex;
@@ -593,36 +405,6 @@ export default {
     }
 }
 
-.infoList {
-    list-style-type: none;
-    padding-left: 0;
-    margin-top: 0;
-}
-
-
-@media screen and (max-width: 575px) {
-    .tab-container section .tab-link {
-        width: 100%;
-    }
-
-    .tab-container section:last-of-type .tab-link  {
-        border-bottom-width: 1px;
-        border-radius: 0 0 0.25rem 0.25rem;
-    }
-
-    .tab-container section:first-of-type .tab-link {
-        border-radius: 0.25rem 0.25rem 0 0 !important;
-    }
-}
-
-@media screen and (max-width: 575px) {
-    .tab-container .tab {
-        border-radius: 0;
-        border-bottom-width: 0;
-        order: 0;
-    }
-}
-
 .groupedOrRelatedDevicesWrapper {
     display: grid;
         grid-template-columns: 50% 50%;
@@ -632,42 +414,5 @@ export default {
     .groupedOrRelatedDevicesWrapper {
         grid-template-columns: 100%;
     }
-}
-
-.hiddenArea {
-    .toggleBubbleWrapper {
-        display: flex;
-        flex-flow: row wrap;
-        margin-inline: -.4em;
-        margin-bottom: 1em;
-
-        .toggleBubbleItem {
-            padding: .7em 1.2em;
-            margin: .4em;
-            border-radius: 5em;
-            border: 1px solid var(--c-border);
-            box-shadow: 0px 2px 12px rgba(0,0,0,0.1);
-            transition: background 100ms ease-in-out, color 100ms ease-in-out, transform 200ms ease-in-out;
-            cursor: pointer;
-
-            &.active {
-                background: var(--c-text-lightest);
-                color: var(--c-bg);
-
-                &.dark {
-                    background: #000;
-                }
-            }
-
-            &:hover {
-                transform: scale(1.05);
-            }
-        }
-    }
-}
-
-html.dark .hiddenArea .toggleBubbleWrapper .toggleBubbleItem.active {
-    background: var(--c-border);
-    color: var(--c-text);
 }
 </style>
