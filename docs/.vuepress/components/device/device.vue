@@ -345,27 +345,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+html.dark .optionsWrapper div {
+    background: var(--c-border-dark);
+}
 
 .optionsWrapper {
     display: flex;
     align-content: space-between;
+
 
     .active {
         background: var(--c-border);
         font-weight: 600;
 
         &.stable {
-            background: #039be530;
+            background: #039be530 !important;
             border-color: #039be501;
         }
 
         &.beta {
-            background: #ab47bc30;
+            background: #ab47bc30 !important;
             border-color: #ab47bc01;
         }
 
         &.internal {
-            background: #fbc02d30;
+            background: #fbc02d30 !important;
             border-color: #fbc02d01;
         }
     }
@@ -379,9 +383,29 @@ export default {
         transition: 100ms background ease-in-out, transform 150ms ease-in-out;
         //border: 1px solid var(--c-border);
         box-shadow: 0px 2px 9px rgba(0,0,0,0.1);
+        
+        &.stable {
+            background: #039be510 !important;
+            &:hover {
+                background: #039be530 !important;
+            }
+        }
+        &.beta {
+            background: #ab47bc10 !important;
+            &:hover {
+                background: #ab47bc30 !important;
+            }
+        }
+        &.internal {
+            background: #fbc02d10 !important;
+            &:hover {
+                background: #fbc02d30 !important;
+            }
+        }
 
         &:hover {
             transform: scale(1.05);
+            background: var(--c-border) !important;
         }
 
         .fa-circle {
