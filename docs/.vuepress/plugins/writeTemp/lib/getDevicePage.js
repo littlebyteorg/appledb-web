@@ -258,19 +258,12 @@ module.exports = function(args) {
                         value: x
                     }
                 }) :
-                [devArr].map(x => {
-                    const nameArr = x.map(y => y.name)
-                    const idenArr = x.map(y => y.key)
-                    return {
-                        label: nameArr.join(', '),
-                        value: idenArr
-                    }
-                }).concat(devArr.map(x => {
+                devArr.map(x => {
                     return {
                         label: x.name,
-                        value: [x.key]
+                        value: x.key
                     }
-                })),
+                }),
 
             head: head,
 

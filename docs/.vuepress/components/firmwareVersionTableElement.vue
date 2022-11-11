@@ -4,23 +4,26 @@
         v-on:click="expanded = !expanded"
     >
         <div>
-            <span style="font-weight: 600;">{{ [fw.osStr, fw.version].join(' ') }}
+            <span style="font-weight: 600;">
+                <template v-if="options.showVersionString">{{ [fw.osStr, fw.version].join(' ') }}</template>
                 <template v-for="tag in [[
-                    fw.duplicateVersion || options.showBuildColumn ? fw.build : false,
+                    fw.duplicateVersion || options.showBuildNumber ? fw.build : false,
                     fw.preinstalled.some(r => fw.devices.includes(r)) && (fw.filteredDownloads.length || fw.filteredOtas.length) ? 'Preinstalled' : false
                 ].filter(x => x)]" :key="tag">
-                    <span v-if="tag.length"> ({{tag.join(', ')}})</span>
+                    <span v-if="tag.length">{{(options.showVersionString ? ' (' : '') + tag.join(', ') + (options.showVersionString ? ')' : '')}}</span>
                 </template>
             </span>
-            <div class="signingStatus">
+            <div class="signingStatus" :style="{
+                'display': options.showSigningStatus ? 'initial' : 'none'
+            }">
                 <i :id="`signing-status-${fw.osStr}-${fw.build}`" class="fas"></i>
                 <span :id="`signing-text-${fw.osStr}-${fw.build}`" class="signingText"></span>
             </div>
         </div>
-        <div style="text-align: right; margin-left: auto;" class="releasedStr" v-if="fw.releasedStr">{{ fw.releasedStr }}</div>
+        <div style="text-align: right; margin-left: auto;" class="releasedStr" v-if="fw.releasedStr && options.showReleasedString">{{ fw.releasedStr }}</div>
         <div :style="{
             'text-align': 'right',
-            'margin-left': fw.releasedStr ? 0 : 'auto',
+            'margin-left': fw.releasedStr && options.showReleasedString ? 0 : 'auto',
         }" class="downloadIcon">
             <div v-if="fw.filteredDownloads.length || fw.filteredOtas.length" v-on:click="openDownloadDropdown()">
                 <a style="cursor: pointer;"><i class="downloadIcon fas fa-download"/></a>

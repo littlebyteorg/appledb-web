@@ -90,7 +90,7 @@
         <div><template v-for="filteredFirmwares in [
             versionArr.filter(fw =>
                 (fw.beta ? options.showBeta : options.showStable)
-                /*&& fw.deviceFilterArr.some(r => options.filterDev.includes(r))*/
+                && fw.deviceFilterArr.some(r => options.filterDev.includes(r))
             ).slice(loadedFirmwares[0], loadedFirmwares[1])
         ]">
         <firmwareVersionTableElement
@@ -109,7 +109,49 @@
         </template>
     </template>
 
-    <p>AppleDB is not affiliated with Apple Inc.</p>
+    <p v-on:click="devOptions = true">AppleDB is not affiliated with Apple Inc.</p>
+
+    <div v-if="devOptions" class="hiddenArea">
+        <div class="custom-container">
+            <h4>Hidden area</h4>
+            <p>Welcome to the spooky hidden area. Here's a collection of options that I haven't finished, but are still nice to have.</p>
+            <p><a style="cursor: pointer;" v-on:click="devOptions = false">Hide me!</a></p>
+        </div>
+        <div class="custom-container">
+            <h4>Options</h4>
+            <div class="toggleBubbleWrapper">
+                <div
+                    v-for="option in optionsObj" :key="option"
+                    v-on:click="options[option.model] = !options[option.model]"
+                    :class="[
+                        'toggleBubbleItem',
+                        options[option.model] ? 'active' : ''
+                    ]"
+                >
+                    {{ option.label }}
+                </div>
+            </div>
+        </div>
+        <div class="custom-container">
+            <h4>Device filters</h4>
+            <div class="toggleBubbleWrapper">
+                <div
+                    v-for="filter in fm.deviceFilter"
+                    :key="filter"
+                    :class="[
+                        'toggleBubbleItem',
+                        options.filterDev.includes(filter.value) ? 'active' : ''
+                    ]" v-on:click="options.filterDev = options.filterDev.includes(filter.value) ?
+                        options.filterDev.filter(x => x != filter.value) :
+                        options.filterDev.concat(filter.value)
+                ">{{ filter.label }}</div>
+            </div>
+            <p>
+                <a style="cursor: pointer;" v-on:click="options.filterDev = []">Clear filters</a>
+                <a style="cursor: pointer; float: right;" v-on:click="options.filterDev = fm.deviceFilter.map(x => x.value)">Select all</a>
+            </p>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -185,26 +227,20 @@ export default {
             activeTab: '',
 
             optionsObjStr: {
-                showBuildColumn: "Show build numbers",
-                showVersionColumn: "Show version numbers",
-                showJailbreakColumn: "Show jailbreaks",
-                showDownloadColumn: "Show download links",
-                showOtaColumn: "Show OTA download links",
-                showReleasedColumn: "Show release dates",
-                showStable: "Show stable version",
-                showBeta: 'Show beta versions'
+                showBuildNumber: "Show build numbers",
+                showVersionString: "Show version numbers",
+                showReleasedString: "Show release dates",
+                showSigningStatus: "Show signing status"
             },
 
             imgCount: 0,
             maxImgCount: 0,
 
             options: {
-                showBuildColumn: false,
-                showVersionColumn: true,
-                showJailbreakColumn: true,
-                showDownloadColumn: false,
-                showOtaColumn: false,
-                showReleasedColumn: false,
+                showBuildNumber: false,
+                showVersionString: true,
+                showReleasedString: true,
+                showSigningStatus: true,
 
                 showStable: true,
                 showBeta: false,
@@ -215,6 +251,7 @@ export default {
             
             wrapImg: false,
             reverseSorting: false,
+            devOptions: false,
             unslicedVersionArr: [],
             versionArr: [],
 
@@ -322,29 +359,23 @@ export default {
         },
         optionsObj() {
             return [
-                [
-                    "showStable",
-                    "showBeta",
-                ],
-                [
-                    "showBuildColumn"
-                ]
+                "showBuildNumber",
+                "showVersionString",
+                "showReleasedString",
+                "showSigningStatus"
             ].map(x => {
-                return x.map(y => {
-                    return {
-                        label: this.optionsObjStr[y],
-                        model: y,
-                        id: y + 'Checkbox',
-                        display: true
-                    }
-                })
+                return {
+                    label: this.optionsObjStr[x],
+                    model: x,
+                    display: true
+                }
             })
         },
         tableHeaders() {
             return [
                 {
                     label: this.tableHeadObj.build,
-                    value: this.options.showBuildColumn
+                    value: this.options.showBuildNumber
                 }
             ].filter(x => x.value).map(x => x.label)
         }
@@ -453,7 +484,7 @@ export default {
         }
         else {
             this.checkWrap()
-            //this.options.filterDev = this.fm.deviceFilter.map(x => x.value)
+            this.options.filterDev = this.fm.deviceFilter.map(x => x.value)
         }
 
         if (this.tabArr.length > 0) this.activeTab = this.tabArr[0]
@@ -580,6 +611,33 @@ export default {
 @media screen and (max-width: 575px) {
     .groupedOrRelatedDevicesWrapper {
         grid-template-columns: 100%;
+    }
+}
+
+.hiddenArea {
+    .toggleBubbleWrapper {
+        display: flex;
+        flex-flow: row wrap;
+        margin-inline: -.4em;
+        margin-bottom: 1em;
+
+        .toggleBubbleItem {
+            padding: .7em 1.2em;
+            margin: .4em;
+            border-radius: 5em;
+            border: 1px solid var(--c-border);
+            box-shadow: 0px 2px 12px rgba(0,0,0,0.1);
+            transition: background 100ms ease-in-out, color 100ms ease-in-out, transform 200ms ease-in-out;
+            cursor: pointer;
+
+            &.active {
+                background: var(--c-border);
+            }
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
     }
 }
 </style>
