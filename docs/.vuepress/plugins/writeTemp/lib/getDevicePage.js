@@ -118,7 +118,7 @@ module.exports = function(args) {
         return retArr
     }
 
-    const getVersionArr = devFwArr.map(i => {
+    let getVersionArr = devFwArr.map(i => {
         const dlArr = getDlArr('ipsw',i)
         const otaArr = getDlArr('ota',i)
 
@@ -172,7 +172,7 @@ module.exports = function(args) {
             otas: otaArr,
             filteredOtas: getFilteredDownloads(otaArr)
         }
-    }).reverse()
+    })
 
     const osStr = Array.from(new Set(getVersionArr.map(x => x.osStr)))
 
@@ -234,6 +234,22 @@ module.exports = function(args) {
         imgCount = 0
     }
 
+    getVersionArr = getVersionArr.sort((a,b) => {
+        const time = [a,b].map(x => x.released ? new Date(x.released).getTime() : 0)
+        if (time[0] < time[1]) return 1
+        if (time[0] > time[1]) return -1
+        const osStr = [a,b].map(x => x.osStr.toLowerCase())
+        if (osStr[0] < osStr[1]) return -1
+        if (osStr[0] > osStr[1]) return 1
+        return 0
+    }).sort((a,b) => {
+        if (mainList) return 0
+        const compare = [a,b].map(x => x.preinstalled.some(r => infoArr.map(x => x.key).includes(r)))
+        if (compare[0] < compare[1]) return -1
+        if (compare[0] > compare[1]) return 1
+        return 0
+    })
+
     return {
         path: devPath,
         frontmatter: {
@@ -243,6 +259,11 @@ module.exports = function(args) {
             widePage: false,
             device: infoArr,
             versionArr: getVersionArr,
+            hasFirmwares: {
+                stable: getVersionArr.filter(x => !x.beta).length > 0,
+                beta: getVersionArr.filter(x => x.beta).length > 0,
+                internal: getVersionArr.filter(x => x.internal).length > 0
+            },
             grouped: grouped,
             hideChildren: hideChildren,
             imgCount: imgCount,

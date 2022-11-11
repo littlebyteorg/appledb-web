@@ -67,15 +67,24 @@
         <div class="optionsWrapper" style="margin-bottom: .3em;">
             <div
                 :class="[options.showStable ? 'active' : '', 'stable']"
-                v-on:click="options.showStable = !options.showStable"
+                v-on:click="options.showStable = !options.showStable; filterVersions()"
+                v-if="fm.hasFirmwares.stable"
             >
                 <i class="fas fa-circle stable"></i> Stable
             </div>
             <div
                 :class="[options.showBeta ? 'active' : '', 'beta']"
-                v-on:click="options.showBeta = !options.showBeta"
+                v-on:click="options.showBeta = !options.showBeta; filterVersions()"
+                v-if="fm.hasFirmwares.beta"
             >
                 <i class="fas fa-circle beta"></i> Beta
+            </div>
+            <div
+                :class="[options.showInternal ? 'active' : '', 'internal']"
+                v-on:click="options.showInternal = !options.showInternal; filterVersions()"
+                v-if="fm.hasFirmwares.internal"
+            >
+                <i class="fas fa-circle internal"></i> Internal
             </div>
             <div
                 v-on:click="versionArr.reverse()"
@@ -87,19 +96,13 @@
         
         <!--<deviceFilter v-if="fm.mainList" :filterOptions="fm.deviceFilter" :options="options"/>-->
 
-        <div><template v-for="filteredFirmwares in [
-            versionArr.filter(fw =>
-                (fw.beta ? options.showBeta : options.showStable)
-                && fw.deviceFilterArr.some(r => options.filterDev.includes(r))
-            ).slice(loadedFirmwares[0], loadedFirmwares[1])
-        ]">
         <firmwareVersionTableElement
-            v-for="fw in filteredFirmwares"
+            v-for="fw in versionArr.slice(loadedFirmwares[0], loadedFirmwares[1])"
             :key="fw"
             :fw="fw"
             :options="options"
-            :showSingleDownloads="filteredFirmwares.map(x => x.filteredDownloads || x.filteredOtas).filter(x => x.length).length > 0"
-        /></template></div>
+            :showSingleDownloads="versionArr.map(x => x.filteredDownloads || x.filteredOtas).filter(x => x.length).length > 0"
+        />
 
         <template v-if="loadedFirmwares[1] < versionArr.filter(fw => fw.beta ? options.showBeta : options.showStable).length">
             <div style="display: flex; padding: 1em; padding-top: 1.5em;">
@@ -141,9 +144,11 @@
                     :class="[
                         'toggleBubbleItem',
                         options.filterDev.includes(filter.value) ? 'active' : ''
-                    ]" v-on:click="options.filterDev = options.filterDev.includes(filter.value) ?
+                    ]" v-on:click="
+                    options.filterDev = options.filterDev.includes(filter.value) ?
                         options.filterDev.filter(x => x != filter.value) :
-                        options.filterDev.concat(filter.value)
+                        options.filterDev.concat(filter.value);
+                    filterVersions()
                 ">{{ filter.label }}</div>
             </div>
             <p>
@@ -244,6 +249,7 @@ export default {
 
                 showStable: true,
                 showBeta: false,
+                showInternal: false,
                 
                 filterDev: [],
                 showAll: {}
@@ -252,7 +258,6 @@ export default {
             wrapImg: false,
             reverseSorting: false,
             devOptions: false,
-            unslicedVersionArr: [],
             versionArr: [],
 
             devicePath: '/device',
@@ -456,43 +461,33 @@ export default {
 
             if (urlCount == 1) return [retArr[0]]
             else return retArr
+        },
+        filterVersions() {
+            this.versionArr = this.fm.versionArr.filter(fw =>
+                (fw.beta ? this.options.showBeta : this.options.showStable) &&
+                (fw.internal ? this.options.showInternal : true) &&
+                fw.deviceFilterArr.some(r => this.options.filterDev.includes(r))
+            )
         }
     },
     mounted() {
-        const devKeyList = this.fm.device.map(x => x.key)
-        this.versionArr = this.fm.versionArr.sort((a,b) => {
-            const time = [a,b].map(x => x.released ? new Date(x.released).getTime() : 0)
-            if (time[0] < time[1]) return 1
-            if (time[0] > time[1]) return -1
-            const osStr = [a,b].map(x => x.osStr.toLowerCase())
-            if (osStr[0] < osStr[1]) return -1
-            if (osStr[0] > osStr[1]) return 1
-            return 0
-        }).sort((a,b) => {
-            if (this.fm.mainList) return 0
-            const compare = [a,b].map(x => x.preinstalled.some(r => devKeyList.includes(r)))
-            if (compare[0] < compare[1]) return -1
-            if (compare[0] > compare[1]) return 1
-            return 0
-        })
-
         const noJailbreaks = this.fm.noJb || this.fm.jbCount < 1
 
         if (this.fm.mainList) {
             this.options.filterDev = this.fm.deviceFilter.map(x => x.value)
             this.options.showBeta = true
+            this.options.showInternal = true
         }
         else {
             this.checkWrap()
             this.options.filterDev = this.fm.deviceFilter.map(x => x.value)
         }
 
+        this.filterVersions()
+
         if (this.tabArr.length > 0) this.activeTab = this.tabArr[0]
 
         this.maxImgCount = this.fm.imgCount
-    },
-    updated() {
-        //if (this.versionArr.length > 200) this.checkScroll()
     },
     watch: {
         imgCount(val) {
@@ -534,25 +529,34 @@ export default {
     .active {
         background: var(--c-border);
         font-weight: 600;
-    }
 
-    .active.stable {
-        background: rgb(3, 155, 229, 0.1);
-    }
-    .active.beta {
-        background: rgb(171, 71, 189, 0.1);
+        &.stable {
+            background: #039be530;
+            border-color: #039be501;
+        }
+
+        &.beta {
+            background: #ab47bc30;
+            border-color: #ab47bc01;
+        }
+
+        &.internal {
+            background: #fbc02d30;
+            border-color: #fbc02d01;
+        }
     }
 
     div {
         padding: .7em;
         padding-inline: 1.2em;
         margin: .3em;
-        border-radius: 6px;
+        border-radius: 4em;
         cursor: pointer;
         transition: 100ms background ease-in-out, transform 150ms ease-in-out;
+        //border: 1px solid var(--c-border);
+        box-shadow: 0px 2px 9px rgba(0,0,0,0.1);
 
         &:hover {
-            background: var(--c-border);
             transform: scale(1.05);
         }
 
@@ -569,6 +573,10 @@ export default {
 
         .beta {
             color: #ab47bc;
+        }
+
+        .internal {
+            color: #fbc02d;
         }
     }
 }
@@ -631,7 +639,12 @@ export default {
             cursor: pointer;
 
             &.active {
-                background: var(--c-border);
+                background: var(--c-text-lightest);
+                color: var(--c-bg);
+
+                &.dark {
+                    background: #000;
+                }
             }
 
             &:hover {
@@ -639,5 +652,10 @@ export default {
             }
         }
     }
+}
+
+html.dark .hiddenArea .toggleBubbleWrapper .toggleBubbleItem.active {
+    background: var(--c-border);
+    color: var(--c-text);
 }
 </style>
