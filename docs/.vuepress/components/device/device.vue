@@ -47,7 +47,7 @@
             <div
                 :class="[options.showInternal ? 'active' : '', 'internal']"
                 v-on:click="options.showInternal = !options.showInternal; filterVersions()"
-                v-if="fm.hasFirmwares.internal || 1"
+                v-if="fm.hasFirmwares.internal"
             >
                 <i class="fas fa-circle internal"></i> Internal
             </div>
