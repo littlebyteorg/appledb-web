@@ -5,7 +5,10 @@
     >
         <div>
             <span style="font-weight: 600;">{{ [fw.osStr, fw.version].join(' ') }}
-                <template v-for="tag in [[fw.duplicateVersion || options.showBuildColumn ? fw.build : false, fw.preinstalled.some(r => fw.devices.includes(r)) ? 'Preinstalled' : false].filter(x => x)]" :key="tag">
+                <template v-for="tag in [[
+                    fw.duplicateVersion || options.showBuildColumn ? fw.build : false,
+                    fw.preinstalled.some(r => fw.devices.includes(r)) && (fw.filteredDownloads.length || fw.filteredOtas.length) ? 'Preinstalled' : false
+                ].filter(x => x)]" :key="tag">
                     <span v-if="tag.length"> ({{tag.join(', ')}})</span>
                 </template>
             </span>
@@ -19,7 +22,7 @@
             'text-align': 'right',
             'margin-left': fw.releasedStr ? 0 : 'auto',
         }" class="downloadIcon">
-            <div v-on:click="openDownloadDropdown()" v-if="fw.filteredDownloads.length || fw.filteredOtas.length">
+            <div v-if="fw.filteredDownloads.length || fw.filteredOtas.length" v-on:click="openDownloadDropdown()">
                 <a style="cursor: pointer;"><i class="downloadIcon fas fa-download"/></a>
                 <div :class="[
                     'downloadDropdown',
@@ -54,6 +57,17 @@
                     </a>
                 </template>
             </div>-->
+            <div v-else-if="fw.preinstalled" v-on:click="openDownloadDropdown()">
+                <i class="fas fa-box-open"></i>
+                <!--<i class="fas fa-check" style="position: absolute; right: -130.5px; padding-top: 6px; font-size: .45em; color: #fff;"></i>-->
+                <div :class="[
+                    'downloadDropdown',
+                    'custom-container',
+                    showDownloadDropdown ? 'active' : ''
+                ]" style="padding-inline: 1.3em !important; font-weight: 500;">
+                    Preinstalled firmware
+                </div>
+            </div>
             <div style="opacity: 0;" v-else-if="showSingleDownloads">
                 <i class="fas fa-download"/>
             </div>
@@ -177,7 +191,7 @@ export default {
 }
 .wrapper {
     display: flex;
-    padding: 1em;
+    padding: 1.2em 1em;
     cursor: pointer;
     border-radius: 12px;
     transition: background 75ms ease-in-out;
@@ -259,6 +273,15 @@ h5 {
     .downloadDropdown {
         right: 4.5em;
         max-width: 60%;
+    }
+}
+
+.downloadIcon {
+    width: 1em;
+
+    i {
+        width: 100%;
+        text-align: center;
     }
 }
 

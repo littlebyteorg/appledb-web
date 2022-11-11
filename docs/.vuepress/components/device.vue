@@ -98,7 +98,7 @@
             :key="fw"
             :fw="fw"
             :options="options"
-            :showSingleDownloads="filteredFirmwares.map(x => x.filteredDownloads).filter(x => x.length == 1).length > 0"
+            :showSingleDownloads="filteredFirmwares.map(x => x.filteredDownloads || x.filteredOtas).filter(x => x.length).length > 0"
         /></template></div>
 
         <template v-if="loadedFirmwares[1] < versionArr.filter(fw => fw.beta ? options.showBeta : options.showStable).length">
