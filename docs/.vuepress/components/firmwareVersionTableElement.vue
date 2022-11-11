@@ -57,7 +57,7 @@
                     </a>
                 </template>
             </div>-->
-            <div v-else-if="fw.preinstalled" v-on:click="openDownloadDropdown()">
+            <div v-else-if="fw.preinstalled.some(r => fw.devices.includes(r))" v-on:click="openDownloadDropdown()">
                 <i class="fas fa-box-open"></i>
                 <!--<i class="fas fa-check" style="position: absolute; right: -130.5px; padding-top: 6px; font-size: .45em; color: #fff;"></i>-->
                 <div :class="[
