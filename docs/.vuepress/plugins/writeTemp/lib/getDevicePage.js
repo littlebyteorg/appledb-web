@@ -242,12 +242,6 @@ module.exports = function(args) {
         if (osStr[0] < osStr[1]) return -1
         if (osStr[0] > osStr[1]) return 1
         return 0
-    }).sort((a,b) => {
-        if (mainList) return 0
-        const compare = [a,b].map(x => x.preinstalled.some(r => infoArr.map(x => x.key).includes(r)))
-        if (compare[0] < compare[1]) return -1
-        if (compare[0] > compare[1]) return 1
-        return 0
     })
 
     const hasFirmwares = {
@@ -264,7 +258,13 @@ module.exports = function(args) {
             chartType: 'device',
             widePage: false,
             device: infoArr,
-            versionArr: getVersionArr,
+            versionArr: getVersionArr.sort((a,b) => {
+                if (mainList) return 0
+                const compare = [a,b].map(x => x.devices.every(r => x.preinstalled.includes(r)))
+                if (compare[0] < compare[1]) return -1
+                if (compare[0] > compare[1]) return 1
+                return 0
+            }),
             hasFirmwares: hasFirmwares,
             hasFirmwareFilters: Object.keys(hasFirmwares).map(x => hasFirmwares[x]).reduce((a,b) => a + b) > 1,
             grouped: grouped,

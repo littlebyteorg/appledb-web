@@ -66,7 +66,7 @@
             :key="fw"
             :fw="fw"
             :options="options"
-            :showSingleDownloads="versionArr.map(x => x.filteredDownloads || x.filteredOtas).filter(x => x.length).length > 0"
+            :showSingleDownloads="versionArr.map(x => x.filteredDownloads || x.filteredOtas).filter(x => x.length).length > 0 || versionArr.map(fw => fw.preinstalled.some(r => fw.devices.includes(r))).filter(x => x).length > 0"
         />
 
         <template v-if="loadedFirmwares[1] < versionArr.length">
