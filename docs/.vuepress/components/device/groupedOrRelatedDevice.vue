@@ -20,6 +20,13 @@
 <script>
 import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 
+String.prototype.format = function(vars) {
+   let temp = this
+   for (let item in vars)
+     temp = temp.replace("${" + item + "}", vars[item])
+   return temp
+ }
+
 export default {
     props: {
         device: Object
