@@ -224,7 +224,8 @@ module.exports = function(args) {
 
     const img = {
         count: devArr[0].imgCount,
-        dark: devArr[0].imgDark
+        dark: devArr[0].imgDark,
+        key: devArr[0].key
     }
 
     var imgCount = 0

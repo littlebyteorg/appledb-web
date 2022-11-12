@@ -2,8 +2,8 @@
     <div class="flexWrapper" :style="(wrapImg) ? 'flex-direction: column;' : 'flex-direction: row;'">
         <ul class="infoList" id="flexInfo">
             <li v-for="(s, index) in infoArr" :key="s">
-                <template v-if="(infoArr[index].split(', ').length > 5 && !options.showAll[index])">
-                    {{ s.replace(infoArr[index], infoArr[index].split(', ').slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="options.showAll[index] = true">...</a>
+                <template v-if="(infoArr[index].split(', ').length > 5 && !showAll[index])">
+                    {{ s.replace(infoArr[index], infoArr[index].split(', ').slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAll[index] = true">...</a>
                 </template>
                 <template v-else v-once>{{ s }}</template>
             </li>
@@ -35,15 +35,70 @@ import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 
 export default {
     props: {
-        infoArr: Object,
-        options: Object,
+        device: Array,
+        title: String,
         img: Object
     },
     data() {
         return {
             wrapImg: false,
-            isDarkMode: useDarkMode()
+            showAll: {},
+
+            infoStrArr: [
+                "Identifier: ${identifier}",
+                "Released: ${released}",
+                "SoC: ${soc}",
+                "Arch: ${arch}",
+                "Model: ${model}",
+                "Board: ${board}"
+            ],
+
+            isDarkMode: useDarkMode(),
         }
+    },
+    computed: {
+        infoArr() {
+            const device = this.device
+            function grabInfo(property) {
+                if (property == 'released') {
+                    const dateArr = Array.from(new Set(device.map(x => x[property]).flat())).filter(x => x).sort().map(x => {
+                        const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
+                        const currentDate = new Date(x).valueOf()
+                        const adjustedDate = new Date(currentDate + dateOffset)
+
+                        const releasedArr = x.split('-')
+                        const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+                        const date = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustedDate)
+                        
+                        return date
+                    })
+                    return dateArr
+                }
+
+                return Array.from(new Set(device.map(x => x[property]).flat())).sort()
+            }
+            const propertyArr = [
+                'identifier',
+                'released',
+                'soc',
+                'arch',
+                'model',
+                'board'
+            ]
+            var retObj = {}
+            for (var str of this.infoStrArr) {
+                const property = propertyArr.filter(x => str.includes(x))[0]
+
+                const infoArr = grabInfo(property).filter(x => x)
+                let info = infoArr
+                if (property == 'released' && info.length > 1) info = info.map(x => x.replace(',',''))
+                info = info.join(', ')
+
+                if (property == 'identifier' && infoArr.includes(this.title)) info = 'N/A'
+                if (info) retObj[property] = str.format({ [property]: info })
+            }
+            return retObj
+        },
     },
     methods: {
         checkWrap() {

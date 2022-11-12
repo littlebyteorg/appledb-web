@@ -1,9 +1,9 @@
 <template>
-    <div v-if="showDevOptions" class="hiddenArea">
+    <div class="hiddenArea">
         <div class="custom-container">
             <h4>Hidden area</h4>
             <p>Welcome to the spooky hidden area. Here's a collection of options that I haven't finished, but are still nice to have.</p>
-            <p><a style="cursor: pointer;" v-on:click="showDevOptions = false">Hide me!</a></p>
+            <p><a style="cursor: pointer;" v-on:click="devOptions.show = false">Hide me!</a></p>
         </div>
         <div class="custom-container">
             <h4>Options</h4>
@@ -50,7 +50,7 @@ export default {
         options: Object,
         optionsObj: Object,
         deviceFilter: Array,
-        showDevOptions: Boolean,
+        devOptions: Object,
         filterVersions: Function
     }
 }
