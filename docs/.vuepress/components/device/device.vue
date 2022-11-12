@@ -1,7 +1,12 @@
 <template>
-    <template v-if="!fm.mainList">
+    <!--<template v-if="!fm.mainList">
         <deviceInfo :device="fm.device" :title="fm.title" :img="fm.img"/>
         <deviceTabs :extraInfo="fm.extraInfo" :device="fm.device"/>
+        <groupedOrRelatedDeviceWrapper v-if="!fm.hideChildren" :device="fm.device" :img="fm.img"/>
+    </template>-->
+
+    <template v-if="!fm.mainList">
+        <newDeviceInfo :device="fm.device" :title="fm.title" :img="fm.img" :extraInfo="fm.extraInfo"/>
         <groupedOrRelatedDeviceWrapper v-if="!fm.hideChildren" :device="fm.device" :img="fm.img"/>
     </template>
 

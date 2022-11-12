@@ -255,6 +255,7 @@ module.exports = function(args) {
         path: devPath,
         frontmatter: {
             title: name,
+            hideTitle: !mainList,
             description: description || `Information lookup for ${name}`,
             chartType: 'device',
             widePage: false,

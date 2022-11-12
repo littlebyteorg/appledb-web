@@ -58,7 +58,6 @@ export default {
 <style lang="scss" scoped>
 .gridWrapper {
     padding: 1em;
-    margin-block: 1em;
     display: grid;
     gap: 0px 1em;
     border-radius: .7em;

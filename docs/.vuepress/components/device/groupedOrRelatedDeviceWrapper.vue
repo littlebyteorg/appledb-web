@@ -1,6 +1,6 @@
 <template>
     <template v-if="groupedOrRelatedDevicesObj.devices.length > 1">
-        <h2>{{ groupedOrRelatedDevicesObj.header }}</h2>
+        <h5>{{ groupedOrRelatedDevicesObj.header }}</h5>
         <div class="groupedOrRelatedDevicesWrapper">
             <groupedOrRelatedDevice
                 v-for="dev in groupedOrRelatedDevicesObj.devices"

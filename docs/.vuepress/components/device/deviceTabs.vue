@@ -45,7 +45,6 @@ Array.prototype.formatExtraInfoText = function(property) {
 export default {
     props: {
         extraInfo: Object,
-        tabData: Object,
         device: Object
     },
     data() {

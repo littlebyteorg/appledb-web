@@ -1,17 +1,16 @@
 <template>
-    <h2 v-if="!mainList" style="margin-bottom: .3em;">
+    <h5 v-if="!mainList" style="margin-bottom: .3em;">
         {{ versionHeaderStr }}
         <i
             v-if="!hasFirmwareFilters"
             class="fas fa-sort"
             style="
-                margin-left: 5px;
-                margin-bottom: .6em;
-                font-size: .7em;
+                margin-inline: 10px;
+                font-size: 1em;
                 cursor: pointer;
             " v-on:click="versionArr.reverse()"
         ></i>
-    </h2>
+    </h5>
     
     <div class="optionsWrapper" style="margin-bottom: .3em;" v-if="hasFirmwareFilters">
         <div
