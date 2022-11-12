@@ -21,7 +21,7 @@
             </div>
         </div>
         <div style="text-align: right; margin-left: auto;" class="releasedStr" v-if="fw.releasedStr && options.showReleasedString">{{ fw.releasedStr }}</div>
-        <div :style="{
+        <div v-if="showSingleDownloads" :style="{
             'text-align': 'right',
             'margin-left': fw.releasedStr && options.showReleasedString ? 0 : 'auto',
         }" class="downloadIcon">
@@ -71,7 +71,7 @@
                     Preinstalled firmware
                 </div>
             </div>
-            <div style="opacity: 0;" v-else-if="showSingleDownloads">
+            <div style="opacity: 0;" v-else>
                 <i class="fas fa-download"/>
             </div>
         </div>
