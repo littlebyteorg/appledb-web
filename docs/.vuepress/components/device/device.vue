@@ -69,9 +69,9 @@
             :showSingleDownloads="versionArr.map(x => x.filteredDownloads || x.filteredOtas).filter(x => x.length).length > 0"
         />
 
-        <template v-if="loadedFirmwares[1] < versionArr.filter(fw => fw.beta ? options.showBeta : options.showStable).length">
+        <template v-if="loadedFirmwares[1] < versionArr.length">
             <div style="display: flex; padding: 1em; padding-top: 1.5em;">
-                <div>Displaying {{ loadedFirmwares[1] }} firmwares out of {{ versionArr.filter(fw => fw.beta ? options.showBeta : options.showStable).length }}.</div>
+                <div>Displaying {{ loadedFirmwares[1] }} firmwares out of {{ versionArr.length }}.</div>
                 <div style="margin-left: auto;"><a style="cursor: pointer;" v-on:click="loadedFirmwares[1] += 500">Load more</a></div>
             </div>
         </template>
