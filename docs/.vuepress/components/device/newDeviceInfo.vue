@@ -470,6 +470,14 @@ html.dark .info .tabWrapper .tabTitleWrapper {
                 }
             }
         }
+        .tabWrapper {
+            margin: -.2em;
+            .tabTitleWrapper {
+                .tabTitle {
+                    padding: .5em .7em;
+                }
+            }
+        }
 
         .mergedBox {
             display: initial;
