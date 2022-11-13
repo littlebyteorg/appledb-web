@@ -312,8 +312,10 @@ export default {
         background: var(--c-border);
         border-radius: 4px;
         display: block;
-        box-shadow: 0px 2px 18px rgba(0,0,0,0.15);
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,0,0,0.1);
         line-height: 1.4em;
+        transition: background 150ms ease-in-out;
 
         .propertyWrapper {
             margin-top: .8em;

@@ -69,9 +69,10 @@ export default {
             margin: .4em;
             border-radius: 5em;
             border: 1px solid var(--c-border);
-            box-shadow: 0px 2px 12px rgba(0,0,0,0.1);
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.05);
             transition: background 100ms ease-in-out, color 100ms ease-in-out, transform 200ms ease-in-out;
             cursor: pointer;
+            background: var(--c-bg-light);
 
             &.active {
                 background: var(--c-text-lightest);

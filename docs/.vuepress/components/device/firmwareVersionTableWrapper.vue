@@ -159,17 +159,17 @@ html.dark .optionsWrapper div {
 
         &.stable {
             background: #039be530 !important;
-            border-color: #039be501;
+            border-color: #039be501 !important;
         }
 
         &.beta {
             background: #ab47bc30 !important;
-            border-color: #ab47bc01;
+            border-color: #ab47bc01 !important;
         }
 
         &.internal {
             background: #fbc02d30 !important;
-            border-color: #fbc02d01;
+            border-color: #fbc02d01 !important;
         }
     }
 
@@ -180,23 +180,26 @@ html.dark .optionsWrapper div {
         border-radius: 4em;
         cursor: pointer;
         transition: 100ms background ease-in-out, transform 150ms ease-in-out;
-        //border: 1px solid var(--c-border);
-        box-shadow: 0px 2px 9px rgba(0,0,0,0.1);
+        border: 1px solid var(--c-border);
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.05);
         
         &.stable {
             background: #039be510 !important;
+                border-color: #039be501 !important;
             &:hover {
                 background: #039be530 !important;
             }
         }
         &.beta {
             background: #ab47bc10 !important;
+            border-color: #ab47bc01 !important;
             &:hover {
                 background: #ab47bc30 !important;
             }
         }
         &.internal {
             background: #fbc02d10 !important;
+            border-color: #fbc02d01 !important;
             &:hover {
                 background: #fbc02d30 !important;
             }
