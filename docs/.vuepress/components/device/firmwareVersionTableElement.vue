@@ -84,7 +84,7 @@
             </a>
         </div>
     </div>
-    <div v-if="expanded" class="custom-container">
+    <div v-if="expanded" class="custom-container expandedView">
         <h5>Firmware</h5>
         <ul style="padding-left: 0; list-style-type: none;">
             <li v-if="fw.build">Build: {{ fw.build }}</li>
@@ -292,5 +292,11 @@ h5 {
     opacity: 1;
     margin-top: 10px;
     transform: scale(1);
+}
+
+.expandedView {
+    h5 {
+        padding-bottom: 0;
+    }
 }
 </style>
