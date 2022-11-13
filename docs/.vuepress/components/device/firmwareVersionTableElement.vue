@@ -116,8 +116,9 @@ export default {
         }
     },
     mounted() {
-        const identifierArr = this.fw.devices.filter(x => this.shouldSigningStatusBeChecked(this.fw.osStr, x))
+        const identifierArr = this.fw.devices.filter(x => this.shouldSigningStatusBeChecked(x, this.fw.osStr))
         if (identifierArr.length) this.getSigningStatus(this.fw.build, identifierArr[0], this.fw.osStr)
+        console.log(identifierArr)
     },
     methods: {
         async getSigningStatus(buildid, identifier, osStr) {
@@ -159,7 +160,7 @@ export default {
                 'watchOS',
                 'Apple TV Software',
                 'iPhoneOS'
-            ].includes(osStr) || ![
+            ].includes(osStr) && ![
                 'iPhone1,1',
                 'iPhone1,2',
                 'iPod1,1'
