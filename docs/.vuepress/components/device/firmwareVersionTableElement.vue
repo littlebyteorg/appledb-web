@@ -102,7 +102,6 @@
 </template>
 
 <script>
-
 export default {
     props: {
         fw: Object,
@@ -117,7 +116,7 @@ export default {
         }
     },
     mounted() {
-        this.getSigningStatus(this.fw.build, this.fw.devices, this.fw.osStr)
+        if (shouldSigningStatusBeChecked(this.fw.osStr, this.fw.devices[0])) this.getSigningStatus(this.fw.build, this.fw.devices, this.fw.osStr)
     },
     methods: {
         async getSigningStatus(buildid, identifiers, osStr) {
@@ -147,6 +146,23 @@ export default {
             }
 
             request.send()
+        },
+        shouldSigningStatusBeChecked(identifier, osStr) {
+            return [
+                'bridgeOS',
+                'iOS',
+                'iPadOS',
+                'macOS',
+                'audioOS',
+                'tvOS',
+                'watchOS',
+                'Apple TV Software',
+                'iPhoneOS'
+            ].includes(osStr) || ![
+                'iPhone1,1',
+                'iPhone1,2',
+                'iPod1,1'
+            ].includes(identifier)
         },
         openDownloadDropdown() {
             var elements = document.getElementsByClassName('downloadDropdown active')
