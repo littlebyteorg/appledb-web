@@ -14,21 +14,47 @@
     </div>
     <div class="info">
         <div :class="[
-            'box',
-            'leftBox',
+            'leftColumn',
+            'propertyBox',
             extraInfo ? '' : 'fillSpace'
         ]">
-            <template v-for="property in computedProperties" :key="property">
-                <div v-if="property.infoString" class="propertyWrapper">
-                    <div class="title">{{ property.title }}</div>
-                    <template v-if="property.infoString.split(', ').length > 5 && !showAll[property.key]">
-                        {{ property.infoString.replace(property.infoString, property.infoString.split(', ').slice(0, 3).join(', ')) }}, <a style="user-select: none; cursor: pointer;" v-on:click="showAll[property.key] = true">...</a>
-                    </template>
-                    <template v-else v-once>{{ property.infoString }}</template>
+            <template v-if="extraInfo">
+                <div class="box separateBoxes" v-for="property in computedProperties" :key="property">
+                    <div class="propertyWrapper" v-if="property.infoString"><deviceInfoProperty
+                        :property="property"
+                        :showAll="showAll"
+                        :inline="false"
+                    /></div>
                 </div>
             </template>
+            <div :class="[
+                'box',
+                'propertyBox',
+                'mergedInlineBox'
+            ]" v-else>
+                <template v-for="property in computedProperties" :key="property">
+                    <div class="propertyWrapper" v-if="property.infoString"><deviceInfoProperty
+                        :property="property"
+                        :showAll="showAll"
+                        :inline="true"
+                    /></div>
+                </template>
+            </div>
+            <div :class="[
+                'box',
+                'propertyBox',
+                'mergedBox'
+            ]">
+                <template v-for="property in computedProperties" :key="property"><div v-if="property.infoString" class="propertyWrapper">
+                    <deviceInfoProperty
+                        :property="property"
+                        :showAll="showAll"
+                        :inline="false"
+                    />
+                </div></template>
+            </div>
         </div>
-        <div class="box rightBox" v-if="extraInfo">
+        <div v-if="extraInfo" class="box rightColumn">
             <div class="tabWrapper">
                 <div class="tabTitleWrapper">
                     <div
@@ -103,6 +129,7 @@ export default {
             showAll: {},
             wrapImg: false,
             activeTab: '',
+            pageWidth: 0,
 
             properties: {
                 identifier: {
@@ -143,7 +170,13 @@ export default {
             return retArr
         },
         computedProperties() {
-            return Object.keys(this.properties).map(x => {
+            return Object.keys(this.properties).filter(x => {
+                if (this.tabPropertyArr.hasOwnProperty('SoC')) {
+                    if (this.tabPropertyArr.SoC.includes('SoC') && x == 'soc') return false
+                    if (this.tabPropertyArr.SoC.includes('Architecture') && x == 'arch') return false
+                }
+                return true
+            }).map(x => {
                 let r = this.properties[x]
                 r.key = x
                 r.infoString = this.grabInfoString(x)
@@ -161,8 +194,9 @@ export default {
             )
         },
         tabPropertyArr() {
-            const arr = Object.keys(this.extraInfo).map(x => this.extraInfo[x]).flat()
             let retObj = {}
+            if (!this.extraInfo) return retObj
+            const arr = Object.keys(this.extraInfo).map(x => this.extraInfo[x]).flat()
             for (const i of arr) {
                 if (!retObj.hasOwnProperty(i.type)) retObj[i.type] = Object.keys(i).filter(x => x != 'type')
                 else retObj[i.type].concat(Object.keys(i.type).filter(x => x != 'type'))
@@ -171,6 +205,7 @@ export default {
         },
         tabData() {
             let retObj = {}
+            if (!this.extraInfo) return retObj
             for (const dev in this.extraInfo) {
                 retObj[dev] = {}
                 for (const tab of this.extraInfo[dev]) {
@@ -278,22 +313,38 @@ export default {
     }
 }
 
+.mergedBox {
+    display: none !important;
+}
+
 .info {
     display: flex;
     flex-flow: row wrap;
     margin-bottom: 1em;
 
-    .leftBox {
-        width: 30%;
+    .leftColumn {
+        width: calc(38.2% - 1em);
+
+        .box {
+            margin-bottom: 1em;
+            
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+        }
     }
 
-    .rightBox {
+    .fillSpace {
+        width: 100%;
+    }
+
+    .rightColumn {
         width: 55%;
         margin-left: auto;
+        height: 0%;
     }
 
     .box.fillSpace {
-        width: 100% !important;
         display: flex !important;
         flex-flow: row wrap !important;
         padding: .3em;
@@ -331,6 +382,10 @@ export default {
             color: var(--c-text-light);
             text-transform: uppercase;
             font-size: .8em;
+            margin-top: 1.5em;
+            &:first-of-type {
+                margin-top: 0;
+            }
         }
     }
 
@@ -345,7 +400,7 @@ export default {
             .tabTitle {
                 padding: .5em 1em;
                 margin: 0 1em .3em 0;
-                border-radius: 8px;
+                border-radius: 3px;
                 transition: 100ms ease-in-out;
                 cursor: pointer;
 
@@ -377,13 +432,6 @@ export default {
                     content: ' — ';
                 }
             }
-
-            .title {
-                margin-top: 1.5em;
-                &:first-of-type {
-                    margin-top: 0;
-                }
-            }
         }
     }
 }
@@ -392,18 +440,27 @@ html.dark .info .tabWrapper .tabTitleWrapper {
     border-color: rgba(255,255,255,0.2);
 }
 
-@media screen and (max-width: 740px) {
+@media screen and (max-width: 800px) {
     .info {
-        display: block;
+        display: flex;
+        flex-direction: column;
 
-        .rightBox {
-            margin-left: initial;
+        .leftColumn {
+            width: 100%;
         }
 
-        .leftBox {
-            display: flex !important;
+        .rightColumn {
+            margin-left: initial;
+            width: initial;
+            margin-bottom: 1em;
+        }
+
+        .propertyBox {
+            display: block !important;
             flex-flow: row wrap !important;
-            padding: .3em;
+            padding: 0em;
+            margin-bottom: 1em;
+            width: 100%;
 
             .propertyWrapper {
                 margin: 1.2em;
@@ -412,6 +469,16 @@ html.dark .info .tabWrapper .tabTitleWrapper {
                     margin-top: 1.2em;
                 }
             }
+        }
+
+        .mergedBox {
+            display: initial;
+        }
+        .mergedInlineBox {
+            display: none !important;
+        }
+        .separateBoxes {
+            display: none;
         }
 
         .box {
