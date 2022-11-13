@@ -193,7 +193,9 @@ export default {
                     .map(x => x.type)
                 )
             )
-            if (this.grabInfoString('soc') || this.grabInfoString('arch')) return ['SoC'].concat(retArr)
+            if (!retArr.includes('SoC') && (
+                this.grabInfoString('soc') || this.grabInfoString('arch')
+            )) return ['SoC'].concat(retArr)
             return retArr
         },
         tabPropertyArr() {
@@ -205,9 +207,11 @@ export default {
                 else retObj[i.type].concat(Object.keys(i.type).filter(x => x != 'type'))
             }
 
-            if (this.tabArr.includes('SoC') && !Object.keys(retObj).includes('Soc')) retObj.SoC = []
-            if (this.grabInfoString('soc')) retObj.SoC.push('SoC')
-            if (this.grabInfoString('arch')) retObj.SoC.push('Architecture')
+            if (this.tabArr.includes('SoC') && !Object.keys(retObj).includes('SoC')) {
+                retObj.SoC = []
+                if (this.grabInfoString('soc')) retObj.SoC.push('SoC')
+                if (this.grabInfoString('arch')) retObj.SoC.push('Architecture')
+            }
             
             return retObj
         },
