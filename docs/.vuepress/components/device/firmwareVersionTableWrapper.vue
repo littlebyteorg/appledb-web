@@ -12,7 +12,7 @@
         ></i>
     </h5>
     
-    <div class="optionsWrapper" style="margin-bottom: .3em;" v-if="hasFirmwareFilters">
+    <div class="optionsWrapper" v-if="hasFirmwareFilters">
         <div
             :class="[options.showStable ? 'active' : '', 'stable']"
             v-on:click="options.showStable = !options.showStable; filterVersions()"
@@ -152,6 +152,7 @@ html.dark .optionsWrapper div {
     display: flex;
     align-content: space-between;
     flex-wrap: wrap;
+    margin-bottom: .5em;
 
     .active {
         background: var(--c-border);
