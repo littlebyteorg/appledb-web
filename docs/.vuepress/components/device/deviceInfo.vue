@@ -73,6 +73,7 @@
                     <template v-for="property in tabPropertyArr[tab]" :key="property">
                         <div class="title">{{ property.formatExtraInfoTitle() }}</div>
                         <div v-if="
+                            Object.keys(tabData).length == 1 ||
                             Array.from(new Set(
                                 Object.keys(tabData).map(x => 
                                     JSON.stringify(tabData[x][tab][property])
@@ -356,6 +357,10 @@ export default {
                 margin-top: 1.2em;
             }
         }
+    }
+
+    .mergedInlineBox {
+        margin-bottom: 0em !important;
     }
 
     .box {
