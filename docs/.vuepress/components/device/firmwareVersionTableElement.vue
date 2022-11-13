@@ -116,13 +116,14 @@ export default {
         }
     },
     mounted() {
-        if (shouldSigningStatusBeChecked(this.fw.osStr, this.fw.devices[0])) this.getSigningStatus(this.fw.build, this.fw.devices, this.fw.osStr)
+        const identifierArr = this.fw.devices.filter(x => this.shouldSigningStatusBeChecked(this.fw.osStr, x))
+        if (identifierArr.length) this.getSigningStatus(this.fw.build, identifierArr[0], this.fw.osStr)
     },
     methods: {
-        async getSigningStatus(buildid, identifiers, osStr) {
+        async getSigningStatus(buildid, identifier, osStr) {
             var request = new XMLHttpRequest()
 
-            request.open('GET', `https://api.ipsw.me/v4/ipsw/${identifiers[0]}/${buildid}`)
+            request.open('GET', `https://api.ipsw.me/v4/ipsw/${identifier}/${buildid}`)
 
             request.setRequestHeader('Accept', 'application/json')
 
