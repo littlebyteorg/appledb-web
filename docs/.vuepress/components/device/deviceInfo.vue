@@ -186,13 +186,15 @@ export default {
         },
         tabArr() {
             if (!this.extraInfo) return []
-            return Array.from(
+            let retArr = Array.from(
                 new Set(
                     Object.keys(this.extraInfo)
                     .map(x => this.extraInfo[x]).flat()
                     .map(x => x.type)
                 )
             )
+            if (this.grabInfoString('soc') || this.grabInfoString('arch')) return ['SoC'].concat(retArr)
+            return retArr
         },
         tabPropertyArr() {
             let retObj = {}
@@ -202,6 +204,11 @@ export default {
                 if (!retObj.hasOwnProperty(i.type)) retObj[i.type] = Object.keys(i).filter(x => x != 'type')
                 else retObj[i.type].concat(Object.keys(i.type).filter(x => x != 'type'))
             }
+
+            if (this.tabArr.includes('SoC') && !Object.keys(retObj).includes('Soc')) retObj.SoC = []
+            if (this.grabInfoString('soc')) retObj.SoC.push('SoC')
+            if (this.grabInfoString('arch')) retObj.SoC.push('Architecture')
+            
             return retObj
         },
         tabData() {
@@ -215,6 +222,13 @@ export default {
                         if (property == 'type') continue
                         retObj[dev][tab.type][property] = Array.isArray(tab[property]) ? tab[property] : [tab[property]]
                     }
+                }
+
+                if (this.tabArr.includes('SoC') && !Object.keys(retObj[dev]).includes('SoC')) {
+                    retObj[dev].SoC = {}
+                    let device = this.device.find(x => x.key == dev)
+                    if (device.soc) retObj[dev].SoC.SoC = [device.soc]
+                    if (device.arch) retObj[dev].SoC.Architecture = [device.arch]
                 }
             }
             return retObj
