@@ -368,6 +368,11 @@ export default {
         line-height: 1.4em;
         transition: background 150ms ease-in-out;
 
+        a {
+            color: var(--c-text-lightest);
+            font-weight: 500;
+        }
+
         .propertyWrapper {
             margin-top: .8em;
 
@@ -422,11 +427,6 @@ export default {
             .deviceString {
                 color: var(--c-text-lightest);
                 font-weight: 500;
-
-                a {
-                    color: var(--c-text-lightest);
-                    font-weight: 500;
-                }
 
                 &::after {
                     content: ' — ';

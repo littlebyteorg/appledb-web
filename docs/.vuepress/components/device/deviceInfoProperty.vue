@@ -34,6 +34,11 @@ export default {
     }
 }
 
+a {
+    color: var(--c-text-lightest);
+    font-weight: 500;
+}
+
 .inlineWrapper {
     display: grid;
     grid-template-columns: 20% 80%;
