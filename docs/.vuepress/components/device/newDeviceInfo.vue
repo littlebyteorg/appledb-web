@@ -109,10 +109,6 @@ export default {
                     title: 'Identifier',
                     string: '${i}'
                 },
-                released: {
-                    title: 'Released',
-                    string: '${i}'
-                },
                 soc: {
                     title: 'SoC',
                     string: '${i}'
