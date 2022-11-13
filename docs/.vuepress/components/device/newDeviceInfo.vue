@@ -413,7 +413,7 @@ export default {
 
         .tabContentWrapper {
             margin-left: 1em;
-            width: calc(100% - 10em);
+            width: calc(100% - 9.25em);
 
             .deviceStringWrapper {
                 margin-bottom: .5em;
@@ -470,12 +470,17 @@ html.dark .info .tabWrapper .tabTitleWrapper {
                 }
             }
         }
+
         .tabWrapper {
             margin: -.2em;
             .tabTitleWrapper {
                 .tabTitle {
                     padding: .5em .7em;
                 }
+            }
+
+            .tabContentWrapper {
+                width: calc(100% - 8.65em);
             }
         }
 
