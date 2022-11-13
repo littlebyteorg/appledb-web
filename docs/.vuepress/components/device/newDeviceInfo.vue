@@ -2,12 +2,12 @@
     <div class="header" :style="{
         'flex-direction': wrapImg ? 'column-reverse' : 'row'
     }">
-        <div :class="wrapImg ? 'imgWrap' : ''"><picture v-for="(url, index) in imgUrlArr.slice(0,3)" :key="url">
+        <div v-if="imgUrlArr.length" :class="wrapImg ? 'imgWrap' : ''"><picture v-for="(url, index) in imgUrlArr.slice(0,3)" :key="url">
             <source :srcset="url + '.avif'" type="image/avif">
             <source :srcset="url + '.webp'" type="image/webp">
             <img :src="url + '.png'" :class="`flexImg flexImg${index}`">
         </picture></div>
-        <div class="title" id="flexInfo" :class="wrapImg ? '' : 'titleWidth'">
+        <div class="title" id="flexInfo" :class="wrapImg || imgUrlArr.length < 1 ? '' : 'titleWidth'">
             <h1>{{ title }}</h1>
             <div>{{ grabInfo('released')[0] }}</div>
         </div>
