@@ -75,7 +75,10 @@
                 <i class="fas fa-download"/>
             </div>
         </div>
-        <div style="width: 1em;" class="expandChevron">
+        <div :style="{
+            'width': '1em',
+            'margin-left': showSingleDownloads || fw.releasedStr ? '' : 'auto'
+        }" class="expandChevron">
             <a style="cursor: pointer;">
                 <i :class="[
                     'fas',
