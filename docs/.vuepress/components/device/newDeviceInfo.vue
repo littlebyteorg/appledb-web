@@ -59,7 +59,7 @@
                             {{ tabData[Object.keys(tabData)[0]][tab][property].formatExtraInfoText(property) }}
                         </div>
                         <div v-else v-for="dev in Object.keys(tabData)" :key="dev" class="deviceStringWrapper">
-                            <span class="deviceString">{{ dev }}</span> 
+                            <span class="deviceString">{{ device.find(x => x.key == dev).name }}</span> 
                             <template v-if="tabData[dev] && tabData[dev][tab] && tabData[dev][tab][property]">
                                 {{ tabData[dev][tab][property].formatExtraInfoText(property) }}
                             </template>
