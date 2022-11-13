@@ -17,7 +17,7 @@
             'leftColumn',
             'propertyBox',
             extraInfo ? '' : 'fillSpace'
-        ]">
+        ]" v-if="computedProperties.map(x => x.infoString).filter(x => x).length">
             <template v-if="extraInfo">
                 <div class="box separateBoxes" v-for="property in computedProperties" :key="property">
                     <div class="propertyWrapper" v-if="property.infoString"><deviceInfoProperty
