@@ -212,15 +212,13 @@ export default {
     }
 
     &:hover {
+        background: var(--c-border);
+
         .signingText {
             opacity: 0.8;
             margin-left: 2px;
         }
     }
-}
-
-.wrapper:hover {
-    background: var(--c-border);
 }
 
 h5 {
@@ -261,6 +259,7 @@ h5 {
 
     h5 {
         margin-top: 1em;
+        padding-bottom: 0;
     }
 
     div {
