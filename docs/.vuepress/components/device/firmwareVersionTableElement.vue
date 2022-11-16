@@ -13,12 +13,14 @@
                     <span v-if="tag.length">{{(options.showVersionString ? ' (' : '') + tag.join(', ') + (options.showVersionString ? ')' : '')}}</span>
                 </template>
             </span>
-            <i v-if="showDots" :class="[
-                'fas',
-                'fa-circle',
+            <div v-if="showDots" :class="[
                 fw.internal ? 'internal' :
-                (fw.beta ? 'beta' : 'stable')
-            ]"></i>
+                (fw.beta ? 'beta' : 'stable'),
+                'stableBetaInternalWrapper'
+            ]"><span>
+                {{ fw.internal ? 'internal' : (fw.beta ? 'beta' : 'stable') }}
+                </span>
+            </div>
             <div class="signingStatus" :style="{
                 'display': options.showSigningStatus ? 'initial' : 'none'
             }">
@@ -188,6 +190,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.stableBetaInternalWrapper {
+    display: inline-block;
+    margin-top: -6px;
+    vertical-align: middle;
+
+    span {
+        border-radius: 4em;
+        border: 1px solid;
+        padding: 3.5px 9px;
+        text-transform: uppercase;
+        font-size: calc(1em - 2px);
+        font-weight: 700;
+        font-size: .5em;
+        opacity: 0.8;
+        letter-spacing: .5px;
+    }
+}
+
+.signingText {
+    padding-left: .5em;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: .7em;
+    opacity: 0.8;
+    padding-top: 3.5px;
+}
+
 .signingStatus {
     display: inline;
 
@@ -199,15 +229,9 @@ export default {
 
     .signingText {
         position: absolute;
-        padding-left: .5em;
-        text-transform: uppercase;
-        font-weight: 600;
-        letter-spacing: 1px;
-        font-size: .7em;
         opacity: 0;
         transition: 150ms opacity ease-in-out, 150ms margin ease-in-out;
-        padding-top: 3.5px;
-        margin-left: -10px;
+        margin-left: -12px;
     }
 
     .fa-check {
@@ -228,7 +252,7 @@ export default {
     transition: background 75ms ease-in-out;
 
     div {
-        padding-inline: .5em;
+        padding-left: .5em;
 
         &:first-child {
             padding-left: 0;
@@ -244,7 +268,7 @@ export default {
 
         .signingText {
             opacity: 0.8;
-            margin-left: 2px;
+            margin-left: 0px;
         }
     }
 }
@@ -336,7 +360,7 @@ h5 {
 }
 
 .internal {
-    color: #fbc02d;
+    color: hsl(43, 96%, 48%);
 }
 
 .fa-circle {
