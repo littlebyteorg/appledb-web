@@ -13,7 +13,7 @@
     </h5>
     
     <div class="optionsWrapper" v-if="hasFirmwareFilters">
-        <div class="leftColumn">
+        <div class="column">
             <div
                 :class="[options.showStable ? 'active' : '', 'stable', 'btn']"
                 v-on:click="options.showStable = !options.showStable; filterVersions()"
@@ -36,7 +36,7 @@
                 <i class="fas fa-circle internal"></i> Internal
             </div>
         </div>
-        <div class="rightColumn">
+        <div class="column rightColumn">
             <div
                 v-on:click="versionArr.reverse()"
                 class="btn"
@@ -159,37 +159,14 @@ html.dark .optionsWrapper div {
     flex-flow: row nowrap;
     margin-bottom: .5em;
 
-    .leftColumn {
+    .column {
         display: flex;
         align-content: space-between;
         flex-wrap: wrap;
     }
 
     .rightColumn {
-        display: flex;
-        align-content: space-between;
-        flex-wrap: wrap;
         margin-left: auto;
-    }
-
-    .active {
-        background: var(--c-border);
-        font-weight: 600;
-
-        &.stable {
-            background: #039be530 !important;
-            border-color: #039be501 !important;
-        }
-
-        &.beta {
-            background: #ab47bc30 !important;
-            border-color: #ab47bc01 !important;
-        }
-
-        &.internal {
-            background: #fbc02d30 !important;
-            border-color: #fbc02d01 !important;
-        }
     }
 
     .btn {
@@ -202,7 +179,27 @@ html.dark .optionsWrapper div {
         transition: 100ms background ease-in-out, transform 150ms ease-in-out;
         border: 1px solid var(--c-border);
         box-shadow: 0px 2px 4px rgba(0,0,0,0.05);
-        
+
+        &.active {
+            background: var(--c-border);
+            font-weight: 600;
+
+            &.stable {
+                background: #039be530 !important;
+                border-color: #039be501 !important;
+            }
+
+            &.beta {
+                background: #ab47bc30 !important;
+                border-color: #ab47bc01 !important;
+            }
+
+            &.internal {
+                background: #fbc02d30 !important;
+                border-color: #fbc02d01 !important;
+            }
+        }
+
         &.stable {
             background: #039be510 !important;
                 border-color: #039be501 !important;
