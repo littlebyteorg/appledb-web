@@ -332,6 +332,7 @@ h5 {
 
 .downloadIcon {
     width: 1em;
+    padding-right: .25em;
 
     i {
         width: 100%;
