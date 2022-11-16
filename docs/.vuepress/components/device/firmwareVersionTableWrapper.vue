@@ -13,32 +13,36 @@
     </h5>
     
     <div class="optionsWrapper" v-if="hasFirmwareFilters">
-        <div
-            :class="[options.showStable ? 'active' : '', 'stable']"
-            v-on:click="options.showStable = !options.showStable; filterVersions()"
-            v-if="hasFirmwares.stable"
-        >
-            <i class="fas fa-circle stable"></i> Stable
+        <div class="leftColumn">
+            <div
+                :class="[options.showStable ? 'active' : '', 'stable', 'btn']"
+                v-on:click="options.showStable = !options.showStable; filterVersions()"
+                v-if="hasFirmwares.stable"
+            >
+                <i class="fas fa-circle stable"></i> Stable
+            </div>
+            <div
+                :class="[options.showBeta ? 'active' : '', 'beta', 'btn']"
+                v-on:click="options.showBeta = !options.showBeta; filterVersions()"
+                v-if="hasFirmwares.beta"
+            >
+                <i class="fas fa-circle beta"></i> Beta
+            </div>
+            <div
+                :class="[options.showInternal ? 'active' : '', 'internal', 'btn']"
+                v-on:click="options.showInternal = !options.showInternal; filterVersions()"
+                v-if="hasFirmwares.internal"
+            >
+                <i class="fas fa-circle internal"></i> Internal
+            </div>
         </div>
-        <div
-            :class="[options.showBeta ? 'active' : '', 'beta']"
-            v-on:click="options.showBeta = !options.showBeta; filterVersions()"
-            v-if="hasFirmwares.beta"
-        >
-            <i class="fas fa-circle beta"></i> Beta
-        </div>
-        <div
-            :class="[options.showInternal ? 'active' : '', 'internal']"
-            v-on:click="options.showInternal = !options.showInternal; filterVersions()"
-            v-if="hasFirmwares.internal"
-        >
-            <i class="fas fa-circle internal"></i> Internal
-        </div>
-        <div
-            v-on:click="versionArr.reverse()"
-            style="margin-left: auto;"
-        >
-            <i class="fas fa-sort"></i> Sort
+        <div class="rightColumn">
+            <div
+                v-on:click="versionArr.reverse()"
+                class="btn"
+            >
+                <i class="fas fa-sort"></i> Sort
+            </div>
         </div>
     </div>
 
@@ -47,6 +51,7 @@
         :key="fw"
         :fw="fw"
         :options="options"
+        :showDots="(options.showStable + options.showBeta + options.showInternal > 1) && hasFirmwareFilters"
         :showSingleDownloads="versionArr.map(x => x.filteredDownloads || x.filteredOtas).filter(x => x.length).length > 0 || versionArr.map(fw => fw.preinstalled.some(r => fw.devices.includes(r))).filter(x => x).length > 0"
     />
 
@@ -124,8 +129,8 @@ export default {
     methods: {
         filterVersions() {
             this.versionArr = this.fmVersionArr.filter(fw =>
+                fw.internal ? this.options.showInternal : 
                 (fw.beta ? this.options.showBeta : this.options.showStable) &&
-                (fw.internal ? this.options.showInternal : true) &&
                 fw.deviceFilterArr.some(r => this.options.filterDev.includes(r))
             )
         }
@@ -151,8 +156,21 @@ html.dark .optionsWrapper div {
 .optionsWrapper {
     display: flex;
     align-content: space-between;
-    flex-wrap: wrap;
+    flex-flow: row nowrap;
     margin-bottom: .5em;
+
+    .leftColumn {
+        display: flex;
+        align-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .rightColumn {
+        display: flex;
+        align-content: space-between;
+        flex-wrap: wrap;
+        margin-left: auto;
+    }
 
     .active {
         background: var(--c-border);
@@ -174,7 +192,8 @@ html.dark .optionsWrapper div {
         }
     }
 
-    div {
+    .btn {
+        white-space: nowrap;
         padding: .7em;
         padding-inline: 1.2em;
         margin: .3em;

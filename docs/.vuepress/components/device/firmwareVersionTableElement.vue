@@ -13,6 +13,12 @@
                     <span v-if="tag.length">{{(options.showVersionString ? ' (' : '') + tag.join(', ') + (options.showVersionString ? ')' : '')}}</span>
                 </template>
             </span>
+            <i v-if="showDots" :class="[
+                'fas',
+                'fa-circle',
+                fw.internal ? 'internal' :
+                (fw.beta ? 'beta' : 'stable')
+            ]"></i>
             <div class="signingStatus" :style="{
                 'display': options.showSigningStatus ? 'initial' : 'none'
             }">
@@ -109,7 +115,8 @@ export default {
     props: {
         fw: Object,
         options: Object,
-        showSingleDownloads: Boolean
+        showSingleDownloads: Boolean,
+        showDots: Boolean
     },
     data() {
         return {
@@ -318,5 +325,25 @@ h5 {
     h5 {
         padding-bottom: 0;
     }
+}
+
+.stable {
+    color: #039be5;
+}
+
+.beta {
+    color: #ab47bc;
+}
+
+.internal {
+    color: #fbc02d;
+}
+
+.fa-circle {
+    font-size: .45em;
+    margin-left: 1em;
+    opacity: 0.7;
+    vertical-align: middle;
+    margin-top: -.1em;
 }
 </style>
