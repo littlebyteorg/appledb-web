@@ -129,8 +129,8 @@ export default {
     methods: {
         filterVersions() {
             this.versionArr = this.fmVersionArr.filter(fw =>
-                fw.internal ? this.options.showInternal : 
-                (fw.beta ? this.options.showBeta : this.options.showStable) &&
+                (fw.internal ? this.options.showInternal : 
+                (fw.beta ? this.options.showBeta : this.options.showStable)) &&
                 fw.deviceFilterArr.some(r => this.options.filterDev.includes(r))
             )
         }
@@ -149,7 +149,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-html.dark .optionsWrapper div {
+html.dark .btn div {
     background: var(--c-border-dark);
 }
 
