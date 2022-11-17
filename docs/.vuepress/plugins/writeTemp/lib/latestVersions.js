@@ -23,9 +23,9 @@ latestVersionArr.push({ osStr: 'iOS', beta: false, startsWith: '12'})
 const latestVersions = latestVersionArr
 .map(x => iosList.filter(y => {
   const osStrCheck = y.hasOwnProperty('osStr') ? y.osStr == x.osStr : true
-  const betaCheck = y.hasOwnProperty('beta') ? y.beta == x.beta : true
+  const betaCheck = y.hasOwnProperty('beta') ? (y.beta || y.rc) == x.beta : true
   const hideCheck = y.hideFromLatestVersions
-  const check = osStrCheck && betaCheck && !hideCheck
+  const check = osStrCheck && betaCheck && !hideCheck && !y.rsr
   let startsWith = x.startsWith
   if (startsWith && y.version) {
     startsWith = y.version.startsWith(startsWith)
