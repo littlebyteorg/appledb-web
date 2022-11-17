@@ -209,7 +209,6 @@ export default {
         font-size: calc(1em - 2px);
         font-weight: 700;
         font-size: .5em;
-        opacity: 0.8;
         letter-spacing: .5px;
     }
 }
@@ -314,7 +313,7 @@ h5 {
     opacity: 0;
     transform: scale(0);
     transform-origin: top right;
-
+    
     h5 {
         margin-top: 1em;
         padding-bottom: 0;
