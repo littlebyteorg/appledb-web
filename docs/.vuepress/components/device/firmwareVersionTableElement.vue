@@ -14,13 +14,19 @@
                 </template>
             </span>
             <div v-if="showDots" :class="[
-                fw.internal ? 'internal' :
-                (fw.beta ? 'beta' : 'stable'),
+                fw.internal ? 'internal' : (
+                    (fw.beta || fw.rc) ? 'beta' : 'stable'
+                ),
                 'stableBetaInternalWrapper'
             ]"><span>
-                {{ fw.internal ? 'internal' : (fw.beta ? 'beta' : 'stable') }}
+                {{ fw.internal ? 'internal' : (
+                    fw.rc ? 'rc' : (
+                        fw.beta ? 'beta' : 'stable'
+                    )
+                ) }}
                 </span>
             </div>
+            <div v-if="fw.rsr" :class="[beta, 'stableBetaInternalWrapper']"><span>RSR</span></div>
             <div class="signingStatus" :style="{
                 'display': options.showSigningStatus ? 'initial' : 'none'
             }">

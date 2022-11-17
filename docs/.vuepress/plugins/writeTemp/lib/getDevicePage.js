@@ -162,6 +162,8 @@ module.exports = function(args) {
             preinstalled: Array.isArray(i.preinstalled) ? i.preinstalled : i.preinstalled ? devIdFwArr : [],
             beta: i.beta,
             internal: i.internal,
+            rsr: i.rsr,
+            rc: i.rc,
             releasedStr: released,
             devices: devIdFwArr,
             deviceFilterArr: (mainList) ?

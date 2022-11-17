@@ -130,7 +130,7 @@ export default {
         filterVersions() {
             this.versionArr = this.fmVersionArr.filter(fw =>
                 (fw.internal ? this.options.showInternal : 
-                (fw.beta ? this.options.showBeta : this.options.showStable)) &&
+                ((fw.beta || fw.rc) ? this.options.showBeta : this.options.showStable)) &&
                 fw.deviceFilterArr.some(r => this.options.filterDev.includes(r))
             )
         }
