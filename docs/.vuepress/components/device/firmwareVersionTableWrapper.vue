@@ -149,7 +149,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-html.dark .btn div {
+html.dark .btn {
     background: var(--c-border-dark);
 }
 
