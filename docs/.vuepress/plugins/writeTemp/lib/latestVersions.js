@@ -6,19 +6,19 @@ for (const bool of [true,false]) {
   for (const str of osStrArr)
   latestVersionArr.push({ osStr: str, beta: bool })
 
-  for (const startsWith of ['11','12','13'])
+  for (const startsWith of [/*'11','12',*/'13'])
   latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: startsWith})
 
-  for (const startsWith of ['8','9'])
+  for (const startsWith of [/*'8',*/'9'])
   latestVersionArr.push({ osStr: 'watchOS', beta: bool, startsWith: startsWith})
 
   for (const os of ['iOS','tvOS','iPadOS','audioOS']) {
-    latestVersionArr.push({ osStr: os, beta: bool, startsWith: '15'})
+    //latestVersionArr.push({ osStr: os, beta: bool, startsWith: '15'})
     latestVersionArr.push({ osStr: os, beta: bool, startsWith: '16'})
   }
 }
 
-latestVersionArr.push({ osStr: 'iOS', beta: false, startsWith: '12'})
+//latestVersionArr.push({ osStr: 'iOS', beta: false, startsWith: '12'})
 
 const latestVersions = latestVersionArr
 .map(x => iosList.filter(y => {

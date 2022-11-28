@@ -8,7 +8,7 @@
                 margin-inline: 10px;
                 font-size: 1em;
                 cursor: pointer;
-            " v-on:click="versionArr.reverse()"
+            " @click="versionArr.reverse()"
         ></i>
     </h5>
     
@@ -16,21 +16,21 @@
         <div class="column">
             <div
                 :class="[options.showStable ? 'active' : '', 'stable', 'btn']"
-                v-on:click="options.showStable = !options.showStable; filterVersions()"
+                @click="options.showStable = !options.showStable; filterVersions()"
                 v-if="hasFirmwares.stable"
             >
                 <i class="fas fa-circle stable"></i> Stable
             </div>
             <div
                 :class="[options.showBeta ? 'active' : '', 'beta', 'btn']"
-                v-on:click="options.showBeta = !options.showBeta; filterVersions()"
+                @click="options.showBeta = !options.showBeta; filterVersions()"
                 v-if="hasFirmwares.beta"
             >
                 <i class="fas fa-circle beta"></i> Beta
             </div>
             <div
                 :class="[options.showInternal ? 'active' : '', 'internal', 'btn']"
-                v-on:click="options.showInternal = !options.showInternal; filterVersions()"
+                @click="options.showInternal = !options.showInternal; filterVersions()"
                 v-if="hasFirmwares.internal"
             >
                 <i class="fas fa-circle internal"></i> Internal
@@ -38,11 +38,17 @@
         </div>
         <div class="column rightColumn">
             <div
-                v-on:click="versionArr.reverse()"
+                @click="versionArr.reverse()"
                 class="btn"
             >
                 <i class="fas fa-sort"></i> Sort
             </div>
+            <!--<div
+                class="btn"
+            >
+                <i class="fas fa-filter"></i> Filter
+                <div class="filterList"></div>
+            </div>-->
         </div>
     </div>
 
@@ -167,6 +173,11 @@ html.dark .btn {
 
     .rightColumn {
         margin-left: auto;
+
+        .btn {
+            margin-left: auto;
+            margin-right: 0.6em;
+        }
     }
 
     .btn {
@@ -179,6 +190,10 @@ html.dark .btn {
         transition: 100ms background ease-in-out, transform 150ms ease-in-out;
         border: 1px solid var(--c-border);
         box-shadow: 0px 2px 4px rgba(0,0,0,0.05);
+
+        .fa-filter {
+            font-size: .9em;
+        }
 
         &.active {
             background: var(--c-border);
