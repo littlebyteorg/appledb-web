@@ -169,7 +169,7 @@ function getDevicePageData(os) {
 
         let retObj = {
             text: dev.name,
-            link: urlStart + dev.key
+            link: urlStart + require('../docs/.vuepress/plugins/writeTemp/lib/formatDeviceName')(dev.key)
         }
 
         if (dev.hoverLink) retObj.hoverLink = dev.hoverLink

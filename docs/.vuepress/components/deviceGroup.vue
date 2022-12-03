@@ -62,14 +62,13 @@
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
 import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
+import substitutes from '../plugins/writeTemp/lib/deviceNameSubstitutes.json'
 
 String.prototype.fdn = function() {
-  return encodeURI(this
-  .replace(/ /g, '-')
-  .replace(/\//g,'%2F')
-  .replace(/ü/g,'u')
-  .replace(/²/g,'2')
-  .replace(/³/g,'3'))
+    let arr = this.split('')
+    for (let c in arr) for (var i = 0; i < substitutes.length / 2; i++)
+        if (arr[c] == substitutes[i*2]) arr[c] = substitutes[i*2+1]
+    return arr.join('')
 }
 
 String.prototype.format = function(vars) {
