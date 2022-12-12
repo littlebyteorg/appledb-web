@@ -39,23 +39,6 @@ sidebar: false
   </div>
 </div>
 
-<div>
-  <div class="credits">
-    <div class="user">
-      <img src="https://github.com/Converseallstar95.png">
-    </div>
-    <div class="user">
-      <h3>Converseallstar95</h3>
-      <a class="social-icon" href="https://reddit.com/u/Converseallstar95" target="_blank">
-        <i class="fab fa-reddit"></i>
-      </a>
-      <a class="social-icon" href="https://github.com/Converseallstar95" target="_blank">
-        <i class="fab fa-github"></i>
-      </a>
-    </div>
-  </div>
-</div>
-
 <br>
 
 ---
@@ -69,6 +52,7 @@ If I forgot you here, contact me and I'll add your name.
   + MacTracker
   + Hack Different
   + ipsw.dev
+  + Converseallstar95
   + m1stadev
   + TheMasterOfMike
   + nyuszika7h
