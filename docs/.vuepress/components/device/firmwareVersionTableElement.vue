@@ -135,32 +135,36 @@ export default {
     },
     mounted() {
         const identifierArr = this.fw.devices.filter(x => this.shouldSigningStatusBeChecked(x, this.fw.osStr))
-        if (identifierArr.length) this.getSigningStatus(this.fw.build, identifierArr[0], this.fw.osStr)
-        console.log(identifierArr)
+        if (identifierArr.length) this.getSigningStatus(this.fw.build, identifierArr[0], this.fw.osStr, this.fw.beta || this.fw.rc)
     },
     methods: {
-        async getSigningStatus(buildid, identifier, osStr) {
+        async getSigningStatus(buildid, identifier, osStr, beta) {
             var request = new XMLHttpRequest()
 
-            request.open('GET', `https://api.ipsw.me/v4/ipsw/${identifier}/${buildid}`)
+            if (beta) request.open('GET', `https://api.m1sta.xyz/betas/${identifier}`)
+            else request.open('GET', `https://api.ipsw.me/v4/ipsw/${identifier}/${buildid}`)
 
             request.setRequestHeader('Accept', 'application/json')
 
             request.onreadystatechange = function () {
-                if (this.readyState === 4) {
-                    if (this.status == 200) {
-                        const response = JSON.parse(this.responseText)
-                        var statusElement = document.getElementById(`signing-status-${osStr}-${buildid}`)
-                        var statusText = document.getElementById(`signing-text-${osStr}-${buildid}`)
-                        
-                        if (response.signed) {
-                            statusElement.classList.add('fa-check')
-                            statusText.innerHTML = 'Signed'
-                        }
-                        else {
-                            statusElement.classList.add('fa-times')
-                            statusText.innerHTML = 'Not signed'
-                        }
+                if (this.readyState === 4 && this.status == 200) {
+                    let response = JSON.parse(this.responseText)
+                    var statusElement = document.getElementById(`signing-status-${osStr}-${buildid}`)
+                    var statusText = document.getElementById(`signing-text-${osStr}-${buildid}`)
+
+                    if (beta) {
+                        response = response.filter(x => x.buildid == buildid)
+                        if (!response.length) return
+                        else response = response[0]
+                    }
+                    
+                    if (response.signed) {
+                        statusElement.classList.add('fa-check')
+                        statusText.innerHTML = 'Signed'
+                    }
+                    else {
+                        statusElement.classList.add('fa-times')
+                        statusText.innerHTML = 'Not signed'
                     }
                 }
             }
@@ -227,7 +231,7 @@ export default {
     display: inline;
 
     i {
-        font-size: .7em;
+        font-size: .5em;
         padding-bottom: 2px;
         vertical-align: middle;
     }
@@ -239,13 +243,18 @@ export default {
         margin-left: -12px;
     }
 
+    .fa-check, .fa-times {
+        border: 1px solid;
+        border-radius: 5em;
+        padding: 3.5px 5px;
+        text-align: center;
+    }
+
     .fa-check {
         color: rgb(76, 175, 80, 0.7);
     }
 
     .fa-times {
-        font-size: .8em;
-        padding-bottom: 0;
         color: rgb(244, 67, 54, 0.7);
     }
 }
@@ -273,7 +282,7 @@ export default {
 
         .signingText {
             opacity: 0.8;
-            margin-left: 0px;
+            margin-left: 3px;
         }
     }
 }
