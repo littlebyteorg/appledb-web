@@ -251,11 +251,11 @@ export default {
     }
 
     .fa-check {
-        color: rgb(76, 175, 80, 0.7);
+        color: rgb(76, 175, 80, 1);
     }
 
     .fa-times {
-        color: rgb(244, 67, 54, 0.7);
+        color: rgb(244, 67, 54, 1);
     }
 }
 .wrapper {
