@@ -52,5 +52,9 @@ module.exports = osArr
     if (!x.deviceMap) x.deviceMap = []
     if (!x.uniqueBuild) x.uniqueBuild = x.build || x.version
     if (!x.beta) x.beta = false
+    if (!x.rc) x.rc = false
+
+    x.path = '/firmware/' + [x.osStr.replace(/ /g,'-'), x.uniqueBuild].join('/') + '.html'
+    
     return x
 })

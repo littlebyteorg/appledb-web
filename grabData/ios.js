@@ -2,82 +2,10 @@ const fs = require('fs')
 const path = require('path')
 const dev = require('./deviceList')
 const group = require('./deviceGroups')
-const { create } = require('domain')
 const devicePath = '/device/identifier/'
 const p = './appledb/osFiles'
 
-function getAllFiles(dirPath, arrayOfFiles) {
-  files = fs.readdirSync(dirPath)
-
-  arrayOfFiles = arrayOfFiles || []
-
-  files.forEach(function(file) {
-    if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-      arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
-    } else {
-      arrayOfFiles.push(path.join(dirPath, "/", file))
-    }
-  })
-
-  return arrayOfFiles
-}
-
-var osFiles = [];
-osFiles = getAllFiles(p, osFiles)
-osFiles = osFiles.filter(file => file.endsWith('.json'));
-osFiles = osFiles.map(function(x) {
-  const filePathStr = x.split(path.sep)
-  const pathStrLength = p.split('/').length - 3
-  
-  return filePathStr.splice(pathStrLength, filePathStr.length).join(path.sep)
-})
-var iosArr = [];
-
-for (const file in osFiles) iosArr.push(require('..' + path.sep + osFiles[file]));
-
-let createDuplicateEntriesArray = []
-
-for (let i of iosArr) {
-  if (!i.hasOwnProperty('createDuplicateEntries')) continue
-  for (const entry of i.createDuplicateEntries) {
-    let ver = { ...i }
-    delete ver.createDuplicateEntries
-    for (const property in entry) {
-      ver[property] = entry[property]
-    }
-    createDuplicateEntriesArray.push(ver)
-  }
-  delete i.createDuplicateEntries
-}
-
-iosArr = iosArr
-.concat(createDuplicateEntriesArray)
-.map(function(x) {
-  x.osType = x.osStr
-  if (x.osStr == 'iPhoneOS' || x.osStr == 'iPadOS') x.osType = 'iOS'
-  else if (x.osStr == 'Apple TV Software') x.osType = 'tvOS'
-
-  if (!x.deviceMap) x.deviceMap = []
-
-  if (!x.uniqueBuild) x.uniqueBuild = x.build || x.version/*
-  return x
-})
-
-const uniqueBuildArr = iosArr.map(x => x.uniqueBuild)
-
-iosArr = iosArr.map(function(x) {
-  if (!x.uniqueBuildOsType) x.uniqueBuildOsType = x.uniqueBuild
-  if (uniqueBuildArr.filter(y => y == x.uniqueBuild).length > 1) x.uniqueBuildOsType = x.uniqueBuild + '-' + x.osType*/
-  if (!x.beta) x.beta = false
-  if (!x.sortVersion) {
-    if (x.iosVersion) x.sortVersion = x.iosVersion
-    else x.sortVersion = x.version
-  }
-
-  x.path = '/firmware/' + [x.osStr.replace(/ /g,'-'), x.uniqueBuild].join('/') + '.html'
-  
-  return x
-})
+let iosArr = require('../generatePageData/grabData/firmware')
 
 iosArr = iosArr.map(function(x) {
   if (iosArr.filter(y => y.osStr == x.osStr && y.version == x.version).length > 1) x.duplicateVersion = true
