@@ -29,12 +29,13 @@ for (const bool of [true,false]) {
 
 const latestVersions = latestVersionArr
 .map(x => iosList.filter(y => {
-  if (y.hasOwnProperty('rc')) y.beta = y.rc
-  
   const osStrCheck = y.hasOwnProperty('osStr') ? y.osStr == x.osStr : true
   const betaCheck = y.hasOwnProperty('beta') ? y.beta == x.beta : true
+  const rcCheck = y.hasOwnProperty('rc') ? y.beta == x.rc : true
+  const betaRcCheck = betaCheck || rcCheck
+
   const hideCheck = y.hideFromLatestVersions
-  const check = osStrCheck && betaCheck && !hideCheck && !y.rsr
+  const check = osStrCheck && betaRcCheck && !hideCheck && !y.rsr
   let startsWith = x.startsWith
   if (startsWith && y.version) {
     startsWith = y.version.startsWith(startsWith)
