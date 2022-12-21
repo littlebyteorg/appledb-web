@@ -43,12 +43,63 @@
             >
                 <i class="fas fa-sort"></i> Sort
             </div>
-            <!--<div
+            <div
+                @click="options.showFilter = !options.showFilter"
                 class="btn"
             >
                 <i class="fas fa-filter"></i> Filter
-                <div class="filterList"></div>
+            </div>
+            <!--<div class="hoverOn">
+                <div
+                    class="btn"
+                    @click="options.showFilter = !options.showFilter"
+                >
+                    <i class="fas fa-filter"></i> Filter
+                </div>
+                <div class="hoverElement filterList">
+                    <div
+                        v-for="filter in deviceFilter"
+                        :key="filter"
+                        :class="[
+                            'filterListItem',
+                            options.filterDev.includes(filter.value) ? 'active' : ''
+                        ]"
+                        v-on:click="
+                        options.filterDev = options.filterDev.includes(filter.value) ?
+                            options.filterDev.filter(x => x != filter.value) :
+                            options.filterDev.concat(filter.value);
+                        filterVersions()
+                    ">
+                        <span>{{ filter.label }}</span>
+                    </div>
+                </div>
             </div>-->
+        </div>
+    </div>
+
+    <div v-if="options.showFilter" class="optionsWrapper filterListHorizontal">
+        <div class="btn" @click="options.filterDev = []; filterVersions()">
+            <i class="fas fa-times" style="font-size: .8em; margin-right: 4px;"></i> Clear all
+        </div>
+        <div class="btn" @click="options.filterDev = deviceFilter.map(x => x.value); filterVersions()">
+            <i class="fas fa-check" style="font-size: .8em; margin-right: 4px;"></i> Select all
+        </div>
+        <div style="border-right: 1px solid var(--c-border); margin-inline: .5em; margin-block: .4em;"></div>
+        <div
+            v-for="filter in deviceFilter"
+            :key="filter"
+            :class="[
+                'filterBtn',
+                'btn',
+                options.filterDev.includes(filter.value) ? 'active' : ''
+            ]"
+            v-on:click="
+            options.filterDev = options.filterDev.includes(filter.value) ?
+                options.filterDev.filter(x => x != filter.value) :
+                options.filterDev.concat(filter.value);
+            filterVersions()
+        ">
+            <span>{{ filter.label }}</span>
         </div>
     </div>
 
@@ -112,6 +163,7 @@ export default {
                 showBeta: false,
                 showInternal: false,
                 
+                showFilter: false,
                 filterDev: []
             },
         }
@@ -260,6 +312,68 @@ html.dark .btn {
         .internal {
             color: #fbc02d;
         }
+    }
+}
+
+.hoverElement {
+    opacity: 0;
+    transition: opacity 100ms ease-in-out, margin-top 100ms ease-in-out, transform 200ms ease;
+    margin-top: -10px;
+    transform: scale(0);
+    transform-origin: top right;
+    position: relative;
+    right: calc(calc(calc(100vw - var(--content-width)) / 2) + .5em);
+    max-width: calc(var(--content-width) * 0.6);
+}
+
+@media screen and (max-width: 740px) {
+    .hoverElement {
+        right: 2em;
+        max-width: 60%;
+    }
+}
+
+.hoverOn:hover .hoverElement {
+    opacity: 1;
+    margin-top: 5px;
+    transform: scale(1);
+}
+
+.filterList {
+    position: absolute;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    padding: 1em;
+    border-radius: 8px;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.filterListHorizontal {
+    display: flex;
+    flex-flow: row nowrap;
+    overflow-x: auto;
+
+    padding-bottom: 1em;
+    margin-bottom: 0;
+
+    .filterBtn {
+        background: var(--c-bg) !important;
+
+        &.active {
+            background: var(--c-border) !important;
+        }
+    }
+}
+
+.filterListItem {
+    padding: .8em 1em;
+    margin: .3em;
+
+    border-radius: 5em;
+    
+    &.active {
+        background: var(--c-border);
     }
 }
 </style>
