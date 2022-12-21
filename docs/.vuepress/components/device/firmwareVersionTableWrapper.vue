@@ -46,6 +46,7 @@
             <div
                 @click="options.showFilter = !options.showFilter"
                 class="btn"
+                v-if="deviceFilter.length > 1"
             >
                 <i class="fas fa-filter"></i> Filter
             </div>
@@ -78,13 +79,15 @@
     </div>
 
     <div v-if="options.showFilter" class="optionsWrapper filterListHorizontal">
-        <div class="btn" @click="options.filterDev = []; filterVersions()">
-            <i class="fas fa-times" style="font-size: .8em; margin-right: 4px;"></i> Clear all
-        </div>
-        <div class="btn" @click="options.filterDev = deviceFilter.map(x => x.value); filterVersions()">
-            <i class="fas fa-check" style="font-size: .8em; margin-right: 4px;"></i> Select all
-        </div>
-        <div style="border-right: 1px solid var(--c-border); margin-inline: .5em; margin-block: .4em;"></div>
+        <template v-if="deviceFilter.length > 4">
+            <div class="btn" @click="options.filterDev = []; filterVersions()">
+                <i class="fas fa-times" style="font-size: .8em; margin-right: 4px;"></i> Clear all
+            </div>
+            <div class="btn" @click="options.filterDev = deviceFilter.map(x => x.value); filterVersions()">
+                <i class="fas fa-check" style="font-size: .8em; margin-right: 4px;"></i> Select all
+            </div>
+            <div style="border-right: 1px solid var(--c-border); margin-inline: .5em; margin-block: .4em;"></div>
+        </template>
         <div
             v-for="filter in deviceFilter"
             :key="filter"
