@@ -202,6 +202,10 @@ export default {
         if (this.mainList) {
             this.options.showBeta = true
             this.options.showInternal = true
+        } else if (!this.hasFirmwareFilters) {
+            this.options.showStable = this.hasFirmwares.stable
+            this.options.showBeta = this.hasFirmwares.beta
+            this.options.showInternal = this.hasFirmwares.internal
         }
 
         this.filterVersions()

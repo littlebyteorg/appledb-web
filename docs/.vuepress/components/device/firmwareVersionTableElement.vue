@@ -102,7 +102,7 @@
         </div>
     </div>
     <div v-if="expanded" class="custom-container expandedView">
-        <h5>Firmware</h5>
+        <h5 v-if="fw.build && fw.releasedStr">Firmware</h5>
         <ul style="padding-left: 0; list-style-type: none;">
             <li v-if="fw.build">Build: {{ fw.build }}</li>
             <li v-if="fw.releasedStr" class="releasedInfo">Released{{ fw.releasedStr.includes(',') ? ' on' : ':'}} {{ fw.releasedStr }}</li>
