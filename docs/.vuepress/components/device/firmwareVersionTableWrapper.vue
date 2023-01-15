@@ -95,6 +95,7 @@
             <i class="fas fa-sort"></i> Sort
         </div>
         <div
+            @click="$refs.fwSearchBar.focus()"
             class="btn searchBtn"
         >
             <i class="fas fa-search"></i> <input
@@ -103,6 +104,7 @@
                 placeholder="Search"
                 aria-placeholder="Search"
                 v-on:keyup.enter="filterVersions()"
+                ref="fwSearchBar"
             >
         </div>
     </div>
