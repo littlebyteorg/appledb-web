@@ -46,7 +46,8 @@ module.exports = {
           '/': {
             placeholder: 'Search',
           },
-        }
+        },
+        hotKeys: ['/']
       }),
       registerComponentsPlugin({
         componentsDir: path.resolve(__dirname, './components'),
