@@ -14,27 +14,80 @@
 
     <div class="optionsWrapper" v-if="hasFirmwareFilters">
         <div
-                :class="[options.showStable ? 'active' : '', 'stable', 'btn']"
+                :class="[options.showStable ? 'active' : '', 'stable', 'btn','sbiFilter']"
                 @click="options.showStable = !options.showStable; filterVersions()"
                 v-if="hasFirmwares.stable"
         >
             <i class="fas fa-circle stable"></i> Stable
         </div>
         <div
-            :class="[options.showBeta ? 'active' : '', 'beta', 'btn']"
+            :class="[options.showBeta ? 'active' : '', 'beta', 'btn','sbiFilter']"
             @click="options.showBeta = !options.showBeta; filterVersions()"
             v-if="hasFirmwares.beta"
         >
             <i class="fas fa-circle beta"></i> Beta
         </div>
         <div
-            :class="[options.showInternal ? 'active' : '', 'internal', 'btn']"
+            :class="[options.showInternal ? 'active' : '', 'internal', 'btn','sbiFilter']"
             @click="options.showInternal = !options.showInternal; filterVersions()"
             v-if="hasFirmwares.internal"
         >
             <i class="fas fa-circle internal"></i> Internal
         </div>
-        <div class="separator"></div>
+        <div class="separatorBefore"></div>
+        <div class="hoverOn">
+            <div
+                class="btn"
+            >
+                <i class="fas fa-filter"></i> Filter
+            </div>
+            <div class="hoverElement filterList">
+                <div
+                    v-for="filter in [
+                        {
+                            label: 'Stable',
+                            option: 'showStable'
+                        },
+                        {
+                            label: 'Beta',
+                            option: 'showBeta'
+                        },
+                        {
+                            label: 'Internal',
+                            option: 'showInternal'
+                        }
+                    ]"
+                    :key="filter"
+                    :class="[
+                        'filterListItem',
+                        'show740',
+                        options[filter.option] ? 'active' : ''
+                    ]"
+                    @click="options[filter.option] = !options[filter.option]; filterVersions()"
+                >
+                    <div :class="['iconWrapper',filter.option]"><i class="fas fa-check"></i></div>
+                    <span>{{ filter.label }}</span>
+                </div>
+                <hr class="show740">
+                <div
+                    v-for="filter in deviceFilter"
+                    :key="filter"
+                    :class="[
+                        'filterListItem',
+                        options.filterDev.includes(filter.value) ? 'active' : ''
+                    ]"
+                    v-on:click="
+                    options.filterDev = options.filterDev.includes(filter.value) ?
+                        options.filterDev.filter(x => x != filter.value) :
+                        options.filterDev.concat(filter.value);
+                    filterVersions()
+                ">
+                    <div class="iconWrapper"><i class="fas fa-check"></i></div>
+                    <span>{{ filter.label }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="separatorAfter"></div>
         <div
             @click="versionArr.reverse()"
             class="btn"
@@ -206,8 +259,11 @@ html.dark .btn {
     flex-flow: row wrap;
     margin-bottom: .5em;
 
-    .separator {
+    .separatorBefore {
         margin-inline: auto;
+    }
+    .separatorAfter {
+        margin-inline: 0;
     }
 
     .search {
@@ -217,8 +273,7 @@ html.dark .btn {
         margin: 0;
         padding: 0;
         margin-left: 4px;
-        width: fit-content;
-        block-size: fit-content;
+        width: 51px;
     }
 
     .btn {
@@ -309,31 +364,39 @@ html.dark .btn {
     transition: opacity 100ms ease-in-out, margin-top 100ms ease-in-out, transform 200ms ease;
     margin-top: -10px;
     transform: scale(0);
-    transform-origin: top right;
+    transform-origin: top left;
     position: relative;
-    right: calc(calc(calc(100vw - var(--content-width)) / 2) + .5em);
+    right: calc(calc(calc(100vw - var(--content-width)) / 2) + 110px);
     max-width: calc(var(--content-width) * 0.6);
 }
 
+.show740 {
+    display: none;
+}
+
 @media screen and (max-width: 740px) {
+    .show740 {
+        display: inherit; 
+    }
     .hoverElement {
-        right: 2em;
+        left: 2em;
         max-width: 60%;
     }
 
     .optionsWrapper {
+        .sbiFilter {
+            display: none;
+        }
 
-        .searchBtn {
-            width: 100%;
+        .separatorBefore {
+            margin-inline: 0;
+        }
+        .separatorAfter {
+            margin-inline: 0;
         }
     }
 }
 
-@media screen and (max-width: 450px) {
-    .optionsWrapper .separator {
-        margin-inline: 0;
-    }
-}
 
 .hoverOn:hover .hoverElement {
     opacity: 1;
@@ -347,11 +410,9 @@ html.dark .btn {
     border: 1px solid var(--c-border);
     padding: 1em;
     border-radius: 8px;
-    display: flex;
-    flex-flow: row wrap;
 }
 
-.filterListHorizontal {
+/*.filterListHorizontal {
     display: flex;
     flex-flow: row nowrap;
     overflow-x: auto;
@@ -366,16 +427,39 @@ html.dark .btn {
             background: var(--c-border) !important;
         }
     }
-}
+}*/
 
 .filterListItem {
-    padding: .8em 1em;
-    margin: .3em;
+    padding: .4em;
 
-    border-radius: 5em;
-    
-    &.active {
-        background: var(--c-border);
+    .iconWrapper {
+        opacity: 0.7;
+        display: inline-block;
+        border: 1px solid;
+        border-radius: 4px;
+        margin-right: .8em;
+        font-size: .6em;
+
+        &.showStable {
+            color: #039be5;
+        }
+
+        &.showBeta {
+            color: #ab47bc;
+        }
+
+        &.showInternal {
+            color: #fbc02d;
+        }
+    }
+
+    i {
+        opacity: 0;
+        padding: 4px;
+    }
+
+    &.active i {
+        opacity: 1;
     }
 }
 </style>
