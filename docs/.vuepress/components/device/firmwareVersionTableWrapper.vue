@@ -35,7 +35,7 @@
             <i class="fas fa-circle internal"></i> Internal
         </div>
         <div class="separatorBefore"></div>
-        <div class="hoverOn">
+        <div :class="['hoverOn',deviceFilter.length < 2 ? 'show740' : '']">
             <div
                 class="btn"
             >
@@ -68,23 +68,25 @@
                     <div :class="['iconWrapper',filter.option]"><i class="fas fa-check"></i></div>
                     <div class="textWrapper">{{ filter.label }}</div>
                 </div>
-                <hr class="show740">
-                <div
-                    v-for="filter in deviceFilter"
-                    :key="filter"
-                    :class="[
-                        'filterListItem',
-                        options.filterDev.includes(filter.value) ? 'active' : ''
-                    ]"
-                    v-on:click="
-                    options.filterDev = options.filterDev.includes(filter.value) ?
-                        options.filterDev.filter(x => x != filter.value) :
-                        options.filterDev.concat(filter.value);
-                    filterVersions()
-                ">
-                    <div class="iconWrapper"><i class="fas fa-check"></i></div>
-                    <div class="textWrapper">{{ filter.label }}</div>
-                </div>
+                <template v-if="deviceFilter.length > 1">
+                    <hr class="show740">
+                    <div
+                        v-for="filter in deviceFilter"
+                        :key="filter"
+                        :class="[
+                            'filterListItem',
+                            options.filterDev.includes(filter.value) ? 'active' : ''
+                        ]"
+                        v-on:click="
+                        options.filterDev = options.filterDev.includes(filter.value) ?
+                            options.filterDev.filter(x => x != filter.value) :
+                            options.filterDev.concat(filter.value);
+                        filterVersions()
+                    ">
+                        <div class="iconWrapper"><i class="fas fa-check"></i></div>
+                        <div class="textWrapper">{{ filter.label }}</div>
+                    </div>
+                </template>
             </div>
         </div>
         <div class="separatorAfter"></div>
