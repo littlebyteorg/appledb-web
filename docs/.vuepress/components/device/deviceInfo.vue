@@ -159,7 +159,7 @@ export default {
                 r.key = x
                 r.infoString = this.grabInfoString(x)
                 return r
-            })
+            }).filter(x => x.infoString)
         },
         tabArr() {
             if (!this.extraInfo) return []
