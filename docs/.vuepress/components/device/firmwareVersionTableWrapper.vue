@@ -66,7 +66,7 @@
                     @click="options[filter.option] = !options[filter.option]; filterVersions()"
                 >
                     <div :class="['iconWrapper',filter.option]"><i class="fas fa-check"></i></div>
-                    <span>{{ filter.label }}</span>
+                    <div class="textWrapper">{{ filter.label }}</div>
                 </div>
                 <hr class="show740">
                 <div
@@ -83,7 +83,7 @@
                     filterVersions()
                 ">
                     <div class="iconWrapper"><i class="fas fa-check"></i></div>
-                    <span>{{ filter.label }}</span>
+                    <div class="textWrapper">{{ filter.label }}</div>
                 </div>
             </div>
         </div>
@@ -382,13 +382,18 @@ html.dark .btn {
 }
 
 .show740 {
-    display: none;
+    display: none !important;
 }
 
 @media screen and (max-width: 740px) {
     .show740 {
-        display: inherit; 
+        display: inherit !important;
+        
+        &.filterListItem {
+            display: flex !important;
+        }
     }
+
     .hoverElement {
         left: 2em;
         max-width: 60%;
@@ -442,31 +447,35 @@ html.dark .btn {
 
 .filterListItem {
     padding: .4em;
-
+    display: flex;
+    
     .iconWrapper {
         opacity: 0.7;
-        display: inline-block;
+        display: block;
         border: 1px solid;
         border-radius: 4px;
         margin-right: .8em;
         font-size: .6em;
 
+        i {
+            opacity: 0;
+            padding: 4px;
+        }
+
         &.showStable {
             color: #039be5;
+            opacity: 1;
         }
 
         &.showBeta {
             color: #ab47bc;
+            opacity: 1;
         }
 
         &.showInternal {
             color: #fbc02d;
+            opacity: 1;
         }
-    }
-
-    i {
-        opacity: 0;
-        padding: 4px;
     }
 
     &.active i {
