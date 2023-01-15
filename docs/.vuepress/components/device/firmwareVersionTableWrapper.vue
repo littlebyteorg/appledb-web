@@ -11,70 +11,41 @@
             " @click="versionArr.reverse()"
         ></i>
     </h5>
-    
+
     <div class="optionsWrapper" v-if="hasFirmwareFilters">
-        <div class="column">
-            <div
+        <div
                 :class="[options.showStable ? 'active' : '', 'stable', 'btn']"
                 @click="options.showStable = !options.showStable; filterVersions()"
                 v-if="hasFirmwares.stable"
-            >
-                <i class="fas fa-circle stable"></i> Stable
-            </div>
-            <div
-                :class="[options.showBeta ? 'active' : '', 'beta', 'btn']"
-                @click="options.showBeta = !options.showBeta; filterVersions()"
-                v-if="hasFirmwares.beta"
-            >
-                <i class="fas fa-circle beta"></i> Beta
-            </div>
-            <div
-                :class="[options.showInternal ? 'active' : '', 'internal', 'btn']"
-                @click="options.showInternal = !options.showInternal; filterVersions()"
-                v-if="hasFirmwares.internal"
-            >
-                <i class="fas fa-circle internal"></i> Internal
-            </div>
+        >
+            <i class="fas fa-circle stable"></i> Stable
         </div>
-        <div class="column rightColumn">
-            <div
-                @click="versionArr.reverse()"
-                class="btn"
-            >
-                <i class="fas fa-sort"></i> Sort
-            </div>
-            <div
-                @click="options.showFilter = !options.showFilter"
-                class="btn"
-                v-if="deviceFilter.length > 1"
-            >
-                <i class="fas fa-filter"></i> Filter
-            </div>
-            <!--<div class="hoverOn">
-                <div
-                    class="btn"
-                    @click="options.showFilter = !options.showFilter"
-                >
-                    <i class="fas fa-filter"></i> Filter
-                </div>
-                <div class="hoverElement filterList">
-                    <div
-                        v-for="filter in deviceFilter"
-                        :key="filter"
-                        :class="[
-                            'filterListItem',
-                            options.filterDev.includes(filter.value) ? 'active' : ''
-                        ]"
-                        v-on:click="
-                        options.filterDev = options.filterDev.includes(filter.value) ?
-                            options.filterDev.filter(x => x != filter.value) :
-                            options.filterDev.concat(filter.value);
-                        filterVersions()
-                    ">
-                        <span>{{ filter.label }}</span>
-                    </div>
-                </div>
-            </div>-->
+        <div
+            :class="[options.showBeta ? 'active' : '', 'beta', 'btn']"
+            @click="options.showBeta = !options.showBeta; filterVersions()"
+            v-if="hasFirmwares.beta"
+        >
+            <i class="fas fa-circle beta"></i> Beta
+        </div>
+        <div
+            :class="[options.showInternal ? 'active' : '', 'internal', 'btn']"
+            @click="options.showInternal = !options.showInternal; filterVersions()"
+            v-if="hasFirmwares.internal"
+        >
+            <i class="fas fa-circle internal"></i> Internal
+        </div>
+        <div class="separator"></div>
+        <div
+            @click="versionArr.reverse()"
+            class="btn"
+        >
+            <i class="fas fa-sort"></i> Sort
+        </div>
+        <div
+            @click="this.options.showFilter = !this.options.showFilter"
+            class="btn"
+        >
+            <i class="fas fa-filter"></i> Filter
         </div>
     </div>
 
@@ -221,8 +192,12 @@ html.dark .btn {
 .optionsWrapper {
     display: flex;
     align-content: space-between;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     margin-bottom: .5em;
+
+    .separator {
+        margin-inline: auto;
+    }
 
     .column {
         display: flex;
