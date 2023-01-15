@@ -274,6 +274,11 @@ html.dark .btn {
         padding: 0;
         margin-left: 4px;
         width: 51px;
+
+        &:focus-visible {
+            outline: none;
+
+        }
     }
 
     .btn {
@@ -287,8 +292,17 @@ html.dark .btn {
         border: 1px solid var(--c-border);
         box-shadow: 0px 2px 4px rgba(0,0,0,0.05);
 
-        .fa-filter {
+        .fas {
             font-size: .9em;
+        }
+
+        &:has(>.search:focus-visible) {
+            background: var(--c-border) !important;
+        }
+
+        &:hover {
+            transform: scale(1.05);
+            background: var(--c-border) !important;
         }
 
         &.active {
@@ -331,11 +345,6 @@ html.dark .btn {
             &:hover {
                 background: #fbc02d30 !important;
             }
-        }
-
-        &:hover {
-            transform: scale(1.05);
-            background: var(--c-border) !important;
         }
 
         .fa-circle {
