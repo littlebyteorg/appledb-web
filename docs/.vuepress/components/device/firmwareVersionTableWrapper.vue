@@ -377,7 +377,7 @@ html.dark .btn {
     transform: scale(0);
     transform-origin: top left;
     position: relative;
-    right: calc(calc(calc(100vw - var(--content-width)) / 2) + 110px);
+    left: calc(calc(calc(100vw - var(--content-width)) / 2) + 416px);
     max-width: calc(var(--content-width) * 0.6);
 }
 
