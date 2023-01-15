@@ -42,10 +42,15 @@
             <i class="fas fa-sort"></i> Sort
         </div>
         <div
-            @click="this.options.showFilter = !this.options.showFilter"
-            class="btn"
+            class="btn searchBtn"
         >
-            <i class="fas fa-filter"></i> Filter
+            <i class="fas fa-search"></i> <input
+                class="search"
+                v-model="options.searchStr"
+                placeholder="Search"
+                aria-placeholder="Search"
+                v-on:keyup.enter="filterVersions()"
+            >
         </div>
     </div>
 
@@ -136,6 +141,8 @@ export default {
                 showStable: true,
                 showBeta: false,
                 showInternal: false,
+
+                searchStr: '',
                 
                 showFilter: false,
                 filterDev: []
@@ -161,9 +168,13 @@ export default {
     methods: {
         filterVersions() {
             this.versionArr = this.fmVersionArr.filter(fw =>
-                (fw.internal ? this.options.showInternal : 
-                ((fw.beta || fw.rc) ? this.options.showBeta : this.options.showStable)) &&
-                fw.deviceFilterArr.some(r => this.options.filterDev.includes(r))
+                (
+                    (fw.internal ? this.options.showInternal : 
+                    ((fw.beta || fw.rc) ? this.options.showBeta : this.options.showStable)) &&
+                    fw.deviceFilterArr.some(r => this.options.filterDev.includes(r))
+                ) && (
+                    [fw.osStr,fw.version,fw.build].join(' ').toLowerCase().includes(this.options.searchStr.toLowerCase())
+                )
             )
         }
     },
@@ -199,19 +210,15 @@ html.dark .btn {
         margin-inline: auto;
     }
 
-    .column {
-        display: flex;
-        align-content: space-between;
-        flex-wrap: wrap;
-    }
-
-    .rightColumn {
-        margin-left: auto;
-
-        .btn {
-            margin-left: auto;
-            margin-right: 0.6em;
-        }
+    .search {
+        font-size: 1em;
+        background: inherit;
+        border: none;
+        margin: 0;
+        padding: 0;
+        margin-left: 4px;
+        width: fit-content;
+        block-size: fit-content;
     }
 
     .btn {
@@ -312,6 +319,19 @@ html.dark .btn {
     .hoverElement {
         right: 2em;
         max-width: 60%;
+    }
+
+    .optionsWrapper {
+
+        .searchBtn {
+            width: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .optionsWrapper .separator {
+        margin-inline: 0;
     }
 }
 
