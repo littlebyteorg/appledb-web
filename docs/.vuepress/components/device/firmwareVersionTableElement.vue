@@ -3,102 +3,95 @@
         class="wrapper firmwareVersionTableElement"
         v-on:click="expanded = !expanded"
     >
-        <div>
-            <span style="font-weight: 600;">
-                <template v-if="options.showVersionString">{{ [fw.osStr, fw.version].join(' ') }}</template>
-                <template v-for="tag in [[
-                    fw.duplicateVersion || options.showBuildNumber ? fw.build : false,
-                    fw.preinstalled.some(r => fw.devices.includes(r)) && (fw.filteredDownloads.length || fw.filteredOtas.length) ? 'Preinstalled' : false
-                ].filter(x => x)]" :key="tag">
-                    <span v-if="tag.length">{{(options.showVersionString ? ' (' : '') + tag.join(', ') + (options.showVersionString ? ')' : '')}}</span>
-                </template>
-            </span>
-            <div v-if="showDots" :class="[
-                fw.internal ? 'internal' : (
-                    (fw.beta || fw.rc) ? 'beta' : 'stable'
-                ),
-                'stableBetaInternalWrapper'
-            ]"><span>
-                {{ fw.internal ? 'internal' : (
-                    fw.rc ? 'rc' : (
-                        fw.beta ? 'beta' : 'stable'
-                    )
-                ) }}
+        <div class="firmwareAndReleasedStr" :style="{'width': `calc(100% - ${(1 + showSingleDownloads) * 32}px)`}">
+            <div>
+                <span style="font-weight: 600;">
+                    <template v-if="options.showVersionString">{{ [fw.osStr, fw.version].join(' ') }}</template>
+                    <template v-for="tag in [[
+                        fw.duplicateVersion || options.showBuildNumber ? fw.build : false,
+                        fw.preinstalled.some(r => fw.devices.includes(r)) && (fw.filteredDownloads.length || fw.filteredOtas.length) ? 'Preinstalled' : false
+                    ].filter(x => x)]" :key="tag">
+                        <span v-if="tag.length">{{(options.showVersionString ? ' (' : '') + tag.join(', ') + (options.showVersionString ? ')' : '')}}</span>
+                    </template>
                 </span>
-            </div>
-            <div v-if="fw.rsr" :class="[beta, 'stableBetaInternalWrapper']"><span>RSR</span></div>
-            <div class="signingStatus" :style="{
-                'display': options.showSigningStatus ? 'initial' : 'none'
-            }">
-                <i :id="`signing-status-${fw.osStr}-${fw.build}`" class="fas"></i>
-                <span :id="`signing-text-${fw.osStr}-${fw.build}`" class="signingText"></span>
-            </div>
-        </div>
-        <div style="text-align: right; margin-left: auto;" class="releasedStr" v-if="fw.releasedStr && options.showReleasedString">{{ fw.releasedStr }}</div>
-        <div v-if="showSingleDownloads" :style="{
-            'text-align': 'right',
-            'margin-left': fw.releasedStr && options.showReleasedString ? 0 : 'auto',
-        }" class="downloadIcon">
-            <div v-if="fw.filteredDownloads.length || fw.filteredOtas.length" v-on:click="openDownloadDropdown()">
-                <a style="cursor: pointer;"><i class="downloadIcon fas fa-download"/></a>
-                <div :class="[
-                    'downloadDropdown',
-                    'custom-container',
-                    showDownloadDropdown ? 'active' : ''
-                ]" style="cursor: initial;">
-                    <template v-if="fw.filteredDownloads.length">
-                        <h5>Download</h5>
-                        <ul :style="`${fw.filteredDownloads.length == 1 ? 'padding-left: 0; list-style-type: none;' : ''}`">
-                            <li v-if="fw.filteredDownloads.length == 1"><a :href="fw.filteredDownloads[0].url">{{ fw.filteredDownloads[0].label.slice(0,60) }}{{ fw.filteredDownloads[0].label.length > 60 ? '...' : '' }}</a></li>
-                            <li v-else v-for="dl in fw.filteredDownloads" :key="dl"><a :href="dl.url">{{ dl.deviceName }}</a></li>
-                        </ul>
-                    </template>
-                    <template v-if="fw.filteredOtas.length">
-                        <h5>Download (OTA)</h5>
-                        <ul :style="`${fw.filteredOtas.length == 1 ? 'padding-left: 0; list-style-type: none;' : ''}`">
-                            <li v-if="fw.filteredOtas.length == 1"><a :href="fw.filteredOtas[0].url">{{ fw.filteredOtas[0].label.slice(0,60) }}{{ fw.filteredOtas[0].label.length > 60 ? '...' : '' }}</a></li>
-                            <li v-else v-for="dl in fw.filteredOtas" :key="dl"><a :href="dl.url">{{ dl.deviceName }}</a></li>
-                        </ul>
-                    </template>
+                <div v-if="showDots" :class="[
+                    fw.internal ? 'internal' : (
+                        (fw.beta || fw.rc) ? 'beta' : 'stable'
+                    ),
+                    'stableBetaInternalWrapper'
+                ]"><span>
+                    {{ fw.internal ? 'internal' : (
+                        fw.rc ? 'rc' : (
+                            fw.beta ? 'beta' : 'stable'
+                        )
+                    ) }}
+                    </span>
+                </div>
+                <div v-if="fw.rsr" :class="[beta, 'stableBetaInternalWrapper']"><span>RSR</span></div>
+                <div class="signingStatus" :style="{
+                    'display': options.showSigningStatus ? 'initial' : 'none'
+                }">
+                    <i :id="`signing-status-${fw.osStr}-${fw.build}`" class="fas"></i>
+                    <span :id="`signing-text-${fw.osStr}-${fw.build}`" class="signingText"></span>
                 </div>
             </div>
-            <!--<div v-on:click="expanded = !expanded" v-else-if="fw.filteredDownloads.length == 1 || fw.filteredOtas.length == 1">
-                <template v-if="fw.filteredDownloads.length == 1">
-                    <a :href="fw.filteredDownloads[0].url">
-                        <i class="fas fa-download"/>
-                    </a>
-                </template>
-                <template v-else>
-                    <a :href="fw.filteredOtas[0].url">
-                        <i class="fas fa-download"/>
-                    </a>
-                </template>
-            </div>-->
-            <div v-else-if="fw.preinstalled.some(r => fw.devices.includes(r))" v-on:click="openDownloadDropdown()">
-                <i class="fas fa-box-open"></i>
-                <!--<i class="fas fa-check" style="position: absolute; right: -130.5px; padding-top: 6px; font-size: .45em; color: #fff;"></i>-->
-                <div :class="[
-                    'downloadDropdown',
-                    'custom-container',
-                    showDownloadDropdown ? 'active' : ''
-                ]" style="padding-inline: 1.3em !important; font-weight: 500;">
-                    Preinstalled firmware
-                </div>
-            </div>
-            <div style="opacity: 0;" v-else>
-                <i class="fas fa-download"/>
-            </div>
+            <div style="text-align: right;" class="releasedStr" v-if="fw.releasedStr && options.showReleasedString">{{ fw.releasedStr }}</div>
         </div>
-        <div :style="{
-            'width': '1em',
-            'margin-left': showSingleDownloads || fw.releasedStr ? '' : 'auto'
-        }" class="expandChevron">
-            <a style="cursor: pointer;">
-                <i :class="[
-                    'fas',
-                    expanded ? 'fa-chevron-right' : 'fa-chevron-down'
-                ]"/>
-            </a>
+
+        <div class="iconFlex">
+            <template v-if="showSingleDownloads">
+                <div
+                    v-if="fw.filteredDownloads.length || fw.filteredOtas.length"
+                    @click="openDownloadDropdown()"
+                    class="downloadIcon iconChild"
+                >
+                    <a style="cursor: pointer;"><i class="downloadIcon fas fa-download"/></a>
+                    <div :class="[
+                        'downloadDropdown',
+                        'custom-container',
+                        showDownloadDropdown ? 'active' : ''
+                    ]" style="cursor: initial;">
+                        <template v-if="fw.filteredDownloads.length">
+                            <h5>Download</h5>
+                            <ul :style="`${fw.filteredDownloads.length == 1 ? 'padding-left: 0; list-style-type: none;' : ''}`">
+                                <li v-if="fw.filteredDownloads.length == 1"><a :href="fw.filteredDownloads[0].url">{{ fw.filteredDownloads[0].label.slice(0,60) }}{{ fw.filteredDownloads[0].label.length > 60 ? '...' : '' }}</a></li>
+                                <li v-else v-for="dl in fw.filteredDownloads" :key="dl"><a :href="dl.url">{{ dl.deviceName }}</a></li>
+                            </ul>
+                        </template>
+                        <template v-if="fw.filteredOtas.length">
+                            <h5>Download (OTA)</h5>
+                            <ul :style="`${fw.filteredOtas.length == 1 ? 'padding-left: 0; list-style-type: none;' : ''}`">
+                                <li v-if="fw.filteredOtas.length == 1"><a :href="fw.filteredOtas[0].url">{{ fw.filteredOtas[0].label.slice(0,60) }}{{ fw.filteredOtas[0].label.length > 60 ? '...' : '' }}</a></li>
+                                <li v-else v-for="dl in fw.filteredOtas" :key="dl"><a :href="dl.url">{{ dl.deviceName }}</a></li>
+                            </ul>
+                        </template>
+                    </div>
+                </div>
+
+                <div
+                    v-else-if="fw.preinstalled.some(r => fw.devices.includes(r))"
+                    @click="openDownloadDropdown()"
+                    class="downloadIcon iconChild"
+                >
+                    <i class="fas fa-box-open"></i>
+                    <div :class="[
+                        'downloadDropdown',
+                        'custom-container',
+                        showDownloadDropdown ? 'active' : ''
+                    ]" style="padding-inline: 1.3em !important; font-weight: 500;">
+                        Preinstalled firmware
+                    </div>
+                </div>
+            </template>
+
+            <div class="iconChild">
+                <a style="cursor: pointer;">
+                    <i :class="[
+                        'fas',
+                        expanded ? 'fa-chevron-right' : 'fa-chevron-down'
+                    ]"/>
+                </a>
+            </div>
         </div>
     </div>
     <div v-if="expanded" class="custom-container expandedView">
@@ -301,8 +294,8 @@ h5 {
         display: none;
     }
 
-    .downloadIcon {
-        margin-left: auto !important;
+    .firmwareAndReleasedStr {
+        width: 100% !important;
     }
 
     .releasedInfo {
@@ -344,16 +337,6 @@ h5 {
     }
 }
 
-.downloadIcon {
-    width: 1em;
-    padding-inline: .25em .5em;
-
-    i {
-        width: 100%;
-        text-align: center;
-    }
-}
-
 .downloadIcon:hover .downloadDropdown {
     opacity: 1;
     margin-top: 10px;
@@ -384,5 +367,21 @@ h5 {
     opacity: 0.7;
     vertical-align: middle;
     margin-top: -.1em;
+}
+
+.firmwareAndReleasedStr {
+    display: flex;
+    justify-content: space-between;
+}
+
+.iconFlex {
+    display: flex;
+    justify-content: end;
+    margin-left: auto;
+
+    .iconChild {
+        width: 24px;
+        text-align: center;
+    }
 }
 </style>
