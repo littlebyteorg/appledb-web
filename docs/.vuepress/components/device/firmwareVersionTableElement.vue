@@ -378,7 +378,7 @@ h5 {
 
 .iconFlex {
     display: flex;
-    justify-content: end;
+    align-content: flex-end;
     margin-left: auto;
 
     .iconChild {
