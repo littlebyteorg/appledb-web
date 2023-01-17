@@ -47,7 +47,7 @@
             computedProperties.length ? '' : 'fillSpaceRightColumn'
         ]">
             <div class="tabWrapper">
-                <div class="tabTitleWrapper">
+                <div class="tabTitleWrapper" v-if="tabArr.length > 1">
                     <div
                         v-for="tab in tabArr"
                         :key="tab"
@@ -60,7 +60,7 @@
                         {{ tab }}
                     </div>
                 </div>
-                <template v-for="tab in tabArr" :key="tab"><div class="tabContentWrapper" v-if="activeTab == tab"><div class="tabContent">
+                <template v-for="tab in tabArr" :key="tab"><div class="tabContentWrapper" :style="{'margin-left': tabArr.length > 1 ? '' : '0'}" v-if="activeTab == tab"><div class="tabContent">
                     <template v-for="property in tabPropertyArr[tab]" :key="property">
                         <div class="title">{{ property.formatExtraInfoTitle() }}</div>
                         <div v-if="
