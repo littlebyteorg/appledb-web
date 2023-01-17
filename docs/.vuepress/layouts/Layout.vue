@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Home from '@theme/Home.vue'
 import Navbar from '@theme/Navbar.vue'
-import Page from '../components/Page.vue'
+import Page from '../components/components/Page.vue'
 import Sidebar from '@theme/Sidebar.vue'
 import { usePageData, usePageFrontmatter } from '@vuepress/client'
 import { computed, onMounted, onUnmounted, ref } from 'vue'

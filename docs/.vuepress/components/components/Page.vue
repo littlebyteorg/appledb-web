@@ -1,7 +1,7 @@
 <template>
   <main class="page">
     <div class="theme-default-content">
-      <h1>{{ pageTitle }}</h1>
+      <pageTitle :content="titleContent"/>
       <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
       <template v-for="section in sections" :key="section.title">
         <h2 v-if="section.title">{{ section.title }}</h2>
@@ -18,14 +18,14 @@ import { useThemeLocaleData } from '@vuepress/theme-default/lib/client/composabl
 export default {
   data() {
     return {
-      pageTitle: '',
+      titleContent: {},
       sections: [],
       adUnits: useThemeLocaleData().value.adUnits,
     }
   },
   async created() {
     let data = await this.getPageData()
-    this.pageTitle = data.title
+    this.titleContent = data.title
     this.sections = data.sections
     document.title = this.pageTitle + ' | AppleDB'
   },

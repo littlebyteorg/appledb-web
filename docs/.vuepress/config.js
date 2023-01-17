@@ -49,12 +49,13 @@ module.exports = {
         },
         hotKeys: ['/']
       }),
-      registerComponentsPlugin({
-        componentsDir: path.resolve(__dirname, './components'),
-      }),
-      registerComponentsPlugin({
-        componentsDir: path.resolve(__dirname, './components/device'),
-      }),
+      ...[
+        './components',
+        './components/device',
+        './components/components',
+        './components/components/list',
+        './components/components/propertyBox'
+      ].map(x => registerComponentsPlugin({ componentsDir: path.resolve(__dirname, x), })),
       require('./plugins/deviceListPages/lib'),
       require('./plugins/devicePages/lib'),
       //require('./plugins/firmwarePages/lib'),

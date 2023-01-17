@@ -358,7 +358,7 @@ h5 {
 }
 
 .internal {
-    color: hsl(43, 96%, 48%);
+    color: #f0ad05;
 }
 
 .fa-circle {

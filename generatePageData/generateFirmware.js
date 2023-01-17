@@ -19,17 +19,26 @@ function getReleaseDate(released) {
 }
 
 function getInfoObj(os) {
-    const verStr = `Version: ${[os.osStr,os.version].filter(x => x).join(' ')}`
-    const buildStr = os.build ? `Build: ${os.build}` : null
-    const relStr = getReleaseDate(os.released) == -1 ? null : `Released: ${getReleaseDate(os.released)}`
-    return [verStr, buildStr, relStr]
-    .filter(x => x)
-    .map(x => {
-        return {
-            text: x,
-            link: null
+    return [
+        /*{
+            title: 'Version',
+            string: '${i}',
+            value: [os.osStr,os.version].filter(x => x).join(' ')
+        },*/
+        {
+            title: 'Build',
+            string: '${i}',
+            value: os.build
         }
-    })
+        /*{
+            title: 'Released',
+            string: '${i}',
+            value: getReleaseDate(os.released)
+        }*/
+    ].map(x => {
+        if (!Array.isArray(x.value)) x.value = [x.value]
+        return x
+    }).filter(x => x.value[0])
 }
 
 function getOsJailbreakArr(uniqueBuild) {
@@ -227,18 +236,46 @@ function getJailbreakPageData(os) {
 }
 
 for (const os of osArr) {
-    let title = `${os.osStr} ${os.version}${os.build ? ' (' + os.build + ')' : ''}`
-
-    getJailbreakPageData(os)
-
     let obj = {
-        title: title,
+        title: {
+            header: [os.osStr,os.version].join(' '),
+            subtitle: {
+                text: getReleaseDate(os.released) + (os.build ? ` — <code style="background: none; padding-inline: 2px; font-size: 1em;">${os.build}</code>` : ''),
+                tags: [
+                    {
+                        text: 'Stable',
+                        colour: '#039be5',
+                        active: !os.beta && !os.rc
+                    },
+                    {
+                        text: 'Beta',
+                        colour: '#ab47bc',
+                        active: os.beta
+                    },
+                    {
+                        text: 'RC',
+                        colour: '#ab47bc',
+                        active: os.rc
+                    },
+                    {
+                        text: 'Internal',
+                        colour: '#f0ad05',
+                        active: os.internal
+                    },
+                    {
+                        text: 'RSR',
+                        active: os.rsr
+                    }
+                ]
+                .filter(x => x.active && x.text)
+                .map(x => {
+                    if (!x.colour) x.colour = ''
+                    delete x.active
+                    return x
+                })
+            }
+        },
         sections: [
-            {
-                type: 'list',
-                class: 'noPadding noListDisc',
-                content: getInfoObj(os)
-            },
             {
                 title: 'Jailbreaks',
                 type: 'list',
