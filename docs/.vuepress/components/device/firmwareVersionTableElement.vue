@@ -14,6 +14,7 @@
                         <span v-if="tag.length">{{(options.showVersionString ? ' (' : '') + tag.join(', ') + (options.showVersionString ? ')' : '')}}</span>
                     </template>
                 </span>
+                <div v-if="showDots || fw.rsr" style="padding-inline: .25em; display: inline-block;"></div>
                 <div v-if="showDots" :class="[
                     fw.internal ? 'internal' : (
                         (fw.beta || fw.rc) ? 'beta' : 'stable'
@@ -259,7 +260,7 @@ export default {
     transition: background 75ms ease-in-out;
 
     div {
-        padding-left: .5em;
+        padding-right: .5em;
 
         &:first-child {
             padding-left: 0;
