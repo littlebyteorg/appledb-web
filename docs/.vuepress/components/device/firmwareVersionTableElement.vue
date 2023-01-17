@@ -14,7 +14,7 @@
                         <span v-if="tag.length">{{(options.showVersionString ? ' (' : '') + tag.join(', ') + (options.showVersionString ? ')' : '')}}</span>
                     </template>
                 </span>
-                <div v-if="showDots || fw.rsr" style="padding-inline: .25em; display: inline-block;"></div>
+                <div style="padding-inline: .25em; display: inline-block;"></div>
                 <div v-if="showDots" :class="[
                     fw.internal ? 'internal' : (
                         (fw.beta || fw.rc) ? 'beta' : 'stable'
@@ -28,7 +28,8 @@
                     ) }}
                     </span>
                 </div>
-                <div v-if="fw.rsr" :class="[beta, 'stableBetaInternalWrapper']"><span>RSR</span></div>
+                <div v-if="fw.rsr" class="stableBetaInternalWrapper"><span>RSR</span></div>
+                <div v-if="fw.sdk" class="stableBetaInternalWrapper"><span>SDK</span></div>
                 <div class="signingStatus" :style="{
                     'display': options.showSigningStatus ? 'initial' : 'none'
                 }">
