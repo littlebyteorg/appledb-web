@@ -27,10 +27,10 @@ export default {
     let data = await this.getPageData()
     this.titleContent = data.title
     this.sections = data.sections
-    document.title = this.pageTitle + ' | AppleDB'
+    document.title = this.titleContent.header + ' | AppleDB'
   },
   mounted() {
-    document.title = this.pageTitle // Yes this needs to be done twice idk why
+    document.title = this.titleContent.header // Yes this needs to be done twice idk why
   },
   methods: {
     getPageData() {
