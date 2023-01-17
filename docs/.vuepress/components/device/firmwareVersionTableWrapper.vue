@@ -76,7 +76,7 @@
                             @click="options.filterDev.length == deviceFilter.length ?
                                 options.filterDev = [] :
                                 options.filterDev = deviceFilter.map(x => x.value)
-                            "
+                            ;filterVersions()"
                         >
                             <div class="iconWrapper noBorder"><i :class="`fas fa-border-${options.filterDev.length == deviceFilter.length ? 'none' : 'all'}`"></i></div>
                             <div class="textWrapper">{{ options.filterDev.length == deviceFilter.length ? 'Clear' : 'Select' }} all</div>
