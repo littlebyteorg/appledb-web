@@ -450,6 +450,10 @@ html.dark .btn {
 .filterListItem {
     padding: .4em;
     display: flex;
+
+    &:hover {
+        cursor: pointer;
+    }
     
     .iconWrapper {
         opacity: 0.7;
