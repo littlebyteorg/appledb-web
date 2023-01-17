@@ -38,7 +38,7 @@ export default {
     .tag {
         border-radius: 4em;
         border: 1px solid;
-        padding: 3.5px 9px;
+        padding: 5px 9px;
         text-transform: uppercase;
         font-size: calc(1em - 2px);
         font-weight: 700;
