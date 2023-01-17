@@ -41,7 +41,11 @@
                 </div></template>
             </div>
         </div>
-        <div v-if="extraInfo" class="box rightColumn">
+        <div v-if="extraInfo" :class="[
+            'box',
+            'rightColumn',
+            computedProperties.length ? '' : 'fillSpaceRightColumn'
+        ]">
             <div class="tabWrapper">
                 <div class="tabTitleWrapper">
                     <div
@@ -379,6 +383,12 @@ export default {
 
 html.dark .info .tabWrapper .tabTitleWrapper {
     border-color: rgba(255,255,255,0.2);
+}
+
+.rightColumn.fillSpaceRightColumn {
+    margin-left: initial;
+    width: 100%;
+    margin-bottom: 1em;
 }
 
 @media screen and (max-width: 800px) {
