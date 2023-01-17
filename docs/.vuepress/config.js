@@ -69,7 +69,7 @@ module.exports = {
     head: [
       [ 'meta', { property: 'og:image', content: '/assets/images/splash-23aaron-logo.jpg' } ],
       [ 'script', { type: 'text/javascript', src: '//cdn.thisiswaldo.com/static/js/13821.js' }],
-      [ 'link', { rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.6.1/css/all.css' } ],
+      [ 'link', { rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.15.4/css/all.css' } ],
       [ 'link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png', sizes: '180x180' }],
       [ 'link', { rel: 'icon', href: '/favicon-32x32.png', sizes: '32x32' }],
       [ 'link', { rel: 'icon', href: '/favicon-16x16.png', sizes: '16x16' }],
