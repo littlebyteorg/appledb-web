@@ -35,7 +35,7 @@ const latestVersions = latestVersionArr
   const betaRcCheck = betaCheck || rcCheck
 
   const hideCheck = y.hideFromLatestVersions
-  const check = osStrCheck && betaRcCheck && !hideCheck && !(y.rsr || y.sdk)
+  const check = osStrCheck && betaRcCheck && !hideCheck && !y.sdk
   let startsWith = x.startsWith
   if (startsWith && y.version) {
     startsWith = y.version.startsWith(startsWith)
