@@ -4,7 +4,10 @@
       <pageTitle :content="titleContent"/>
       <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
       <template v-for="section in sections" :key="section.title">
-        <h2 v-if="section.title">{{ section.title }}</h2>
+        <template v-if="section.title">
+          <h5 v-if="section.class.includes('smallTitle')">{{ section.title }}</h5>
+          <h2 v-else>{{ section.title }}</h2>
+        </template>
         <vueSection :section="section"/>
       </template>
       <div v-if="adUnits && adUnits.length > 1" :id="`waldo-tag-${adUnits[1]}`"></div>

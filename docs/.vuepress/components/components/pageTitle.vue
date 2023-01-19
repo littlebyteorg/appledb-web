@@ -1,7 +1,7 @@
 <template>
     <h1>{{ content.header }}</h1>
     <div class="subtitle" v-if="content.subtitle">
-        <div class="text" v-html="content.subtitle.text"/>
+        <div class="text" v-if="content.subtitle.text" v-html="content.subtitle.text"/>
         <div
             v-for="tag in content.subtitle.tags"
             :key="tag"

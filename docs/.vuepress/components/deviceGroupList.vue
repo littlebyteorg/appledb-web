@@ -113,7 +113,6 @@ export default {
 
             const overrides = { 
                 AirPods: "AirPods1,1",
-                "MacBook Pro": "MacBookPro18,1"
             }
             
             for (const o in overrides) {

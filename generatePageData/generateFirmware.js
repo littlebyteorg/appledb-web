@@ -3,6 +3,9 @@ const deviceGroupArr = require('./grabData/deviceGroup')
 const deviceArr = require('./grabData/device')
 const jailbreakArr = require('./grabData/jailbreak.js')
 const fs = require('fs')
+const { valid } = require('node-html-parser')
+const { getDiffieHellman } = require('crypto')
+const device = require('./grabData/device')
 
 fs.mkdirSync('./docs/.vuepress/public/pageData/firmware')
 
@@ -16,29 +19,6 @@ function getReleaseDate(released) {
     const releasedArr = released.split('-')
     const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
     return new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustedDate)
-}
-
-function getInfoObj(os) {
-    return [
-        /*{
-            title: 'Version',
-            string: '${i}',
-            value: [os.osStr,os.version].filter(x => x).join(' ')
-        },*/
-        {
-            title: 'Build',
-            string: '${i}',
-            value: os.build
-        }
-        /*{
-            title: 'Released',
-            string: '${i}',
-            value: getReleaseDate(os.released)
-        }*/
-    ].map(x => {
-        if (!Array.isArray(x.value)) x.value = [x.value]
-        return x
-    }).filter(x => x.value[0])
 }
 
 function getOsJailbreakArr(uniqueBuild) {
@@ -96,12 +76,11 @@ function getDeviceList(os) {
             "ota": "OTA"
         }
 
-        let downloadText = `<a href="${url}"><i class="fas fa-download" style="margin-right: .4em;"></i>Download `
-        if (Object.keys(downloadTextObj).includes(source.type)) downloadText += downloadTextObj[source.type] + '</a>'
-        else downloadText += source.type
-
         return {
-            text: downloadText
+            type: source.type,
+            text: Object.keys(downloadTextObj).includes(source.type) ? downloadTextObj[source.type] : source.type,
+            url: url,
+            filename: url.split('/').slice(-1).join('')
         }
     }
 
@@ -109,14 +88,23 @@ function getDeviceList(os) {
         let d = deviceArr.find(x => x.key === device)
         if (!d) console.log(`ERROR: Device '${device}' not found in ${os.osStr} ${os.version} (${os.build})`)
 
-        let hoverLink = getDownloadLink(device) || null
+        let link = getDownloadLink(device) || null
+        if (link) link = {
+            name: d.name,
+            key: d.key,
+            link: link
+        }
         
         return {
             name: d.name,
             key: d.key,
             type: d.type,
+            img: {
+                count: d.imgCount,
+                dark: d.imgDark
+            },
             released: d.released,
-            hoverLink: hoverLink
+            links: [link]
         }
     }
 
@@ -147,14 +135,15 @@ function getDeviceList(os) {
         const groupData = [...children].sort((a,b) => {
             for (var i of sortArr) if (alphaSort(a, b, i) != 0) return alphaSort(a, b, i)
             return 0
-        }).reverse()[0]
+        }).reverse()
 
         groupArr.push({
             name: deviceGroup.name,
             key: deviceGroup.groupKey.replace(/ /g,'-'),
             children: children,
-            type: groupData.type,
-            released: groupData.released,
+            type: groupData[0].type,
+            released: groupData[0].released,
+            links: groupData.map(x => x.links[0]),
             hash: deviceGroup.hash,
             hideChildren: deviceGroup.hideChildren
         })
@@ -169,15 +158,65 @@ function getDeviceList(os) {
         return 0
     }).reverse()
 }
+        
+function getImg(dev) {
+    let img
+
+    function validateImg(obj) {
+        if (!obj.img || !obj.img.count) return false
+        return {
+            key: obj.key,
+            count: obj.img.count,
+            dark: obj.img.dark
+        }
+    }
+
+    if (dev.children) {
+        for (const child of dev.children)
+            if (validateImg(child))
+                img = validateImg(child)
+    } else {
+        if (validateImg(dev))
+            img = validateImg(dev)
+    }
+
+    return img || {
+        key: 'logo',
+        count: 1,
+        dark: true
+    }
+}
 
 function getDevicePageData(os) {
     const deviceList = getDeviceList(os)
 
-    function getListEntry(dev, identifier) {
+    function getListEntry(dev, identifier, imageKey) {
         let urlStart = identifier ? '/device/identifier/' : '/device/'
 
+        const img = getImg(dev)
+        let links = dev.links.filter(x => x && x.name && x.link && x.link.url)
+        let icons = []
+
+        if (links.length == 1 || [...new Set(links.map(x => x.link.url))].length == 1) {
+            icons = [{
+                class: 'fas fa-download',
+                link: links[0].link.url
+            }]
+            links = links.slice(0,1)
+            links[0].label = `Download ${links[0].link.text}`
+        }
+
         let retObj = {
-            text: dev.name,
+            title: dev.name,
+            key: dev.key,
+            subtitle: (dev.released && dev.released[0]) ? getReleaseDate(Array.isArray(dev.released) ? dev.released[0] : dev.released) : '',
+            links: links.map(x => { return { text: x.label || x.name, link: x.link.url, icon: 'fas fa-download' }}),
+            img: img.key,
+            imgFlags: {
+                internal: true,
+                dark: img.dark,
+            },
+            icons: icons,
             link: urlStart + require('../docs/.vuepress/plugins/writeTemp/lib/formatDeviceName')(dev.key)
         }
 
@@ -185,14 +224,25 @@ function getDevicePageData(os) {
         return retObj
     }
     
-    return deviceList.map(x => {
-        let retObj
-        if (x.children) {
-            retObj = getListEntry(x, false)
-            if (!x.hideChildren) retObj.children = x.children.map(y => getListEntry(y, true))
-        } else retObj = getListEntry(x, true)
-        return retObj
+    let ret = deviceList.map(x => getListEntry(x, !x.children, x.children ? x.children[0].key : x.key))
+    const linkArr = ret.map(x => x.links.map(y => y.link)).flat()
+    const hasMultipleLinks = ret.filter(x => x.links.length > 1).length
+    const hasSingleLinks = ret.filter(x => x.links.length < 2).length == ret.length
+
+    if (hasMultipleLinks) ret = ret.map(x => {
+        x.icons = []
+        return x
     })
+    else if (hasSingleLinks) ret = ret.map(x => {
+        if (linkArr.length == ret.length && [...new Set(linkArr)].length == 1) {
+            x.singleDownload = x.links[0]
+            x.icons = []
+        }
+        x.links = []
+        return x
+    })
+
+    return ret
 }
 
 function getJailbreakPageData(os) {
@@ -235,62 +285,82 @@ function getJailbreakPageData(os) {
     })
 }
 
+function getTitle(os) {
+    return {
+        header: [os.osStr,os.version].join(' '),
+        subtitle: {
+            text: [
+                getReleaseDate(os.released) == '-1' ? null : getReleaseDate(os.released),
+                os.build ? `<code style="background: none; padding-inline: 2px; font-size: 1em;">${os.build}</code>` : null
+            ].filter(x => x).join(' — '),
+            tags: [
+                {
+                    text: 'Stable',
+                    colour: '#039be5',
+                    active: !(os.beta || os.rc || os.internal)
+                },
+                {
+                    text: 'Beta',
+                    colour: '#ab47bc',
+                    active: os.beta
+                },
+                {
+                    text: 'RC',
+                    colour: '#ab47bc',
+                    active: os.rc
+                },
+                {
+                    text: 'Internal',
+                    colour: '#f0ad05',
+                    active: os.internal
+                },
+                {
+                    text: 'RSR',
+                    active: os.rsr
+                },
+                {
+                    text: 'SDK',
+                    active: os.sdk
+                }
+            ]
+            .filter(x => x.active && x.text)
+            .map(x => {
+                if (!x.colour) x.colour = ''
+                delete x.active
+                return x
+            })
+        }
+    }
+}
+
 for (const os of osArr) {
+    const deviceGrid = getDevicePageData(os)
+    let singleDownload = []
+
+    if (deviceGrid.filter(x => x.singleDownload).length) {
+        singleDownload = [deviceGrid[0].singleDownload]
+        singleDownload[0].text = `<i class="${singleDownload[0].icon}"></i> ${singleDownload[0].text}`
+    }
+
     let obj = {
-        title: {
-            header: [os.osStr,os.version].join(' '),
-            subtitle: {
-                text: getReleaseDate(os.released) + (os.build ? ` — <code style="background: none; padding-inline: 2px; font-size: 1em;">${os.build}</code>` : ''),
-                tags: [
-                    {
-                        text: 'Stable',
-                        colour: '#039be5',
-                        active: !os.beta && !os.rc
-                    },
-                    {
-                        text: 'Beta',
-                        colour: '#ab47bc',
-                        active: os.beta
-                    },
-                    {
-                        text: 'RC',
-                        colour: '#ab47bc',
-                        active: os.rc
-                    },
-                    {
-                        text: 'Internal',
-                        colour: '#f0ad05',
-                        active: os.internal
-                    },
-                    {
-                        text: 'RSR',
-                        active: os.rsr
-                    },
-                    {
-                        text: 'SDK',
-                        active: os.sdk
-                    }
-                ]
-                .filter(x => x.active && x.text)
-                .map(x => {
-                    if (!x.colour) x.colour = ''
-                    delete x.active
-                    return x
-                })
-            }
-        },
+        title: getTitle(os),
         sections: [
+            {
+                type: 'list',
+                class: 'noListDisc noPadding',
+                content: singleDownload
+            },
+            {
+                title: 'Devices',
+                type: 'grid',
+                class: 'smallTitle',
+                content: deviceGrid
+            },
             {
                 title: 'Jailbreaks',
                 type: 'list',
                 class: 'noListDisc customListDisc',
                 content: getJailbreakPageData(os)
-            },
-            {
-                title: 'Devices',
-                type: 'list',
-                class: 'noListDisc customListDisc',
-                content: getDevicePageData(os)
             },
         ].filter(x => x.content.length > 0)
     }

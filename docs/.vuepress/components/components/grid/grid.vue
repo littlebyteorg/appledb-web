@@ -1,0 +1,43 @@
+<template>
+    <div class="gridWrapper" :style="{'grid-template-columns': content.length == 1 ? '100%' : ''}">
+        <template
+            v-for="i in content"
+            :key="i.key"
+        >
+            <a v-if="i.link" :href="i.link"><gridElement class="gridElement" :content="i"/></a>
+            <gridElement v-else :content="i"/>
+        </template>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        content: Array
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+.gridWrapper {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: .5em 1em;
+    transition: 75ms background ease-in-out;
+
+    a {
+        color: var(--c-text);
+        font-weight: initial;
+
+        &:hover {
+            text-decoration: initial;
+        }
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .gridWrapper {
+        grid-template-columns: 100%;
+    }
+}
+</style>
