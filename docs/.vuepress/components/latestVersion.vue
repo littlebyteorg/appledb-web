@@ -225,7 +225,7 @@ a {
 
 .fwBlock {
     background: var(--c-container-bg);
-    transition: background 100ms ease-in-out;
+    transition: background 150ms ease-in-out;
     border-radius: 8px;
     margin-block: 1em;
     padding: 1em;
