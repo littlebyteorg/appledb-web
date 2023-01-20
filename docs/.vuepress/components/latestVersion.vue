@@ -10,8 +10,16 @@
                         </picture>
                     </div>
                     <div class="text">
-                        <h2 class="versionString">{{ version.osStr }} {{ version.version }} ({{ version.build }})</h2>
-                        <p style="margin-block-start: .5em;">{{ version.released }}</p>
+                        <h2 class="versionString">{{ version.osStr }} {{ version.version }}</h2>
+                        <div class="subtitle">
+                            <div>{{ version.released }} — <code style="background: none; padding-inline: 2px; font-size: 1em;">{{ version.build }}</code></div>
+                            <div class="tag" style="color: #ab47bc;" v-if="version.beta">beta</div>
+                            <div class="tag" style="color: #ab47bc;" v-else-if="version.rc">rc</div>
+                            <div class="tag" style="color: #f0ad05;" v-else-if="version.internal">internal</div>
+                            <div class="tag" style="color: #039be5;" v-else>stable</div>
+                            <div class="tag" v-if="version.rsr">rsr</div>
+                            <div class="tag" v-if="version.sdk">sdk</div>
+                        </div>
                         <a class="link">View more</a>
                     </div>
                 </div>
@@ -184,6 +192,33 @@ a {
 
         &:hover {
             text-decoration: underline;
+        }
+    }
+}
+
+.tag {
+    display: inline-block;
+    border-radius: 4em;
+    border: 1px solid;
+    padding: 5px 9px;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: .5em;
+    letter-spacing: .5px;
+    margin-right: 1em;
+}
+
+.subtitle {
+    display: flex;
+    flex-flow: row wrap;
+
+    margin-block: .5em 1em;
+
+    div {
+        margin-right: .5em;
+
+        &:last-of-type {
+            margin-right: 0;
         }
     }
 }

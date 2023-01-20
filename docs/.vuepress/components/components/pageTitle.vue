@@ -26,10 +26,6 @@ export default {
     margin-bottom: 1em;
     display: flex;
     flex-flow: row wrap;
-    
-    .buildNum {
-        color: red;
-    }
 
     .text {
         margin-right: .5em;
@@ -40,7 +36,6 @@ export default {
         border: 1px solid;
         padding: 5px 9px;
         text-transform: uppercase;
-        font-size: calc(1em - 2px);
         font-weight: 700;
         font-size: .5em;
         letter-spacing: .5px;
