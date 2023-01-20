@@ -17,7 +17,7 @@ for (const os of osArr) {
 
     parsedPage.querySelectorAll('meta').find(x => x.rawAttrs.includes('name="description"')).rawAttrs = `name="description" content="Information for ${os.osStr} version ${os.version}"`
     parsedPage.querySelector('title').innerHTML = `${os.osStr} ${os.version} ${(os.build && os.build != os.version) ? `(${os.build})` : ''}`
-    parsedPage.querySelector('h1').innerHTML = `${os.osStr} ${os.version} ${(os.build && os.build != os.version) ? `(${os.build})` : ''}`
+    parsedPage.querySelector('h1').innerHTML = `${os.osStr} ${os.version}`
     parsedPage.querySelector('blockquote').innerHTML = 'Retrieving data...'
 
     fs.writeFile(`./docs/.vuepress/dist/firmware/${os.osStr.replace(/ /g,'-')}/${os.uniqueBuild}.html`, parsedPage.toString(), (err) => {
