@@ -67,7 +67,7 @@ export default {
     padding: 1em;
     border-radius: 8px;
     display: grid;
-    height: calc(100% - 1.5em);
+    height: calc(100% - 2.5em);
     transition: 75ms background ease-in-out;
 
     &:hover {
