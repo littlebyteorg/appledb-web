@@ -5,6 +5,8 @@
         <groupedOrRelatedDeviceWrapper v-if="!fm.hideChildren" :device="fm.device" :img="fm.img"/>
     </template>
 
+    <p v-if="fm.device[0].key == 'Polishing Cloth'">Dedicated to Aaron.</p>
+
     <firmwareVersionTableWrapper
         v-if="fm.versionArr && fm.versionArr.length > 0"
         :fmVersionArr="fm.versionArr"
