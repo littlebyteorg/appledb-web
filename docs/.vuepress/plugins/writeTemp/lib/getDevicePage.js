@@ -239,7 +239,7 @@ module.exports = function(args) {
         imgCount = 0
     }
 
-    getVersionArr = getVersionArr.sort((a,b) => {
+    getVersionArr = getVersionArr.reverse().sort((a,b) => {
         const time = [a,b].map(x => x.released ? new Date(x.released).getTime() : 0)
         if (time[0] < time[1]) return 1
         if (time[0] > time[1]) return -1
