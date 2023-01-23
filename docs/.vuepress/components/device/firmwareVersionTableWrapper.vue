@@ -141,7 +141,7 @@
                 'btn',
                 options.filterDev.includes(filter.value) ? 'active' : ''
             ]"
-            v-on:click="
+            @click="
             options.filterDev = options.filterDev.includes(filter.value) ?
                 options.filterDev.filter(x => x != filter.value) :
                 options.filterDev.concat(filter.value);
@@ -245,18 +245,59 @@ export default {
                     [fw.osStr,fw.version,fw.build].join(' ').toLowerCase().includes(this.options.searchStr.toLowerCase())
                 )
             )
+
+            let query = this.$route.query
+            
+            let filterValues = [
+                ['stable',  this.options.showStable],
+                ['beta',    this.options.showBeta],
+                ['internal',this.options.showInternal]
+            ]
+            
+            let filter = filterValues.filter(x => x[1]).map(x => x[0])
+            if (filter.length == filterValues.length) filter = []
+
+            if (this.deviceFilter.length != this.options.filterDev.length) {
+                filter.push(...this.options.filterDev)
+            }
+            
+            filter = filter.length ? { filter: filter.join(';') } : {}
+            
+            this.$router.push({ query: filter })
         }
     },
     mounted() {
-        this.options.filterDev = this.deviceFilter.map(x => x.value)
+        let querySet = {
+            stableBetaInternalFilter: false,
+            deviceFilter: false
+        }
 
-        if (this.mainList) {
-            this.options.showBeta = true
-            this.options.showInternal = true
-        } else if (!this.hasFirmwareFilters) {
-            this.options.showStable = this.hasFirmwares.stable
-            this.options.showBeta = this.hasFirmwares.beta
-            this.options.showInternal = this.hasFirmwares.internal
+        let query = this.$route.query
+        if (query && query.filter && query.filter.length) {
+            query = query.filter.split(';')
+            if (query.some(r => ['stable','beta','internal'].includes(r))) {
+                querySet.stableBetaInternalFilter = true
+                this.options.showStable = query.includes('stable')
+                this.options.showBeta = query.includes('beta')
+                this.options.showInternal = query.includes('internal')
+            }
+            if (query.some(r => this.deviceFilter.map(x => x.value).includes(r))) {
+                querySet.deviceFilter = true
+                this.options.filterDev = query.filter(x => this.deviceFilter.map(x => x.value).includes(x))
+            }
+        }
+
+        if (!querySet.deviceFilter) this.options.filterDev = this.deviceFilter.map(x => x.value)
+
+        if (!querySet.stableBetaInternalFilter) {
+            if (this.mainList) {
+                this.options.showBeta = true
+                this.options.showInternal = true
+            } else if (!this.hasFirmwareFilters) {
+                this.options.showStable = this.hasFirmwares.stable
+                this.options.showBeta = this.hasFirmwares.beta
+                this.options.showInternal = this.hasFirmwares.internal
+            }
         }
 
         this.filterVersions()
