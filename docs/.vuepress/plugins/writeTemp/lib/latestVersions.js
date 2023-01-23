@@ -1,5 +1,6 @@
 const iosList = require('../../../../../grabData/ios')
-const osStrArr = Array.from(new Set(iosList.map(x => x.osStr)))
+const uniqueiOSList = iosList.filter((obj, index) => iosList.findIndex((item) => item.build === obj.build && item.osStr === obj.osStr) === index)
+const osStrArr = Array.from(new Set(uniqueiOSList.map(x => x.osStr)))
 
 let latestVersionArr = []
 for (const bool of [true,false]) {
@@ -28,7 +29,7 @@ for (const bool of [true,false]) {
 //latestVersionArr.push({ osStr: 'iOS', beta: false, startsWith: '12'})
 
 const latestVersions = latestVersionArr
-.map(x => iosList.filter(y => {
+.map(x => uniqueiOSList.filter(y => {
   const osStrCheck = y.osStr == x.osStr
   const betaRcCheck = (y.beta || y.rc) == x.beta
   const hideCheck = y.hideFromLatestVersions

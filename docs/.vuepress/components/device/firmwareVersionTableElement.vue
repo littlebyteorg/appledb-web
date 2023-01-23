@@ -1,7 +1,7 @@
 <template>
     <div
         class="wrapper firmwareVersionTableElement"
-        v-on:click="expanded = !expanded"
+        @click="expanded = !expanded"
     >
         <div class="firmwareAndReleasedStr" :style="{'width': `calc(100% - ${(1 + showSingleDownloads) * 32}px)`}">
             <div>
