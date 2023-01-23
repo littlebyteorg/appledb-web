@@ -239,7 +239,7 @@ function getDevicePageData(os) {
             for (let sg of x.subgroups) {
                 let filteredLinkArr = x.links.filter(y => sg.devices.includes(y.key))
 
-                if ([...new Set(filteredLinkArr.map(y => y.link))].length == 1) {
+                if ([...new Set(filteredLinkArr.map(y => y.link))].length == 1 && x.links.length > 2) {
                     let linkObj = filteredLinkArr[0]
                     linkObj.text = sg.name
                     
