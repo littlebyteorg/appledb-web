@@ -6,6 +6,7 @@ const fs = require('fs')
 const { valid } = require('node-html-parser')
 const { getDiffieHellman } = require('crypto')
 const device = require('./grabData/device')
+const { filter } = require('./grabData/firmware')
 
 fs.mkdirSync('./docs/.vuepress/public/pageData/firmware')
 
@@ -141,6 +142,7 @@ function getDeviceList(os) {
             name: deviceGroup.name,
             key: deviceGroup.groupKey.replace(/ /g,'-'),
             children: children,
+            subgroups: deviceGroup.subgroups || [],
             type: groupData[0].type,
             released: groupData[0].released,
             links: groupData.map(x => x.links[0]),
@@ -210,7 +212,8 @@ function getDevicePageData(os) {
             title: dev.name,
             key: dev.key,
             subtitle: (dev.released && dev.released[0]) ? getReleaseDate(Array.isArray(dev.released) ? dev.released[0] : dev.released) : '',
-            links: links.map(x => { return { text: x.label || x.name, link: x.link.url, icon: 'fas fa-download' }}),
+            subgroups: dev.subgroups || [],
+            links: links.map(x => { return { text: x.label || x.name, key: x.key, link: x.link.url, icon: 'fas fa-download' }}),
             img: img.key,
             imgFlags: {
                 internal: true,
@@ -231,6 +234,21 @@ function getDevicePageData(os) {
 
     if (hasMultipleLinks) ret = ret.map(x => {
         x.icons = []
+
+        if (x.subgroups.length) {
+            for (let sg of x.subgroups) {
+                let filteredLinkArr = x.links.filter(y => sg.devices.includes(y.key))
+
+                if ([...new Set(filteredLinkArr.map(y => y.link))].length == 1) {
+                    let linkObj = filteredLinkArr[0]
+                    linkObj.text = sg.name
+                    
+                    x.links = x.links.filter(y => !sg.devices.includes(y.key))
+                    x.links.push(linkObj)
+                }
+            }
+        }
+
         return x
     })
     else if (hasSingleLinks) ret = ret.map(x => {
