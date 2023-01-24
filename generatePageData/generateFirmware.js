@@ -115,6 +115,13 @@ function getDeviceList(os) {
         return 0
     }
 
+    function dateSort(x, y, attr) {
+        const dates = [x,y].map(i => new Date(i[attr]))
+        if (dates[0] < dates[1]) return -1
+        if (dates[0] > dates[1]) return 1
+        return 0
+    }
+
     const sortArr = [
         'type',
         'released',
@@ -134,7 +141,10 @@ function getDeviceList(os) {
         const children = devicesInDeviceGroup.map(x => getDeviceData(x))
         
         const groupData = [...children].sort((a,b) => {
-            for (var i of sortArr) if (alphaSort(a, b, i) != 0) return alphaSort(a, b, i)
+            for (var sort of sortArr) {
+                if (sort == 'released') { if (dateSort(a, b, sort) != 0) return dateSort(a, b, sort) * -1 }
+                else { if (alphaSort(a, b, sort) != 0) return alphaSort(a, b, sort) }
+            }
             return 0
         }).reverse()
 
@@ -156,7 +166,10 @@ function getDeviceList(os) {
     .map(x => getDeviceData(x))
     
     return groupArr.concat(ungroupedDevices).sort((a,b) => {
-        for (var i of sortArr) if (alphaSort(a, b, i) != 0) return alphaSort(a, b, i)
+        for (var sort of sortArr) {
+            if (sort == 'released') { if (dateSort(a, b, sort) != 0) return dateSort(a, b, sort) }
+            else { if (alphaSort(a, b, sort) != 0) return alphaSort(a, b, sort) }
+        }
         return 0
     }).reverse()
 }
