@@ -150,7 +150,7 @@ export default {
     },
     mounted() {
         const identifierArr = this.fw.devices.filter(x => this.shouldSigningStatusBeChecked(x, this.fw.osStr))
-        if (identifierArr.length) this.getSigningStatus(this.fw.build, identifierArr[0], this.fw.osStr, this.fw.beta || this.fw.rc)
+        if (identifierArr.length && !this.fw.rc) this.getSigningStatus(this.fw.build, identifierArr[0], this.fw.osStr, this.fw.beta || this.fw.rc, this.fw.uniqueBuild)
         
         this.tags = [
             { type: 'build',        val: this.fw.duplicateVersion || this.options.showBuildNumber ? this.fw.build : false },
@@ -161,8 +161,8 @@ export default {
         async getSigningStatus(buildid, identifier, osStr, beta) {
             var request = new XMLHttpRequest()
 
-            if (beta) request.open('GET', `https://api.m1sta.xyz/betas/${identifier}`)
-            else request.open('GET', `https://api.ipsw.me/v4/ipsw/${identifier}/${buildid}`)
+            /*if (beta) request.open('GET', `https://api.m1sta.xyz/betas/${identifier}`)
+            else*/ request.open('GET', `https://api.ipsw.me/v4/ipsw/${identifier}/${buildid}`)
 
             request.setRequestHeader('Accept', 'application/json')
 
