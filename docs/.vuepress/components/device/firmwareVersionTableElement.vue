@@ -244,7 +244,7 @@ export default {
     letter-spacing: 1px;
     font-size: .7em;
     opacity: 0.8;
-    padding-top: 3.5px;
+    margin-top: 2px;
 }
 
 .signingStatus {
