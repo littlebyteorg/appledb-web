@@ -222,7 +222,7 @@ export default {
 <style lang="scss" scoped>
 .stableBetaInternalWrapper {
     display: inline-block;
-    margin-top: -6px;
+    margin-top: -10px;
     vertical-align: middle;
 
     span {
@@ -252,8 +252,9 @@ export default {
 
     i {
         font-size: .5em;
-        padding-bottom: 2px;
         vertical-align: middle;
+        margin-top: -4px;
+        width: 8px;
     }
 
     .signingText {
@@ -266,7 +267,8 @@ export default {
     .fa-check, .fa-times {
         border: 1px solid;
         border-radius: 5em;
-        padding: 3.5px 5px;
+        padding-inline: 5px;
+        padding-block: 4.5px 4.5px;
         text-align: center;
     }
 
