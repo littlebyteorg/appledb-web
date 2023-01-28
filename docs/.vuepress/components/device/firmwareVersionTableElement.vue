@@ -267,8 +267,7 @@ export default {
     .fa-check, .fa-times {
         border: 1px solid;
         border-radius: 5em;
-        padding-inline: 5px;
-        padding-block: 4.5px 4.5px;
+        padding: 4px;
         text-align: center;
     }
 
