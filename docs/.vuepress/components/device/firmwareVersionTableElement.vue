@@ -393,9 +393,9 @@ h5 {
 .fa-circle {
     font-size: .45em;
     margin-left: 1em;
-    opacity: 0.7;
     vertical-align: middle;
     margin-top: -.1em;
+    color: var(--c-text-lightest)
 }
 
 .firmwareAndReleasedStr {
