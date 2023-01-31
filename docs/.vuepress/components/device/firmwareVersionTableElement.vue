@@ -5,34 +5,33 @@
     >
         <div class="firmwareAndReleasedStr" :style="{'width': `calc(100% - ${(1 + showSingleDownloads) * 32}px)`}">
             <div>
-                <span style="font-weight: 600;">
-                    <template v-if="options.showVersionString">{{ [fw.osStr, fw.version].join(' ') }}</template>
-                    <span v-for="(tag, index) in tags" :key="tag">
-                        <template v-if="index == 0">
-                            <i
-                                style="margin-inline: 8px; font-size: .3em"
-                                v-if="tags[0].type == 'build'"
-                                class="fas fa-circle">
-                            </i>
-                            <span v-else style="padding-inline: 4px;"></span>
-                        </template>
+                <span
+                    style="font-weight: 600;"
+                    v-if="options.showVersionString"
+                >
+                    {{ [
+                        fw.osStr,
+                        fw.version
+                    ].join(' ') }}
+                </span>
+                <template v-if="this.fw.duplicateVersion || this.options.showBuildNumber">
+                        <i
+                            style="margin-inline: 8px; font-size: .3em"
+                            class="fas fa-circle">
+                        </i>
                         <code
-                            v-if="tag.type == 'build'"
                             style="
-                                padding-inline: 0px;
-                                background: #00000000;
+                                padding-inline: 0;
+                                background: none;
                                 font-size: 0.95em;
                             "
                         >
-                            {{ tag.val }}
+                            {{ this.fw.duplicateVersion || this.options.showBuildNumber ? this.fw.build : false }}
                         </code>
-                        <template v-else-if="tag.type == 'preinstalled'">
-                            <i class="fas fa-box-open"></i>
-                        </template>
-                        <template v-else>{{ tag.val }}</template>
-                        <span v-if="tags.length > 1 && (index < tags.length - 1)" style="padding-inline: 4px;"/>
-                    </span>
-                </span>
+                    </template>
+                    <template v-if="this.fw.preinstalled.some(r => this.fw.devices.includes(r)) && (this.fw.filteredDownloads.length || this.fw.filteredOtas.length)">
+                        <i class="fas fa-box-open" style="padding-left: 8px;"/>
+                    </template>
                 <div style="padding-inline: .25em; display: inline-block;"></div>
                 <div v-if="showDots" :class="[
                     fw.internal ? 'internal' : (
@@ -153,8 +152,6 @@ export default {
         if (identifierArr.length && !this.fw.rc) this.getSigningStatus(this.fw.build, identifierArr[0], this.fw.osStr, this.fw.beta || this.fw.rc, this.fw.uniqueBuild)
         
         this.tags = [
-            { type: 'build',        val: this.fw.duplicateVersion || this.options.showBuildNumber ? this.fw.build : false },
-            { type: 'preinstalled', val: this.fw.preinstalled.some(r => this.fw.devices.includes(r)) && (this.fw.filteredDownloads.length || this.fw.filteredOtas.length) ? 'Preinstalled' : false }
         ].filter(x => x.val)
     },
     methods: {
