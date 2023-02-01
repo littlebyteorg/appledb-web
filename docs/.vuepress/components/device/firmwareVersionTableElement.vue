@@ -108,7 +108,7 @@
                 <a style="cursor: pointer;">
                     <i :class="[
                         'fas',
-                        expanded ? 'fa-chevron-right' : 'fa-chevron-down'
+                        expanded ? 'fa-chevron-down' : 'fa-chevron-right'
                     ]"/>
                 </a>
             </div>
