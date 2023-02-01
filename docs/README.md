@@ -14,9 +14,16 @@ heroImageDark: https://appledb.dev/assets/images/splash-23aaron-0.jpg
 heroFilter: 0.3
 ---
 
-# New releases
-
-<latestVersion/>
+<slideSwipe :sections="[
+  {
+    title: 'New releases',
+    component: 'latestVersion'
+  },
+  {
+    title: 'New devices',
+    component: 'latestDevice'
+  }
+]"/>
 
 Created by [emiyl](https://twitter.com/emiyl0). Please contribute to the database at [github.com/littlebyteorg/appledb](https://github.com/littlebyteorg/appledb).
 

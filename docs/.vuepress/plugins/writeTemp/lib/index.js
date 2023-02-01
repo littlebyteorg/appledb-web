@@ -13,6 +13,7 @@ const bigJson = {
 }
 
 const latestVersions = require('./latestVersions')
+const latestDevices = require('./latestDevices')
 const deviceTypeGroups = require('../../../../../appledb/appledb-web/deviceTypeGroups.json')
 
 module.exports = function() {
@@ -21,6 +22,7 @@ module.exports = function() {
     onPrepared: async (app) => {
       await app.writeTemp('main.js', `export default ${JSON.stringify(bigJson)}`)
       await app.writeTemp('latestVersion.js', `export default ${JSON.stringify(latestVersions)}`)
+      await app.writeTemp('latestDevices.js', `export default ${JSON.stringify(latestDevices)}`)
       await app.writeTemp('deviceTypeGroups.js', `export default ${JSON.stringify(deviceTypeGroups)}`)
     }
   }
