@@ -171,8 +171,8 @@ a {
             flex-grow: 2;
 
             .headerString {
-                border-bottom: none;
-                padding-bottom: 0;
+                border-bottom: 0;
+                padding-bottom: 2px;
                 margin-block-end: 0;
             }
         }
