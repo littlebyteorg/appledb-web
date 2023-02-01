@@ -11,10 +11,10 @@ const deviceList = require('../../../../../grabData/deviceGroups')
 })
 .slice(0,10)
 .map(x => {
-  if (x.imgCount < 1) x.imgKey = 'logo'
-  else x.imgKey = x.devices[0]
-  
   x.devices = x.devices.map(x => deviceObj[x])
+  if (x.devices[0].imgCount > 0) x.imgKey = x.devices[0].key
+  else x.imgKey = 'logo'
+
   return x
 })
 
