@@ -1,12 +1,12 @@
 <template>
     <div
-        v-for="releaseDate in releaseDateArr"
-        :key="releaseDate"
+        v-for="filter in filterGroups"
+        :key="filter"
         class="section"
     >
         <div
             class="blockWrapper"
-            v-for="device in latestDevices.filter(x => x.released[0] == releaseDate)"
+            v-for="device in latestDevices.filter(x => filter.released.includes(x.released[0]) && filter.type.includes(x.type))"
             :key="device"
         ><router-link :to="`/device/${device.groupKey.replace(/ /g,'-')}`">
             <div class="block">
@@ -37,13 +37,57 @@ import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 import latestDevices from '@temp/latestDevices'
 
 const getReleaseDateArr = [...new Set(latestDevices.map(x => x.released[0]))]
+const getDeviceTypeArr = [...new Set(latestDevices.map(x => x.type))]
+
+let groups = []
+let oldDevice
+
+for (let device of latestDevices) {
+    if (!oldDevice) {
+        groups.push({
+            type: [device.type],
+            released: [device.released[0]]
+        })
+        oldDevice = device
+        continue
+    }
+    
+    const releaseMatch = device.released[0] == oldDevice.released[0]
+    const typeMatch = device.type == oldDevice.type
+
+    if (releaseMatch || typeMatch) {
+        let group = groups.slice(-1)[0]
+
+        if (releaseMatch) group.type.push(device.type)
+        if (typeMatch) group.released.push(device.released[0])
+
+        groups[group.length-1] = group
+        
+        oldDevice = device
+        continue
+    }
+
+    groups.push({
+        type: [device.type],
+        released: [device.released[0]]
+    })
+    oldDevice = device
+}
+
+groups = groups.map(x => {
+    x.type = [...new Set(x.type)]
+    x.released = [...new Set(x.released)]
+    return x
+})
 
 export default {
     data() {
         return {
             isDarkMode: useDarkMode(),
             latestDevices: latestDevices,
-            releaseDateArr: getReleaseDateArr
+            releaseDateArr: getReleaseDateArr,
+            deviceTypeArr: getDeviceTypeArr,
+            filterGroups: groups
         }
     },
 }

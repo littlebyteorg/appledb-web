@@ -19,7 +19,7 @@
 <script>
 export default {
     props: {
-        sections: []
+        sections: Array
     },
     data() {
         return {
