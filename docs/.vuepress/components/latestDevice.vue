@@ -36,7 +36,7 @@
 import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 import latestDevices from '@temp/latestDevices'
 
-const getReleaseDateArr = [...new Set(latestDevices.map(x => x.released))]
+const getReleaseDateArr = [...new Set(latestDevices.map(x => x.released[0]))]
 
 export default {
     data() {
