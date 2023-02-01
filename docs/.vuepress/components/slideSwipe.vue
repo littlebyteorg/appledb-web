@@ -33,7 +33,7 @@ export default {
 .titleWrapper {
     display: flex;
     flex-flow: row wrap;
-    margin-block: 1em 1em;
+    margin-block: 1.5em 1em;
 
     .title {
         margin-right: 1em;
