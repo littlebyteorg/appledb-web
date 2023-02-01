@@ -1,12 +1,12 @@
 <template>
     <div
-        v-for="deviceType in deviceTypeArr"
-        :key="deviceType"
+        v-for="releaseDate in releaseDateArr"
+        :key="releaseDate"
         class="section"
     >
         <div
             class="blockWrapper"
-            v-for="device in latestDevices.filter(x => x.type == deviceType)"
+            v-for="device in latestDevices.filter(x => x.released[0] == releaseDate)"
             :key="device"
         ><router-link :to="`/device/${device.groupKey.replace(/ /g,'-')}`">
             <div class="block">
@@ -36,14 +36,14 @@
 import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 import latestDevices from '@temp/latestDevices'
 
-const getDeviceTypeArr = [...new Set(latestDevices.map(x => x.type))]
+const getReleaseDateArr = [...new Set(latestDevices.map(x => x.released))]
 
 export default {
     data() {
         return {
             isDarkMode: useDarkMode(),
             latestDevices: latestDevices,
-            deviceTypeArr: getDeviceTypeArr
+            releaseDateArr: getReleaseDateArr
         }
     },
 }
