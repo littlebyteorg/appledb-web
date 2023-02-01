@@ -9,7 +9,7 @@
             ]"
             @click="activeTab = index"
         >
-            {{ title }}
+            <span class="text">{{ title }}</span>
         </div>
     </div>
     <latestVersion v-if="sections[activeTab].component == 'latestVersion'"/>
@@ -56,6 +56,10 @@ export default {
 
     background: var(--c-border);
 
+    .text {
+        border: 1px solid #00000000;
+    }
+
     &.active {
         color: var(--c-bg);
         background: #1bcbf0;
@@ -66,15 +70,27 @@ export default {
         cursor: pointer;
         transform: scale(1.03);
 
-        &:not(.active) {
-            color: var(--c-brand);
+        &:not(.active) .text {
+            background: linear-gradient(315deg, #1bcbf0 0%, #d96cd5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border: solid 1px var(--c-border);
         }
     }
 }
 
-html.dark .active {
-    color: white;
-    background: #9154e0;
-    background: linear-gradient(315deg, #9154e0 0%, #4a3e80 100%);
+html.dark {
+    .active {
+        color: white;
+        background: #9154e0;
+        background: linear-gradient(315deg, #9154e0 0%, #4a3e80 100%);
+    }
+
+    .title:hover:not(.active) .text {
+        background: linear-gradient(315deg, hsl(266, 89%, 90%) 0%, hsl(251, 100%, 82%) 100%);;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        border: solid 1px var(--c-border);
+    }
 }
 </style>
