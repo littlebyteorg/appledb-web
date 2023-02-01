@@ -16,11 +16,11 @@ heroFilter: 0.3
 
 <slideSwipe :sections="[
   {
-    title: 'New releases',
+    title: 'New Releases',
     component: 'latestVersion'
   },
   {
-    title: 'New devices',
+    title: 'New Devices',
     component: 'latestDevice'
   }
 ]"/>

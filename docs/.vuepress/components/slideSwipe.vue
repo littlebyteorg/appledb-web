@@ -33,10 +33,11 @@ export default {
 .titleWrapper {
     display: flex;
     flex-flow: row wrap;
-    margin-top: 1em;
+    margin-block: 1em 1em;
 
     .title {
         margin-right: 1em;
+        margin-bottom: .5em;
 
         &:last-of-type {
             margin-right: 0;
@@ -45,22 +46,35 @@ export default {
 }
 .title {
     font-weight: 600;
-    font-size: 2.2rem;
+    font-size: 1.5rem;
     line-height: 1.25;
-    margin-bottom: 0.67em;
     color: var(--c-text-lightest);
-    transition: color 100ms ease-in-out;
+    transition: color 100ms ease-in-out, transform 100ms ease-in-out;
+
+    padding: .5em 1em;
+    border-radius: 8px;
+
+    background: var(--c-border);
 
     &.active {
-        color: var(--c-text);
+        color: var(--c-bg);
+        background: #1bcbf0;
+        background: linear-gradient(315deg, #1bcbf0 0%, #d96cd5 100%);
     }
 
     &:hover {
         cursor: pointer;
+        transform: scale(1.03);
 
         &:not(.active) {
             color: var(--c-brand);
         }
     }
+}
+
+html.dark .active {
+    color: white;
+    background: #9154e0;
+    background: linear-gradient(315deg, #9154e0 0%, #4a3e80 100%);
 }
 </style>
