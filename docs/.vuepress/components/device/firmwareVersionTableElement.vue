@@ -35,19 +35,19 @@
                 <div style="padding-inline: .25em; display: inline-block;"></div>
                 <div v-if="showDots" :class="[
                     fw.internal ? 'internal' : (
-                        (fw.beta || fw.rc) ? 'beta' : 'stable'
+                        (fw.beta || fw.rc) ? 'beta' : 'release'
                     ),
-                    'stableBetaInternalWrapper'
+                    'releaseBetaInternalWrapper'
                 ]"><span>
                     {{ fw.internal ? 'internal' : (
                         fw.rc ? 'rc' : (
-                            fw.beta ? 'beta' : 'stable'
+                            fw.beta ? 'beta' : 'release'
                         )
                     ) }}
                     </span>
                 </div>
-                <div v-if="fw.rsr" class="stableBetaInternalWrapper"><span>RSR</span></div>
-                <div v-if="fw.sdk" class="stableBetaInternalWrapper"><span>SDK</span></div>
+                <div v-if="fw.rsr" class="releaseBetaInternalWrapper"><span>RSR</span></div>
+                <div v-if="fw.sdk" class="releaseBetaInternalWrapper"><span>SDK</span></div>
                 <div class="signingStatus" :style="{
                     'display': options.showSigningStatus ? 'initial' : 'none'
                 }">
@@ -217,7 +217,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.stableBetaInternalWrapper {
+.releaseBetaInternalWrapper {
     display: inline-block;
     margin-top: -10px;
     vertical-align: middle;
@@ -374,7 +374,7 @@ h5 {
     }
 }
 
-.stable {
+.release {
     color: #039be5;
 }
 

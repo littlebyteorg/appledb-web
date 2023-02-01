@@ -14,11 +14,11 @@
 
     <div class="optionsWrapper" v-if="hasFirmwareFilters">
         <div
-                :class="[options.showStable ? 'active' : '', 'stable', 'btn','sbiFilter']"
-                @click="options.showStable = !options.showStable; filterVersions()"
-                v-if="hasFirmwares.stable"
+                :class="[options.showRelease ? 'active' : '', 'release', 'btn','sbiFilter']"
+                @click="options.showRelease = !options.showRelease; filterVersions()"
+                v-if="hasFirmwares.release"
         >
-            <i class="fas fa-circle stable"></i> Stable
+            <i class="fas fa-circle release"></i> Release
         </div>
         <div
             :class="[options.showBeta ? 'active' : '', 'beta', 'btn','sbiFilter']"
@@ -45,8 +45,8 @@
                 <div
                     v-for="filter in [
                         {
-                            label: 'Stable',
-                            option: 'showStable'
+                            label: 'Release',
+                            option: 'showRelease'
                         },
                         {
                             label: 'Beta',
@@ -156,7 +156,7 @@
         :key="fw"
         :fw="fw"
         :options="options"
-        :showDots="(options.showStable + options.showBeta + options.showInternal > 1) && hasFirmwareFilters"
+        :showDots="(options.showRelease + options.showBeta + options.showInternal > 1) && hasFirmwareFilters"
         :showSingleDownloads="versionArr.map(x => x.filteredDownloads || x.filteredOtas).filter(x => x.length).length > 0 || versionArr.map(fw => fw.preinstalled.some(r => fw.devices.includes(r))).filter(x => x).length > 0"
     />
 
@@ -207,7 +207,7 @@ export default {
                 showReleasedString: true,
                 showSigningStatus: true,
 
-                showStable: true,
+                showRelease: true,
                 showBeta: false,
                 showInternal: false,
 
@@ -239,7 +239,7 @@ export default {
             this.versionArr = this.fmVersionArr.filter(fw =>
                 (
                     (fw.internal ? this.options.showInternal : 
-                    ((fw.beta || fw.rc) ? this.options.showBeta : this.options.showStable)) &&
+                    ((fw.beta || fw.rc) ? this.options.showBeta : this.options.showRelease)) &&
                     fw.deviceFilterArr.some(r => this.options.filterDev.includes(r))
                 ) && (
                     [fw.osStr,fw.version,fw.build].join(' ').toLowerCase().includes(this.options.searchStr.toLowerCase())
@@ -249,7 +249,7 @@ export default {
             let query = this.$route.query
             
             let filterValues = [
-                ['stable',  this.options.showStable],
+                ['release',  this.options.showRelease],
                 ['beta',    this.options.showBeta],
                 ['internal',this.options.showInternal]
             ]
@@ -268,16 +268,16 @@ export default {
     },
     mounted() {
         let querySet = {
-            stableBetaInternalFilter: false,
+            releaseBetaInternalFilter: false,
             deviceFilter: false
         }
 
         let query = this.$route.query
         if (query && query.filter && query.filter.length) {
             query = query.filter.split(';')
-            if (query.some(r => ['stable','beta','internal'].includes(r))) {
-                querySet.stableBetaInternalFilter = true
-                this.options.showStable = query.includes('stable')
+            if (query.some(r => ['release','beta','internal'].includes(r))) {
+                querySet.releaseBetaInternalFilter = true
+                this.options.showRelease = query.includes('release')
                 this.options.showBeta = query.includes('beta')
                 this.options.showInternal = query.includes('internal')
             }
@@ -289,12 +289,12 @@ export default {
 
         if (!querySet.deviceFilter) this.options.filterDev = this.deviceFilter.map(x => x.value)
 
-        if (!querySet.stableBetaInternalFilter) {
+        if (!querySet.releaseBetaInternalFilter) {
             if (this.mainList) {
                 this.options.showBeta = true
                 this.options.showInternal = true
             } else if (!this.hasFirmwareFilters) {
-                this.options.showStable = this.hasFirmwares.stable
+                this.options.showRelease = this.hasFirmwares.release
                 this.options.showBeta = this.hasFirmwares.beta
                 this.options.showInternal = this.hasFirmwares.internal
             }
@@ -366,7 +366,7 @@ html.dark .btn {
             background: var(--c-border);
             font-weight: 600;
 
-            &.stable {
+            &.release {
                 background: #039be530 !important;
                 border-color: #039be501 !important;
             }
@@ -382,7 +382,7 @@ html.dark .btn {
             }
         }
 
-        &.stable {
+        &.release {
             background: #039be510 !important;
                 border-color: #039be501 !important;
             &:hover {
@@ -411,7 +411,7 @@ html.dark .btn {
             padding-right: 4px;
         }
 
-        .stable {
+        .release {
             color: #039be5;
         }
 
@@ -531,7 +531,7 @@ html.dark .btn {
             border: 0px;
         }
 
-        &.showStable {
+        &.showRelease {
             color: #039be5;
             opacity: 1;
         }

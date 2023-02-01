@@ -326,7 +326,7 @@ function getTitle(os) {
             ].filter(x => x).join(' — '),
             tags: [
                 {
-                    text: 'Stable',
+                    text: 'Release',
                     colour: '#039be5',
                     active: !(os.beta || os.rc || os.internal)
                 },
