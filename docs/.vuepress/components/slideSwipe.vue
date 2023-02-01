@@ -64,6 +64,7 @@ export default {
         color: var(--c-bg);
         background: #1bcbf0;
         background: linear-gradient(315deg, #1bcbf0 0%, #d96cd5 100%);
+        box-shadow: 0 2px 4px #00000010;
     }
 
     &:hover {
