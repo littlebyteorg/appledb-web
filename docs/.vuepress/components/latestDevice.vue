@@ -12,10 +12,10 @@
             <div class="block">
                 <div class="img">
                     <picture>
-                        <source :srcset="`https://img.appledb.dev/device@preview/${device.imgKey}/0.avif`" type="image/avif">
-                        <source :srcset="`https://img.appledb.dev/device@preview/${device.imgKey}/0.webp`" type="image/webp">
+                        <source :srcset="`https://img.appledb.dev/device@preview/${device.imgKey}/0${device.imgDark && isDarkMode ? '_dark' : ''}.avif`" type="image/avif">
+                        <source :srcset="`https://img.appledb.dev/device@preview/${device.imgKey}/0${device.imgDark && isDarkMode ? '_dark' : ''}.webp`" type="image/webp">
                         <img
-                            :src="`https://img.appledb.dev/device@preview/${device.imgKey}/0.png`"
+                            :src="`https://img.appledb.dev/device@preview/${device.imgKey}/0${device.imgDark && isDarkMode ? '_dark' : ''}.png`"
                             class="deviceImg"
                         >
                     </picture>
