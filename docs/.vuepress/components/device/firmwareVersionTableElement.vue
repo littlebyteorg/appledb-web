@@ -121,10 +121,12 @@
             <li v-if="fw.releasedStr" class="releasedInfo">Released{{ fw.releasedStr.includes(',') ? ' on' : ':'}} {{ fw.releasedStr }}</li>
             <li><router-link :to="fw.url">View more</router-link></li>
         </ul>
-        <h5>Devices</h5>
-        <br>
-        <grid :content="fwData.content" :sectionClass="fwData.class + ' blue' || ''"/>
-        <br>
+        <template v-if="fwData && fwData.content">
+            <h5>Devices</h5>
+            <br>
+            <grid :content="fwData.content" :sectionClass="fwData.class + ' blue' || ''"/>
+            <br>
+        </template>
         <template v-if="fw.jailbreakArr.length">
             <h5>Jailbreaks</h5>
             <ul>
