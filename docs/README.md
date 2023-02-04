@@ -11,7 +11,7 @@ actions:
     type: secondary
 heroImage: https://appledb.dev/assets/images/splash-23aaron-1.jpg
 heroImageDark: https://appledb.dev/assets/images/splash-23aaron-0.jpg
-heroFilter: 0.3
+heroFilter: 0.2
 ---
 
 <slideSwipe :sections="[
