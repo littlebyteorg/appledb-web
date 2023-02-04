@@ -390,7 +390,7 @@ for (const os of osArr) {
             {
                 title: 'Jailbreaks',
                 type: 'list',
-                class: 'noListDisc customListDisc',
+                class: 'smallTitle noListDisc customListDisc',
                 content: getJailbreakPageData(os)
             },
         ].filter(x => x.content.length > 0)

@@ -42,7 +42,7 @@
             <div class="flexWrapper flexColumn devInfo">
                 <ul class="devInfo infoList" style="position: absolute;">
                     <li v-for="i in infoObj[dev.name].slice(0,3)" :key="i">
-                        {{ i.replace('...','') }}
+                        <span v-html="i.replace('...','')"/>
                         <router-link v-if="i.includes('...')" :to="url">...</router-link>
                     </li>
                     <li><router-link :to="url">{{ viewDeviceStr }}</router-link></li>
@@ -117,7 +117,9 @@ export default {
 
                 o[dev.name] = []
                 for (const i of attr) if (i.value && i.value != '') {
-                    let ret = this.labels[i.type].format({ [i.type]: i.value.slice(0,3).join(', ') })
+                    let val = i.value
+                    if (['identifier','model','board'].includes(i.type)) val = val.map(x => `<code style="padding: 0 2px; background: none; font-size: 0.95em;">${x}</code>`)
+                    let ret = this.labels[i.type].format({ [i.type]: val.slice(0,3).join(', ') })
                     if (i.value.length > 3) ret += ', ...'
                     o[dev.name].push(ret)
                 }
@@ -128,7 +130,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 h3 {
     white-space: nowrap;
     overflow: hidden;

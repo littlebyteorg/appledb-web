@@ -190,7 +190,7 @@ module.exports = function(args) {
         ]
     ]
 
-    const propertyArr = ['name','identifier','key','released','soc','arch','model','board']
+    const propertyArr = ['name','identifier','key','released','soc','arch','model','board','type']
     const infoArr = devArr.map(x => {
         var o = {}
         for (const p of propertyArr) if (x[p]) o[p] = x[p]

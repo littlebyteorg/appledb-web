@@ -49,7 +49,7 @@ export default {
     font-size: 1.5rem;
     line-height: 1.25;
     color: var(--c-text-lightest);
-    transition: color 100ms ease-in-out, transform 100ms ease-in-out;
+    transition: transform 100ms ease-in-out;
 
     padding: .5em 1em;
     border-radius: 8px;
@@ -63,7 +63,7 @@ export default {
     &.active {
         color: var(--c-bg);
         background: #1bcbf0;
-        background: linear-gradient(315deg, #1bcbf0 0%, #d96cd5 100%);
+        background: linear-gradient(315deg, #1bcbf0, #d96cd5);
         box-shadow: 0 2px 4px #00000010;
     }
 
@@ -72,7 +72,7 @@ export default {
         transform: scale(1.03);
 
         &:not(.active) .text {
-            background: linear-gradient(315deg, #1bcbf0 0%, #d96cd5 100%);
+            background: linear-gradient(315deg, #1bcbf0, #d96cd5);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             border: solid 1px var(--c-border);

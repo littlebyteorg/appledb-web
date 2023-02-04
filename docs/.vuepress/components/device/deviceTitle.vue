@@ -9,7 +9,9 @@
         </picture></div>
         <div class="title" id="flexInfo" :class="wrapImg || imgUrlArr.length < 1 ? '' : 'titleWidth'">
             <h1>{{ title }}</h1>
-            <div>{{ grabInfo('released')[0] }}</div>
+            <div>{{ grabInfo('released')[0] }} — <router-link :to="`/device-selection/${grabInfo('type')[0].replace(/ /g,'-')}.html`">
+                    {{ grabInfo('type')[0] }}
+                </router-link></div>
         </div>
     </div>
 </template>
@@ -117,6 +119,10 @@ export default {
         &:last-of-type {
             margin-right: 2em;
         }
+    }
+
+    .devType {
+        margin-top: .5em;
     }
 }
 </style>
