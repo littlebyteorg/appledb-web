@@ -46,7 +46,8 @@
             'rightColumn',
             computedProperties.length ? '' : 'fillSpaceRightColumn'
         ]">
-            <div class="tabWrapper">
+            <extraInfo :tabArr="tabArr" :tabPropertyArr="tabPropertyArr" :tabData="tabData" :device="device"/>
+            <!--<div class="tabWrapper">
                 <div class="tabTitleWrapper" v-if="tabArr.length > 1">
                     <div
                         v-for="tab in tabArr"
@@ -85,41 +86,23 @@
                         </div>
                     </template>
                 </div></div></template>
-            </div>
+            </div>-->
         </div>
     </div>
 </template>
 
 <script>
-import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
-
 String.prototype.format = function(vars) {
    let temp = this
    for (let item in vars)
      temp = temp.replace("${" + item + "}", vars[item])
    return temp
 }
- 
-String.prototype.formatExtraInfoTitle = function() {
-    return this.replace(/_/g, ' ')
-}
-
-Array.prototype.formatExtraInfoText = function(property) {
-    let temp = this
-
-    if (property == 'Resolution') temp = temp.map(x => x.x + ' x ' + x.y)
-
-    return Array.from(new Set(temp.flat())).filter(x => x || x === false)/*.sort()*/.join(', ')
-    .replace(/true/g, 'Yes')
-    .replace(/false/g, 'No')
-}
 
 export default {
     data() {
         return {
-            isDarkMode: useDarkMode(),
             showAll: {},
-            activeTab: '',
             pageWidth: 0,
 
             properties: {
@@ -246,9 +229,6 @@ export default {
 
             if (info) return this.properties[property].string.format({ i : info })
         }
-    },
-    mounted() {
-        if (this.tabArr.length > 0) this.activeTab = this.tabArr[0]
     }
 }
 </script>
@@ -338,51 +318,6 @@ export default {
             }
         }
     }
-
-    .tabWrapper {
-        display: flex;
-        flex-flow: row wrap;
-        height: 100%;
-
-        .tabTitleWrapper {
-            margin: -.5em 0 0 -.5em;
-            border-right: 1px solid rgba(0,0,0,0.1);
-            .tabTitle {
-                padding: .5em 1em;
-                margin: 0 1em .3em 0;
-                border-radius: 3px;
-                transition: 100ms ease-in-out;
-                cursor: pointer;
-
-                &:hover, &.active {
-                    background: var(--c-text-lightest);
-                    color: var(--c-bg);
-                }
-            }
-        }
-
-        .tabContentWrapper {
-            margin-left: 1em;
-            width: calc(100% - 9.25em);
-
-            .deviceStringWrapper {
-                margin-bottom: .5em;
-            }
-
-            .deviceString {
-                color: var(--c-text-lightest);
-                font-weight: 500;
-
-                &::after {
-                    content: ' — ';
-                }
-            }
-        }
-    }
-}
-
-html.dark .info .tabWrapper .tabTitleWrapper {
-    border-color: rgba(255,255,255,0.2);
 }
 
 .rightColumn.fillSpaceRightColumn {
