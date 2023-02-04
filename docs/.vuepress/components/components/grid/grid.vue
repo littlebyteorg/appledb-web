@@ -1,11 +1,14 @@
 <template>
-    <div class="gridWrapper" :style="{'grid-template-columns': content.length == 1 ? '100%' : ''}">
+    <div class="gridWrapper" :style="{
+            'grid-template-columns':    content.length == 1 ? '100%' : '',
+            'width':                    content.length == 1 ? '100%' : '',
+        }">
         <template
             v-for="i in content"
             :key="i.key"
         >
-            <a v-if="i.link" :href="i.link"><gridElement class="gridElement" :content="i"/></a>
-            <gridElement v-else :content="i"/>
+            <a v-if="i.link" :href="i.link"><gridElement :sectionClass="sectionClass" class="gridElement" :content="i"/></a>
+            <gridElement v-else :sectionClass="sectionClass" :content="i"/>
         </template>
     </div>
 </template>
@@ -13,7 +16,8 @@
 <script>
 export default {
     props: {
-        content: Array
+        content: Array,
+        sectionClass: String
     }
 }
 </script>
@@ -24,6 +28,7 @@ export default {
     grid-template-columns: 50% 50%;
     gap: .5em 1em;
     transition: 75ms background ease-in-out;
+    width: calc(100% - 1em);
 
     a {
         color: var(--c-text);
@@ -38,6 +43,7 @@ export default {
 @media screen and (max-width: 575px) {
     .gridWrapper {
         grid-template-columns: 100%;
+        width: 100%;
     }
 }
 </style>

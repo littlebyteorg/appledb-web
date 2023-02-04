@@ -2,8 +2,7 @@
     <div class="gridElement"
         :style="{
             'grid-template-columns': imageUrl ? '4em calc(100% - 4em)' : '100%'
-        }
-    ">
+        }" :class="sectionClass">
         <div class="img" v-if="imageUrl">
             <template v-if="content.imgFlags && content.imgFlags.internal">
                 <source :srcset="imageUrl + '.avif'" type="image/avif">
@@ -36,7 +35,8 @@ import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 
 export default {
     props: {
-        content: Object
+        content: Object,
+        sectionClass: String
     },
     data() {
         return {
@@ -68,10 +68,14 @@ export default {
     border-radius: 8px;
     display: grid;
     height: calc(100% - 2.5em);
-    transition: 75ms background ease-in-out;
+    transition: 75ms background ease-in-out, 75ms border-color ease-in-out;
 
     &:hover {
         background: var(--c-border);
+
+        &.blue {
+            background: var(--c-tip-bg-hover);
+        }
     }
 
     .title {

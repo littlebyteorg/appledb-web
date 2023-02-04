@@ -121,6 +121,10 @@
             <li v-if="fw.releasedStr" class="releasedInfo">Released{{ fw.releasedStr.includes(',') ? ' on' : ':'}} {{ fw.releasedStr }}</li>
             <li><router-link :to="fw.url">View more</router-link></li>
         </ul>
+        <h5>Devices</h5>
+        <br>
+        <grid :content="fwData.content" :sectionClass="fwData.class + ' blue' || ''"/>
+        <br>
         <template v-if="fw.jailbreakArr.length">
             <h5>Jailbreaks</h5>
             <ul>
@@ -144,6 +148,7 @@ export default {
             expanded: false,
             showDownloadDropdown: false,
             signed: 'unknown',
+            fwData: [],
             tags: []
         }
     },
@@ -153,6 +158,10 @@ export default {
         
         this.tags = [
         ].filter(x => x.val)
+    },
+    async created() {
+        let data = await this.getFwData()
+        this.fwData = data.sections.find(x => x.title == 'Devices')
     },
     methods: {
         async getSigningStatus(buildid, identifier, osStr, beta) {
@@ -211,7 +220,17 @@ export default {
 
             this.expanded = !this.expanded
             this.showDownloadDropdown = !this.showDownloadDropdown
-        } 
+        },
+        getFwData() {
+            let p = `/pageData/firmware/${[this.fw.osStr,this.fw.uniqueBuild].join(';')}.json`.replace(/\.html/g,'')
+            return fetch(p, {
+                method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            )
+            .then((response) => response.text())
+            .then((response) => JSON.parse(response));
+        }
     }
 }
 </script>

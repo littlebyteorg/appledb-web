@@ -156,6 +156,7 @@ module.exports = function(args) {
             osStr: i.osStr,
             version: i.version,
             build: i.build,
+            uniqueBuild: i.uniqueBuild,
             duplicateVersion: duplicateVersionArr.includes([i.osStr,i.version].join(' ')),
             url: `/firmware/${i.osStr.replace(/ /g,'-')}/${i.uniqueBuild}`,
             released: i.released,

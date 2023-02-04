@@ -74,7 +74,7 @@ export default {
     },
     props: {
         tabArr: Array,
-        tabPropertyArr: Array,
+        tabPropertyArr: Object,
         tabData: Object,
         device: Array
     },
