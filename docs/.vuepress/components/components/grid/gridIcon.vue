@@ -1,5 +1,5 @@
 <template>
-    <a v-if="icon.link" href="https://google.com"><i :class="icon.class"/></a>
+    <a v-if="icon.link" :href="icon.link"><i :class="icon.class"/></a>
     <i v-else :class="icon.class"/>
 </template>
 
