@@ -14,24 +14,24 @@
                         fw.version
                     ].join(' ') }}
                 </span>
-                <template v-if="this.fw.duplicateVersion || this.options.showBuildNumber">
-                        <i
-                            style="margin-inline: 8px; font-size: .3em"
-                            class="fas fa-circle">
-                        </i>
-                        <code
-                            style="
-                                padding-inline: 0;
-                                background: none;
-                                font-size: 0.95em;
-                            "
-                        >
-                            {{ this.fw.duplicateVersion || this.options.showBuildNumber ? this.fw.build : false }}
-                        </code>
-                    </template>
-                    <template v-if="this.fw.preinstalled.some(r => this.fw.devices.includes(r)) && (this.fw.filteredDownloads.length || this.fw.filteredOtas.length)">
-                        <i class="fas fa-box-open" style="padding-left: 8px;"/>
-                    </template>
+                <template v-if="expanded || this.fw.duplicateVersion || this.options.showBuildNumber">
+                    <i
+                        style="margin-inline: 8px; font-size: .3em"
+                        class="fas fa-circle">
+                    </i>
+                    <code
+                        style="
+                            padding-inline: 0;
+                            background: none;
+                            font-size: 0.95em;
+                        "
+                    >
+                        {{ this.fw.build }}
+                    </code>
+                </template>
+                <template v-if="this.fw.preinstalled.some(r => this.fw.devices.includes(r)) && (this.fw.filteredDownloads.length || this.fw.filteredOtas.length)">
+                    <i class="fas fa-box-open" style="padding-left: 8px;"/>
+                </template>
                 <div style="padding-inline: .25em; display: inline-block;"></div>
                 <div v-if="showDots" :class="[
                     fw.internal ? 'internal' : (
@@ -114,25 +114,31 @@
             </div>
         </div>
     </div>
-    <div v-if="expanded" class="custom-container expandedView">
-        <h5 v-if="fw.build && fw.releasedStr">Firmware</h5>
-        <ul style="padding-left: 0; list-style-type: none;">
-            <li v-if="fw.build">Build: {{ fw.build }}</li>
-            <li v-if="fw.releasedStr" class="releasedInfo">Released{{ fw.releasedStr.includes(',') ? ' on' : ':'}} {{ fw.releasedStr }}</li>
-            <li><router-link :to="fw.url">View more</router-link></li>
-        </ul>
-        <template v-if="fwData && fwData.content">
+    <div v-if="expanded" class="expandedView">
+        <div class="custom-container releasedInfo" v-if="fw.releasedStr">
+            <div style="display: flex; flex-flow: row wrap; align-content: space-between;">
+                <ul style="padding-left: 0; list-style-type: none;">
+                    <li class="releasedInfo">Released{{ fw.releasedStr.includes(',') ? ' on' : ':'}} {{ fw.releasedStr }}</li>
+                </ul>
+                <p :class="[
+                    fw.releasedStr ? 'alignRightDate' : ''
+                ]"><router-link :to="fw.url">View more <i style="font-size: 0.8em; padding-left: 2px;" class="fas fa-arrow-right"></i></router-link></p>
+            </div>
+        </div>
+        <div v-if="fwData && fwData.content" class="custom-container">
             <h5>Devices</h5>
-            <br>
             <grid :content="fwData.content" :sectionClass="fwData.class + ' blue' || ''"/>
             <br>
-        </template>
-        <template v-if="fw.jailbreakArr.length">
+        </div>
+        <div v-if="fw.jailbreakArr.length" class="custom-container">
             <h5>Jailbreaks</h5>
             <ul>
                 <li v-for="jb in fw.jailbreakArr" :key="jb"><router-link :to="encodeURI(`/jailbreak/${jb.replace(/ /g, '-')}.html`)">{{ jb }}</router-link></li>
             </ul>
-        </template>
+        </div>
+        <div :class="['custom-container', fw.releasedStr ? 'notReleasedInfo' : '']">
+            <p><router-link :to="fw.url">View more <i style="font-size: 0.8em; padding-left: 2px;" class="fas fa-arrow-right"></i></router-link></p>
+        </div>
     </div>
     <div v-if="!expanded" style="border-bottom: 1px solid var(--c-border); width: calc(100% - 24px); margin: auto; margin-block: -1px;"/>
 </template>
@@ -335,6 +341,10 @@ h5 {
     display: none;
 }
 
+.notReleasedInfo {
+    display: block;
+}
+
 @media screen and (max-width: 575px) {
     .releasedStr {
         display: none;
@@ -347,6 +357,22 @@ h5 {
     .releasedInfo {
         display: block;
     }
+
+    .notReleasedInfo {
+        display: none;
+    }
+
+    .alignRightDate {
+        margin-left: auto !important;
+    }
+}
+
+.alignRight {
+    margin-left: auto;
+}
+
+.alignRightDate {
+    margin-left: 0;
 }
 
 .downloadDropdown {
@@ -390,8 +416,17 @@ h5 {
 }
 
 .expandedView {
+    margin-top: .5em;
+
     h5 {
         padding-bottom: 0;
+        display: block;
+
+        &::after {
+            background: none;
+            margin-left: 0;
+            height: 0;
+        }
     }
 }
 
