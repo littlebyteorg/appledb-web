@@ -1,5 +1,4 @@
 const deviceObj = require('../../../../../grabData/deviceList')
-const deviceList = require('../../../../../grabData/deviceGroups')
 
 function sortDate(a,b) {
   const r = [a,b].map(x => new Date(x))
@@ -8,7 +7,7 @@ function sortDate(a,b) {
   return 0
 }
 
-module.exports = deviceList
+const deviceList = require('../../../../../grabData/deviceGroups')
 .filter(x => x.released)
 .filter(x => x.type != 'Software')
 .sort((a,b) => {
@@ -19,7 +18,26 @@ module.exports = deviceList
   
   return sortDate(r[0], r[1])
 })
-.slice(0,10)
+
+let count = 0
+let retArr = []
+
+for (;;) {
+  if (count > 19) break
+  if (count > 9) {
+    if (
+      deviceList[count-1].type != deviceList[count].type && 
+      deviceList[count-1].released != deviceList[count].released
+    ) break
+  }
+
+
+  retArr.push(deviceList[count])
+
+  count++
+}
+
+module.exports = retArr
 .map(x => {
   let deviceArr = x.devices.map(x => deviceObj[x])
 
