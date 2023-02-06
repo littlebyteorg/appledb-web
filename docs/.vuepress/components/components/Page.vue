@@ -1,7 +1,7 @@
 <template>
   <main class="page">
     <div class="theme-default-content">
-      <pageTitle :content="titleContent"/>
+      <pageTitle v-if="!hideTitle" :content="titleContent"/>
       <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
       <template v-for="section in sections" :key="section.title">
         <template v-if="section.title">
@@ -9,6 +9,9 @@
           <h2 v-else>{{ section.title }}</h2>
         </template>
         <vueSection :section="section"/>
+      </template>
+      <template v-if="frontmatter">
+        <device :frontmatter="frontmatter"/>
       </template>
       <div v-if="adUnits && adUnits.length > 1" :id="`waldo-tag-${adUnits[1]}`"></div>
     </div>
@@ -23,17 +26,27 @@ export default {
     return {
       titleContent: {},
       sections: [],
+      hideTitle: false,
       adUnits: useThemeLocaleData().value.adUnits,
     }
   },
   async created() {
     let data = await this.getPageData()
-    this.titleContent = data.title
-    this.sections = data.sections
+    if (data.frontmatter) {
+      this.titleContent = {
+        header: data.frontmatter.title
+      }
+      this.sections = []
+      this.frontmatter = data.frontmatter
+      if (this.frontmatter.hideTitle) this.hideTitle = this.frontmatter.hideTitle
+    } else {
+      this.titleContent = data.title
+      this.sections = data.sections
+    }
     document.title = this.titleContent.header + ' | AppleDB'
   },
   mounted() {
-    document.title = this.titleContent.header // Yes this needs to be done twice idk why
+    document.title = this.titleContent.header + ' | AppleDB' // Yes this needs to be done twice idk why
   },
   methods: {
     getPageData() {

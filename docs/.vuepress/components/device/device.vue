@@ -24,12 +24,15 @@
 import { usePageFrontmatter } from '@vuepress/client'
 
 export default {
+    props: {
+        frontmatter: Object
+    },
     data() {
         return {
             devOptions: {
                 show: false
             },
-            fm: usePageFrontmatter(),
+            fm: this.frontmatter || usePageFrontmatter(),
         }
     },
     methods: {

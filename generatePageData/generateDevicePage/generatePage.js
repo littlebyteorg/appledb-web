@@ -1,6 +1,4 @@
 const fs = require('fs')
-const { release } = require('os')
-const { sort } = require('../grabData/device')
 const devArr = require('../grabData/device')
 
 function getInfoObj(devKeyArr) {
