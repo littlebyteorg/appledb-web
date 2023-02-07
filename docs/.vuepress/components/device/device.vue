@@ -1,6 +1,7 @@
 <template>
     <template v-if="!fm.mainList">
         <deviceTitle :device="fm.device" :title="fm.title" :img="fm.img"/>
+        <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
         <deviceInfo :device="fm.device" :extraInfo="fm.extraInfo"/>
         <groupedOrRelatedDeviceWrapper v-if="!fm.hideChildren" :device="fm.device" :img="fm.img"/>
     </template>
@@ -17,11 +18,14 @@
         :devOptions="devOptions"
     />
 
+    <div v-if="adUnits && adUnits.length > 1" :id="`waldo-tag-${adUnits[1]}`"></div>
+
     <p v-on:click="devOptions.show = true">AppleDB is not affiliated with Apple Inc.</p>
 </template>
 
 <script>
 import { usePageFrontmatter } from '@vuepress/client'
+import { useThemeLocaleData } from '@vuepress/theme-default/lib/client/composables'
 
 export default {
     props: {
@@ -33,6 +37,7 @@ export default {
                 show: false
             },
             fm: this.frontmatter || usePageFrontmatter(),
+            adUnits: useThemeLocaleData().value.adUnits
         }
     },
     methods: {

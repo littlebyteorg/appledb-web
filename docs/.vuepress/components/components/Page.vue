@@ -2,7 +2,7 @@
   <main class="page">
     <div class="theme-default-content">
       <pageTitle v-if="!hideTitle" :content="titleContent"/>
-      <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
+      <div v-if="!noAds && adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
       <template v-for="section in sections" :key="section.title">
         <template v-if="section.title">
           <h5 v-if="section.class.includes('smallTitle')">{{ section.title }}</h5>
@@ -13,7 +13,7 @@
       <template v-if="frontmatter">
         <device :frontmatter="frontmatter"/>
       </template>
-      <div v-if="adUnits && adUnits.length > 1" :id="`waldo-tag-${adUnits[1]}`"></div>
+      <div v-if="!noAds & adUnits && adUnits.length > 1" :id="`waldo-tag-${adUnits[1]}`"></div>
     </div>
   </main>
 </template>
@@ -27,11 +27,13 @@ export default {
       titleContent: {},
       sections: [],
       hideTitle: false,
+      noAds: false,
       adUnits: useThemeLocaleData().value.adUnits,
     }
   },
   async created() {
     let data = await this.getPageData()
+    if (data.noAds) this.noAds = data.noAds
     if (data.frontmatter) {
       this.titleContent = {
         header: data.frontmatter.title

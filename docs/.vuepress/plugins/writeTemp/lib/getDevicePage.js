@@ -258,6 +258,7 @@ module.exports = function(args) {
 
     return {
         path: devPath,
+        noAds: true,
         frontmatter: {
             title: name,
             hideTitle: !mainList,
