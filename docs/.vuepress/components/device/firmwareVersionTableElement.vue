@@ -14,7 +14,7 @@
                         fw.version
                     ].join(' ') }}
                 </span>
-                <template v-if="expanded || this.fw.duplicateVersion || this.options.showBuildNumber">
+                <template v-if="fw.build && (expanded || this.fw.duplicateVersion || this.options.showBuildNumber)">
                     <i
                         style="margin-inline: 8px; font-size: .3em"
                         class="fas fa-circle">
