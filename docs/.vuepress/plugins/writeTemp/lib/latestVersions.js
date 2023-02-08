@@ -63,6 +63,7 @@ const latestVersions = latestVersionArr
   const releasedArr = x.released.split('-')
   const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
   x.released =  new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustedDate)
+  x.releasedVal = adjustedDate.valueOf()
 
   return x
 })

@@ -1,5 +1,5 @@
 <template>
-    <div v-for="osStr in osStrArr.filter(x => latestVersion.filter(y => y.osStr == x).length)" :key="osStr" class="fwBlock">
+    <div v-for="osStr in [...new Set(latestVersion.map(x => x.osStr))].filter(x => latestVersion.filter(y => y.osStr == x).length)" :key="osStr" class="fwBlock">
         <div class="versionBlockWrapper" v-for="version in latestVersion.filter(x => x.osStr == osStr)" :key="version">
             <router-link :to="`/firmware/${version.osStr.replace(/ /g,'-')}/${version.uniqueBuild}`">
                 <div class="versionBlock">
@@ -134,15 +134,11 @@ const osStrOrder = [
     'Bluetooth Headset Firmware'
 ]
 
-const getOsStrArr = [...new Set(latestVersion.map(x => x.osStr))].sort()
-const osStrArr = osStrOrder.filter(x => getOsStrArr.includes(x)).concat(getOsStrArr.filter(x => !osStrOrder.includes(x)))
-
 export default {
     data() {
         return {
             isDarkMode: useDarkMode(),
-            properties: properties,
-            osStrArr: osStrArr
+            properties: properties
         }
     },
     methods: {
@@ -158,8 +154,9 @@ export default {
                 .includes(x.osStr)
             )
             .sort((a,b) => {
-                const dateRel = new Date(b.released) - new Date(a.released)
-                if (dateRel != 0) return dateRel
+                const dateRel = [a,b].map(x => new Date(x.released))
+                if (dateRel[0] < dateRel[1]) return 1
+                if (dateRel[0] > dateRel[1]) return -1
 
                 if (a.osStr.toLowerCase() < b.osStr.toLowerCase()) return -1
                 if (a.osStr.toLowerCase() > b.osStr.toLowerCase()) return 1
