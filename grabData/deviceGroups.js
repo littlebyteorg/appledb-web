@@ -45,7 +45,8 @@ const nowPutThemInGroups = ungroupedDevices.map(x => {
   return {
     name: x.name,
     type: x.type,
-    devices: [x.key]
+    devices: [x.key],
+    groupKey: x.key
   }
 })
 
