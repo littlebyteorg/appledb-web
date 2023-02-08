@@ -1,4 +1,5 @@
 <template>
+    <div v-if="fm.mainList && adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
     <template v-if="!fm.mainList">
         <deviceTitle :device="fm.device" :title="fm.title" :img="fm.img"/>
         <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
