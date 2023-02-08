@@ -12,7 +12,9 @@
         </picture></div>
         <div class="info">
             <div class="title" style="color: var(--c-text);">{{ device.name }}</div>
-            <div class="text" style="color: var(--c-text);">{{ getDate(device.released) }}</div>
+            <div class="text" style="color: var(--c-text);">
+                {{ device.released ? getDate(device.released) : 'Unknown' }}
+            </div>
         </div>
     </div></router-link>
 </template>
