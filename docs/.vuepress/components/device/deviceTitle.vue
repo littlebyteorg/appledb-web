@@ -92,7 +92,7 @@ export default {
 .header {
     display: flex;
     flex-wrap: wrap;
-    margin: 2em 0em;
+    margin-block: 2em 1em;
 
     .titleWidth {
         max-width: 60%;

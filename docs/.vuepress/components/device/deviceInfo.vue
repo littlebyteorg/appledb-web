@@ -241,7 +241,7 @@ export default {
 .info {
     display: flex;
     flex-flow: row wrap;
-    margin-bottom: 1em;
+    margin-block: 2em 1em;
 
     .leftColumn {
         width: calc(38.2% - 1em);
