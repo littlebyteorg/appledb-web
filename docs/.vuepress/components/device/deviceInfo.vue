@@ -211,7 +211,7 @@ export default {
                     const adjustedDate = new Date(currentDate + dateOffset)
 
                     const releasedArr = x.split('-')
-                    const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+                    const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
                     const date = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustedDate)
                     
                     return date

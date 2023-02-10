@@ -38,7 +38,7 @@ function getInfoObj(devKeyArr) {
 
 		function formatDate(date) {
 			const releasedArr = date.split('-')
-			const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+			const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
 			return new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustDate(date))
 		}
 

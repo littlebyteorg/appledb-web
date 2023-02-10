@@ -111,7 +111,7 @@ function getJbDevArr(jailbreakArr, devArr, uniqueBuild) {
 function getReleaseDate(released) {
     if (!released) return -1
     const releasedArr = released.split('-')
-    const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+    const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
     const ret = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(released))
     return ret
 }

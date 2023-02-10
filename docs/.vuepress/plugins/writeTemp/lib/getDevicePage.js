@@ -135,7 +135,7 @@ module.exports = function(args) {
         if (!i.released) released = undefined
         else {
             const releasedArr = i.released.split('-')
-            const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+            const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
             released = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(i.released))
         }
 

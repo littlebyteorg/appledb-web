@@ -18,7 +18,7 @@ function getReleaseDate(released) {
     const adjustedDate = new Date(currentDate + dateOffset)
 
     const releasedArr = released.split('-')
-    const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+    const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
     return new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustedDate)
 }
 

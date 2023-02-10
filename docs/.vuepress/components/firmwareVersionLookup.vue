@@ -77,7 +77,7 @@ export default {
       let rel = false
       if (versionObject.released) {
         const releasedArr = versionObject.released.split('-')
-        const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+        const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
         const releaseDate = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(new Date(versionObject.released))
         rel = this.releasedStr.format({ released: releaseDate })
       }

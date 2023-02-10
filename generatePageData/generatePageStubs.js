@@ -35,7 +35,7 @@ function convertDate(date) {
     let dateStyle = { dateStyle: 'medium'}
     if (date.toString().includes('-')) {
         const dateArr = date.split('-')
-        const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+        const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
         dateStyle = dateStyleArr[dateArr.length-1]
     }
     return new Intl.DateTimeFormat('en-US', dateStyle).format(new Date(date))

@@ -61,7 +61,7 @@ const latestVersions = latestVersionArr
   const adjustedDate = new Date(currentDate + dateOffset)
 
   const releasedArr = x.released.split('-')
-  const dateStyleArr = [{ year: 'numeric'}, { dateStyle: 'medium'}, { dateStyle: 'medium'}]
+  const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
   x.released =  new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustedDate)
   x.releasedVal = adjustedDate.valueOf()
 
