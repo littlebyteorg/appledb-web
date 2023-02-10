@@ -4,6 +4,7 @@ const osArr = require('./grabData/firmware')
 const deviceArr = require('./grabData/device')
 const deviceGroupArr = require('./grabData/deviceGroup')
 const deviceGroup = require('./grabData/deviceGroup')
+const { release } = require('os')
 
 function mkdirSync(dir) { if (!fs.existsSync(dir)) { fs.mkdirSync(dir) } }
 
@@ -38,11 +39,26 @@ function convertDate(date) {
         const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
         dateStyle = dateStyleArr[dateArr.length-1]
     }
-    return new Intl.DateTimeFormat('en-US', dateStyle).format(new Date(date))
+    return {
+        string: new Intl.DateTimeFormat('en-US', dateStyle).format(new Date(date)),
+        future: new Date() < new Date(date)
+    }
 }
 
 for (const dev of deviceArr.concat(deviceGroupArr)) {
     let parsedPage = parse(page)
+    
+    let showImg = false
+    let imgKey = dev.key
+    if (dev.imgCount > 0) showImg = true
+    if (dev.devices) {
+        let iterateDevice
+        for (iterateDevice of dev.devices) if (deviceArr.find(x => x.key == iterateDevice).imgCount > 0) {
+            showImg = true
+            imgKey = iterateDevice
+            break
+        }
+    }
 
     let released
     if (!dev.released) released = undefined
@@ -56,11 +72,22 @@ for (const dev of deviceArr.concat(deviceGroupArr)) {
         else released = convertDate(dev.released)
     }
 
-    parsedPage.querySelectorAll('meta').find(x => x.rawAttrs.includes('name="description"')).rawAttrs = `name="description" content="Information lookup for ${dev.name}."`
+    let description = `Information lookup for ${dev.name}.`
+    if (released) {
+        let suffix = 'ed'
+        if (released.future) suffix = 'ing'
+        description = `Releas${suffix} on ${released.string}`
+    }
+
+    parsedPage.querySelectorAll('meta').find(x => x.rawAttrs.includes('name="description"')).rawAttrs = `name="description" content="${description}"`
     parsedPage.querySelector('title').innerHTML = dev.name
     parsedPage.querySelector('h1').innerHTML = dev.name
     parsedPage.querySelector('blockquote').innerHTML = 'Retrieving data...'
-
+    
+    if (showImg) {
+        parsedPage.querySelectorAll('meta').find(x => x.rawAttrs.includes('property="og:image"')).rawAttrs = `property="og:image" content="https://img.appledb.dev/device@preview/${imgKey}/0.png"`
+    }
+    
     fs.writeFile(`./docs/.vuepress/dist/device${dev.groupKey ? '' : '/identifier'}/${(dev.key || dev.groupKey).replace(/ /g,'-').replace(/\//g,'-')}.html`, parsedPage.toString(), (err) => {
         if (err) console.log(err)
     })
