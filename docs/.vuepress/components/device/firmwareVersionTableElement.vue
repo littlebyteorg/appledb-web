@@ -168,8 +168,8 @@ export default {
         ].filter(x => x.val)
     },
     async created() {
-        let data = await this.getFwData()
-        this.fwData = data.sections.find(x => x.title == 'Devices')
+        //let data = await this.getFwData()
+        //this.fwData = data.sections.find(x => x.title == 'Devices')
     },
     methods: {
         async getSigningStatus(buildid, identifier, osStr, beta) {
