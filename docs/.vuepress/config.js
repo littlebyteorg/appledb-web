@@ -1,5 +1,6 @@
 const { path } = require('@vuepress/utils')
 const { registerComponentsPlugin } = require('@vuepress/plugin-register-components')
+const { mediumZoomPlugin } = require('@vuepress/plugin-medium-zoom')
 const { searchPlugin } = require('@vuepress/plugin-search')
 const { localTheme } = require('../../emiyl-theme')
 
@@ -65,6 +66,9 @@ module.exports = {
         './components/components/propertyBox',
         './components/components/grid'
       ].map(x => registerComponentsPlugin({ componentsDir: path.resolve(__dirname, x), })),
+      mediumZoomPlugin({
+        selector: ':not(a img)'
+      }),
       require('./plugins/deviceListPages/lib'),
       require('./plugins/devicePages/lib'),
       //require('./plugins/firmwarePages/lib'),
