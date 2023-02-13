@@ -38,6 +38,10 @@ module.exports = {
           link: 'https://ios.cfw.guide/'
         },
         {
+          text: '<i class="fab fa-discord icon"></i>',
+          link: 'https://discord.gg/rtfNDxnJfB'
+        },
+        {
           text: '<i class="fab fa-twitter icon"></i>',
           link: 'https://twitter.com/AppleDBdev'
         }
