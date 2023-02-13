@@ -158,7 +158,7 @@ module.exports = function(args) {
             build: i.build,
             uniqueBuild: i.uniqueBuild,
             duplicateVersion: duplicateVersionArr.includes([i.osStr,i.version].join(' ')),
-            url: `/firmware/${i.osStr.replace(/ /g,'-')}/${i.uniqueBuild}`,
+            url: `/firmware/${i.osStr.replace(/ /g,'-')}/${i.uniqueBuild}.html`,
             released: i.released,
             preinstalled: Array.isArray(i.preinstalled) ? i.preinstalled : i.preinstalled ? devIdFwArr : [],
             beta: i.beta,
