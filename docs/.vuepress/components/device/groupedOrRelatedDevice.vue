@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="device.url"><div
+    <a :href="device.url"><div
         class="gridWrapper"
         :style="{
             'grid-template-columns': device.imgCount > 0 ? '3em calc(100% - 3em)' : '100%'
@@ -16,7 +16,7 @@
                 {{ device.released ? getDate(device.released) : 'Unknown' }}
             </div>
         </div>
-    </div></router-link>
+    </div></a>
 </template>
 
 <script>
