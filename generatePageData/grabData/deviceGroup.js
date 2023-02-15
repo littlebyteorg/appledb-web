@@ -104,7 +104,10 @@ module.exports = [
   ...deviceGroupsWithReleaseDate,
   ...deviceGroupsWithoutReleaseDate
 ].map(x => {
-  if (!x.groupKey) x.groupKey = x.name
+  if (!x.groupKey) {
+    if (x.devices.length == 1) x.groupKey = x.devices[0]
+    else x.groupKey = x.name
+  }
   x.hash = hash(x)
   return x
 })

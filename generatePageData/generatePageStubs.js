@@ -3,8 +3,6 @@ const { parse } = require('node-html-parser')
 const osArr = require('./grabData/firmware')
 const deviceArr = require('./grabData/device')
 const deviceGroupArr = require('./grabData/deviceGroup')
-const deviceGroup = require('./grabData/deviceGroup')
-const { release } = require('os')
 
 function mkdirSync(dir) { if (!fs.existsSync(dir)) { fs.mkdirSync(dir) } }
 
@@ -87,6 +85,8 @@ for (const dev of deviceArr.concat(deviceGroupArr)) {
     if (showImg) {
         parsedPage.querySelectorAll('meta').find(x => x.rawAttrs.includes('property="og:image"')).rawAttrs = `property="og:image" content="https://img.appledb.dev/device@preview/${imgKey}/0.png"`
     }
+
+    if (dev.groupKey && dev.groupKey.includes('AudioAccessory')) console.log(dev.groupKey)
     
     fs.writeFile(`./docs/.vuepress/dist/device${dev.groupKey ? '' : '/identifier'}/${(dev.key || dev.groupKey).replace(/ /g,'-').replace(/\//g,'-')}.html`, parsedPage.toString(), (err) => {
         if (err) console.log(err)
