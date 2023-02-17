@@ -55,6 +55,7 @@ export default {
         'model',
         'name',
         'identifier',
+        'key',
         'board',
         'soc'
       ],
