@@ -120,9 +120,6 @@
                 <ul style="padding-left: 0; list-style-type: none;">
                     <li class="releasedInfo">Released{{ fw.releasedStr.includes(',') ? ' on' : ':'}} {{ fw.releasedStr }}</li>
                 </ul>
-                <p :class="[
-                    fw.releasedStr ? 'alignRightDate' : ''
-                ]"><router-link :to="fw.url">View more <i style="font-size: 0.8em; padding-left: 2px;" class="fas fa-arrow-right"></i></router-link></p>
             </div>
         </div>
         <div v-if="fwData && fwData.content" class="custom-container">
@@ -136,8 +133,8 @@
                 <li v-for="jb in fw.jailbreakArr" :key="jb"><router-link :to="encodeURI(`/jailbreak/${jb.replace(/ /g, '-')}.html`)">{{ jb }}</router-link></li>
             </ul>
         </div>
-        <div :class="['custom-container', fw.releasedStr ? 'notReleasedInfo' : '']">
-            <p><router-link :to="fw.url">View more <i style="font-size: 0.8em; padding-left: 2px;" class="fas fa-arrow-right"></i></router-link></p>
+        <div class="custom-container">
+            <p><a :href="fw.url">View more <i style="font-size: 0.8em; padding-left: 2px;" class="fas fa-arrow-right"></i></a></p>
         </div>
     </div>
     <div v-if="!expanded" style="border-bottom: 1px solid var(--c-border); width: calc(100% - 24px); margin: auto; margin-block: -1px;"/>
