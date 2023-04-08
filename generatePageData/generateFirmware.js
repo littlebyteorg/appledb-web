@@ -45,22 +45,27 @@ function getJbDevArr(osJbArr, os) {
     return retArr
 }
 
+const downloadTextObj = {
+    "ipsw": "IPSW",
+    "installassistant": "InstallAssistant",
+    "ota": "OTA"
+}
+
+function getUrl(links) {
+    if (!links) return null
+    return links.sort((a,b) => {
+        if (a.active > b.active) return -1
+        if (a.active < b.active) return 1
+        if (a.preferred > b.preferred) return -1
+        if (a.preferred < b.preferred) return 1
+        return 0
+    })[0].url
+}
 
 function getDeviceList(os) {
     const osDevMap = os.deviceMap
     
     let groupArr = []
-
-    function getUrl(links) {
-        if (!links) return null
-        return links.sort((a,b) => {
-            if (a.active > b.active) return -1
-            if (a.active < b.active) return 1
-            if (a.preferred > b.preferred) return -1
-            if (a.preferred < b.preferred) return 1
-            return 0
-        })[0].url
-    }
 
     function getDownloadLink(device) {
         if (!os.sources) return null
@@ -70,12 +75,6 @@ function getDeviceList(os) {
         let url
         if (!source.links) url = null
         else url = getUrl(source.links)
-
-        let downloadTextObj = {
-            "ipsw": "IPSW",
-            "installassistant": "InstallAssistant",
-            "ota": "OTA"
-        }
 
         return {
             type: source.type,
@@ -382,23 +381,21 @@ for (const os of osArr) {
         singleDownload = [deviceGrid[0].singleDownload]
         singleDownload[0].text = `<i class="${singleDownload[0].icon}"></i> ${singleDownload[0].text}`
     }
-    /*else if (
+
+    if (
         os.osStr == 'macOS' &&
-        deviceGrid.filter(x => x.links.length).length &&
-        deviceGrid.filter(x => [...new Set(x.links.map(y => y.type))].length == 2).length &&
-        deviceGrid.filter(x => x.links.map(y => y.type).every(z => ['ipsw','installassistant'].includes(z))).length
-    ) {
-        singleDownload = ['ipsw','installassistant'].map(i => {
-            let relevantDeviceGrid = deviceGrid.filter(x => x.links.filter(y => y.type == i).length)[0]
-            let ret = relevantDeviceGrid.links.filter(x => x.type == i)[0]
-            ret.text = `<i class="${ret.icon}"></i> ${ret.text}`
-            return ret
-        })
-        deviceGrid = deviceGrid.map(x => {
-            delete x.links
-            return x
-        })
-    }*/
+        os.sources && 
+        os.sources.length == 2 &&
+        os.sources.map(x => x.type).every(x => ['ipsw','installassistant'].includes(x))
+    ) singleDownload = ['ipsw','installassistant'].map(x => {
+        return {
+            text: `<i class="fas fa-download"></i> Download ${downloadTextObj[x]}`,
+            key: x,
+            link: getUrl(os.sources.find(y => y.type == x).links),
+            icon: 'fas fa-download',
+            type: x
+        }
+    })
 
     let obj = {
         title: getTitle(os),
