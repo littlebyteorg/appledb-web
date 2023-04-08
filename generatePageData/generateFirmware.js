@@ -215,7 +215,7 @@ function getDevicePageData(os) {
         if (links.length == 1 || [...new Set(links.map(x => x.link.url))].length == 1) {
             icons = [{
                 class: 'fas fa-download',
-                link: links[0].link.url
+                link: links[0].link.url,
             }]
             links = links.slice(0,1)
             links[0].label = `Download ${links[0].link.text}`
@@ -226,7 +226,13 @@ function getDevicePageData(os) {
             key: dev.key,
             subtitle: (dev.released && dev.released[0]) ? getReleaseDate(Array.isArray(dev.released) ? dev.released[0] : dev.released) : '',
             subgroups: dev.subgroups || [],
-            links: links.map(x => { return { text: x.label || x.name, key: x.key, link: x.link.url, icon: 'fas fa-download' }}),
+            links: links.map(x => { return {
+                text: x.label || x.name,
+                key: x.key,
+                link: x.link.url,
+                icon: 'fas fa-download',
+                type: x.link.type
+            }}),
             img: img.key,
             imgFlags: {
                 internal: true,
@@ -369,13 +375,30 @@ function getTitle(os) {
 }
 
 for (const os of osArr) {
-    const deviceGrid = getDevicePageData(os)
+    let deviceGrid = getDevicePageData(os)
     let singleDownload = []
 
     if (deviceGrid.filter(x => x.singleDownload).length) {
         singleDownload = [deviceGrid[0].singleDownload]
         singleDownload[0].text = `<i class="${singleDownload[0].icon}"></i> ${singleDownload[0].text}`
     }
+    /*else if (
+        os.osStr == 'macOS' &&
+        deviceGrid.filter(x => x.links.length).length &&
+        deviceGrid.filter(x => [...new Set(x.links.map(y => y.type))].length == 2).length &&
+        deviceGrid.filter(x => x.links.map(y => y.type).every(z => ['ipsw','installassistant'].includes(z))).length
+    ) {
+        singleDownload = ['ipsw','installassistant'].map(i => {
+            let relevantDeviceGrid = deviceGrid.filter(x => x.links.filter(y => y.type == i).length)[0]
+            let ret = relevantDeviceGrid.links.filter(x => x.type == i)[0]
+            ret.text = `<i class="${ret.icon}"></i> ${ret.text}`
+            return ret
+        })
+        deviceGrid = deviceGrid.map(x => {
+            delete x.links
+            return x
+        })
+    }*/
 
     let obj = {
         title: getTitle(os),
