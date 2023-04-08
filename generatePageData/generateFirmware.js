@@ -360,7 +360,11 @@ function getTitle(os) {
                 delete x.active
                 return x
             })
-        }
+        },
+        image: os.appledbWebImage ? {
+            url: os.appledbWebImage.id,
+            align: os.appledbWebImage.align
+        } : { url: null, align: 'right'}
     }
 }
 
