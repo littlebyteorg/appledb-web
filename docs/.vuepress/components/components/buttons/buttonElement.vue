@@ -46,4 +46,16 @@ export default {
         margin-right: 0;
     }
 }
+
+html.dark {
+    .button {
+        background: var(--c-bg-light);
+        color: var(--c-text-lightest);
+
+        &:hover {
+            background: var(--c-border);
+            color: var(--c-text);
+        }
+    }
+}
 </style>
