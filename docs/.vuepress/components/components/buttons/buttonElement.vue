@@ -22,6 +22,7 @@ export default {
 
 <style lang="scss" scoped>
 .button {
+    color: var(--c-text);
     background: var(--c-border);
     padding: .7em 1em;
     margin-right: .5em;
