@@ -41,7 +41,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-    margin-top: 1em;
+    margin-block: 1em 1em;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -58,6 +58,7 @@ export default {
 
 .text {
     margin-right: auto;
+
     h1 {
         padding-top: var(--navbar-height);
     }
