@@ -48,7 +48,8 @@ function getJbDevArr(osJbArr, os) {
 const downloadTextObj = {
     "ipsw": "IPSW",
     "installassistant": "InstallAssistant",
-    "ota": "OTA"
+    "ota": "OTA",
+    "dmg": "DMG"
 }
 
 function getUrl(links) {
@@ -401,8 +402,8 @@ for (const os of osArr) {
         title: getTitle(os),
         sections: [
             {
-                type: 'list',
-                class: 'noListDisc noPadding',
+                type: 'buttons',
+                class: 'wrap',
                 content: singleDownload
             },
             {
