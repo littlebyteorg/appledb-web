@@ -78,6 +78,7 @@ export default {
         else count = 0
 
         const dev = devArr[count]
+        if (!dev) return
 
         previousModel = x
 
