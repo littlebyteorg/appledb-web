@@ -3,10 +3,6 @@ const deviceGroupArr = require('./grabData/deviceGroup')
 const deviceArr = require('./grabData/device')
 const jailbreakArr = require('./grabData/jailbreak.js')
 const fs = require('fs')
-const { valid } = require('node-html-parser')
-const { getDiffieHellman } = require('crypto')
-const device = require('./grabData/device')
-const { filter } = require('./grabData/firmware')
 
 fs.mkdirSync('./docs/.vuepress/public/pageData/firmware')
 
@@ -81,7 +77,8 @@ function getDeviceList(os) {
             type: source.type,
             text: Object.keys(downloadTextObj).includes(source.type) ? downloadTextObj[source.type] : source.type,
             url: url,
-            filename: url.split('/').slice(-1).join('')
+            filename: url.split('/').slice(-1).join(''),
+            size: source.size || -1
         }
     }
 
@@ -93,7 +90,8 @@ function getDeviceList(os) {
         if (link) link = {
             name: d.name,
             key: d.key,
-            link: link
+            link: link,
+            size: link.size
         }
         
         return {
@@ -218,7 +216,7 @@ function getDevicePageData(os) {
                 link: links[0].link.url,
             }]
             links = links.slice(0,1)
-            links[0].label = `Download ${links[0].link.text}`
+            links[0].label = links[0].link.text
         }
 
         let retObj = {
@@ -231,7 +229,8 @@ function getDevicePageData(os) {
                 key: x.key,
                 link: x.link.url,
                 icon: 'fas fa-download',
-                type: x.link.type
+                type: x.link.type,
+                size: x.link.size
             }}),
             img: img.key,
             imgFlags: {
@@ -374,13 +373,26 @@ function getTitle(os) {
     }
 }
 
+function formatBytes(bytes, decimals = 2) {
+    if (!+bytes) return false
+
+    const k = 1000
+    const dm = decimals < 0 ? 0 : decimals
+    const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
+}
+
 for (const os of osArr) {
     let deviceGrid = getDevicePageData(os)
     let singleDownload = []
 
     if (deviceGrid.filter(x => x.singleDownload).length) {
         singleDownload = [deviceGrid[0].singleDownload]
-        singleDownload[0].text = `<i class="${singleDownload[0].icon}"></i> ${singleDownload[0].text}`
+        let bytes = formatBytes(singleDownload[0].size, 1)
+        if (bytes) singleDownload[0].text += ` (${bytes})`
     }
 
     if (
@@ -389,13 +401,17 @@ for (const os of osArr) {
         os.sources.length == 2 &&
         os.sources.map(x => x.type).every(x => ['ipsw','installassistant'].includes(x))
     ) singleDownload = ['ipsw','installassistant'].map(x => {
-        return {
-            text: `<i class="fas fa-download"></i> Download ${downloadTextObj[x]}`,
+        let source = os.sources.find(y => y.type == x)
+        let ret = {
+            text: downloadTextObj[x],
             key: x,
-            link: getUrl(os.sources.find(y => y.type == x).links),
+            link: getUrl(source.links),
             icon: 'fas fa-download',
             type: x
         }
+        let bytes = formatBytes(source.size, 1)
+        if (bytes) ret.text += ` (${bytes})`
+        return ret
     })
 
     let obj = {

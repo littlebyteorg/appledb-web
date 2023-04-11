@@ -6,7 +6,7 @@
         ]"
     >
         <i :class="item.icon"></i>
-        <span v-html="item.text.split('</i> ').slice(-1)"/>
+        <span v-html="item.text"/>
     </div>
 </template>
 
