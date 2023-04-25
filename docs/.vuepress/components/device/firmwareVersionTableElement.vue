@@ -136,13 +136,12 @@
         <div class="custom-container">
             <p><a :href="fw.url">View more <i style="font-size: 0.8em; padding-left: 2px;" class="fas fa-arrow-right"></i></a></p>
         </div>
-        <div class="custom-container"><p>
+        <div class="custom-container" v-if="options.showTweetButton"><p>
             <a
                 href="https://twitter.com/share?ref_src=twsrc%5Etfw"
                 class="twitter-share-button"
                 :data-text="`${[fw.osStr, fw.version ].join(' ')}${fw.build ? ' (' + fw.build + ')' : ''} has been released. https://appledb.dev/${fw.url}`"
                 data-show-count="false"
-                v-if="options.showTweetButton"
             >
                 <i
                     style="margin-right: 8px;"
