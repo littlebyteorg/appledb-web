@@ -138,10 +138,10 @@
         </div>
         <div class="custom-container" v-if="options.showTweetButton"><p>
             <a
-                href="https://twitter.com/share?ref_src=twsrc%5Etfw"
-                class="twitter-share-button"
-                :data-text="`${[fw.osStr, fw.version ].join(' ')}${fw.build ? ' (' + fw.build + ')' : ''} has been released. https://appledb.dev/${fw.url}`"
-                data-show-count="false"
+                :href="'https://twitter.com/intent/tweet?text=' + encodeURI(
+                    `${[fw.osStr, fw.version ].join(' ')}${fw.build ? ' (' + fw.build + ')' : ''} has been released. https://appledb.dev/${fw.url}`
+                )"
+                target="_blank"
             >
                 <i
                     style="margin-right: 8px;"
