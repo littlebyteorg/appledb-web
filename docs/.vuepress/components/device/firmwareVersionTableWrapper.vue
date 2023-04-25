@@ -198,7 +198,8 @@ export default {
                 showBuildNumber: "Show build numbers",
                 showVersionString: "Show version numbers",
                 showReleasedString: "Show release dates",
-                showSigningStatus: "Show signing status"
+                showSigningStatus: "Show signing status",
+                showTweetButton: "Show Tweet button"
             },
 
             options: {
@@ -210,6 +211,8 @@ export default {
                 showRelease: true,
                 showBeta: false,
                 showInternal: false,
+
+                showTweetButton: false,
 
                 searchStr: '',
                 
@@ -224,7 +227,8 @@ export default {
                 "showBuildNumber",
                 "showVersionString",
                 "showReleasedString",
-                "showSigningStatus"
+                "showSigningStatus",
+                "showTweetButton"
             ].map(x => {
                 return {
                     label: this.optionsObjStr[x],
