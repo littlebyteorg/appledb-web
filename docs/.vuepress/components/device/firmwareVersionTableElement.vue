@@ -139,7 +139,7 @@
         <div class="custom-container" v-if="options.showTweetButton"><p>
             <a
                 :href="'https://twitter.com/intent/tweet?text=' + encodeURI(
-                    `${[fw.osStr, fw.version ].join(' ')}${fw.build ? ' (' + fw.build + ')' : ''} has been released. https://appledb.dev/${fw.url}`
+                    `${[fw.osStr, fw.version ].join(' ')}${fw.build ? ' (' + fw.build + ')' : ''} has been released. https://appledb.dev${fw.url}`
                 )"
                 target="_blank"
             >
