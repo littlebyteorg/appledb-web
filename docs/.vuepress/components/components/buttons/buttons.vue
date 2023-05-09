@@ -1,5 +1,5 @@
 <template>
-    <div :class="sectionClass">
+    <div :class="sectionClass" style="margin-top: 1em;">
         <div v-for="(item, index) in content" :key="item.text">
             <a v-if="item.link" :href="item.link">
                 <buttonElement

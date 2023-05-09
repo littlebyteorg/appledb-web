@@ -41,7 +41,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-    margin-block: 1em 1em;
+    margin-block: 1em;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
