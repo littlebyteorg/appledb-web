@@ -5,8 +5,9 @@
                 <div class="versionBlock">
                     <div class="img">
                         <picture v-for="property in [getProperties(version)]" :key="property">
-                            <source :srcset="`/assets/images@lowres/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}.webp`" type="image/webp">
-                            <img :src="`/assets/images@lowres/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}.png`" style="height: 7em; padding: 2em; padding-right: 3em;">
+                            <source :srcset="`https://img.appledb.dev/device@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.avif`" type="image/avif">
+                            <source :srcset="`https://img.appledb.dev/device@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.webp`" type="image/webp">
+                            <img :src="`https://img.appledb.dev/device@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.png`" style="height: 7em; padding: 2em; padding-right: 3em;">
                         </picture>
                     </div>
                     <div class="text">
@@ -36,13 +37,6 @@ const properties = [
     {
         osStr: 'audioOS',
         image: 'audio',
-        startsWith: '15',
-        dark: false
-    },
-    {
-        osStr: 'audioOS',
-        image: 'audio',
-        startsWith: '16',
         dark: false
     },
     {
@@ -64,6 +58,12 @@ const properties = [
         dark: true
     },
     {
+        osStr: 'macOS',
+        image: 'sonoma',
+        startsWith: '14',
+        dark: true
+    },
+    {
         osStr: 'iPadOS',
         image: 'ipados15',
         startsWith: '15',
@@ -73,6 +73,12 @@ const properties = [
         osStr: 'iPadOS',
         image: 'ipados16',
         startsWith: '16',
+        dark: true
+    },
+    {
+        osStr: 'iPadOS',
+        image: 'ipados16',
+        startsWith: '17',
         dark: true
     },
     {
@@ -94,27 +100,19 @@ const properties = [
         dark: true
     },
     {
-        osStr: 'watchOS',
-        image: 'watch',
-        startsWith: '8',
-        dark: false
+        osStr: 'iOS',
+        image: 'ios17',
+        startsWith: '17',
+        dark: true
     },
     {
         osStr: 'watchOS',
         image: 'watch',
-        startsWith: '9',
         dark: false
     },
     {
         osStr: 'tvOS',
         image: 'tv',
-        startsWith: '15',
-        dark: false
-    },
-    {
-        osStr: 'tvOS',
-        image: 'tv',
-        startsWith: '16',
         dark: false
     },
     {
