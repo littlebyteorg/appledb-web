@@ -14,15 +14,14 @@ for (const bool of [true,false]) {
   ].includes(x)))
   latestVersionArr.push({ osStr: str, beta: bool })
 
-  for (const startsWith of [/*'11','12',*/'13'])
+  for (const startsWith of ['14'])
   latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: startsWith})
 
-  for (const startsWith of [/*'8',*/'9'])
+  for (const startsWith of ['10'])
   latestVersionArr.push({ osStr: 'watchOS', beta: bool, startsWith: startsWith})
 
   for (const os of ['iOS','tvOS','iPadOS','audioOS']) {
-    //latestVersionArr.push({ osStr: os, beta: bool, startsWith: '15'})
-    latestVersionArr.push({ osStr: os, beta: bool, startsWith: '16'})
+    latestVersionArr.push({ osStr: os, beta: bool, startsWith: '17'})
   }
 }
 
