@@ -77,7 +77,7 @@ const properties = [
     },
     {
         osStr: 'iPadOS',
-        image: 'ipados16',
+        image: 'ipados17',
         startsWith: '17',
         dark: true
     },
