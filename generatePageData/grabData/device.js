@@ -30,13 +30,20 @@ deviceFiles = deviceFiles.map(function(x) {
     return filePathStr.splice(pathStrLength, filePathStr.length).join(path.sep)
 })
 
-function isDir(p) { return fs.lstatSync(p).isDirectory() }
-const imgJson = JSON.parse(
-  request(
+let imgJson = []
+try {
+  const req = request(
     'GET',
     'https://img.appledb.dev/main.json'
   ).getBody('utf8')
-)
+  if (!fs.existsSync('./cache')) fs.mkdirSync('./cache')
+  fs.writeFileSync('./cache/imgArr.json', req)
+
+  imgJson = JSON.parse(req)
+} catch {
+  if (fs.existsSync('./cache/imgArr.json'))
+    imgJson = require('../../cache/imgArr.json')
+}
 
 let imgArr = imgJson.map(x => {
   return {

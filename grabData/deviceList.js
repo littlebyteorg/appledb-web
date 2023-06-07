@@ -3,12 +3,20 @@ const fs = require('fs');
 const path = require('path');
 const p = './appledb/deviceFiles'
 
-const imgJson = JSON.parse(
-  request(
+let imgJson = []
+try {
+  const req = request(
     'GET',
     'https://img.appledb.dev/main.json'
   ).getBody('utf8')
-)
+  if (!fs.existsSync('./cache')) fs.mkdirSync('./cache')
+  fs.writeFileSync('./cache/imgArr.json', req)
+
+  imgJson = JSON.parse(req)
+} catch {
+  if (fs.existsSync('./cache/imgArr.json'))
+    imgJson = require('../cache/imgArr.json')
+}
 
 function getAllFiles(dirPath, arrayOfFiles) {
   files = fs.readdirSync(dirPath)
