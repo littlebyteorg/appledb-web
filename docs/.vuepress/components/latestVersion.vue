@@ -5,9 +5,9 @@
                 <div class="versionBlock">
                     <div class="img">
                         <picture v-for="property in [getProperties(version)]" :key="property">
-                            <source :srcset="`https://img.appledb.dev/device@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.avif`" type="image/avif">
-                            <source :srcset="`https://img.appledb.dev/device@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.webp`" type="image/webp">
-                            <img :src="`https://img.appledb.dev/device@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.png`" style="height: 7em; padding: 2em; padding-right: 3em;">
+                            <source :srcset="`https://img.appledb.dev/image@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.avif`" type="image/avif">
+                            <source :srcset="`https://img.appledb.dev/image@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.webp`" type="image/webp">
+                            <img :src="`https://img.appledb.dev/image@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.png`" style="height: 7em; padding: 2em; padding-right: 3em;">
                         </picture>
                     </div>
                     <div class="text">

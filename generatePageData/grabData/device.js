@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const hash = require('object-hash')
+const request = require('sync-request')
 const p = './appledb/deviceFiles'
 
 function getAllFiles(dirPath, arrayOfFiles) {
@@ -30,38 +31,20 @@ deviceFiles = deviceFiles.map(function(x) {
 })
 
 function isDir(p) { return fs.lstatSync(p).isDirectory() }
-const basePath = '../../apple-device-images/images'
+const imgJson = JSON.parse(
+  request(
+    'GET',
+    'https://img.appledb.dev/main.json'
+  ).getBody('utf8')
+)
 
-let imgArr = []
-const imagePath = path.resolve(__dirname, basePath)
-fs.readdirSync(imagePath)
-.filter(f => f.endsWith('.png') || isDir(path.join(imagePath, f)))
-.forEach(f => {
-  imgArr.push({
-    key: f.replace('.png',''),
-    imgCount: (f.endsWith('.png')) ? 1 : -1,
-    dark: false,
-  })
+let imgArr = imgJson.map(x => {
+  return {
+    key: x.key,
+    imgCount: x.count,
+    dark: x.dark
+  }
 })
-
-let folderArr = imgArr.filter(x => x.imgCount < 0).filter(x => isDir(path.resolve(__dirname, `${basePath}/${x.key}`)))
-imgArr = imgArr.filter(x => x.imgCount > 0)
-
-for (const i of folderArr) {
-  let folderImgArr = []
-  fs.readdirSync(path.resolve(__dirname, `${basePath}/${i.key}`))
-  .filter(f => f.endsWith('.png'))
-  .forEach(file => {
-    folderImgArr.push(file)
-  })
-  let folderImgCount = folderImgArr.filter(x => !x.endsWith('_dark.png')).length
-  let darkBool = folderImgArr.filter(x => x.endsWith('_dark.png')).length > 0
-  imgArr.push({
-    key: i.key,
-    imgCount: folderImgCount,
-    dark: darkBool
-  })
-}
 
 var devArr = []
 
@@ -76,17 +59,15 @@ for (const file in deviceFiles) {
   obj.name = obj.name || obj.identifier[0] || obj.key
   obj.key = obj.key || obj.identifier[0] || obj.name
 
-  let imgCount = 1
+  let imgCount = 0
   let imgDark = false
-  let devImgArr = imgArr.filter(x => x.key == obj.key)
-  if (devImgArr.length == 1) {
-    let devImg = devImgArr[0]
-    imgCount = devImg.imgCount
-    imgDark = devImg.dark
-  } else {
-    imgCount = fs.existsSync(path.resolve(__dirname, `../../apple-device-images/images-lowres/${obj.key}.png`)) ? 1 : 0
-    imgDark = false
+
+  let devImgObj = imgArr.find(x => x.key == obj.key)
+  if (devImgObj) {
+    imgCount = devImgObj.imgCount
+    imgDark = devImgObj.dark
   }
+  
   obj.imgCount = imgCount
   obj.imgDark = imgDark
 

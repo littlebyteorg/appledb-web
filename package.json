@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "node-html-parser": "^5.4.1",
-    "object-hash": "^3.0.0"
+    "object-hash": "^3.0.0",
+    "sync-request": "^6.1.0"
   }
 }
