@@ -1,4 +1,4 @@
-name: docs
+name: Build site
 
 on:
   # trigger deployment on every push to main branch
