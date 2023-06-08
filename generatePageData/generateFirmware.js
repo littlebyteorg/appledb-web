@@ -98,10 +98,7 @@ function getDeviceList(os) {
             name: d.name,
             key: d.key,
             type: d.type,
-            img: {
-                count: d.imgCount,
-                dark: d.imgDark
-            },
+            img: d.img,
             released: d.released,
             links: [link]
         }
@@ -178,7 +175,7 @@ function getImg(dev) {
     function validateImg(obj) {
         if (!obj.img || !obj.img.count) return false
         return {
-            key: obj.key,
+            key: obj.img.key || obj.key,
             count: obj.img.count,
             dark: obj.img.dark
         }

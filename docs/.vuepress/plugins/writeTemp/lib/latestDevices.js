@@ -40,14 +40,7 @@ for (;;) {
 module.exports = retArr
 .map(x => {
   let deviceArr = x.devices.map(x => deviceObj[x])
-
-  if (deviceArr[0].imgCount > 0) {
-    x.imgKey = deviceArr[0].key
-    x.imgDark = deviceArr[0].imgDark
-  } else {
-    x.imgDark = true
-    x.imgKey = 'logo'
-  }
+  x.img = deviceArr[0].img
 
   return x
 })

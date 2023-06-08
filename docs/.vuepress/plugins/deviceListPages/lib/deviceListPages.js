@@ -46,10 +46,7 @@ Array.from(new Set(deviceGroups.map(x => x.type))).map(function(t) {
             group: deviceGroups.map(x => {
             const devArr = x.devices.map(y => deviceList[y])
             
-            x.img = {
-                count: devArr[0].imgCount,
-                dark: devArr[0].imgDark
-            }
+            x.img = devArr[0].img
     
             const released = Array.from(new Set(devArr.map(y => y.released))).flat().sort((a,b) => {
                 if (new Date(a.released) < new Date(b.released)) return -1

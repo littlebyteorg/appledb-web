@@ -34,7 +34,7 @@ let imgJson = []
 try {
   const req = request(
     'GET',
-    'https://img.appledb.dev/main.json'
+    'https://aimg.appledb.dev/main.json'
   ).getBody('utf8')
   if (!fs.existsSync('./cache')) fs.mkdirSync('./cache')
   fs.writeFileSync('./cache/imgArr.json', req)
@@ -66,17 +66,20 @@ for (const file in deviceFiles) {
   obj.name = obj.name || obj.identifier[0] || obj.key
   obj.key = obj.key || obj.identifier[0] || obj.name
 
-  let imgCount = 0
-  let imgDark = false
+  let imgObj = {
+    count: 0,
+    dark: true,
+    key: 'logo'
+  }
 
   let devImgObj = imgArr.find(x => x.key == obj.key)
   if (devImgObj) {
-    imgCount = devImgObj.imgCount
-    imgDark = devImgObj.dark
+    imgObj.count = devImgObj.imgCount
+    imgObj.dark = devImgObj.dark
+    imgObj.key = obj.key
   }
   
-  obj.imgCount = imgCount
-  obj.imgDark = imgDark
+  obj.img = imgObj
 
   if (obj.info) obj.info = obj.info.map(o => {
     if (o.type != 'Display') return o

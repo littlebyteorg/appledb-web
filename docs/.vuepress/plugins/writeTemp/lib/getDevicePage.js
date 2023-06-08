@@ -231,11 +231,7 @@ module.exports = function(args) {
         for (const i of devArr) extraInfo[i.key] = i.info
     }
 
-    const img = {
-        count: devArr[0].imgCount,
-        dark: devArr[0].imgDark,
-        key: devArr[0].key
-    }
+    const img = devArr[0].img
 
     var imgCount = 0
     try {
