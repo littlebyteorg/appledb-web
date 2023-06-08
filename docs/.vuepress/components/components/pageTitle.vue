@@ -26,7 +26,7 @@
                 'margin-right': content.image.align == 'left' ? '1em' : '0em'
             }"
         >
-            <img :src="`https://img.appledb.dev/image@preview/${content.image.url}/0.png`">
+            <img :src="`https://img.appledb.dev/images@preview/${content.image.url}/0.png`">
         </div>
     </div>
 </template>
