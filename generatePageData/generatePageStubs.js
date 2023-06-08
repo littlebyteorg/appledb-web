@@ -48,7 +48,7 @@ for (const dev of deviceArr.concat(deviceGroupArr)) {
     
     let showImg = false
     let imgKey = dev.key
-    if (dev.img.count > 0) showImg = true
+    if (dev.imgCount > 0) showImg = true
     if (dev.devices) {
         let iterateDevice
         for (iterateDevice of dev.devices) if (deviceArr.find(x => x.key == iterateDevice).img.count > 0) {
@@ -85,8 +85,6 @@ for (const dev of deviceArr.concat(deviceGroupArr)) {
     if (showImg) {
         parsedPage.querySelectorAll('meta').find(x => x.rawAttrs.includes('property="og:image"')).rawAttrs = `property="og:image" content="https://img.appledb.dev/device@preview/${imgKey}/0.png"`
     }
-
-    if (dev.groupKey && dev.groupKey.includes('AudioAccessory')) console.log(dev.groupKey)
     
     fs.writeFile(`./docs/.vuepress/dist/device${dev.groupKey ? '' : '/identifier'}/${(dev.key || dev.groupKey).replace(/ /g,'-').replace(/\//g,'-')}.html`, parsedPage.toString(), (err) => {
         if (err) console.log(err)
