@@ -7,7 +7,7 @@ let imgJson = []
 try {
   const req = request(
     'GET',
-    'https://aimg.appledb.dev/main.json'
+    'https://img.appledb.dev/main.json'
   ).getBody('utf8')
   if (!fs.existsSync('./cache')) fs.mkdirSync('./cache')
   fs.writeFileSync('./cache/imgArr.json', req)
