@@ -120,6 +120,11 @@ const properties = [
         image: 'airpods',
         dark: false
     },
+    {
+        osStr: 'visionOS',
+        image: 'vision',
+        dark: false
+    }
 ]
 
 const osStrOrder = [

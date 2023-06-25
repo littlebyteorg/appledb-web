@@ -87,7 +87,8 @@ module.exports = function(args) {
     const pluralise = [
         "Display",
         "Keyboard",
-        "Remote"
+        "Remote",
+        "Headset"
     ]
 
     function getDevType(type) {
