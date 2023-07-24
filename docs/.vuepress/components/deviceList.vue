@@ -6,7 +6,7 @@
   <p>
     Tracked model numbers: {{ aModelArr.length }}<br>
     Total model numbers: {{ totalAModel }}<br>
-    Percentage tracked: {{ parseInt(aModelArr.length / totalAModel * 100) }}%
+    Percentage tracked: {{ (aModelArr.length / totalAModel * 100).toFixed(2) }}%
   </p>
 
   <table>
