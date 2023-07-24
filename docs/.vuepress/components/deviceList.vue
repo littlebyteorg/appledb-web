@@ -3,6 +3,12 @@
     <input :placeholder="searchStr" :aria-placeholder="searchStr" v-model="searchQuery">
   </form>
 
+  <p>
+    Tracked model numbers: {{ aModelArr.length }}<br>
+    Total model numbers: {{ totalAModel }}<br>
+    Percentage tracked: {{ parseInt(aModelArr.length / totalAModel * 100) }}%
+  </p>
+
   <table>
     <tr><th v-for="h in [
       'Model',
@@ -62,15 +68,19 @@ export default {
     }
   },
   computed: {
+    devList() { return Object.keys(this.fm.deviceList).map(x => this.fm.deviceList[x]) },
+    modelArr() { return this.devList.map(x => x.model).flat().filter(x => x).sort() },
+    aModelArr() { return [...new Set(this.modelArr.filter(x => x.length == 5 && x[0] == 'A'))] },
+    totalAModel() {
+      const sortedModelArr = this.aModelArr.map(x => parseInt(x.slice(1))).sort()
+      return sortedModelArr.slice(-1)[0] - sortedModelArr.slice(1)[0]
+    },
     modelList() {
-      const devList = Object.keys(this.fm.deviceList).map(x => this.fm.deviceList[x])
-      const modelArr = devList.map(x => x.model).flat().filter(x => x).sort()
-
       let modelDevArr = []
       let previousModel = ''
       let count = 0
-      modelArr.map(x => {
-        const devArr = devList.filter(y => y.model && y.model.includes(x))
+      this.modelArr.map(x => {
+        const devArr = this.devList.filter(y => y.model && y.model.includes(x))
 
         if (previousModel == x) count++
         else count = 0
@@ -95,8 +105,7 @@ export default {
       return modelDevArr
     },
     modellessDevices() {
-      const devList = Object.keys(this.fm.deviceList).map(x => this.fm.deviceList[x])
-      const noModelList = devList
+      const noModelList = this.devList
       .filter(x => !x.hasOwnProperty('model') || !x.model || !x.model[0])
       .map(x => {
         if (Array.isArray(x.model)) x.model = ''
