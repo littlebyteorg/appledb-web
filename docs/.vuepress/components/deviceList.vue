@@ -4,8 +4,8 @@
   </form>
 
   <p>
-    Tracked model numbers: {{ aModelArr.length }}<br>
-    Total model numbers: {{ totalAModel }}<br>
+    Tracked 'A' model numbers: {{ aModelArr.length }}<br>
+    Total 'A' model numbers: {{ totalAModel }}<br>
     Percentage tracked: {{ (aModelArr.length / totalAModel * 100).toFixed(2) }}%
   </p>
 
