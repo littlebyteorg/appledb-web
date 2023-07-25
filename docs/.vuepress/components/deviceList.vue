@@ -3,11 +3,20 @@
     <input :placeholder="searchStr" :aria-placeholder="searchStr" v-model="searchQuery">
   </form>
 
-  <p>
-    Tracked 'A' model numbers: {{ aModelArr.length }}<br>
-    Total 'A' model numbers: {{ totalAModel }}<br>
-    Percentage tracked: {{ (aModelArr.length / totalAModel * 100).toFixed(2) }}%
-  </p>
+  <h3>"A" Model Number Tracker</h3>
+
+  <div class="progressBar">
+    <div :style="{
+      'width': `calc(${String(parseInt(aModelArr.length / totalAModel * 100))}% - 1.5em)`
+    }">
+      {{ aModelArr.length }} / {{ totalAModel }}
+    </div>
+    <div :style="{
+      'width': `calc(${String(100 - parseInt(aModelArr.length / totalAModel * 100))}% - 1.5em)`
+    }">
+      {{ (aModelArr.length / totalAModel * 100).toFixed(2) }}%
+    </div>
+  </div>
 
   <table>
     <tr><th v-for="h in [
@@ -139,7 +148,42 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.progressBar {
+  display: flex;
+  flex-flow: row wrap;
+  margin-block: 1em;
+
+  div {
+    background: black;
+    padding: .75em;
+    font-weight: 600;
+
+    &:first-of-type {
+      border-radius: 1em 0px 0px 1em;
+      background: var(--c-text-lightest);
+      color: var(--c-bg);
+    }
+
+    &:last-of-type {
+      border-radius: 0px 1em 1em 0px;
+      background: var(--c-border);
+      text-align: right;
+    }
+  }
+}
+
+html.dark .progressBar div {
+  &:first-of-type {
+    background: var(--c-border);
+    color: inherit;
+  }
+
+  &:last-of-type {
+    background: var(--c-bg-light);
+  }
+}
+
 .search-box {
   margin-left: 0;
 }
