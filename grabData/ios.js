@@ -1,9 +1,6 @@
-const fs = require('fs')
-const path = require('path')
 const dev = require('./deviceList')
 const group = require('./deviceGroups')
 const devicePath = '/device/identifier/'
-const p = './appledb/osFiles'
 
 let iosArr = require('../generatePageData/grabData/firmware')
 

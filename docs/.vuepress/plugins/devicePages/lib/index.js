@@ -10,8 +10,14 @@ module.exports = function() {
       let mainList = pageList.find(x => x.frontmatter.mainList)
       app.pages.push(await createPage(app, mainList))
 
-      fs.mkdirSync('./docs/.vuepress/public/pageData/device')
-      fs.mkdirSync('./docs/.vuepress/public/pageData/device/identifier')
+      const pArr = [
+        './docs/.vuepress/public/pageData/device',
+        './docs/.vuepress/public/pageData/device/identifier'
+      ]
+      
+      pArr.map(p => {
+        if (!fs.existsSync(p)) fs.mkdirSync(p)
+      })
 
       for (const p of pageList.filter(x => !x.frontmatter.mainList)) {
         let pageKey = p.path.replace('/','').replace('.html','')
