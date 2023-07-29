@@ -103,13 +103,14 @@ input[type=checkbox]:checked~.submenu {
     right: calc(((100vw - var(--content-width)) / 2) + 1em);
 
     li {
-        padding-inline: .7em;
+        padding-inline: .7em calc(.7em + 2px);
         margin-block: .5em;
         border-left: 2px solid transparent;
         cursor: pointer;
+        transition: color 100ms ease-in-out;
     }
 
-    .active {
+    .active, :hover {
         color: var(--c-brand);
         border-color: var(--c-brand);
     }
@@ -130,15 +131,19 @@ input[type=checkbox]:checked~.submenu {
 
 .groupLabel {
     font-weight: 600;
-    margin-inline: .5em;
-    padding: .75em .5em;
+    padding-top: .75em;
+    padding-inline: 1em;
+
     transition: color 100ms ease-in-out;
     cursor: pointer;
     user-select: none;
 
     &:hover, &.active {
         color: var(--c-brand);
-        border-bottom: 2px solid;
+
+        &:after {
+            transform: scaleX(1);
+        }
     }
 
     &.icon {
@@ -146,6 +151,17 @@ input[type=checkbox]:checked~.submenu {
         font-size: 1.2em;
         margin-inline: calc(.5em - .2em);
         margin-top: -.2em;
+    }
+
+    &:after {
+        color: var(--c-brand);
+        display: block;
+        content: '';
+        padding-top: .75em;
+        border-bottom: solid 2px;
+        transform: scaleX(0);
+        transition: transform 100ms ease-in-out;
+        width: 100%;
     }
 }
 
