@@ -119,7 +119,7 @@ input[type=checkbox]:checked~.submenu {
     display: flex;
     flex-flow: row nowrap;
     margin-block: 1em 3em;
-    height: 2.8em;
+    height: 3em;
     overflow: hidden;
 }
 
