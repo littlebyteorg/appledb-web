@@ -106,6 +106,7 @@ input[type=checkbox]:checked~.submenu {
         padding-inline: .7em;
         margin-block: .5em;
         border-left: 2px solid transparent;
+        cursor: pointer;
     }
 
     .active {
