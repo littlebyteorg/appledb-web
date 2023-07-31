@@ -46,7 +46,7 @@ for (let i of osArr) {
     delete i.createDuplicateEntries
 }
 
-module.exports = osArr
+let ret = osArr
 .concat(createDuplicateEntriesArray)
 .map(function(x) {
     if (!x.deviceMap) x.deviceMap = []
@@ -58,3 +58,18 @@ module.exports = osArr
     
     return x
 })
+
+let args = JSON.parse(process.env.npm_config_argv).original
+if (process.env.npm_lifecycle_script && !args.filter(x => x.includes('limitfw=')).length) args = process.env.npm_lifecycle_script.split(' ')
+if (args.filter(x => x.includes('limitfw=')).length) {
+  let limitfwArg = args.find(x => x.includes('limitfw='))
+  let fwCount = parseInt(limitfwArg.split('=').slice(1))
+  if (fwCount > 0) {
+    console.log(`Limited to ${fwCount} firmware${fwCount.length == 1 ? 's' : ''}`)
+    ret = ret.slice(0,fwCount)
+  } else {
+    console.log('limitfw integer not valid')
+  }
+}
+
+module.exports = ret
