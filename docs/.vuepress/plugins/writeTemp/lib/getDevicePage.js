@@ -1,5 +1,6 @@
 const iosList = require('../../../../../grabData/ios')
 const jbList = require('../../../../../grabData/jailbreak')
+const deviceFilterGroups = require('../../../../../appledb/appledb-web/deviceFilterGroups.json')
 
 const hasJbArr = [
     'iOS',
@@ -41,59 +42,8 @@ module.exports = function(args) {
     const devFwVersionArr = devFwArr.map(x => [x.osStr,x.version].join(' '))
     const duplicateVersionArr = devFwVersionArr.filter((fw, index) => index !== devFwVersionArr.indexOf(fw))
 
-    const mergingDeviceTypes = [
-        {
-            label: "iPhone, iPod touch",
-            types: [
-                "iPhone",
-                "iPod touch"
-            ]
-        },
-        {
-            label: "iPad",
-            types: [
-                "iPad",
-                "iPad Air",
-                "iPad mini",
-                "iPad Pro"
-            ]
-        },
-        {
-            label: "AirPods, Beats",
-            types: [
-                "AirPods",
-                "Beats Headphones",
-                "Beats Speakers",
-                "Beats Earbuds"
-            ]
-        },
-        {
-            label: "Mac",
-            types: [
-                "MacBook",
-                "MacBook Air",
-                "MacBook Pro",
-                "iMac",
-                "iMac Pro",
-                "Mac Pro",
-                "Mac mini",
-                "Mac Studio",
-                "Developer Transition Kit",
-                "Virtual Machine"
-            ]
-        }
-    ]
-
-    const pluralise = [
-        "Display",
-        "Keyboard",
-        "Remote",
-        "Headset"
-    ]
-
     function getDevType(type) {
-        for (const devType of mergingDeviceTypes) if (devType.types.includes(type)) return devType.label
-        if (pluralise.includes(type)) return type + 's'
+        for (const devType of deviceFilterGroups) if (devType.types.includes(type)) return devType.label
         return type
     }
 
