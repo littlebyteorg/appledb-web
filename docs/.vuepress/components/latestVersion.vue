@@ -35,7 +35,7 @@ import latestVersion from '@temp/latestVersion'
 
 const properties = [
     {
-        osStr: 'audioOS',
+        osStr: 'HomePod Software',
         image: 'audio',
         dark: false
     },
@@ -133,7 +133,7 @@ const osStrOrder = [
     'macOS',
     'tvOS',
     'watchOS',
-    'audioOS',
+    'HomePod Software',
     'Bluetooth Headset Firmware'
 ]
 

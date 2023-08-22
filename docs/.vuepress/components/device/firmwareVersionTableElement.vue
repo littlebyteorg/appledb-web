@@ -221,7 +221,7 @@ export default {
                 'iOS',
                 'iPadOS',
                 'macOS',
-                'audioOS',
+                'HomePod Software',
                 'tvOS',
                 'watchOS',
                 'Apple TV Software',

@@ -5,7 +5,7 @@ const deviceFilterGroups = require('../../../../../appledb/appledb-web/deviceFil
 const hasJbArr = [
     'iOS',
     'tvOS',
-    'audioOS',
+    'HomePod Software',
     'watchOS',
     'iPhoneOS',
     'iPadOS',
