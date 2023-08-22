@@ -1,4 +1,6 @@
-const iosList = require('../../../../../grabData/ios').filter(x => !x.sdk)
+const iosList = require('../../../../../grabData/ios')
+.filter(x => !x.sdk)
+.filter(x => !x.name.includes('Simulator'))
 const uniqueiOSList = iosList.filter((obj, index) => iosList.findIndex((item) => item.build === obj.build && item.osStr === obj.osStr) === index)
 const osStrArr = Array.from(new Set(uniqueiOSList.map(x => x.osStr)))
 
@@ -10,7 +12,7 @@ for (const bool of [true,false]) {
     'iOS',
     'tvOS',
     'iPadOS',
-    'audioOS'
+    'HomePod Software'
   ].includes(x)))
   latestVersionArr.push({ osStr: str, beta: bool })
 
@@ -20,7 +22,7 @@ for (const bool of [true,false]) {
   for (const startsWith of ['9','10'])
   latestVersionArr.push({ osStr: 'watchOS', beta: bool, startsWith: startsWith})
 
-  for (const os of ['iOS','tvOS','iPadOS','audioOS']) {
+  for (const os of ['iOS','tvOS','iPadOS','HomePod Software']) {
     latestVersionArr.push({ osStr: os, beta: bool, startsWith: '16'})
     latestVersionArr.push({ osStr: os, beta: bool, startsWith: '17'})
   }
