@@ -18,6 +18,22 @@ function getAllFiles(dirPath, arrayOfFiles) {
     return arrayOfFiles
 }
 
+function handleSDKs(baseItem) {
+  var sdkEntries = []
+  if (!baseItem.hasOwnProperty('sdks')) return sdkEntries
+
+  baseItem['sdks'].forEach(function(sdk) {
+    sdk['version'] = sdk['version'] + ' SDK'
+    sdk['uniqueBuild'] = sdk['build'] + '-SDK'
+    sdk['released'] = baseItem['released']
+    sdk['deviceMap'] = [(sdk['osStr'].indexOf('OS X') >= 0 ? 'macOS' : sdk['osStr']) + ' SDK']
+    sdk['sdk'] = true
+    sdkEntries.push(sdk)
+  })
+
+  return sdkEntries
+}
+
 var osFiles = []
 osFiles = getAllFiles(p, osFiles)
 osFiles = osFiles.filter(file => file.endsWith('.json'));
@@ -42,8 +58,10 @@ for (let i of osArr) {
         ver[property] = entry[property]
       }
       createDuplicateEntriesArray.push(ver)
+      createDuplicateEntriesArray = createDuplicateEntriesArray.concat(handleSDKs(entry))
     }
     delete i.createDuplicateEntries
+    createDuplicateEntriesArray = createDuplicateEntriesArray.concat(handleSDKs(i))
 }
 
 let ret = osArr
