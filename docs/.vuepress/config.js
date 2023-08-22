@@ -27,8 +27,8 @@ module.exports = {
           link: '/device-selection/'
         },
         {
-          text: 'Firmwares',
-          link: '/firmwares.html'
+          text: 'Firmware',
+          link: '/firmware.html'
         },
         {
           text: 'Credits',

@@ -122,7 +122,7 @@ export default {
       basedOnStr: 'Based on: ${iosVersion}',
       downloadInfoStr: 'Download: <a href="${ipsw}">${ipswStr} <i class="fas fa-download"></i></a>',
 
-      relatedFirmwaresHeader: 'Related Firmwares',
+      relatedFirmwaresHeader: 'Related Firmware',
 
       devicesHeader: 'Devices',
       showMoreStr: 'Show More',

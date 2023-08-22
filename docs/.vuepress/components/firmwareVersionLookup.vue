@@ -123,7 +123,7 @@ export default {
 
       this.deviceObj = deviceMap */
     } else {
-      window.location.href = "/firmwares.html"
+      window.location.href = "/firmware.html"
     }
   }
 }

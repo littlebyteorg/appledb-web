@@ -46,7 +46,7 @@ pageList.push(
   getDevicePage({
     name: "Firmware Chart",
     description: 'AppleDB firmware chart',
-    path: "/firmwares.html",
+    path: "/firmware.html",
     devArr: devListFromFw.map(x => deviceList[x]),
     grouped: true,
     mainList: true

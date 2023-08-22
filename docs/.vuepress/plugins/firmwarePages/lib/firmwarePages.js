@@ -7,7 +7,7 @@ var pageList = []
 pageList.push({
     path: '/firmware.html',
     frontmatter: {
-      title: `AppleDB Firmwares`,
+      title: `AppleDB Firmware`,
       description: `AppleDB firmware lookup`,
       chartType: 'firmwareVersionLookup',
       iosList: iosList,

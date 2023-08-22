@@ -30,7 +30,7 @@ for (const jb of jbList) {
       guideStr: 'Guide: ${guideLink}',
       typeStr: 'Type: ${type}',
       supportedStrSingle: 'Supported Firmware: ${ver}',
-      supportedStr: 'Supported Firmwares: ${ver0} to ${ver1}',
+      supportedStr: 'Supported Firmware: ${ver0} to ${ver1}',
       socStr: 'SoC: ${soc}',
       compatibleStr: 'Compatible',
       notCompatibleStr: 'Not compatible',

@@ -6,8 +6,8 @@ actions:
   - text: Devices
     link: /device-selection/
     type: secondary
-  - text: Firmwares
-    link: firmwares.html
+  - text: Firmware
+    link: firmware.html
     type: secondary
 heroImage: https://appledb.dev/assets/images/splash-23aaron-1.jpg
 heroImageDark: https://appledb.dev/assets/images/splash-23aaron-0.jpg

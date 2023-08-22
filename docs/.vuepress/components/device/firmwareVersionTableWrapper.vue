@@ -162,7 +162,7 @@
 
     <template v-if="loadedFirmwares[1] < versionArr.length">
         <div style="display: flex; padding: 1em; padding-top: 1.5em;">
-            <div>Displaying {{ loadedFirmwares[1] }} firmwares out of {{ versionArr.length }}.</div>
+            <div>Displaying {{ loadedFirmwares[1] }} firmware versions out of {{ versionArr.length }}.</div>
             <div style="margin-left: auto;"><a style="cursor: pointer;" v-on:click="loadedFirmwares[1] += 500">Load more</a></div>
         </div>
     </template>
