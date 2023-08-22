@@ -50,8 +50,8 @@ for (const file in osFiles) osArr.push(require('../../' + osFiles[file]))
 let createDuplicateEntriesArray = []
 
 for (let i of osArr) {
-    if (!i.hasOwnProperty('createDuplicateEntries')) continue
-    for (const entry of i.createDuplicateEntries) {
+    if (!i.hasOwnProperty('createDuplicateEntries') && !i.hasOwnProperty('sdks')) continue
+    for (const entry of (i.createDuplicateEntries || [])) {
       let ver = { ...i }
       delete ver.createDuplicateEntries
       for (const property in entry) {
