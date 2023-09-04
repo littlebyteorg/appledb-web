@@ -121,7 +121,13 @@ export default {
 
             if (this.hasSoftwareType) presetOrder.push({
                 label: "Software",
-                types: this.groupList.filter(x => x.type == 'Software').map(x => x.groupKey)
+                types: this.groupList.filter(x => x.type == 'Software').map(x => x.groupKey).sort((a,b) => {
+                    a = a.toLowerCase()
+                    b = b.toLowerCase()
+                    if (a < b) return -1
+                    if (a > b) return 1
+                    return 0
+                })
             })
 
             const unsetTypes = this.typeArr.filter(x => !presetTypeArr.includes(x))
