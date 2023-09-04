@@ -120,7 +120,6 @@ module.exports = function(args) {
             internal: i.internal,
             rc: i.rc,
             rsr: i.rsr,
-            sdk: i.sdk,
             releasedStr: released,
             devices: devIdFwArr,
             deviceFilterArr: (mainList) ?

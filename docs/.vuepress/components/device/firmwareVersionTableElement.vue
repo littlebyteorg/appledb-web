@@ -47,7 +47,6 @@
                     </span>
                 </div>
                 <div v-if="fw.rsr" class="releaseBetaInternalWrapper"><span>RSR</span></div>
-                <div v-if="fw.sdk" class="releaseBetaInternalWrapper"><span>SDK</span></div>
                 <div class="signingStatus" :style="{
                     'display': options.showSigningStatus ? 'initial' : 'none'
                 }">

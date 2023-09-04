@@ -350,10 +350,6 @@ function getTitle(os) {
                 {
                     text: 'RSR',
                     active: os.rsr
-                },
-                {
-                    text: 'SDK',
-                    active: os.sdk
                 }
             ]
             .filter(x => x.active && x.text)
