@@ -1,5 +1,5 @@
 const iosList = require('../../../../../grabData/ios')
-.filter(x => !(x.version.includes('Simulator') || x.version.includes('SDK')))
+.filter(x => !(x.version.includes('Simulator') || x.sdk ))
 const uniqueiOSList = iosList.filter((obj, index) => iosList.findIndex((item) => item.build === obj.build && item.osStr === obj.osStr) === index)
 const osStrArr = Array.from(new Set(uniqueiOSList.map(x => x.osStr)))
 

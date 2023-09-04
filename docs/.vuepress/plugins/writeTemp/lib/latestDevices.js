@@ -14,6 +14,7 @@ const deviceList = require('../../../../../grabData/deviceGroups')
   'SDK',
   'Simulator'
 ].includes(x.type))
+.filter(!x.sdk)
 .sort((a,b) => {
   const r = [a,b].map(x => {
     if (!Array.isArray(x.released)) return x.released
