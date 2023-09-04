@@ -9,7 +9,11 @@ function sortDate(a,b) {
 
 const deviceList = require('../../../../../grabData/deviceGroups')
 .filter(x => x.released)
-.filter(x => x.type != 'Software')
+.filter(x => ![
+  'Software',
+  'SDK',
+  'Simulator'
+].includes(x.type))
 .sort((a,b) => {
   const r = [a,b].map(x => {
     if (!Array.isArray(x.released)) return x.released
