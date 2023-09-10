@@ -126,7 +126,9 @@ for (const jb of jbList) {
           if (!fw) continue
           if (fw.beta) continue
           if (fwArr.includes(fw)) continue
-          fwArr.push(fw)
+          // get rid of sources, we don't need it and it makes files too big
+          const {sources: _, ...newFw} = fw;
+          fwArr.push(newFw)
         }
 
         x.firmwares = fwArr.filter(fw => Object.keys(fw.deviceMap).some(r => x.devices.map(x => x.key).includes(r)))
