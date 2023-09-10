@@ -18,7 +18,7 @@ pageList.push({
     }
 })
 
-function getDevGroupArr(deviceMap, sources) {
+function getDevGroupArr(deviceMap) {
     var groupArr = []
     for (const i in deviceMap) {
       if (!groupArr.includes(JSON.stringify(deviceMap[i].group)))
@@ -29,19 +29,10 @@ function getDevGroupArr(deviceMap, sources) {
     
     groupArr = groupArr.map(function(g) {
       const devices = g.devices.map(function(d) {
-        var ipsw
-        try {
-          ipsw = sources
-          .filter(x => x.deviceMap.includes(d) && x.type == 'ipsw')[0]
-          .links.filter(x => x.active)
-          .sort((a, b) => b.preferred - a.preferred)
-          [0].url
-        } catch { ipsw = null; }
-        
         return {
           name: deviceList[d].name,
           url: `${/device/ + d.replace(/ /g, '-')}`,
-          ipsw: ipsw,
+          ipsw: null,
         }
       })
 
@@ -126,7 +117,7 @@ for (const i of iosList) {
             description: `Information for ${i.osStr} version ${i.version}`,
             chartType: 'firmwareVersion',
             build: i,
-            devGroupArr: getDevGroupArr(i.deviceMap, i.sources),
+            devGroupArr: getDevGroupArr(i.deviceMap),
             jailbreakArr: jailbreakArr,
             jbDevArr: getJbDevArr(jailbreakArr, i.deviceMap, i.uniqueBuild),
             released: getReleaseDate(i.released),
