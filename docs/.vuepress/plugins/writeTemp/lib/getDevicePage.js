@@ -85,9 +85,11 @@ module.exports = function(args) {
         let released
         if (!i.released) released = undefined
         else {
-            const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
+            const dateOffset = 0 //new Date().getTimezoneOffset() * 60 * 1000
             const currentDate = new Date(i.released).valueOf()
             const adjustedDate = new Date(currentDate + dateOffset)
+
+            console.log(currentDate, adjustedDate)
 
             const releasedArr = i.released.split('-')
             const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
