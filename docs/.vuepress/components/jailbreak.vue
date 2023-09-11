@@ -1,33 +1,33 @@
 <template>
-  <p><div v-for="i in fm.infoData" :key="i" v-html="i"/></p>
-  <template v-if="fm.deviceList"><h2 v-if="fm.deviceList.length > 0" v-html="compatibilityHeader"/></template>
-  <ul>
-    <li v-for="g in fm.deviceList" :key="g" :id="`liCompat-${g.name}`" style="list-style-type: none;" class="showOnHover">
-      <input type="checkbox" :id="`toggleListCompat-${g.name}`">
-      <i class="fas fa-chevron-right chevron chevronPoint clickToHide"/>
-      <i class="fas fa-chevron-down chevron chevronPoint clickToShow displayNone"/>
-      <router-link v-html="g.name" :to="`${devicePath}${g.groupKey.fdn()}.html`"/>
+  <div>
+    <p><div v-for="i in fm.infoData" :key="i"><span v-html="i"/></div></p>
+    <h2 v-if="fm.deviceList && fm.deviceList.length > 0">{{ compatibilityHeader }}</h2>
+    <ul style="list-style-type: none;">
+      <li v-for="group in fm.deviceList" :key="group.groupKey" class="showOnHover">
+        <i class="fas fa-chevron-down chevron chevronPoint" v-if="showMoreArr.includes(group.groupKey)"></i>
+        <i class="fas fa-chevron-right chevron chevronPoint" v-else></i>
+        <router-link :to="`${devicePath}${group.groupKey.fdn()}.html`">{{ group.name }}</router-link>
 
-      <div class="hoverElement" style="display: inline;">
-        <i class="fas fa-circle ml-" style="font-size: 0.3rem; opacity: 0.5; vertical-align: middle; margin-left: 2em; margin-right: 2em;"/>
-        <label :for="`toggleListCompat-${g.name}`"><a style="cursor: pointer;" :id="`toggleShowCompat-${g.name}`" v-html="showMoreStr" v-on:click="toggleShowCompat(g.name)"/></label>
-      </div>
-      <div class="clickToShow">
-        <table>
+        <div class="hoverElement" style="display: inline;">
+          <i class="fas fa-circle ml-" style="font-size: 0.3rem; opacity: 0.5; vertical-align: middle; margin-left: 2em; margin-right: 2em;"/>
+          <a style="cursor: pointer" @click="showMoreArr.includes(group.groupKey) ? showMoreArr = showMoreArr.filter(x => x != group.groupKey) : showMoreArr.push(group.groupKey)">{{ showMoreStr }}</a>
+        </div>
+
+        <table v-if="showMoreArr.includes(group.groupKey)">
           <tr>
             <th>{{ versionStr }}</th>
-            <th v-for="d in g.devices" :key="d">{{ d.name }}</th>
+            <th v-for="d in group.devices" :key="d.key">{{ d.name }}</th>
           </tr>
-          <tr v-for="fw in g.firmwares.reverse()" :key="fw">
+          <tr v-for="fw in group.firmwares" :key="fw">
             <td>{{fw.version}} (<router-link :to="fw.path">{{ fw.build }}</router-link>)</td>
-            <td v-for="d in g.devices" :key="d">{{ fm.compat[d.key][fw.uniqueBuild] }}</td>
+            <td v-for="d in group.devices" :key="d">{{ fm.compat[d.key][fw.uniqueBuild] }}</td>
           </tr>
         </table>
-      </div>
-    </li>
-  </ul>
+      </li>
+    </ul>
 
-  <p>AppleDB is not affiliated with Apple Inc.</p>
+    <p>AppleDB is not affiliated with Apple Inc.</p>
+  </div>
 </template>
 
 <script>
@@ -54,23 +54,10 @@ export default {
       showLessStr: 'Show Less',
       versionStr: 'Version',
       
+      showMoreArr: [],
+      
       fm: usePageFrontmatter()
     }
-  },
-  methods: {
-    toggleShowCompat: function (id, event) {
-      var liID = `liCompat-${id}`
-      var liClassList = document.getElementById(liID).classList
-      if (liClassList.contains('showOnHover')) liClassList.remove('showOnHover')
-      else liClassList.add('showOnHover')
-      document.getElementById(liID).classList = liClassList
-
-      var toggleID = `toggleShowCompat-${id}`
-      var toggleInner = document.getElementById(toggleID).innerHTML
-      if (toggleInner == this.showMoreStr) toggleInner = this.showLessStr
-      else toggleInner = this.showMoreStr
-      document.getElementById(toggleID).innerHTML = toggleInner
-    },
   }
 }
 </script>

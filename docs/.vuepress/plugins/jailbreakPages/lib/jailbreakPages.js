@@ -132,6 +132,7 @@ for (const jb of jbList) {
         }
 
         x.firmwares = fwArr.filter(fw => Object.keys(fw.deviceMap).some(r => x.devices.map(x => x.key).includes(r)))
+        x.firmwares.reverse()
 
         return x
       })
