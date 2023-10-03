@@ -15,8 +15,8 @@ for (const bool of [true,false]) {
   ].includes(x)))
   latestVersionArr.push({ osStr: str, beta: bool })
 
-  for (const startsWith of ['13','14'])
-  latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: startsWith})
+  //for (const startsWith of ['13','14'])
+  latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: '14'})
 
   //for (const startsWith of ['9','10'])
   latestVersionArr.push({ osStr: 'watchOS', beta: bool, startsWith: '10'})
