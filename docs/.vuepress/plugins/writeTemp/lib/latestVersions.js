@@ -18,11 +18,10 @@ for (const bool of [true,false]) {
   for (const startsWith of ['13','14'])
   latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: startsWith})
 
-  for (const startsWith of ['9','10'])
-  latestVersionArr.push({ osStr: 'watchOS', beta: bool, startsWith: startsWith})
+  //for (const startsWith of ['9','10'])
+  latestVersionArr.push({ osStr: 'watchOS', beta: bool, startsWith: '10'})
 
   for (const os of ['iOS','tvOS','iPadOS','HomePod Software']) {
-    latestVersionArr.push({ osStr: os, beta: bool, startsWith: '16'})
     latestVersionArr.push({ osStr: os, beta: bool, startsWith: '17'})
   }
 }
