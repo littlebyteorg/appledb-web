@@ -89,8 +89,6 @@ module.exports = function(args) {
             const currentDate = new Date(i.released).valueOf()
             const adjustedDate = new Date(currentDate + dateOffset)
 
-            console.log(currentDate, adjustedDate)
-
             const releasedArr = i.released.split('-')
             const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
             released = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustedDate)

@@ -67,11 +67,11 @@ function getLegacyDevicesObjectArray(ver) {
   ver.deviceMap.map(x => {
     const source = ver.sources.filter(y => y.deviceMap.includes(x))[0]
     if (!source) return
+    console.log(source)
     const type = source.type
-    const pathArr = source.links
-    const hasNoPreferredLink = pathArr.map(x => x.preferred).filter(x => x).length == 0
-    const preferredAndActivePath = pathArr.filter(y => (y.preferred || !hasNoPreferredLink) && y.active)[0]
-    obj[x][type] = preferredAndActivePath
+
+    obj[x][type] = source.links[0]
+    if (source.links.filter(x => x.active).length > 1) obj[x][type] = source.links.filter(x => x.active)[0]
   })
   return obj
 }
