@@ -57,7 +57,7 @@ module.exports = function(args) {
                 return {
                     deviceName: devArr.filter(y => y.key == x)[0].name,
                     key: x,
-                    label: url.split('/')[url.split('/').length-1],
+                    label: 'Label',
                     url: url
                 }
             }
