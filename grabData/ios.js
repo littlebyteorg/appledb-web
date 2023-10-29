@@ -67,7 +67,6 @@ function getLegacyDevicesObjectArray(ver) {
   ver.deviceMap.map(x => {
     const source = ver.sources.filter(y => y.deviceMap.includes(x))[0]
     if (!source) return
-    console.log(source)
     const type = source.type
 
     obj[x][type] = source.links[0]
