@@ -15,7 +15,7 @@ const hasJbArr = [
 
 function getFilteredDownloads(dlArr) {
     const retArr = dlArr
-    const urlCount = Array.from(new Set(retArr.map(x => x.url))).length
+    const urlCount = Array.from(new Set(retArr)).length
 
     if (urlCount == 1) return [retArr[0]]
     else return retArr
@@ -52,7 +52,7 @@ module.exports = function(args) {
             .filter(x => devArr.map(x => x.key).includes(x))
             .map(x => {
                 if (!fw.deviceMap[x] || !fw.deviceMap[x][propertyName]) return undefined
-                const url = fw.deviceMap[x][propertyName].url
+                const url = fw.deviceMap[x][propertyName]
                 if (!url) return undefined
                 return {
                     deviceName: devArr.filter(y => y.key == x)[0].name,
@@ -63,7 +63,7 @@ module.exports = function(args) {
             }
         ).filter(x => x)
 
-        urlCount = Array.from(new Set(retArr.map(x => x.url))).length
+        urlCount = Array.from(new Set(retArr)).length
         if (urlCount == 1) retArr = [retArr[0]]
         
         return retArr
