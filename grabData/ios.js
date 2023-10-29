@@ -68,8 +68,7 @@ function getLegacyDevicesObjectArray(ver) {
     const source = ver.sources.filter(y => y.deviceMap.includes(x))[0]
     if (!source) return
     const type = source.type
-    if (type == 'ota') return
-    
+
     const linkArr = source.links
     
     let link
@@ -80,7 +79,7 @@ function getLegacyDevicesObjectArray(ver) {
       if (activeLinks.length > 1) obj[x][type] = activeLinks[0].url
     }
 
-    obj[x][type] = link
+    //obj[x][type] = link
   })
   return obj
 }
