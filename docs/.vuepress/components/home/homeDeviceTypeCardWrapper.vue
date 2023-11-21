@@ -15,6 +15,7 @@
                     :deviceTypeImageKey="deviceTypeCard.imageKey"
                 />
             </div>
+            <div style="margin-left: -2em;"><p style="width: 2em; margin-left: 0;"></p></div>
         </div>
     </div>
 </template>
