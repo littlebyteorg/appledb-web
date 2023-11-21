@@ -7,7 +7,13 @@
         <div class="listWrapper">
             <a href="/device-selection/">
                 <div class="listItem">
-                    <div class="listImg"><img src="https://img.appledb.dev/device@64/iPod%20classic/0.png"></div>
+                    <div class="listImg">
+                        <picture>
+                            <source srcset="https://img.appledb.dev/device@64/iPod%20classic/0.avif" type="image/avif">
+                            <source srcset="https://img.appledb.dev/device@64/iPod%20classic/0.webp" type="image/webp">
+                            <img src="https://img.appledb.dev/device@64/iPod%20classic/0.png">
+                        </picture>
+                    </div>
                     <div class="listText">
                         Devices <i class="fas fa-chevron-right"></i>
                         <div class="subtext">{{ deviceCount || "1,400+" }} products</div>
@@ -16,7 +22,13 @@
             </a>
             <a href="/firmware.html">
                 <div class="listItem">
-                    <div class="listImg"><img src="https://img.appledb.dev/images@64/Sonoma/0.png"></div>
+                    <div class="listImg">
+                        <picture>
+                            <source srcset="https://img.appledb.dev/images@64/Sonoma/0.avif" type="image/avif">
+                            <source srcset="https://img.appledb.dev/images@64/Sonoma/0.webp" type="image/webp">
+                            <img src="https://img.appledb.dev/images@64/Sonoma/0.png">
+                        </picture>
+                    </div>
                     <div class="listText">
                         Software <i class="fas fa-chevron-right"></i>
                         <div class="subtext">{{ softwareCount || "7,900+" }} firmware versions</div>

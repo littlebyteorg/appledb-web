@@ -1,6 +1,12 @@
 <template>
     <div class="wrapper">
-        <div class="img"><img :src="`https://img.appledb.dev/device@256/${deviceTypeImageKey}/0.avif`"/></div>
+        <div class="img">
+            <picture>
+                <source :srcset="`https://img.appledb.dev/device@256/${deviceTypeImageKey}/0.avif`" type="image/avif">
+                <source :srcset="`https://img.appledb.dev/device@256/${deviceTypeImageKey}/0.webp`" type="image/webp">
+                <img :src="`https://img.appledb.dev/device@256/${deviceTypeImageKey}/0.png`">
+            </picture>
+        </div>
         <div class="text">{{ deviceTypeName }}</div>
     </div>
 </template>
