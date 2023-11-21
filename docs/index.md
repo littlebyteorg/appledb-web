@@ -10,16 +10,9 @@ hero: false
 
 <div style="margin-bottom: 1em;"/>
 
-<slideSwipe :sections="[
-  {
-    title: 'New Releases',
-    component: 'latestVersion'
-  },
-  {
-    title: 'New Devices',
-    component: 'latestDevice'
-  }
-]"/>
+<h1 style="margin-bottom: 1em;">New releases</h1>
+
+<latestVersion/>
 
 Created by [emiyl](https://twitter.com/emiyl0). Please contribute to the database at [github.com/littlebyteorg/appledb](https://github.com/littlebyteorg/appledb).
 
