@@ -65,7 +65,8 @@ module.exports = {
         './components/components/list',
         './components/components/propertyBox',
         './components/components/grid',
-        './components/components/buttons'
+        './components/components/buttons',
+        './components/home'
       ].map(x => registerComponentsPlugin({ componentsDir: path.resolve(__dirname, x), })),
       mediumZoomPlugin({
         selector: ':not(a img)'

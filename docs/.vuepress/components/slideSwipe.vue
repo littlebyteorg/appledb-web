@@ -62,8 +62,8 @@ export default {
 
     &.active {
         color: var(--c-bg);
-        background: #1bcbf0;
-        background: linear-gradient(315deg, #1bcbf0, #d96cd5);
+        background: hsl(190, 68%, 42%);
+        background: linear-gradient(315deg, hsl(190, 68%, 42%), hsl(302, 39%, 54%));
         box-shadow: 0 2px 4px #00000010;
     }
 
@@ -83,8 +83,8 @@ export default {
 html.dark {
     .active {
         color: white;
-        background: #9154e0;
-        background: linear-gradient(315deg, #9154e0 0%, #4a3e80 100%);
+        background: hsl(266, 59%, 50%);
+        background: linear-gradient(315deg, hsl(266, 59%, 50%) 0%, hsl(251, 25%, 27%) 100%);
     }
 
     .title:hover:not(.active) .text {
