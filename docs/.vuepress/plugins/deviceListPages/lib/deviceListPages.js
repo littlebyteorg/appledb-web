@@ -61,12 +61,7 @@ let customTypeArr = {
     }
 }
 
-const typeArr = [
-    ...new Set(deviceGroups.map(x => x.type)),
-    ...Object.keys(customTypeArr)
-]
-
-typeArr.map(function(t) {
+new Array([...new Set(deviceGroups.map(x => x.type)), ...Object.keys(customTypeArr)])[0].map(function(t) {
     let typeArr = [t]
     let subtitle
     if (customTypeArr[t]) {
