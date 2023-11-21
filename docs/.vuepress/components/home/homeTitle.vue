@@ -69,7 +69,7 @@ export default {
         font-size: 4em;
         padding-block: 0;
         margin-block: 0;
-        margin-bottom: -.1em;
+        margin-bottom: -.2em;
     }
     
     p {
