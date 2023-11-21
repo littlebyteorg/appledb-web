@@ -79,7 +79,7 @@ function getLegacyDevicesObjectArray(ver) {
       if (activeLinks.length > 1) obj[x][type] = activeLinks[0].url
     }
 
-    obj[x][type] = link
+    //obj[x][type] = link
   })
   return obj
 }
