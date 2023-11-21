@@ -1,7 +1,6 @@
 const { path } = require('@vuepress/utils')
 const { registerComponentsPlugin } = require('@vuepress/plugin-register-components')
 const { mediumZoomPlugin } = require('@vuepress/plugin-medium-zoom')
-const { searchPlugin } = require('@vuepress/plugin-search')
 const { localTheme } = require('../../emiyl-theme')
 
 require('../../generatePageData')
@@ -50,14 +49,6 @@ module.exports = {
     }),
 
     plugins: [
-      searchPlugin({
-        locales: {
-          '/': {
-            placeholder: 'Search',
-          },
-        },
-        hotKeys: ['/']
-      }),
       ...[
         './components',
         './components/device',
