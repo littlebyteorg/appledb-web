@@ -7,12 +7,12 @@
                 <a v-if="deviceTypeCard.link" :href="deviceTypeCard.link">
                     <homeDeviceTypeCard
                         :deviceTypeName="deviceTypeCard.name"
-                        :deviceTypeImageKey="deviceTypeCard.imageKey"
+                        :deviceTypeImage="deviceTypeCard.image"
                     />
                 </a>
                 <homeDeviceTypeCard v-else
                     :deviceTypeName="deviceTypeCard.name"
-                    :deviceTypeImageKey="deviceTypeCard.imageKey"
+                    :deviceTypeImage="deviceTypeCard.image"
                 />
             </div>
             <div style="margin-left: -2em;"><p style="width: 2em; margin-left: 0;"></p></div>

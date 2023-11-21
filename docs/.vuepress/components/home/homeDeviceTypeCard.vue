@@ -2,9 +2,9 @@
     <div class="wrapper">
         <div class="img">
             <picture>
-                <source :srcset="`https://img.appledb.dev/device@256/${deviceTypeImageKey}/0.avif`" type="image/avif">
-                <source :srcset="`https://img.appledb.dev/device@256/${deviceTypeImageKey}/0.webp`" type="image/webp">
-                <img :src="`https://img.appledb.dev/device@256/${deviceTypeImageKey}/0.png`">
+                <source :srcset="`https://img.appledb.dev/${deviceTypeImage.type}@256/${deviceTypeImage.key}/0.avif`" type="image/avif">
+                <source :srcset="`https://img.appledb.dev/${deviceTypeImage.type}@256/${deviceTypeImage.key}/0.webp`" type="image/webp">
+                <img :src="`https://img.appledb.dev/${deviceTypeImage.type}@256/${deviceTypeImage.key}/0.png`">
             </picture>
         </div>
         <div class="text">{{ deviceTypeName }}</div>
@@ -49,7 +49,7 @@
 export default {
     props: {
         deviceTypeName: String,
-        deviceTypeImageKey: String
+        deviceTypeImage: Object
     }
 }
 </script>
