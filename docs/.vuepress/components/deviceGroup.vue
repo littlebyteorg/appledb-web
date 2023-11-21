@@ -48,7 +48,7 @@
                     <li><router-link :to="url">{{ viewDeviceStr }}</router-link></li>
                 </ul>
                 <ul class="devReleased infoList" style="position: relative; top: 9em;">
-                    <li v-if="dev.released">{{ releasedOn.format({ suffix: (new Date() < new Date(dev.released[0])) ? 'ing' : 'ed', released: dev.released.slice(0,1).join(', ') }) }}<template v-if="dev.released.length > 1">, <router-link :to="url">...</router-link></template></li>
+                    <li v-if="dev.releasedStr">{{ releasedOn.format({ suffix: (new Date() < new Date(dev.releasedStr[0])) ? 'ing' : 'ed', released: dev.releasedStr.slice(0,1).join(', ') }) }}<template v-if="dev.releasedStr.length > 1">, <router-link :to="url">...</router-link></template></li>
                 </ul>
             </div>
         </div>
@@ -97,9 +97,11 @@ export default {
     },
     computed: {
         introStr() {
-            return [
-                `Please select what model of ${this.frontmatter.type} you have below.`
+            let description = [
+                `Please select what model of $type you have below.`
             ]
+            if (this.frontmatter.subtitle) description = this.frontmatter.subtitle
+            return description.map(x => x.replace('$type', this.frontmatter.type))
         },
         deviceArr() {
             return this.frontmatter.group
