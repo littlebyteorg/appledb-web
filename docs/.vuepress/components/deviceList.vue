@@ -3,20 +3,21 @@
     <input :placeholder="searchStr" :aria-placeholder="searchStr" v-model="searchQuery">
   </form>
 
-  <h3>"A" Model Number Tracker</h3>
+  <a style="margin-left: 1em;" @click="showFilter = !showFilter">{{ showFilter ? 'Hide' : 'Show'}} filter</a>
 
-  <div class="progressBar">
-    <div :style="{
-      'width': `calc(${String(parseInt(aModelArr.length / totalAModel * 100))}% - 1.5em)`
-    }">
-      {{ aModelArr.length }} / {{ totalAModel }}
-    </div>
-    <div :style="{
-      'width': `calc(${String(100 - parseInt(aModelArr.length / totalAModel * 100))}% - 1.5em)`
-    }">
-      {{ (aModelArr.length / totalAModel * 100).toFixed(2) }}%
-    </div>
-  </div>
+  <template v-if="showFilter">
+    <h2>Filter</h2>
+    <p v-if="devTypeFilter.length == devTypeArr.length"><a @click="devTypeFilter = []">Clear all</a></p>
+    <p v-else><a @click="devTypeFilter = devTypeArr">Select all</a></p>
+    <ul class="filterList">
+      <li
+        v-for="deviceType in devTypeArr"
+        :key="deviceType"
+        :class="devTypeFilter.includes(deviceType) ? 'active' : ''"
+        @click="devTypeFilter.includes(deviceType) ? devTypeFilter = devTypeFilter.filter(x => x != deviceType) : devTypeFilter.push(deviceType)"
+      >{{ deviceType }}</li>
+    </ul>
+  </template>
 
   <table>
     <tr><th v-for="h in [
@@ -25,18 +26,20 @@
       'Released',
       'Identifier'
     ]" :key="h">{{h}}</th></tr>
-    <tr v-for="dev in deviceArr.filter(checkSearch)" :key="dev">
-      <td>{{ dev.model }}</td>
-      <td>
-        <router-link :to="'/device/identifier/' + dev.key.fdn() + '.html'">
-          {{dev.name}}
-        </router-link>
-      </td>
-      <td><span v-if="dev.released">{{ Array.isArray(dev.released) ? dev.released.join(', ') : dev.released }}</span></td>
-      <td><code v-if="dev.identifier[0] && dev.name != dev.identifier">
-        {{ dev.identifier.join(', ') }}
-      </code></td>
-    </tr>
+    <template v-for="dev in devList" :key="dev.key">
+      <tr v-if="devTypeFilter.includes(dev.type)">
+        <td>{{ dev.model.join(', ') }}</td>
+        <td>
+          <router-link :to="'/device/identifier/' + dev.key.fdn() + '.html'">
+            {{dev.name}}
+          </router-link>
+        </td>
+        <td><span v-if="dev.released">{{ Array.isArray(dev.released) ? dev.released.join(', ') : dev.released }}</span></td>
+        <td><code v-if="dev.identifier[0] && dev.name != dev.identifier">
+          {{ dev.identifier.join(', ') }}
+        </code></td>
+      </tr>
+    </template>
   </table>
 
   <p>AppleDB is not affiliated with Apple Inc.</p>
@@ -73,64 +76,18 @@ export default {
         'soc'
       ],
       searchStr: 'Search',
+      showFilter: false,
+      devTypeFilter: [],
       fm: usePageFrontmatter()
     }
   },
   computed: {
     devList() { return Object.keys(this.fm.deviceList).map(x => this.fm.deviceList[x]) },
-    modelArr() { return this.devList.map(x => x.model).flat().filter(x => x).sort() },
-    aModelArr() { return [...new Set(this.modelArr.filter(x => x.length == 5 && x[0] == 'A'))] },
-    totalAModel() {
-      const sortedModelArr = this.aModelArr.map(x => parseInt(x.slice(1))).sort()
-      return sortedModelArr.slice(-1)[0] - sortedModelArr.slice(1)[0]
+    devTypeArr() {
+      const ret = [...new Set(this.devList.map(x => x.type))]
+      this.devTypeFilter = ret
+      return ret
     },
-    modelList() {
-      let modelDevArr = []
-      let previousModel = ''
-      let count = 0
-      this.modelArr.map(x => {
-        const devArr = this.devList.filter(y => y.model && y.model.includes(x))
-
-        if (previousModel == x) count++
-        else count = 0
-
-        const dev = devArr[count]
-        if (!dev) return
-
-        previousModel = x
-
-        modelDevArr.push({
-          name: dev.name,
-          identifier: dev.identifier,
-          key: dev.key,
-          model: x,
-          released: dev.released,
-          soc: dev.soc,
-          arch: dev.arch,
-          board: dev.board
-        })
-      })
-
-      return modelDevArr
-    },
-    modellessDevices() {
-      const noModelList = this.devList
-      .filter(x => !x.hasOwnProperty('model') || !x.model || !x.model[0])
-      .map(x => {
-        if (Array.isArray(x.model)) x.model = ''
-        return x
-      })
-
-      return noModelList.sort((a,b) => {
-        const sortBy = [a,b].map(x => x.identifier[0] || x.name || x.key)
-        if (sortBy[0].toLowerCase() < sortBy[1].toLowerCase()) return -1
-        if (sortBy[0].toLowerCase() > sortBy[1].toLowerCase()) return 1
-        return 0
-      })
-    },
-    deviceArr() {
-      return this.modelList.concat(this.modellessDevices)
-    }
   },
   methods: {
     checkSearch(dev) {
@@ -149,38 +106,32 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.progressBar {
+.filterList {
   display: flex;
   flex-flow: row wrap;
-  margin-block: 1em;
+  list-style-type: none;
+  padding-left: 0;
+  
+  gap: .5em;
 
-  div {
-    background: black;
-    padding: .75em;
-    font-weight: 600;
+  li {
+    background: var(--c-border);
+    padding: .5em 1em;
+    border-radius: .5em;
+    transition: all .2s cubic-bezier(0,0,.5,1);
 
-    &:first-of-type {
-      border-radius: 1em 0px 0px 1em;
+    &:hover {
+      cursor: pointer;
+      background: var(--c-bg);
+      color: var(--c-text);
+      box-shadow: 2px 4px 12px rgba(0,0,0,.08);
+      transform: scale(1.02);
+    }
+
+    &.active {
       background: var(--c-text-lightest);
       color: var(--c-bg);
     }
-
-    &:last-of-type {
-      border-radius: 0px 1em 1em 0px;
-      background: var(--c-border);
-      text-align: right;
-    }
-  }
-}
-
-html.dark .progressBar div {
-  &:first-of-type {
-    background: var(--c-border);
-    color: inherit;
-  }
-
-  &:last-of-type {
-    background: var(--c-bg-light);
   }
 }
 
