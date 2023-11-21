@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper" v-if="deviceTypeCards.length">
         <div class="overlay left"></div>
         <div class="overlay right"></div>
         <div class="cardWrapper">

@@ -74,7 +74,7 @@ export default {
 }
 
 .titleWrapper {
-    margin-block: 1em 2em;
+    margin-block: 1em;
     flex-grow: 1;
     
     h1 {
