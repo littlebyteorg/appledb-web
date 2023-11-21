@@ -16,6 +16,20 @@ pageList.push({
         contributors: false,
     }
 })
+
+pageList.push({
+    path: '/aarons-special-device-list.html',
+    frontmatter: {
+        title: "Aaron's Special Device List",
+        description: "Aaron's Special Device List",
+        chartType: 'aaronsSpecialDeviceList',
+        deviceList: deviceList,
+        sidebar: false,
+        editLink: false,
+        lastUpdated: false,
+        contributors: false,
+    }
+})
   
 pageList.push({
     path: '/device-selection',

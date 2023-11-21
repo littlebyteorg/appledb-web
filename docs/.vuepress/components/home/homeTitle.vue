@@ -10,7 +10,7 @@
                     <div class="listImg"><img src="https://img.appledb.dev/device@64/iPod%20classic/0.png"></div>
                     <div class="listText">
                         Devices <i class="fas fa-chevron-right"></i>
-                        <div class="subtext">1,100+ products</div>
+                        <div class="subtext">{{ deviceCount || "1,400+" }} products</div>
                     </div>
                 </div>
             </a>
@@ -19,13 +19,32 @@
                     <div class="listImg"><img src="https://img.appledb.dev/images@64/Sonoma/0.png"></div>
                     <div class="listText">
                         Software <i class="fas fa-chevron-right"></i>
-                        <div class="subtext">7,800+ firmware versions</div>
+                        <div class="subtext">{{ softwareCount || "7,900+" }} firmware versions</div>
                     </div>
                 </div>
             </a>
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            softwareCount: "",
+            deviceCount: ""
+        }
+    },
+    created() {
+        fetch("https://api.appledb.dev/appledb-web/homePage.json")
+            .then(response => response.json())
+            .then(data => {
+                this.softwareCount = data.softwareCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                this.deviceCount = data.deviceCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        })
+    }
+}
+</script>
 
 <style lang="scss" scoped>
 .fas {

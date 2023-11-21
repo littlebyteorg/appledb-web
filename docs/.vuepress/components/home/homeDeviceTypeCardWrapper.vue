@@ -23,49 +23,15 @@
 export default {
     data() {
         return {
-            deviceTypeCards: [
-                {
-                    name: "Mac",
-                    imageKey: "Mac15,11",
-                    link: "/device-selection/"
-                },
-                {
-                    name: "iPhone",
-                    imageKey: "iPhone16,1",
-                    link: "/device-selection/"
-                },
-                {
-                    name: "iPad",
-                    imageKey: "iPad14,5",
-                    link: "/device-selection/"
-                },
-                {
-                    name: "Apple Watch",
-                    imageKey: "Watch6,14",
-                    link: "/device-selection/"
-                },
-                {
-                    name: "AirPods",
-                    imageKey: "MagSafe Charging Case for AirPods Pro (2nd generation)",
-                    link: "/device-selection/"
-                },
-                {
-                    name: "Apple TV",
-                    imageKey: "AppleTV14,1",
-                    link: "/device-selection/"
-                },
-                {
-                    name: "HomePod",
-                    imageKey: "AudioAccessory6,1",
-                    link: "/device-selection/"
-                },
-                {
-                    name: "Accessories",
-                    imageKey: "iPhone 14 Plus Leather Case with MagSafe",
-                    link: "/device-selection/"
-                }
-            ]
+            deviceTypeCards: []
         }
+    },
+    created() {
+        fetch("https://api.appledb.dev/appledb-web/homePage.json")
+            .then(response => response.json())
+            .then(data => {
+                this.deviceTypeCards = data.deviceTypeCardArray
+        })
     }
 }
 </script>
