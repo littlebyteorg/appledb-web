@@ -6,7 +6,7 @@ hero: false
 ---
 
 <homeTitle/>
-<!--<homeDeviceTypeCardWrapper/>-->
+<homeDeviceTypeCardWrapper/>
 
 <div style="margin-bottom: 1em;"/>
 

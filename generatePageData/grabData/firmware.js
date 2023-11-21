@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const p = './appledb/osFiles'
+const osFilesPath = './appledb/osFiles'
 
 function getAllFiles(dirPath, arrayOfFiles) {
     files = fs.readdirSync(dirPath)
@@ -34,18 +34,21 @@ function handleSDKs(baseItem) {
   return sdkEntries
 }
 
-var osFiles = []
-osFiles = getAllFiles(p, osFiles)
+var osFiles = getAllFiles(osFilesPath)
 osFiles = osFiles.filter(file => file.endsWith('.json'));
 osFiles = osFiles.map(function(x) {
     const filePathStr = x.split(path.sep)
-    const pathStrLength = p.split('/').length - 3
+    const pathStrLength = osFilesPath.split('/').length - 3
     
     return filePathStr.splice(pathStrLength, filePathStr.length).join(path.sep)
 })
 
 var osArr = []
-for (const file in osFiles) osArr.push(require('../../' + osFiles[file]))
+for (const file in osFiles) {
+  let os = require('../../' + osFiles[file])
+  if (os.sources) os.sources = os.sources.filter(x => x.type != 'ota')
+  osArr.push(os)
+}
 
 let createDuplicateEntriesArray = []
 
