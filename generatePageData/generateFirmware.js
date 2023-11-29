@@ -1,7 +1,7 @@
 const osArr = require('./grabData/firmware')
 const deviceGroupArr = require('./grabData/deviceGroup')
 const deviceArr = require('./grabData/device')
-const jailbreakArr = require('./grabData/jailbreak.js')
+const jailbreakArr = [] // require('./grabData/jailbreak.js')
 const fs = require('fs')
 
 fs.mkdirSync('./docs/.vuepress/public/pageData/firmware')
