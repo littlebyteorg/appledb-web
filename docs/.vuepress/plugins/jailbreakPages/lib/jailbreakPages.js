@@ -1,7 +1,7 @@
 const jbList = require('../../../../../grabData/jailbreak')
 const jsonDeviceList = require('../../../../../grabData/deviceList')
 const groupList = require('../../../../../grabData/deviceGroups')
-const iosList = require('../../../../../appledb/generatePageData/grabData/firmware')
+const iosList = require('../../../../../grabData/ios')
 
 const jbPath = '/jailbreak'
 var pageList = []

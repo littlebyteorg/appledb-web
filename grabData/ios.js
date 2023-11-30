@@ -3,7 +3,7 @@ const group = require('./deviceGroups')
 const devicePath = '/device/identifier/'
 const fs = require('fs')
 const path = require('path')
-const osFilesPath = '../appledb/osFiles'
+const osFilesPath = './appledb/osFiles'
 
 function getAllFiles(dirPath, arrayOfFiles) {
     files = fs.readdirSync(dirPath)
@@ -144,7 +144,7 @@ osArr = osArr.map(function(x) {
     var o = {}
     var devArr = x.deviceMap
     .map(function(y) {
-      console.log(y, dev[y], x)
+      if (!dev[y]) return
       o[y] = {}
       o[y].name = dev[y].name
       o[y].identifier = dev[y].identifier
