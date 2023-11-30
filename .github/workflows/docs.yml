@@ -30,11 +30,11 @@ jobs:
       - name: Generate appledb-web page data
         run: node generatePageData/index.js
 
-      - name: Generate stub pages
-        run: node generatePageStubs.js
-
       - name: Build VuePress site
         run: yarn ghbuild
+
+      - name: Generate stub pages
+        run: node generatePageStubs.js
 
       # please check out the docs of the workflow for more details
       # @see https://github.com/crazy-max/ghaction-github-pages
