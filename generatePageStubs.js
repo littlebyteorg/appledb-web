@@ -1,8 +1,8 @@
 const fs = require('fs')
 const { parse } = require('node-html-parser')
-const osArr = require('./appledb/generatePageData/grabData/firmware')
-const deviceArr = require('./appledb/generatePageData/grabData/device')
-const deviceGroupArr = require('./appledb/generatePageData/grabData/deviceGroup')
+const osArr = require('./grabData/ios')
+const deviceArr = require('./grabData/deviceList')
+const deviceGroupArr = require('./grabData/deviceGroups')
 
 function mkdirSync(dir) { if (!fs.existsSync(dir)) { fs.mkdirSync(dir) } }
 
