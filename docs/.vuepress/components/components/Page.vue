@@ -55,7 +55,7 @@ export default {
       const routeName = this.$route.name
       const routeParams = Object.keys(this.$route.params).map(x => this.$route.params[x])
       
-      return fetch(`/pageData/${routeName}/${routeParams.join(';')}.json`.replace(/\.html/g,''), {
+      return fetch(`https://api.appledb.dev/appledb-web/pageData/${routeName}/${routeParams.join(';')}.json`.replace(/\.html/g,''), {
           method: 'GET',
 	        headers: { 'Content-Type': 'application/json' }
         }
