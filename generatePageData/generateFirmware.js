@@ -430,5 +430,5 @@ for (const os of osArr) {
         ].filter(x => x.content.length > 0)
     }
 
-    fs.writeFile(`./out/appledb-web/pageData/firmware/${os.osStr.replace(/ /g,'-')};${os.uniqueBuild}.json`, JSON.stringify(obj), function (err) { if (err) throw err})
+    fs.writeFile(`./docs/.vuepress/public/pageData/firmware/${os.osStr.replace(/ /g,'-')};${os.uniqueBuild}.json`, JSON.stringify(obj), function (err) { if (err) throw err})
 }

@@ -95,7 +95,7 @@ module.exports = function(pageKey) {
     }
 
     fs.writeFile(
-        `./out/appledb-web/pageData${pageKey.url}.json`,
+        `./docs/.vuepress/public/pageData${pageKey.url}.json`,
         JSON.stringify(obj),
         function (err) { if (err) throw err
     })
