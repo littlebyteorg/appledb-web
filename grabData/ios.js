@@ -2,7 +2,7 @@ const dev = require('./deviceList')
 const group = require('./deviceGroups')
 const devicePath = '/device/identifier/'
 
-let iosArr = require('../generatePageData/grabData/firmware')
+let iosArr = require('../appledb/generatePageData/grabData/firmware')
 
 iosArr = iosArr.map(function(x) {
   if (iosArr.filter(y => y.osStr == x.osStr && y.version == x.version).length > 1) x.duplicateVersion = true
