@@ -11,6 +11,7 @@ module.exports = function() {
       app.pages.push(await createPage(app, mainList))
 
       const pArr = [
+        './docs/.vuepress/public/pageData',
         './docs/.vuepress/public/pageData/device',
         './docs/.vuepress/public/pageData/device/identifier'
       ]
