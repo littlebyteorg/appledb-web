@@ -49,7 +49,7 @@ osFiles = osFiles.map(function(x) {
 var osArr = []
 for (const file of osFiles) {
   let os = require('../' + file)
-  //if (os.sources) os.sources = os.sources.filter(x => x.type != 'ota')
+  if (os.sources) os.sources = os.sources.filter(x => x.type != 'ota')
   osArr.push(os)
 }
 
@@ -132,7 +132,7 @@ function getLegacyDevicesObjectArray(ver) {
       if (activeLinks.length > 1) obj[x][type] = activeLinks[0].url
     }
 
-    obj[x][type] = link
+    //obj[x][type] = link
   })
   return obj
 }
