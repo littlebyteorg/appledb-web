@@ -4,7 +4,7 @@ const deviceArr = require('./grabData/device.js')
 const jailbreakArr = require('./grabData/jailbreak.js')
 const fs = require('fs')
 
-fs.mkdirSync('./docs/.vuepress/public/pageData/firmware')
+if (!fs.existsSync('./docs/.vuepress/public/pageData/firmware')) fs.mkdirSync('./docs/.vuepress/public/pageData/firmware', { recursive: true })
 
 function getReleaseDate(released) {
     if (!released) return -1

@@ -5,7 +5,7 @@ const deviceObj = require('./grabData/deviceList')
 const deviceArr = Object.keys(deviceObj).map(k => deviceObj[k])
 const deviceGroupArr = require('./grabData/deviceGroups')
 
-function mkdirSync(dir) { if (!fs.existsSync(dir)) { fs.mkdirSync(dir) } }
+function mkdirSync(dir) { if (!fs.existsSync(dir)) { fs.mkdirSync(dir, { recursive: true }) }
 
 mkdirSync('./docs/.vuepress/dist/firmware')
 Array.from(new Set(osArr.map(x => x.osStr.replace(/ /g,'-')))).map(x => mkdirSync(`./docs/.vuepress/dist/firmware/${x}`))

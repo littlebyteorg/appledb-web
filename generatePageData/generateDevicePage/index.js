@@ -2,8 +2,7 @@ const fs = require('fs')
 const devArr = require('../grabData/device')
 const groupArr = require('../grabData/deviceGroup')
 
-fs.mkdirSync('./docs/.vuepress/public/pageData/device')
-fs.mkdirSync('./docs/.vuepress/public/pageData/device/identifier')
+if (!fs.existsSync('./docs/.vuepress/public/pageData/device/identifier')) fs.mkdirSync('./docs/.vuepress/public/pageData/device/identifier', { recursive: true })
 
 function formatUrl(x) {
     const removeCharacters = [
