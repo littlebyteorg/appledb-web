@@ -46,7 +46,7 @@ osFiles = osFiles.map(function(x) {
 var osArr = []
 for (const file of osFiles) {
   let os = require('../../' + file)
-  if (os.sources) os.sources = os.sources.filter(x => x.type != 'ota')
+  //if (os.sources) os.sources = os.sources.filter(x => x.type != 'ota')
   osArr.push(os)
 }
 
