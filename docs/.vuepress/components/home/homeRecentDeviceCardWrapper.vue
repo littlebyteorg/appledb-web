@@ -1,13 +1,38 @@
 <template>
-    <div class="wrapper" v-if="deviceTypeCards.length">
+    <h1>Recent devices</h1>
+    <div class="wrapper">
         <div class="overlay left"></div>
         <div class="overlay right"></div>
         <div class="cardWrapper">
-            <div class="deviceTypeCard" v-for="deviceTypeCard in deviceTypeCards" :key="deviceTypeCard.name">
-                <a v-if="deviceTypeCard.link" :href="deviceTypeCard.link">
-                    <homeSmallCard :card="deviceTypeCard"/>
-                </a>
-                <homeSmallCard v-else :card="deviceTypeCard"/>
+            <div class="recentDeviceCard">
+                <homeRecentDeviceCard :recentDevice="{
+                    name: 'iPhone 15 Pro',
+                    image: {
+                        type: 'device',
+                        key: 'iPhone16,1',
+                        count: 3
+                    }
+                }"/>
+            </div>
+            <div class="recentDeviceCard">
+                <homeRecentDeviceCard :recentDevice="{
+                    name: 'Apple Watch Series 9',
+                    image: {
+                        type: 'device',
+                        key: 'Watch7,1',
+                        count: 3
+                    }
+                }"/>
+            </div>
+            <div class="recentDeviceCard">
+                <homeRecentDeviceCard :recentDevice="{
+                    name: 'MacBook Pro',
+                    image: {
+                        type: 'device',
+                        key: 'Mac15,7',
+                        count: 1
+                    }
+                }"/>
             </div>
             <div style="margin-left: -2em;"><p style="width: 2em; margin-left: 0;"></p></div>
         </div>
@@ -16,18 +41,7 @@
 
 <script>
 export default {
-    data() {
-        return {
-            deviceTypeCards: []
-        }
-    },
-    created() {
-        fetch("https://api.appledb.dev/appledb-web/homePage.json")
-            .then(response => response.json())
-            .then(data => {
-                this.deviceTypeCards = data.deviceTypeCardArray
-        })
-    }
+
 }
 </script>
 
@@ -35,6 +49,7 @@ export default {
 .wrapper {
     margin-left: -2em;
     margin-right: -2em;
+    margin-top: .5em;
 }
 
 .overlay {
@@ -50,7 +65,7 @@ export default {
         left: calc(max(2rem, calc(calc(100vw - var(--homepage-width)) / 2)) - 2em);
     }
 
-    height: 12em;
+    height: 21em;
     position: absolute;
     width: 100%;
     z-index: 99999;
@@ -65,7 +80,7 @@ export default {
     padding-left: 2em;
 }
 
-.deviceTypeCard {
+.recentDeviceCard {
     margin-left: 2em;
     margin-right: 2em;
 }

@@ -3,8 +3,6 @@ const { registerComponentsPlugin } = require('@vuepress/plugin-register-componen
 const { mediumZoomPlugin } = require('@vuepress/plugin-medium-zoom')
 const { localTheme } = require('../../emiyl-theme')
 
-require('../../generatePageData')
-
 module.exports = {
     lang: 'en-US',
     title: 'AppleDB',

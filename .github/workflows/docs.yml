@@ -31,7 +31,7 @@ jobs:
         run: yarn ghbuild
 
       - name: Generate stub pages
-        run: node generatePageData/generatePageStubs.js
+        run: node generatePageStubs.js
 
       # please check out the docs of the workflow for more details
       # @see https://github.com/crazy-max/ghaction-github-pages
