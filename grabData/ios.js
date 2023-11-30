@@ -1,54 +1,107 @@
 const dev = require('./deviceList')
 const group = require('./deviceGroups')
 const devicePath = '/device/identifier/'
+const fs = require('fs')
+const path = require('path')
+const osFilesPath = '../appledb/osFiles'
 
-let iosArr = require('../appledb/generatePageData/grabData/firmware')
+function getAllFiles(dirPath, arrayOfFiles) {
+    files = fs.readdirSync(dirPath)
+  
+    arrayOfFiles = arrayOfFiles || []
+  
+    files.forEach(function(file) {
+      if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+        arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
+      } else {
+        arrayOfFiles.push(path.join(dirPath, "/", file))
+      }
+    })
+  
+    return arrayOfFiles
+}
 
-iosArr = iosArr.map(function(x) {
-  if (iosArr.filter(y => y.osStr == x.osStr && y.version == x.version).length > 1) x.duplicateVersion = true
-  return x
+function handleSDKs(baseItem) {
+  var sdkEntries = []
+  if (!baseItem.hasOwnProperty('sdks')) return sdkEntries
+
+  baseItem['sdks'].forEach(function(sdk) {
+    sdk['version'] = sdk['version'] + ' SDK'
+    sdk['uniqueBuild'] = sdk['build'] + '-SDK'
+    sdk['released'] = baseItem['released']
+    sdk['deviceMap'] = [(sdk['osStr'].indexOf('OS X') >= 0 ? 'macOS' : sdk['osStr']) + ' SDK']
+    sdk['sdk'] = true
+    sdkEntries.push(sdk)
+  })
+
+  return sdkEntries
+}
+
+var osFiles = getAllFiles(osFilesPath)
+osFiles = osFiles.filter(file => file.endsWith('.json'));
+osFiles = osFiles.map(function(x) {
+    const filePathStr = x.split(path.sep)
+    const pathStrLength = osFilesPath.split('/').length - 3
+    
+    return filePathStr.splice(pathStrLength, filePathStr.length).join(path.sep)
 })
 
-/*iosArr = iosArr.map(function(x) {
-  x.relatedFirmwares = []
-  if (x.osStr == 'macOS') return x
-  return x
+var osArr = []
+for (const file of osFiles) {
+  let os = require('../' + file)
+  if (os.sources) os.sources = os.sources.filter(x => x.type != 'ota')
+  osArr.push(os)
+}
 
-  function getVer(o) {
-    if (o.iosVersion) return o.iosVersion
-    if (
-      (
-        o.osType == 'tvOS' &&
-        !o.iosVersion &&
-        parseInt(o.version.split('.')[0]) < 9
-      ) || (
-        o.osType == 'watchOS' &&
-        !o.iosVersion
-      )
-    ) return -1
-    return o.version
-  }
+let createDuplicateEntriesArray = []
 
-  const v0 = getVer(x)
-  for (var i of iosArr) {
-    if (i.uniqueBuild == x.uniqueBuild && i.osType == x.osType) continue
-    var v1 = getVer(i)
-    if (v1 < 0) continue
-    if (v0 == v1) {
-      x.relatedFirmwares.push({
-        osStr: i.osStr,
-        osType: i.osType,
-        version: i.version,
-        build: i.build,
-        uniqueBuild: i.uniqueBuild,
-        duplicateVersion: i.duplicateVersion,
-        path: i.path
-      })
+for (let i of osArr) {
+    if (!i.hasOwnProperty('createDuplicateEntries') && !i.hasOwnProperty('sdks')) continue
+    for (const entry of (i.createDuplicateEntries || [])) {
+      let ver = { ...i }
+      delete ver.createDuplicateEntries
+      for (const property in entry) {
+        ver[property] = entry[property]
+      }
+      createDuplicateEntriesArray.push(ver)
+      createDuplicateEntriesArray = createDuplicateEntriesArray.concat(handleSDKs(entry))
+    }
+    delete i.createDuplicateEntries
+    createDuplicateEntriesArray = createDuplicateEntriesArray.concat(handleSDKs(i))
+}
+
+osArr = osArr
+.concat(createDuplicateEntriesArray)
+.map(function(x) {
+    if (!x.deviceMap) x.deviceMap = []
+    if (!x.uniqueBuild) x.uniqueBuild = x.build || x.version
+    if (!x.beta) x.beta = false
+    if (!x.rc) x.rc = false
+
+    x.path = '/firmware/' + [x.osStr.replace(/ /g,'-'), x.uniqueBuild].join('/') + '.html'
+    
+    return x
+})
+
+if (process.env.npm_config_argv) {
+  let args = JSON.parse(process.env.npm_config_argv).original
+  if (process.env.npm_lifecycle_script && !args.filter(x => x.includes('limitfw=')).length) args = process.env.npm_lifecycle_script.split(' ')
+  if (args.filter(x => x.includes('limitfw=')).length) {
+    let limitfwArg = args.find(x => x.includes('limitfw='))
+    let fwCount = parseInt(limitfwArg.split('=').slice(1))
+    if (fwCount > 0) {
+      console.log(`Limited to ${fwCount} firmware${fwCount.length == 1 ? 's' : ''}`)
+      osArr = osArr.slice(0,fwCount)
+    } else {
+      console.log('limitfw integer not valid')
     }
   }
+}
 
+osArr = osArr.map(function(x) {
+  if (osArr.filter(y => y.osStr == x.osStr && y.version == x.version).length > 1) x.duplicateVersion = true
   return x
-})*/
+})
 
 function formatDeviceName(n) {
   return n
@@ -84,13 +137,14 @@ function getLegacyDevicesObjectArray(ver) {
   return obj
 }
 
-iosArr = iosArr.map(function(x) {
+osArr = osArr.map(function(x) {
   const dlObj = getLegacyDevicesObjectArray(x)
 
   if (x.deviceMap) {
     var o = {}
     var devArr = x.deviceMap
     .map(function(y) {
+      console.log(y, dev[y], x)
       o[y] = {}
       o[y].name = dev[y].name
       o[y].identifier = dev[y].identifier
@@ -107,96 +161,4 @@ iosArr = iosArr.map(function(x) {
   return x
 })
 
-function versionCompare(v1, v2, options) {
-  var lexicographical = options && options.lexicographical,
-      zeroExtend = options && options.zeroExtend,
-      v1parts = v1.split('.'),
-      v2parts = v2.split('.')
-
-  function isValidPart(x) {
-    return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x)
-  }
-
-  if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) return NaN
-
-  if (zeroExtend) {
-    while (v1parts.length < v2parts.length) v1parts.push("0");
-    while (v2parts.length < v1parts.length) v2parts.push("0");
-  }
-
-  if (!lexicographical) {
-    v1parts = v1parts.map(Number);
-    v2parts = v2parts.map(Number);
-  }
-
-  for (var i = 0; i < v1parts.length; ++i) {
-    if (v2parts.length == i) return 1
-    if (v1parts[i] == v2parts[i]) continue
-    else if (v1parts[i] > v2parts[i]) return 1
-    else return -1
-  }
-
-  if (v1parts.length != v2parts.length) return -1
-  return 0;
-}
-
-/*iosArr = iosArr.sort((a,b) => {
-  function compareVal(v1, v2) {
-    if (v1 < v2) return -1
-    if (v1 > v2) return 1
-    else return 0
-  }*/
-  
-  /*const typeDif = compareVal(a.osType, b.osType)
-  if (typeDif != 0) return typeDif*/
-
-  /*function getVerStr(x) { return x.includes(' ') ? x : x.split(' ')[0] }
-  const verDif = versionCompare(...[a,b].map(x => getVerStr(x.version)))
-  if (verDif != 0) return verDif*/
-
-  /*const dateDif = compareVal(new Date(a.released).valueOf(), new Date(b.released).valueOf())
-  if (dateDif != 0) return dateDif*/
-
-  /*const buildDif = compareVal(a.build, b.build)
-  if (buildDif != 0) return buildDif*/
-//})
-
-/*iosArr = iosArr.sort(function(a,b) {
-  const osType = [a.osType, b.osType]
-  if (osType[0] == osType[1]) {
-    var v = [a.version, b.version]
-    function getVerStr(x) { return x.includes(' ') ? x : x.split(' ')[0] }
-    var compVerStr = versionCompare(getVerStr(v[0]), getVerStr(v[1]))
-    if (compVerStr != 0) return compVerStr
-    else {
-      const verInclGM   = v[0].includes('GM') - v[1].includes('GM')
-      const verInclBeta = v[0].includes('beta') - v[1].includes('beta')
-      const verInclRC   = v[0].includes('RC') - v[1].includes('RC')
-      const beta        = a.beta - b.beta
-      
-      if (beta != 0) return beta
-      if (verInclRC != 0) return verInclRC
-      if (verInclGM != 0) return verInclGM
-      if (verInclBeta != 0) return verInclBeta
-
-      if (a.beta && b.beta) {
-        const betaNum = [v[0], v[1]]
-          .map(x => x.split(' '))
-          .map(x => x[2])
-          .map(x => (x == undefined) ? '1' : x)
-          .map(x => parseFloat(x))
-        if (betaNum[0] - betaNum[1] != 0) return betaNum[0] - betaNum[1]
-      }
-    }
-  }
-  const dates = new Date(a.released).valueOf() - new Date(b.released).valueOf()
-  if (dates != 0) return dates*/
-
-  /*if (osType[0] > osType[1]) return -1
-  if (osType[0] < osType[1]) return 1
-  if (a.build < b.build) return -1
-  if (a.build > b.build) return 1*//*
-  return 0
-})*/
-
-module.exports = iosArr;
+module.exports = osArr;
