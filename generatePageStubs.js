@@ -1,7 +1,8 @@
 const fs = require('fs')
 const { parse } = require('node-html-parser')
 const osArr = require('./grabData/ios')
-const deviceArr = require('./grabData/deviceList')
+const deviceObj = require('./grabData/deviceList')
+const deviceArr = Object.keys(deviceObj).map(k => deviceObj[k])
 const deviceGroupArr = require('./grabData/deviceGroups')
 
 function mkdirSync(dir) { if (!fs.existsSync(dir)) { fs.mkdirSync(dir) } }
