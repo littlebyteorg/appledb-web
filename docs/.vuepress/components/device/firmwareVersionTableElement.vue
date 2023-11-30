@@ -239,7 +239,7 @@ export default {
             this.showDownloadDropdown = !this.showDownloadDropdown
         },
         getFwData() {
-            return fetch(`https://api.appledb.dev/appledb-web/pageData/firmware/${[this.fw.osStr,this.fw.uniqueBuild].join(';')}.json`.replace(/\.html/g,''), {
+            return fetch(`/pageData/firmware/${[this.fw.osStr,this.fw.uniqueBuild].join(';')}.json`.replace(/\.html/g,''), {
                 method: 'GET',
                     headers: { 'Content-Type': 'application/json' }
                 }

@@ -32,20 +32,30 @@ export default {
     }
   },
   async created() {
-    let data = await this.getPageData()
-    if (data.noAds) this.noAds = data.noAds
-    if (data.frontmatter) {
-      this.titleContent = {
-        header: data.frontmatter.title
+    const routeName = this.$route.name
+    const routeParams = Object.keys(this.$route.params).map(x => this.$route.params[x])
+    fetch(`/pageData/${routeName}/${routeParams.join(';')}.json`.replace(/\.html/g,''), {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
       }
-      this.sections = []
-      this.frontmatter = data.frontmatter
-      if (this.frontmatter.hideTitle) this.hideTitle = this.frontmatter.hideTitle
-    } else {
-      this.titleContent = data.title
-      this.sections = data.sections
-    }
-    document.title = this.titleContent.header + ' | AppleDB'
+    )
+    .then((response) => response.text())
+    .then((response) => JSON.parse(response))
+    .then((data) => {
+      if (data.noAds) this.noAds = data.noAds
+      if (data.frontmatter) {
+        this.titleContent = {
+          header: data.frontmatter.title
+        }
+        this.sections = []
+        this.frontmatter = data.frontmatter
+        if (this.frontmatter.hideTitle) this.hideTitle = this.frontmatter.hideTitle
+      } else {
+        this.titleContent = data.title
+        this.sections = data.sections
+      }
+      document.title = this.titleContent.header + ' | AppleDB'
+    })
   },
   mounted() {
     document.title = this.titleContent.header + ' | AppleDB' // Yes this needs to be done twice idk why
