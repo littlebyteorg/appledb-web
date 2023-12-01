@@ -223,26 +223,16 @@ a {
 }
 
 .fwBlock {
-    background: var(--c-container-bg);
-    transition: background 150ms ease-in-out;
-    border-radius: 8px;
-    margin-block: 1em;
-    padding: 1em;
-
     .title {
         font-weight: 700;
         font-size: 1.5em;
     }
 
-    .versionBlockWrapper:last-of-type .versionBlock .text {
-        border: none;
-    }
-
     .versionBlock {
         display: flex;
         flex-wrap: wrap;
-        padding-top: 1em;
         justify-content: space-around;
+        padding-top: 1em;
 
         .img {
             width: 16.5em;
