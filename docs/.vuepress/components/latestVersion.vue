@@ -263,12 +263,13 @@ a {
     img {
         max-width: 4em;
         padding-inline: 0;
+        padding-right: 1em;
     }
 
 
     .fwBlock .versionBlock {
         padding-top: .5em;
-        
+
         .img {
             width: 7em;
         }
