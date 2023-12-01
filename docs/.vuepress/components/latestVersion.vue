@@ -180,7 +180,9 @@ export default {
 
 <style lang="scss" scoped>
 img {
-    height: 7em; padding: 2em; padding-right: 3em;
+    max-height: 7em;
+    padding: 2em;
+    padding-right: 3em;
 }
 
 a {
@@ -204,8 +206,11 @@ a {
     border-radius: 4em;
     border: 1px solid;
     padding: 5px 9px;
+    margin-top: 6px;
+    margin-bottom: 5px;
     text-transform: uppercase;
     font-weight: 700;
+    line-height: 1em;
     font-size: .5em;
     letter-spacing: .5px;
     margin-right: 1em;
@@ -215,7 +220,7 @@ a {
     display: flex;
     flex-flow: row wrap;
 
-    margin-block: .5em 1em;
+    margin-bottom: .5em;
 
     div {
         margin-right: .5em;
@@ -229,7 +234,7 @@ a {
 .fwBlock {
     .versionBlock {
         display: flex;
-        flex-flow: row wrap;
+        flex-flow: row nowrap;
         justify-content: space-around;
         padding-top: 1em;
 
@@ -243,6 +248,7 @@ a {
             padding-bottom: 1em;
             border-bottom: 1px solid var(--c-border);
             flex-grow: 2;
+            line-height: 2em;
 
             .versionString {
                 border-bottom: none;
@@ -255,31 +261,21 @@ a {
 
 @media screen and (max-width: 800px) {
     img {
-        height: 4em;
+        max-width: 4em;
+        padding-inline: 0;
     }
 
 
     .fwBlock .versionBlock {
-        flex-wrap: nowrap;
-
+        padding-top: .5em;
+        
         .img {
-            width: 8em;
+            width: 7em;
         }
 
         .text {
-            width: calc(100% - 8em);
+            width: calc(100% - 10em);
         }
-    }
-}
-
-@media screen and (max-width: 600px) {
-    img {
-        padding-inline: 0em;
-        padding-right: 1em;
-    }
-
-    .fwBlock .versionBlock .img {
-        width: 6em;
     }
 }
 </style>
