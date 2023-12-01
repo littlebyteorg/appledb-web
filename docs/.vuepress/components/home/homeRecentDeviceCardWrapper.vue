@@ -4,35 +4,36 @@
         <div class="overlay left"></div>
         <div class="overlay right"></div>
         <div class="cardWrapper">
-            <div class="recentDeviceCard">
-                <homeRecentDeviceCard :recentDevice="{
-                    name: 'iPhone 15 Pro',
+            <div class="recentDeviceCard" v-for="card in [
+                {
+                    title: 'iPhone 15 Pro',
+                    text: 'Released Sep 22, 2023',
                     image: {
                         type: 'device',
                         key: 'iPhone16,1',
-                        count: 3
+                        count: 1
                     }
-                }"/>
-            </div>
-            <div class="recentDeviceCard">
-                <homeRecentDeviceCard :recentDevice="{
-                    name: 'Apple Watch Series 9',
+                },
+                {
+                    title: 'Apple Watch Series 9',
+                    text: 'Released Sep 22, 2023',
                     image: {
                         type: 'device',
                         key: 'Watch7,1',
-                        count: 3
+                        count: 1
                     }
-                }"/>
-            </div>
-            <div class="recentDeviceCard">
-                <homeRecentDeviceCard :recentDevice="{
-                    name: 'MacBook Pro',
+                },
+                {
+                    title: 'MacBook Pro',
+                    text: 'Released Nov 07, 2023',
                     image: {
                         type: 'device',
                         key: 'Mac15,7',
                         count: 1
                     }
-                }"/>
+                }
+            ]" :key="card.title">
+                <homeLargeCard :card="card"/>
             </div>
             <div style="margin-left: -2em;"><p style="width: 2em; margin-left: 0;"></p></div>
         </div>

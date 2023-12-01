@@ -6,42 +6,42 @@
         <div class="cardWrapper">
             <div class="recentDeviceCard" v-for="card in [
                 {
-                    name: 'iOS',
+                    title: 'iOS',
                     image: {
                         type: 'images',
                         key: 'ios17'
                     }
                 },
                 {
-                    name: 'iPadOS',
+                    title: 'iPadOS',
                     image: {
                         type: 'images',
                         key: 'ipados17'
                     }
                 },
                 {
-                    name: 'macOS',
+                    title: 'macOS',
                     image: {
                         type: 'images',
                         key: 'Sonoma'
                     }
                 },
                 {
-                    name: 'tvOS',
+                    title: 'tvOS',
                     image: {
                         type: 'device',
                         key: 'AppleTV14,1'
                     }
                 },
                 {
-                    name: 'watchOS',
+                    title: 'watchOS',
                     image: {
                         type: 'device',
                         key: 'Watch7,1'
                     }
                 },
                 {
-                    name: 'visionOS',
+                    title: 'visionOS',
                     image: {
                         type: 'device',
                         key: 'RealityDevice14,1'

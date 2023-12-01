@@ -1,17 +1,17 @@
 <template>
     <div class="wrapper">
         <div class="img">
-            <picture v-for="i in Math.min(3, recentDevice.image.count)" :key="i">
-                <source :srcset="`https://img.appledb.dev/${recentDevice.image.type}@256/${recentDevice.image.key}/${i-1}.avif`" type="image/avif">
-                <source :srcset="`https://img.appledb.dev/${recentDevice.image.type}@256/${recentDevice.image.key}/${i-1}.webp`" type="image/webp">
-                <img :src="`https://img.appledb.dev/${recentDevice.image.type}@256/${recentDevice.image.key}/${i-1}.png`">
+            <picture v-for="i in card.image.count || 1" :key="i">
+                <source :srcset="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${i-1}.avif`" type="image/avif">
+                <source :srcset="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${i-1}.webp`" type="image/webp">
+                <img :src="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${i-1}.png`">
             </picture>
         </div>
         <div class="text">
-            <h1>{{ recentDevice.name }}</h1>
+            <h1>{{ card.title }}</h1>
         </div>
         <div class="subtext">
-            Released on Sep 22, 2023
+            {{ card.text }}
         </div>
     </div>
 </template>
@@ -74,7 +74,7 @@
 <script>
 export default {
     props: {
-        recentDevice: Object
+        card: Object
     }
 }
 </script>

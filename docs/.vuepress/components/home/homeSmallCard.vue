@@ -7,7 +7,7 @@
                 <img :src="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/0.png`">
             </picture>
         </div>
-        <div class="text">{{ card.name }}</div>
+        <div class="text">{{ card.title }}</div>
     </div>
 </template>
 
