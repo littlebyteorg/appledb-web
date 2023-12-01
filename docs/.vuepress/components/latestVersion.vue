@@ -7,7 +7,7 @@
                         <picture v-for="property in [getProperties(version)]" :key="property">
                             <source :srcset="`https://img.appledb.dev/images@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.avif`" type="image/avif">
                             <source :srcset="`https://img.appledb.dev/images@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.webp`" type="image/webp">
-                            <img :src="`https://img.appledb.dev/images@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.png`" style="height: 7em; padding: 2em; padding-right: 3em;">
+                            <img :src="`https://img.appledb.dev/images@preview/${property.image}_firmware_release${isDarkMode && property.dark ? '_dark' : ''}/0.png`">
                         </picture>
                     </div>
                     <div class="text">
@@ -179,6 +179,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+img {
+    height: 7em; padding: 2em; padding-right: 3em;
+}
+
 a {
     color: var(--c-text);
 
@@ -223,14 +227,9 @@ a {
 }
 
 .fwBlock {
-    .title {
-        font-weight: 700;
-        font-size: 1.5em;
-    }
-
     .versionBlock {
         display: flex;
-        flex-wrap: wrap;
+        flex-flow: row wrap;
         justify-content: space-around;
         padding-top: 1em;
 
@@ -254,38 +253,33 @@ a {
     }
 }
 
-.releasefw--flexContainer {
-    display: flex;
-    flex-wrap: wrap;
-    padding-top: 1em;
-    justify-content: space-around;
-}
-
-.releasefw--flexImg {
-    width: 16.5em;
-    max-height: 11em;
-    text-align: center;
-}
-
-.releasefw--flexText {
-    padding-bottom: 1em;
-    border-bottom: 1px solid var(--c-border);
-    flex-grow: 2;
-}
-
-.releasefw--title {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-block-end: 0;
-}
-
-@media (max-width: 866px) {
-    .releasefw--flexContainer {
-        flex-direction: column;
+@media screen and (max-width: 800px) {
+    img {
+        height: 4em;
     }
 
-    .releasefw--flexImg {
-        width: 100%;
+
+    .fwBlock .versionBlock {
+        flex-wrap: nowrap;
+
+        .img {
+            width: 8em;
+        }
+
+        .text {
+            width: calc(100% - 8em);
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    img {
+        padding-inline: 0em;
+        padding-right: 1em;
+    }
+
+    .fwBlock .versionBlock .img {
+        width: 6em;
     }
 }
 </style>
