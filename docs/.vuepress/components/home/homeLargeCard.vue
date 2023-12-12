@@ -2,9 +2,9 @@
     <div class="wrapper">
         <div class="img">
             <picture v-for="i in card.image.count || 1" :key="i">
-                <source :srcset="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${i-1}.avif`" type="image/avif">
-                <source :srcset="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${i-1}.webp`" type="image/webp">
-                <img :src="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${i-1}.png`">
+                <source :srcset="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${i-1}${isDarkMode && card.image.dark ? '_dark' : ''}.avif`" type="image/avif">
+                <source :srcset="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${i-1}${isDarkMode && card.image.dark ? '_dark' : ''}.webp`" type="image/webp">
+                <img :src="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${i-1}${isDarkMode && card.image.dark ? '_dark' : ''}.png`">
             </picture>
         </div>
         <div class="text">
@@ -22,7 +22,7 @@
     flex-direction: column;
     gap: 0;
     min-width: 16em;
-    max-width: 16em;
+    max-width: 18em;
     padding: 1.7em;
     border-radius: 1em;
 
@@ -72,9 +72,16 @@
 </style>
 
 <script>
+import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
+
 export default {
     props: {
         card: Object
+    },
+    data() {
+        return {
+            isDarkMode: useDarkMode()
+        }
     }
 }
 </script>

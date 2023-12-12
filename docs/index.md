@@ -8,8 +8,8 @@ hero: false
 <homeTitle/>
 
 <homeDeviceTypeItemWrapper/>
-<!--<homeRecentDeviceCardWrapper/>
-<homeOsTypeCardWrapper/>-->
+<homeRecentDeviceCardWrapper/>
+<!--<homeOsTypeCardWrapper/>-->
 
 <div style="margin-bottom: 1em;"/>
 

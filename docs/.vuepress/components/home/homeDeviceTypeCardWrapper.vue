@@ -4,9 +4,9 @@
         <div class="overlay right"></div>
         <div class="cardWrapper">
             <div class="deviceTypeCard" v-for="deviceTypeCard in deviceTypeCards" :key="deviceTypeCard.name">
-                <a v-if="deviceTypeCard.link" :href="deviceTypeCard.link">
+                <router-link v-if="deviceTypeCard.link" :to="deviceTypeCard.link">
                     <homeSmallCard :card="deviceTypeCard"/>
-                </a>
+                </router-link>
                 <homeSmallCard v-else :card="deviceTypeCard"/>
             </div>
             <div style="margin-left: -2em;"><p style="width: 2em; margin-left: 0;"></p></div>
