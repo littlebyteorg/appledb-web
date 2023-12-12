@@ -50,7 +50,7 @@ const fwChartPageArr = [
     path: '/firmware.html',
     typeArr: '*'
   },
-  {
+  /*{
     name: 'iOS Firmware Chart',
     description: 'iOS Firmware Chart',
     path: '/firmware/iOS.html',
@@ -91,7 +91,7 @@ const fwChartPageArr = [
       "Virtual Machine",
       "Xserve"
     ]
-  }
+  }*/
 ]
 
 for (const fwChartPage of fwChartPageArr) {
