@@ -3,6 +3,7 @@ title: AppleDB
 description: A database of Apple software and devices.
 home: true
 hero: false
+extrawide: true
 ---
 
 <homeTitle/>

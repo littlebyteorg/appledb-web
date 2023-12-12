@@ -18,6 +18,7 @@
 
 <style lang="scss" scoped>
 .wrapper {
+    position: static;
     display: flex;
     flex-direction: column;
     gap: 0;

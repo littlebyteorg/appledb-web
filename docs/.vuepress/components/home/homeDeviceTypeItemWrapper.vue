@@ -43,33 +43,12 @@ export default {
     width: 100%;
 }
 
-.overlay {
-    &.right {
-        background: linear-gradient(90deg, #00000000, var(--c-bg));
-        max-width: 2em;
-        right: calc(max(2rem, calc(calc(100vw - var(--homepage-width)) / 2)) - 2em);
-    }
-
-    &.left {
-        background: linear-gradient(270deg, #00000000, var(--c-bg));
-        max-width: 2em;
-        left: calc(max(2rem, calc(calc(100vw - var(--homepage-width)) / 2)) - 2em);
-    }
-
-    height: 12em;
-    position: absolute;
-    width: 100%;
-    z-index: 99999;
-}
-
 .cardWrapper {
     display: flex;
     overflow-x: scroll;
     gap: 2em;
     padding-block: .5em 1.5em;
-    padding-inline:
-        calc(50% - (var(--content-width) / 2) - 6em)
-        calc(50% - (var(--content-width) / 2) - 8em);
+    padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 4em);
 }
 
 a {
