@@ -5,9 +5,9 @@
         <div class="cardWrapper">
             <div class="deviceTypeCard" v-for="deviceTypeCard in deviceTypeCards" :key="deviceTypeCard.name">
                 <a v-if="deviceTypeCard.link" :href="deviceTypeCard.link">
-                    <homeSmallCard :card="deviceTypeCard"/>
+                    <homeSmallItem :card="deviceTypeCard"/>
                 </a>
-                <homeSmallCard v-else :card="deviceTypeCard"/>
+                <homeSmallItem v-else :card="deviceTypeCard"/>
             </div>
             <div style="margin-left: -2em;"><p style="width: 2em; margin-left: 0;"></p></div>
         </div>

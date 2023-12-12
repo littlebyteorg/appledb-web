@@ -7,7 +7,7 @@ hero: false
 
 <homeTitle/>
 
-<homeDeviceTypeCardWrapper/>
+<homeDeviceTypeItemWrapper/>
 <!--<homeRecentDeviceCardWrapper/>
 <homeOsTypeCardWrapper/>-->
 

@@ -20,16 +20,6 @@
     width: 8em;
     padding-block: 1.5em;
     border-radius: 1em;
-
-    //background: var(--c-container-bg);
-    //box-shadow: 2px 4px 12px rgba(0,0,0,.08);
-    transition: all .2s cubic-bezier(0,0,.5,1);
-
-    &:hover {
-        background: var(--c-container-bg);
-        box-shadow: 2px 4px 16px rgba(0,0,0,.16);
-        transform: scale(1.02);
-    }
 }
 
 .text {
