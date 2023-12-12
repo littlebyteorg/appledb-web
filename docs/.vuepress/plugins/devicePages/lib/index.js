@@ -7,8 +7,8 @@ module.exports = function() {
   return {
     name: 'device-pages',
     async onInitialized(app) {
-      let mainList = pageList.find(x => x.frontmatter.mainList)
-      app.pages.push(await createPage(app, mainList))
+      let mainListArr = pageList.filter(x => x.frontmatter.mainList)
+      for (const mainList of mainListArr) app.pages.push(await createPage(app, mainList))
 
       const pArr = [
         './docs/.vuepress/public/pageData',
