@@ -163,7 +163,7 @@ export default {
             var firstDeviceObj = {}
 
             const typeArr = Array.from(new Set(groupList.map(x => x.type)))
-
+            
             for (const g of groupList) {
                 if (tempTypeArr.includes(g.type) || g.img.count < 1) continue
                 tempTypeArr.push(g.type)
@@ -196,6 +196,7 @@ export default {
 
             const overrides = { 
                 AirPods: "AirPods1,1",
+                'Apple TV': "AppleTV14,1"
             }
             
             for (const o in overrides) {
