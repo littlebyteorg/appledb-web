@@ -35,6 +35,7 @@ export default {
 .wrapper {
     margin-left: -2em;
     margin-right: -2em;
+    max-width: 100vw;
 }
 
 .overlay {
