@@ -50,7 +50,7 @@ const fwChartPageArr = [
     path: '/firmware.html',
     typeArr: '*'
   },
-  /*{
+  {
     name: 'iOS Firmware Chart',
     description: 'iOS Firmware Chart',
     path: '/firmware/iOS.html',
@@ -58,7 +58,7 @@ const fwChartPageArr = [
       'iPhone',
       'iPod touch'
     ]
-  },
+  }/*,
   {
     name: 'iPadOS Firmware Chart',
     description: 'iPadOS Firmware Chart',
