@@ -69,7 +69,7 @@ const fwChartPageArr = [
       'iPad Pro',
       'iPad Air'
     ]
-  }*/,
+  },
   {
     name: 'macOS Firmware Chart',
     description: 'macOS Firmware Chart',
@@ -91,7 +91,7 @@ const fwChartPageArr = [
       "Virtual Machine",
       "Xserve"
     ]
-  }
+  }*/
 ]
 
 for (const fwChartPage of fwChartPageArr) {
