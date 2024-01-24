@@ -140,7 +140,7 @@ for (const jb of jbList) {
       return devList
     }
 
-    const compat = function() {
+    const compat = function(devList) {
       const compat = jb.compatibility
       let compatStrObj = {
         compatible: strObj.compatibleStr,
@@ -148,7 +148,6 @@ for (const jb of jbList) {
         na: strObj.naStr
       }
       var devObj = {}
-      let devList = deviceList()
       if (!devList) return devObj
       devList.map(function(x) {
         if (!x.hasOwnProperty('devices')) return
@@ -179,6 +178,20 @@ for (const jb of jbList) {
       return devObj
     }
   
+    let devList = deviceList()
+    const compatList = compat(devList)
+
+    // remove deviceMap from devList, we no longer need it and it makes files too big
+    if (devList) {
+      devList = devList.map(device => {
+        device.firmwares = device.firmwares.map(fw => {
+          const {deviceMap: _, ...newFw} = fw;
+          return newFw
+        })
+        return device
+      })
+    }
+
     pageList.push({
       path: url,
       frontmatter: {
@@ -186,8 +199,8 @@ for (const jb of jbList) {
         description: `Compatible devices and software versions for ${jb.name}`,
         chartType: 'jailbreak',
         infoData: infoData,
-        deviceList: deviceList(),
-        compat: compat(),
+        deviceList: devList,
+        compat: compatList,
         redirect_from: redirects,
         sidebar: false,
         editLink: false,
