@@ -91,6 +91,30 @@ const fwChartPageArr = [
       "Virtual Machine",
       "Xserve"
     ]
+  },
+  {
+    name: 'tvOS Firmware Chart',
+    description: 'tvOS Firmware Chart',
+    path: '/firmware/tvOS.html',
+    typeArr: [
+      "Apple TV"
+    ]
+  },
+  {
+    name: 'watchOS Firmware Chart',
+    description: 'watchOS Firmware Chart',
+    path: '/firmware/watchOS.html',
+    typeArr: [
+      "Apple Watch"
+    ]
+  },
+  {
+    name: 'visionOS Firmware Chart',
+    description: 'visionOS Firmware Chart',
+    path: '/firmware/visionOS.html',
+    typeArr: [
+      "Headset"
+    ]
   }
 ]
 

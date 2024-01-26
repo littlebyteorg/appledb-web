@@ -40,6 +40,7 @@
     img {
         max-height: 5em;
     }
+    height: 5em;
 
     text-align: center;
 }

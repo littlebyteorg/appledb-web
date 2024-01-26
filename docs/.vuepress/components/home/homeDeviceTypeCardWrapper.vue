@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper" v-if="deviceTypeCards.length">
-        <div class="overlay left"></div>
-        <div class="overlay right"></div>
+        <!--<div class="overlay left"></div>
+        <div class="overlay right"></div>-->
         <div class="cardWrapper">
             <div class="deviceTypeCard" v-for="deviceTypeCard in deviceTypeCards" :key="deviceTypeCard.name">
                 <router-link v-if="deviceTypeCard.link" :to="deviceTypeCard.link">

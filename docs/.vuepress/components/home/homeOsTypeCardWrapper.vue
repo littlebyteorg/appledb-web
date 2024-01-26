@@ -1,54 +1,14 @@
 <template>
     <h1>Firmware versions</h1>
     <div class="wrapper">
-        <div class="overlay left"></div>
-        <div class="overlay right"></div>
+        <!--<div class="overlay left"></div>
+        <div class="overlay right"></div>-->
         <div class="cardWrapper">
-            <div class="recentDeviceCard" v-for="card in [
-                {
-                    title: 'iOS',
-                    image: {
-                        type: 'images',
-                        key: 'ios17'
-                    }
-                },
-                {
-                    title: 'iPadOS',
-                    image: {
-                        type: 'images',
-                        key: 'ipados17'
-                    }
-                },
-                {
-                    title: 'macOS',
-                    image: {
-                        type: 'images',
-                        key: 'Sonoma'
-                    }
-                },
-                {
-                    title: 'tvOS',
-                    image: {
-                        type: 'device',
-                        key: 'AppleTV14,1'
-                    }
-                },
-                {
-                    title: 'watchOS',
-                    image: {
-                        type: 'device',
-                        key: 'Watch7,1'
-                    }
-                },
-                {
-                    title: 'visionOS',
-                    image: {
-                        type: 'device',
-                        key: 'RealityDevice14,1'
-                    }
-                }
-            ]" :key="card.name">
-                <homeSmallCard :card="card"/>
+            <div class="recentDeviceCard" v-for="card in osTypeCards" :key="card.name">
+                <router-link v-if="card.link" :to="card.link">
+                    <homeSmallCard :card="card"/>
+                </router-link>
+                <homeSmallCard v-else :card="card"/>
             </div>
             <div style="margin-left: -2em;"><p style="width: 2em; margin-left: 0;"></p></div>
         </div>
@@ -57,7 +17,60 @@
 
 <script>
 export default {
-
+    data() {
+        return {
+            osTypeCards: [
+                {
+                    title: 'iOS',
+                    link: '/firmware/iOS.html',
+                    image: {
+                        type: 'images',
+                        key: 'ios17'
+                    }
+                },
+                {
+                    title: 'iPadOS',
+                    link: '/firmware/iPadOS.html',
+                    image: {
+                        type: 'images',
+                        key: 'ipados17'
+                    }
+                },
+                {
+                    title: 'macOS',
+                    link: '/firmware/macOS.html',
+                    image: {
+                        type: 'images',
+                        key: 'Sonoma'
+                    }
+                },
+                {
+                    title: 'tvOS',
+                    link: '/firmware/tvOS.html',
+                    image: {
+                        type: 'device',
+                        key: 'AppleTV14,1'
+                    }
+                },
+                {
+                    title: 'watchOS',
+                    link: '/firmware/watchOS.html',
+                    image: {
+                        type: 'device',
+                        key: 'Watch7,1'
+                    }
+                },
+                {
+                    title: 'visionOS',
+                    link: '/firmware/visionOS.html',
+                    image: {
+                        type: 'device',
+                        key: 'RealityDevice14,1'
+                    }
+                }
+            ]
+        }
+    },
 }
 </script>
 
@@ -78,7 +91,7 @@ export default {
     &.left {
         background: linear-gradient(270deg, #00000000, var(--c-bg));
         max-width: 2em;
-        left: calc(max(2rem, calc(calc(100vw - var(--homepage-width)) / 2)) - 2em);
+        left: calc(max(2rem, calc(calc(100vw - var(--homepage-width)) / 2)) - 4em);
     }
 
     height: 21em;
