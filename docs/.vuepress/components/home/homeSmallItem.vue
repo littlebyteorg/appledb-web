@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div :class="['wrapper',index == 0 ? 'first' : 'next']">
         <div class="img">
             <picture>
                 <source :srcset="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/0.avif`" type="image/avif">
@@ -17,9 +17,22 @@
     display: flex;
     flex-direction: column;
     gap: 0;
-    width: 8em;
     padding-block: 1.5em;
     border-radius: 1em;
+    transition: all .2s cubic-bezier(0,0,.5,1);
+    width: 10em;
+    margin-inline: -1em;
+
+    &:hover {
+        background: var(--c-container-bg);
+        box-shadow: 2px 4px 12px rgba(0,0,0,.08);
+        transform: scale(1.02);
+        margin-inline: -.5em .5em;
+
+        &.first {
+            margin-left: 0em;
+        }
+    }
 }
 
 .text {
@@ -32,6 +45,7 @@
     img {
         max-height: 5em;
     }
+    height: 5em;
 
     text-align: center;
 }
@@ -40,7 +54,8 @@
 <script>
 export default {
     props: {
-        card: Object
+        card: Object,
+        index: Number
     }
 }
 </script>

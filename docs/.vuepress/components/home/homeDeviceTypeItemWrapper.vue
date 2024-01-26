@@ -3,9 +3,9 @@
         <!--<div class="overlay left"></div>
         <div class="overlay right"></div>-->
         <div class="cardWrapper">
-            <div class="deviceTypeCard" v-for="deviceTypeCard in deviceTypeCards" :key="deviceTypeCard.name">
+            <div class="deviceTypeCard" v-for="(deviceTypeCard, index) in deviceTypeCards" :key="deviceTypeCard.name">
                 <a v-if="deviceTypeCard.link" :href="deviceTypeCard.link">
-                    <homeSmallItem :card="deviceTypeCard"/>
+                    <homeSmallItem :card="deviceTypeCard" :index="index"/>
                 </a>
                 <homeSmallItem v-else :card="deviceTypeCard"/>
             </div>
@@ -39,7 +39,7 @@ export default {
 
 .wrapper {
     position: absolute;
-    left: 0;
+    left: 0em;
     width: 100%;
 }
 
@@ -49,6 +49,11 @@ export default {
     gap: 2em;
     padding-block: .5em 1.5em;
     padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 4em);
+    transition: width .2s cubic-bezier(0,0,.5,1), margin  .2s cubic-bezier(0,0,.5,1);
+
+    &:hover {
+        margin-left: -1em;
+    }
 }
 
 a {
