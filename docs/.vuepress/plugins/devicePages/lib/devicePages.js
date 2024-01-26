@@ -58,7 +58,7 @@ const fwChartPageArr = [
       'iPhone',
       'iPod touch'
     ]
-  }/*,
+  },
   {
     name: 'iPadOS Firmware Chart',
     description: 'iPadOS Firmware Chart',
@@ -91,7 +91,7 @@ const fwChartPageArr = [
       "Virtual Machine",
       "Xserve"
     ]
-  }*/
+  }
 ]
 
 for (const fwChartPage of fwChartPageArr) {
