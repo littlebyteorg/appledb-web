@@ -22,12 +22,6 @@
     transition: all .2s cubic-bezier(0,0,.5,1);
     width: 10em;
     margin-inline: -.5em;
-
-    &:hover {
-        background: var(--c-container-bg);
-        box-shadow: 2px 4px 12px rgba(0,0,0,.08);
-        transform: scale(1.02);
-    }
 }
 
 .text {
@@ -46,6 +40,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media screen and (min-width: 801px) {
+    .wrapper:hover {
+        background: var(--c-container-bg);
+        box-shadow: 2px 4px 12px rgba(0,0,0,.08);
+        transform: scale(1.02);
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .wrapper {
+        width: 8em;
+        margin-inline: 0em;
+    }
 }
 </style>
 
