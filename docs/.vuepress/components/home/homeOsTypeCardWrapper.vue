@@ -13,6 +13,7 @@
             <div style="margin-left: -2em;"><p style="width: 2em; margin-left: 0;"></p></div>
         </div>
     </div>
+    <div class="space"></div>
 </template>
 
 <script>
@@ -75,13 +76,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-    margin-left: -2em;
-    margin-right: -2em;
-    margin-top: .5em;
+.space {
+    height: 12em;
 }
 
-.overlay {
+.wrapper {
+    position: absolute;
+    left: 0em;
+    width: 100%;
+}
+
+/*.overlay {
     &.right {
         background: linear-gradient(90deg, #00000000, var(--c-bg));
         max-width: 2em;
@@ -98,20 +103,14 @@ export default {
     position: absolute;
     width: 100%;
     z-index: 99999;
-}
+}*/
 
 .cardWrapper {
     display: flex;
     overflow-x: scroll;
-    gap: 2em;
+    gap: 5em;
     padding-block: .5em 1.5em;
-    padding-inline: .5em;
-    padding-left: 2em;
-}
-
-.recentDeviceCard {
-    margin-left: 2em;
-    margin-right: 2em;
+    padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 4em);
 }
 
 a {

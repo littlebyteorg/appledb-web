@@ -13,10 +13,11 @@
 
 <style lang="scss" scoped>
 .wrapper {
+    position: static;
     display: flex;
     flex-direction: column;
     gap: 0;
-    min-width: 8em;
+    min-width: 4em;
     padding: 1.5em;
     border-radius: 1em;
 
@@ -39,7 +40,11 @@
 .img {
     img {
         max-height: 5em;
+        max-width: 5em;
     }
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 5em;
 
     text-align: center;
