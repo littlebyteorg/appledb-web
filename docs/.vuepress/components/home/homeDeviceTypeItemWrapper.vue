@@ -49,11 +49,6 @@ export default {
     gap: 2em;
     padding-block: .5em 1.5em;
     padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 4em);
-    transition: width .2s cubic-bezier(0,0,.5,1), margin  .2s cubic-bezier(0,0,.5,1);
-
-    &:hover {
-        margin-left: -1em;
-    }
 }
 
 a {

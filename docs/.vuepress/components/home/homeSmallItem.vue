@@ -21,17 +21,12 @@
     border-radius: 1em;
     transition: all .2s cubic-bezier(0,0,.5,1);
     width: 10em;
-    margin-inline: -1em;
+    margin-inline: -.5em;
 
     &:hover {
         background: var(--c-container-bg);
         box-shadow: 2px 4px 12px rgba(0,0,0,.08);
         transform: scale(1.02);
-        margin-inline: -.5em .5em;
-
-        &.first {
-            margin-left: 0em;
-        }
     }
 }
 
