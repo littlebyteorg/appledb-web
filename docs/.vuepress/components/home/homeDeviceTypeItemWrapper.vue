@@ -45,14 +45,40 @@ export default {
 
 .cardWrapper {
     display: flex;
+    flex-direction: row;
     overflow-x: scroll;
     gap: 2em;
     padding-block: .5em 1.5em;
-    padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 4em);
+    padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 2em);
 }
 
 a {
     color: var(--c-text);
     &:hover { text-decoration: none; }
+}
+
+@media screen and (max-width: 800px) {
+    .cardWrapper {
+        gap: 1em;
+    }
+    /*.wrapper {
+        position: static;
+        width: 100%;
+    }
+
+    .space {
+        height: 0;
+    }
+
+    .cardWrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        padding-inline: 2em;
+        margin-inline: -1em;
+
+        .deviceTypeCard {
+            margin: auto;
+        }
+    }*/
 }
 </style>

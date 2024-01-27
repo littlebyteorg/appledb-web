@@ -43,6 +43,9 @@
     height: 5em;
 
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
 

@@ -110,7 +110,7 @@ export default {
     overflow-x: scroll;
     gap: 5em;
     padding-block: .5em 1.5em;
-    padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 4em);
+    padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 2em);
 }
 
 a {

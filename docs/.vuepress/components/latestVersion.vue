@@ -13,7 +13,7 @@
                     <div class="text">
                         <h2 class="versionString">{{ version.osStr }} {{ version.version }}</h2>
                         <div class="subtitle">
-                            <div>{{ version.released }} — <code style="background: none; padding-inline: 2px; font-size: 1em;">{{ version.build }}</code></div>
+                            <div>{{ version.released }}<!-- — <code style="background: none; padding-inline: 2px; font-size: 1em;">{{ version.build }}</code>--></div>
                             <div class="tag" style="color: #ab47bc;" v-if="version.beta">beta</div>
                             <div class="tag" style="color: #ab47bc;" v-else-if="version.rc">rc</div>
                             <div class="tag" style="color: #f0ad05;" v-else-if="version.internal">internal</div>
@@ -266,12 +266,21 @@ a {
         padding-right: 1em;
     }
 
-
     .fwBlock .versionBlock {
         padding-top: .5em;
+        margin-left: -.5em;
+
+        h2 {
+            font-size: 1.6em;
+        }
+
+        .subtitle {
+            margin-top: .2em;
+        }
 
         .img {
             width: 7em;
+            margin-right: -.5em;
         }
 
         .text {
