@@ -2,6 +2,7 @@
     <template v-if="!fm.mainList">
         <deviceTitle :device="fm.device" :title="fm.title" :img="fm.img"/>
         <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
+        <newDeviceInfo :device="fm.device"/>
         <deviceInfo :device="fm.device" :extraInfo="fm.extraInfo"/>
         <groupedOrRelatedDeviceWrapper v-if="!fm.hideChildren" :device="fm.device" :img="fm.img"/>
     </template>

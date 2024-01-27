@@ -90,9 +90,9 @@ export default {
     display: flex;
     flex-flow: row wrap;
     height: 100%;
-
+    
     .tabTitleWrapper {
-        margin: -.5em 0 0 -.5em;
+        margin: -.5em 0 0 -1em;
         border-right: 1px solid rgba(0,0,0,0.1);
 
         .title {
@@ -101,15 +101,16 @@ export default {
 
         .tabTitle {
             padding: .5em 1em;
-            margin: 0 1em .3em 0;
-            border-radius: 3px;
-            transition: 100ms ease-in-out;
+            margin: 0em 1em .3em 0;
+            border-radius: 4px;
+            transition: all 50ms ease-in-out;
             cursor: pointer;
-
-            &:hover, &.active {
-                background: var(--c-text-lightest);
-                color: var(--c-bg);
-                opacity: 1 !important;
+            
+            &.active {
+                background: var(--c-bg-light);
+                font-weight: 550;
+                box-shadow: inset 1px 1px 4px rgba(0,0,0,0.1);
+                opacity: 1;
             }
         }
     }
@@ -165,7 +166,7 @@ export default {
         .tabTitleWrapper {
             border-bottom: 1px solid rgba(0,0,0,0.1);
             border-right: none;
-            margin: -.25em -.5em 1em -.5em;
+            margin: -.25em -.5em 1em -0.6em;
             padding-bottom: .75em;
 
             .title {
@@ -175,17 +176,15 @@ export default {
             }
 
             .tabTitle {
-                margin: .25em;
+                margin-block: .25em;
                 display: inline-block;
-                
-                background: var(--c-text-lightest);
-                color: var(--c-bg);
+                box-shadow: 1px 1px 4px rgba(0,0,0,0.1);
                 opacity: 0.7;
             }
         }
 
         .tabContentWrapper {
-            margin-left: 0;
+            margin-left: -4px;
             width: 100%;
         }
     }

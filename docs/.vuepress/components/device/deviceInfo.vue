@@ -284,12 +284,9 @@ export default {
     }
 
     .box {
-        padding: 1.5em;
-        background: var(--c-border);
-        border-radius: 4px;
+        padding: .5em;
+        border-radius: 10px;
         display: block;
-        box-shadow: 0px 2px 4px rgba(0,0,0,0.05);
-        border: 1px solid rgba(0,0,0,0.1);
         line-height: 1.4em;
         transition: background 150ms ease-in-out;
 
@@ -349,7 +346,7 @@ export default {
             width: 100%;
 
             .propertyWrapper {
-                margin: 1.2em;
+                margin-block: 1.2em;
                 
                 &:first-of-type {
                     margin-top: 1.2em;
