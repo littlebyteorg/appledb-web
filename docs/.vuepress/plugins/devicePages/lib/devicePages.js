@@ -43,7 +43,7 @@ for (const i of iosList.map(x => Object.keys(x.deviceMap))) devListFromFw.push(.
 devListFromFw = Array.from(new Set(devListFromFw)).sort()
 const devArr = devListFromFw.map(x => deviceList[x])
 
-const fwChartPageArr = [
+let fwChartPageArr = [
   {
     name: 'Firmware Chart',
     description: 'AppleDB Firmware Chart',
@@ -117,6 +117,14 @@ const fwChartPageArr = [
     ]
   }
 ]
+
+if (process.env.npm_config_argv) {
+  let args = JSON.parse(process.env.npm_config_argv).original
+  if (process.env.npm_lifecycle_script && !args.filter(x => x.includes('limitfw=')).length) args = process.env.npm_lifecycle_script.split(' ')
+  if (args.filter(x => x.includes('limitfw=')).length) {
+    fwChartPageArr = [fwChartPageArr[0]]
+  }
+}
 
 for (const fwChartPage of fwChartPageArr) {
   const fwChartPageDevArr = fwChartPage.typeArr === '*' ? devArr : devArr.filter(x => fwChartPage.typeArr.includes(x.type))
