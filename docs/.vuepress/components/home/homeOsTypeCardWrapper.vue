@@ -20,58 +20,16 @@
 export default {
     data() {
         return {
-            osTypeCards: [
-                {
-                    title: 'iOS',
-                    link: '/firmware/iOS.html',
-                    image: {
-                        type: 'images',
-                        key: 'ios17'
-                    }
-                },
-                {
-                    title: 'iPadOS',
-                    link: '/firmware/iPadOS.html',
-                    image: {
-                        type: 'images',
-                        key: 'ipados17'
-                    }
-                },
-                {
-                    title: 'macOS',
-                    link: '/firmware/macOS.html',
-                    image: {
-                        type: 'images',
-                        key: 'Sonoma'
-                    }
-                },
-                {
-                    title: 'tvOS',
-                    link: '/firmware/tvOS.html',
-                    image: {
-                        type: 'device',
-                        key: 'AppleTV14,1'
-                    }
-                },
-                {
-                    title: 'watchOS',
-                    link: '/firmware/watchOS.html',
-                    image: {
-                        type: 'device',
-                        key: 'Watch7,1'
-                    }
-                },
-                {
-                    title: 'visionOS',
-                    link: '/firmware/visionOS.html',
-                    image: {
-                        type: 'device',
-                        key: 'RealityDevice14,1'
-                    }
-                }
-            ]
+            osTypeCards: []
         }
     },
+    created() {
+        fetch("https://api.appledb.dev/appledb-web/homePage.json")
+            .then(response => response.json())
+            .then(data => {
+                this.osTypeCards = data.osTypeCardArray
+        })
+    }
 }
 </script>
 
