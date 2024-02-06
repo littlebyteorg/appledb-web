@@ -19,7 +19,10 @@ for (const d of Object.keys(deviceList).map(x => deviceList[x]).filter(x => {
       name: d.name,
       path: url,
       devArr: d,
-      grouped: false
+      grouped: false,
+      show: {
+        releaseType: ['release']
+      }
     })
   )
 }
@@ -33,7 +36,10 @@ for (const g of deviceGroups) {
       path: url,
       devArr: g.devices.map(x => deviceList[x]),
       grouped: true,
-      hideChildren: g.hideChildren
+      hideChildren: g.hideChildren,
+      show: {
+        releaseType: ['release']
+      }
     })
   )
 }
@@ -48,6 +54,9 @@ let fwChartPageArr = [
     name: 'Firmware Chart',
     description: 'AppleDB Firmware Chart',
     path: '/firmware.html',
+    show: {
+      releaseType: ['release','beta','internal']
+    },
     typeArr: '*'
   },
   {
@@ -115,6 +124,14 @@ let fwChartPageArr = [
     typeArr: [
       "Headset"
     ]
+  },
+  {
+    name: 'HomePod Software Firmware Chart',
+    description: 'HomePod Software Firmware Chart',
+    path: '/firmware/HomePod-Software.html',
+    typeArr: [
+      "HomePod"
+    ]
   }
 ]
 
@@ -135,6 +152,9 @@ for (const fwChartPage of fwChartPageArr) {
       description: fwChartPage.description,
       path: fwChartPage.path,
       devArr: fwChartPageDevArr,
+      show: fwChartPage.show || {
+        releaseType: ['release']
+      },
       grouped: true,
       mainList: true
     })

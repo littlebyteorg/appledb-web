@@ -185,6 +185,7 @@ export default {
         mainList: Boolean,
         hasFirmwares: Object,
         hasFirmwareFilters: Boolean,
+        show: Object,
         devOptions: Object
     },
     data() {
@@ -294,9 +295,9 @@ export default {
         if (!querySet.deviceFilter) this.options.filterDev = this.deviceFilter.map(x => x.value)
 
         if (!querySet.releaseBetaInternalFilter) {
-            if (this.mainList) {
-                this.options.showBeta = true
-                this.options.showInternal = true
+            if (this.show && this.show.releaseType) {
+                this.options.showBeta = this.show.releaseType.includes('beta')
+                this.options.showInternal = this.show.releaseType.includes('internal')
             } else if (!this.hasFirmwareFilters) {
                 this.options.showRelease = this.hasFirmwares.release
                 this.options.showBeta = this.hasFirmwares.beta

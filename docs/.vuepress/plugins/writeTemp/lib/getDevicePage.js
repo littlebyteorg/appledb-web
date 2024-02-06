@@ -30,6 +30,7 @@ module.exports = function(args) {
     const grouped = args.grouped
     const mainList = args.mainList
     const hideChildren = args.hideChildren
+    const show = args.show
     
     let devFwArr = iosList
     if (!mainList) devFwArr = devFwArr.filter(i => {
@@ -229,6 +230,7 @@ module.exports = function(args) {
             hideChildren: hideChildren,
             imgCount: imgCount,
             mainList: mainList,
+            show: show,
             noJb: (!(osStr.some(r => hasJbArr.includes(r))) && !mainList),
             jbCount: getVersionArr.map(x => x.jailbreakArr).flat().length,
             img: img,
