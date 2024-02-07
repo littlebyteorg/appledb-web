@@ -26,7 +26,11 @@
                 'margin-right': content.image.align == 'left' ? '1em' : '0em'
             }"
         >
-            <img :src="`https://img.appledb.dev/images@preview/${content.image.url}/0.png`">
+            <picture>
+                <source :srcset="`https://img.appledb.dev/images@preview/${content.image.url}/0.avif`" type="image/avif">
+                <source :srcset="`https://img.appledb.dev/images@preview/${content.image.url}/0.webp`" type="image/webp">
+                <img :src="`https://img.appledb.dev/images@preview/${content.image.url}/0.png`">
+            </picture>
         </div>
     </div>
 </template>
@@ -49,10 +53,13 @@ export default {
 
 .image {
     margin-top: .75em;
+    height: 5em;
+    width: 5em;
 
     img {
-        height: 5em;
-        width: 5em;
+        max-height: 5em;
+        max-width: 5em;
+        margin: auto;
     }
 }
 
