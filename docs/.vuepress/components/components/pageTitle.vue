@@ -53,13 +53,10 @@ export default {
 
 .image {
     margin-top: .75em;
-    height: 5em;
-    width: 5em;
 
     img {
         max-height: 5em;
         max-width: 5em;
-        margin: auto;
     }
 }
 
