@@ -48,11 +48,11 @@ pageList.push({
 
 let customTypeArr = {
     iPads: {
-        typeArr: ['iPad', 'iPad Pro',' iPad mini', 'iPad Air'],
+        typeArr: ['iPad', 'iPad Pro', 'iPad mini', 'iPad Air'],
         subtitle: ['Please select what model of iPad you have below.']
     },
     Macs: {
-        typeArr: ['MacBook', 'MacBook Air', 'MacBook Pro', 'iMac', 'Mac mini', 'Mac Studio', 'Mac Pro'],
+        typeArr: ['MacBook', 'MacBook Air', 'MacBook Pro', 'iMac', 'Mac mini', 'Mac Studio', 'Mac Pro', 'Xserve'],
         subtitle: ['Please select what model of Mac you have below.']
     },
     iPods: {
