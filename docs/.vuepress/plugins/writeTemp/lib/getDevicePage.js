@@ -202,8 +202,8 @@ module.exports = function(args) {
     })
 
     const hasFirmwares = {
-        release: getVersionArr.filter(x => !x.beta).length > 0,
-        beta: getVersionArr.filter(x => x.beta).length > 0,
+        release: getVersionArr.filter(x => !(x.beta || x.rc || x.internal)).length > 0,
+        beta: getVersionArr.filter(x => x.beta || x.rc).length > 0,
         internal: getVersionArr.filter(x => x.internal).length > 0
     }
 
