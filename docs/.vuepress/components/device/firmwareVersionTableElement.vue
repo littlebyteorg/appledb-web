@@ -33,7 +33,7 @@
                     <i class="fas fa-box-open" style="padding-left: 8px;"/>
                 </template>
                 <div style="padding-inline: .25em; display: inline-block;"></div>
-                <div v-if="showDots" :class="[
+                <div v-if="showDots || expanded" :class="[
                     fw.internal ? 'internal' : (
                         (fw.beta || fw.rc) ? 'beta' : 'release'
                     ),
@@ -46,6 +46,18 @@
                     ) }}
                     </span>
                 </div>
+                <span v-else-if="(fw.internal || fw.beta || fw.rc) && Object.keys(hasFirmwares).filter(x => hasFirmwares[x]).length == 1">
+                    <i
+                        style="margin-left: 0px; font-size: .4em;"
+                        :class="[
+                            fw.internal ? 'internal' : (
+                                (fw.beta || fw.rc) ? 'beta' : 'release'
+                            ),
+                            'fas',
+                            'fa-circle'
+                        ]">
+                    </i>
+                </span>
                 <div v-if="fw.rsr" class="releaseBetaInternalWrapper"><span>RSR</span></div>
                 <div class="signingStatus" :style="{
                     'display': options.showSigningStatus ? 'initial' : 'none'
@@ -158,6 +170,7 @@ export default {
         fw: Object,
         options: Object,
         showSingleDownloads: Boolean,
+        hasFirmwares: Object,
         showDots: Boolean
     },
     data() {
@@ -439,15 +452,15 @@ h5 {
 }
 
 .release {
-    color: #039be5;
+    color: #039be5 !important;
 }
 
 .beta {
-    color: #ab47bc;
+    color: #ab47bc !important;
 }
 
 .internal {
-    color: #f0ad05;
+    color: #f0ad05 !important;
 }
 
 .fa-circle {

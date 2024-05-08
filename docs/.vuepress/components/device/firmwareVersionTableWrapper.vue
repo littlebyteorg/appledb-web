@@ -157,6 +157,7 @@
         :fw="fw"
         :options="options"
         :showDots="(options.showRelease + options.showBeta + options.showInternal > 1) && hasFirmwareFilters"
+        :hasFirmwares="hasFirmwares"
         :showSingleDownloads="versionArr.map(x => x.filteredDownloads || x.filteredOtas).filter(x => x.length).length > 0 || versionArr.map(fw => fw.preinstalled.some(r => fw.devices.includes(r))).filter(x => x).length > 0"
     />
 
