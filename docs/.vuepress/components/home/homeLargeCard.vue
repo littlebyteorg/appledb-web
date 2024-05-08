@@ -22,8 +22,8 @@
     display: flex;
     flex-direction: column;
     gap: 0;
-    min-width: 16em;
-    max-width: 18em;
+
+    min-width: 14em;
     padding: 1.7em;
     border-radius: 1em;
 

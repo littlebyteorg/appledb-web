@@ -17,6 +17,7 @@
     display: flex;
     flex-direction: column;
     gap: 0;
+    
     min-width: 4em;
     padding: 1.5em;
     border-radius: 1em;
