@@ -9,7 +9,6 @@
                 </a>
                 <homeSmallItem v-else :card="deviceTypeCard"/>
             </div>
-            <div style="margin-left: -2em;"><p style="width: 2em; margin-left: 0;"></p></div>
         </div>
     </div>
     <div class="space"></div>
@@ -48,6 +47,7 @@ export default {
     flex-direction: row;
     overflow-x: scroll;
     gap: 2em;
+    justify-content: space-between;
     padding-block: .5em 1.5em;
     padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 2em);
 }

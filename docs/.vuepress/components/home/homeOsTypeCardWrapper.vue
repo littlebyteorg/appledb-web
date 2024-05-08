@@ -6,11 +6,10 @@
         <div class="cardWrapper">
             <div class="recentDeviceCard" v-for="card in osTypeCards" :key="card.name">
                 <router-link v-if="card.link" :to="card.link">
-                    <homeSmallCard :card="card"/>
+                    <homeSmallItem :card="card"/>
                 </router-link>
-                <homeSmallCard v-else :card="card"/>
+                <homeSmallItem v-else :card="card"/>
             </div>
-            <div style="margin-left: -2em;"><p style="width: 2em; margin-left: 0;"></p></div>
         </div>
     </div>
     <div class="space"></div>
@@ -28,6 +27,7 @@ export default {
             .then(response => response.json())
             .then(data => {
                 this.osTypeCards = data.osTypeCardArray
+                this.osTypeCards.push({ "title": "HomePod", "link": "/firmware/HomePod-Software.html", "image": { "type": "images", "key": "audio_firmware_release" } })
         })
     }
 }
@@ -67,6 +67,7 @@ export default {
     display: flex;
     overflow-x: scroll;
     gap: 5em;
+    justify-content: space-between;
     padding-block: .5em 1.5em;
     padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 2em);
 }
