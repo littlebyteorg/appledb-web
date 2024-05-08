@@ -33,13 +33,14 @@ export default {
                         identifier: x.identifier,
                         key: x.key,
                         released: x.released,
+                        imgKey: x.subgroup ? x.deviceKeys[0] : x.key,
                         imgCount: this.img.count,
                         imgDark: this.img.dark,
                         url: [
                             '/device',
-                            'identifier',
+                            x.subgroup ? '' : 'identifier',
                             x.key.replace(/ /g,'-')
-                        ].join('/') + '.html'
+                        ].filter(x => x).join('/') + '.html'
                     }
                 })
             }

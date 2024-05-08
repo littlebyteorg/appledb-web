@@ -165,7 +165,7 @@ export default {
             const typeArr = Array.from(new Set(groupList.map(x => x.type)))
             
             for (const g of groupList) {
-                if (tempTypeArr.includes(g.type) || g.img.count < 1) continue
+                if (tempTypeArr.includes(g.type) || !g.img || g.img.count < 1) continue
                 tempTypeArr.push(g.type)
                 firstDeviceObj[g.type] = {
                     key: g.devices[0],

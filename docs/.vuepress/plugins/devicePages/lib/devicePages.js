@@ -36,6 +36,7 @@ for (const g of deviceGroups) {
       path: url,
       devArr: g.devices.map(x => deviceList[x]),
       grouped: true,
+      subgroups: g.subgroups || [],
       hideChildren: g.hideChildren,
       show: {
         releaseType: ['release']

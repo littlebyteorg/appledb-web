@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { release } = require('os');
 const path = require('path');
 const p = './appledb/deviceGroupFiles'
 
@@ -30,10 +29,25 @@ deviceFiles = deviceFiles.map(function(x) {
 })
 var deviceGroupArr = [];
 
-for (const file in deviceFiles) {
-  const deviceGroup = require('..' + path.sep + deviceFiles[file])
+for (const file of deviceFiles) {
+  let deviceGroup = require('..' + path.sep + file)
   if (deviceGroup.key) deviceGroup.groupKey = deviceGroup.key
-  deviceGroupArr.push(deviceGroup);
+  
+  let toPushArray = [deviceGroup]
+
+  if (Object.keys(deviceGroup).includes('subgroups')) {
+    for (let subgroup of deviceGroup.subgroups) {
+      subgroup.hideFromDeviceList = true
+      toPushArray.push(subgroup)
+    }
+  }
+  
+  for (let p of toPushArray) {
+    if (p.key) p.groupKey = p.key
+    delete p.key
+  }
+
+  for (let p of toPushArray) deviceGroupArr.push(p)
 }
 
 const deviceObj = require('./deviceList')

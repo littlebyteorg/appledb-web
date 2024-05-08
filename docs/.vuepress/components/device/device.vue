@@ -3,7 +3,10 @@
         <deviceTitle :device="fm.device" :title="fm.title" :img="fm.img"/>
         <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
         <deviceInfo :device="fm.device" :extraInfo="fm.extraInfo"/>
-        <groupedOrRelatedDeviceWrapper v-if="!fm.hideChildren" :device="fm.device" :img="fm.img"/>
+        <template v-if="!fm.hideChildren">
+            <groupedOrRelatedDeviceWrapper v-if="fm.subgroups.length" :device="fm.subgroups" :img="fm.img"/>
+            <groupedOrRelatedDeviceWrapper v-else :device="fm.device" :img="fm.img"/>
+        </template>
     </template>
 
     <p v-if="fm.device[0].key == 'Polishing Cloth'">Dedicated to Aaron.</p>

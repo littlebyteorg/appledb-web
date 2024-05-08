@@ -80,7 +80,8 @@ new Array([...new Set(deviceGroups.map(x => x.type)), ...Object.keys(customTypeA
             chartType: 'deviceGroup',
             widePage: false,
             type: t,
-            group: deviceGroups.map(x => {
+            group: deviceGroups.filter(x => !x.hideFromDeviceList)
+            .map(x => {
                 const devArr = x.devices.map(y => deviceList[y])
                 
                 x.img = devArr[0].img
