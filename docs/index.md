@@ -9,7 +9,7 @@ extrawide: true
 <homeTitle/>
 
 <homeDeviceTypeItemWrapper/>
-<!--<homeRecentDeviceCardWrapper/>-->
+<homeRecentDeviceCardWrapper/>
 <homeOsTypeCardWrapper/>
 
 <div style="margin-bottom: 1em;"/>

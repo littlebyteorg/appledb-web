@@ -55,6 +55,9 @@
 }
 
 .img {
+    max-height: 10em;
+    overflow-y: hidden; 
+
     img {
         max-height: 8em;
         padding-block: 1em;
