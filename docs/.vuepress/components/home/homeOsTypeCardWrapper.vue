@@ -27,7 +27,6 @@ export default {
             .then(response => response.json())
             .then(data => {
                 this.osTypeCards = data.osTypeCardArray
-                this.osTypeCards.push({ "title": "HomePod", "link": "/firmware/HomePod-Software.html", "image": { "type": "images", "key": "audio_firmware_release" } })
         })
     }
 }
