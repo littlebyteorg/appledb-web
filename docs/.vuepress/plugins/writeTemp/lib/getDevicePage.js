@@ -178,10 +178,10 @@ module.exports = function(args) {
         }
     }*/
     var extraInfo = undefined
-    if (!mainList && devArr.map(x => x.info).filter(x => x).length > 0) {
+    /*if (!mainList && devArr.map(x => x.info).filter(x => x).length > 0) {
         extraInfo = {}
         for (const i of devArr) extraInfo[i.key] = i.info
-    }
+    }*/
 
     const img = devArr[0].img
 
