@@ -20,9 +20,7 @@ for (const d of Object.keys(deviceList).map(x => deviceList[x]).filter(x => {
       path: url,
       devArr: d,
       grouped: false,
-      show: {
-        releaseType: ['release']
-      }
+      show: {}
     })
   )
 }
@@ -38,9 +36,7 @@ for (const g of deviceGroups) {
       grouped: true,
       subgroups: g.subgroups || [],
       hideChildren: g.hideChildren,
-      show: {
-        releaseType: ['release']
-      }
+      show: {}
     })
   )
 }
@@ -153,9 +149,7 @@ for (const fwChartPage of fwChartPageArr) {
       description: fwChartPage.description,
       path: fwChartPage.path,
       devArr: fwChartPageDevArr,
-      show: fwChartPage.show || {
-        releaseType: ['release']
-      },
+      show: fwChartPage.show,
       grouped: true,
       mainList: true
     })

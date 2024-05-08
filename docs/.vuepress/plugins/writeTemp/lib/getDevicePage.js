@@ -213,6 +213,8 @@ module.exports = function(args) {
         internal: getVersionArr.filter(x => x.internal).length > 0
     }
 
+    const hasFirmwareFilters = Object.keys(hasFirmwares).map(x => hasFirmwares[x]).reduce((a,b) => a + b) > 1
+
     return {
         path: devPath,
         noAds: true,
@@ -231,7 +233,7 @@ module.exports = function(args) {
                 return 0
             }),
             hasFirmwares: hasFirmwares,
-            hasFirmwareFilters: Object.keys(hasFirmwares).map(x => hasFirmwares[x]).reduce((a,b) => a + b) > 1,
+            hasFirmwareFilters: hasFirmwareFilters,
             grouped: grouped,
             subgroups: subgroups.map(sg => {
                 let devArr = infoArr.filter(d => sg.devices.includes(d.key))
@@ -253,7 +255,9 @@ module.exports = function(args) {
             hideChildren: hideChildren,
             imgCount: imgCount,
             mainList: mainList,
-            show: show,
+            show: show || {
+                releaseType: hasFirmwareFilters ? [ 'release' ] : Object.keys(hasFirmwares).find(x => hasFirmwares[x])
+            },
             noJb: (!(osStr.some(r => hasJbArr.includes(r))) && !mainList),
             jbCount: getVersionArr.map(x => x.jailbreakArr).flat().length,
             img: img,
