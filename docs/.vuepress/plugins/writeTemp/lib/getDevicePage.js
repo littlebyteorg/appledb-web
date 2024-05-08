@@ -51,16 +51,21 @@ module.exports = function(args) {
 
     function getDlArr(propertyName, fw) {
         let retArr = Object.keys(fw.deviceMap)
-            .filter(x => devArr.map(x => x.key).includes(x))
-            .map(x => {
-                if (!fw.deviceMap[x] || !fw.deviceMap[x][propertyName]) return undefined
-                const url = fw.deviceMap[x][propertyName]
-                if (!url) return undefined
+            .filter(x => devArr.map(y => y.key).includes(x))
+            .map(key => {
+                if (!fw.sources) return
+
+                let sources = fw.sources.filter(s => s.type == propertyName && s.deviceMap.includes(key))
+                if (!sources.length) return
+
+                let urlArray = sources[0].links.filter(x => x.active)
+                if (!urlArray.length) return
+
                 return {
-                    deviceName: devArr.filter(y => y.key == x)[0].name,
-                    key: x,
-                    label: 'Label',
-                    url: url
+                    deviceName: devArr.filter(y => y.key == key)[0].name,
+                    key: key,
+                    label: "Label",
+                    url: urlArray[0]
                 }
             }
         ).filter(x => x)
