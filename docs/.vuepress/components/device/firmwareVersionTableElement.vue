@@ -237,11 +237,14 @@ export default {
                 'tvOS',
                 'watchOS',
                 'Apple TV Software',
-                'iPhoneOS'
+                'iPhoneOS',
+                'visionOS'
             ].includes(osStr) && ![
                 'iPhone1,1',
                 'iPhone1,2',
-                'iPod1,1'
+                'iPod1,1',
+                'AudioAccessory1,1',
+                'AudioAccessory6,1'
             ].includes(identifier)
         },
         openDownloadDropdown() {
