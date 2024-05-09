@@ -55,7 +55,7 @@ const latestVersions = latestVersionArr
   if (!x.released) return x
   if (x.released.includes(' ')) return x
 
-  const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
+  const dateOffset = (new Date().getTimezoneOffset() * 60 * 1000) + (60 * 60000)
   const currentDate = new Date(x.released).valueOf()
   const adjustedDate = new Date(currentDate + dateOffset)
 

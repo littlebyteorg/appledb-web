@@ -206,7 +206,7 @@ export default {
         grabInfo(property) {
             if (property == 'released') {
                 const dateArr = Array.from(new Set(this.device.map(x => x[property]).flat())).filter(x => x).sort().map(x => {
-                    const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
+                    const dateOffset = (new Date().getTimezoneOffset() * 60 * 1000) + (60 * 60000)
                     const currentDate = new Date(x).valueOf()
                     const adjustedDate = new Date(currentDate + dateOffset)
 
