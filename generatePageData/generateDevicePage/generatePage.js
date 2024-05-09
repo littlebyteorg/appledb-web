@@ -31,7 +31,8 @@ function getInfoObj(devKeyArr) {
         })
         
 		function adjustDate(date) {
-			const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
+            // HACK: Add an hour to prevent dates from slipping back a day due to DST
+			const dateOffset = (new Date().getTimezoneOffset() * 60 * 1000) + (60 * 60000)
 			const currentDate = new Date(date).valueOf()
 			return new Date(currentDate + dateOffset)
 		}

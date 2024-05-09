@@ -92,7 +92,7 @@ new Array([...new Set(deviceGroups.map(x => x.type)), ...Object.keys(customTypeA
                     return 0
                 }).filter(x => x)
                 if (released.join() != '') x.releasedStr = released.map(y => {
-                    const dateOffset = new Date().getTimezoneOffset() * 60 * 1000
+                    const dateOffset = (new Date().getTimezoneOffset() * 60 * 1000) + (60 * 60000)
                     const currentDate = new Date(y).valueOf()
                     const adjustedDate = new Date(currentDate + dateOffset)
 
