@@ -65,7 +65,7 @@ module.exports = function(args) {
                     deviceName: devArr.filter(y => y.key == key)[0].name,
                     key: key,
                     label: "Label",
-                    url: urlArray[0]
+                    url: urlArray[0].url
                 }
             }
         ).filter(x => x)
