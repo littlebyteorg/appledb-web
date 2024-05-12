@@ -39,6 +39,49 @@ sidebar: false
   </div>
 </div>
 
+<div>
+  <div class="credits">
+    <div class="user">
+      <img src="https://github.com/ROSeaboyer.png">
+    </div>
+    <div class="user">
+      <h3>ROSeaboyer</h3>
+      <a class="social-icon" href="https://github.com/ROSeaboyer" target="_blank">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="credits">
+    <div class="user">
+      <img src="https://github.com/nicolas17.png">
+    </div>
+    <div class="user">
+      <h3>nicolas17</h3>
+      <p>Nicolás</p>
+      <a class="social-icon" href="https://github.com/nicolas17" target="_blank">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="credits">
+    <div class="user">
+      <img src="https://github.com/dhinakg.png">
+    </div>
+    <div class="user">
+      <h3>dhinakg</h3>
+      <a class="social-icon" href="https://github.com/dhinakg" target="_blank">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
 <br>
 
 ---
