@@ -15,15 +15,15 @@ for (const bool of [true,false]) {
   ].includes(x)))
   latestVersionArr.push({ osStr: str, beta: bool })
 
-  //for (const startsWith of ['13','14'])
-  latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: '14'})
+  for (const startsWith of ['14','15'])
+    latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: startsWith})
 
-  //for (const startsWith of ['9','10'])
-  latestVersionArr.push({ osStr: 'watchOS', beta: bool, startsWith: '10'})
+  for (const startsWith of ['10','11'])
+    latestVersionArr.push({ osStr: 'watchOS', beta: bool, startsWith: startsWith})
 
-  for (const os of ['iOS','tvOS','iPadOS','HomePod Software']) {
-    latestVersionArr.push({ osStr: os, beta: bool, startsWith: '17'})
-  }
+  for (const os of ['iOS','tvOS','iPadOS','HomePod Software'])
+    for (const startsWith of ['17','18'])
+      latestVersionArr.push({ osStr: os, beta: bool, startsWith: startsWith})
 }
 
 //latestVersionArr.push({ osStr: 'iOS', beta: false, startsWith: '12'})

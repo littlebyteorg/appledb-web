@@ -63,6 +63,12 @@ const properties = [
         dark: true
     },
     {
+        osStr: 'macOS',
+        image: 'sonoma',
+        startsWith: '15',
+        dark: true
+    },
+    {
         osStr: 'iPadOS',
         image: 'ipados15',
         startsWith: '15',
@@ -78,6 +84,12 @@ const properties = [
         osStr: 'iPadOS',
         image: 'ipados17',
         startsWith: '17',
+        dark: true
+    },
+    {
+        osStr: 'iPadOS',
+        image: 'ipados17',
+        startsWith: '18',
         dark: true
     },
     {
@@ -102,6 +114,12 @@ const properties = [
         osStr: 'iOS',
         image: 'ios17',
         startsWith: '17',
+        dark: true
+    },
+    {
+        osStr: 'iOS',
+        image: 'ios17',
+        startsWith: '18',
         dark: true
     },
     {
