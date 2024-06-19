@@ -11,12 +11,16 @@ for (const bool of [true,false]) {
     'iOS',
     'tvOS',
     'iPadOS',
-    'HomePod Software'
+    'HomePod Software',
+    'visionOS'
   ].includes(x)))
   latestVersionArr.push({ osStr: str, beta: bool })
 
   for (const startsWith of ['14','15'])
     latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: startsWith})
+
+  for (const startsWith of ['1','2'])
+    latestVersionArr.push({ osStr: 'visionOS', beta: bool, startsWith: startsWith})
 
   for (const startsWith of ['10','11'])
     latestVersionArr.push({ osStr: 'watchOS', beta: bool, startsWith: startsWith})
