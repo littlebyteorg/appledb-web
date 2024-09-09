@@ -9,7 +9,7 @@ on:
 
 jobs:
   docs:
-    runs-on: self-hosted
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v4
