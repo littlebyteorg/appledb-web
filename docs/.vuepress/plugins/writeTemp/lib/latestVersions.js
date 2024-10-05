@@ -1,36 +1,9 @@
 const iosList = require('../../../../../grabData/ios')
 .filter(x => !(x.version.includes('Simulator') || x.sdk || x.hideFromLatestVersions ))
 const uniqueiOSList = iosList.filter((obj, index) => iosList.findIndex((item) => item.build === obj.build && item.osStr === obj.osStr) === index)
-const osStrArr = Array.from(new Set(uniqueiOSList.map(x => x.osStr)))
+const latestVersionList = require('../../../../../appledb/appledb-web/homePage.json')
 
-let latestVersionArr = []
-for (const bool of [true,false]) {
-  for (const str of osStrArr.filter(x => ![
-    'macOS',
-    'watchOS',
-    'iOS',
-    'tvOS',
-    'iPadOS',
-    'HomePod Software',
-    'visionOS'
-  ].includes(x)))
-  latestVersionArr.push({ osStr: str, beta: bool })
-
-  for (const startsWith of ['14','15'])
-    latestVersionArr.push({ osStr: 'macOS', beta: bool, startsWith: startsWith})
-
-  for (const startsWith of ['1','2'])
-    latestVersionArr.push({ osStr: 'visionOS', beta: bool, startsWith: startsWith})
-
-  for (const startsWith of ['10','11'])
-    latestVersionArr.push({ osStr: 'watchOS', beta: bool, startsWith: startsWith})
-
-  for (const os of ['iOS','tvOS','iPadOS','HomePod Software'])
-    for (const startsWith of ['17','18'])
-      latestVersionArr.push({ osStr: os, beta: bool, startsWith: startsWith})
-}
-
-//latestVersionArr.push({ osStr: 'iOS', beta: false, startsWith: '12'})
+let latestVersionArr = latestVersionList['osVersionArray']
 
 const latestVersions = latestVersionArr
 .map(x => uniqueiOSList.filter(y => {
@@ -39,7 +12,7 @@ const latestVersions = latestVersionArr
   
   const check = osStrCheck && betaRcCheck
 
-  let startsWith = x.startsWith
+  let startsWith = x.version
   if (startsWith && y.version) {
     startsWith = y.version.startsWith(startsWith)
     return check && startsWith
