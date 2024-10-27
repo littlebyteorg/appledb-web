@@ -13,6 +13,24 @@ String.prototype.format = function(vars) {
   return temp
 }
 
+const sortBuilds = (a,b) => {
+  releaseTypeMap = {
+    "beta": 1,
+    "rc": 2,
+    "gm": 2,
+    "release": 3
+  }
+  aVersion = a.version.split(" ")
+  bVersion = b.version.split(" ")
+  aReleaseType = (aVersion[1] || "release").toLowerCase()
+  bReleaseType = (bVersion[1] || "release").toLowerCase()
+  aReleaseCount = (aVersion[2] || '1')
+  bReleaseCount = (bVersion[2] || '1')
+  aRawVersion = aVersion[0].split(".")
+  bRawVersion = bVersion[0].split(".")
+  return bRawVersion[0] - aRawVersion[0] || bRawVersion[1] - aRawVersion[1] || (bRawVersion[2] || '0') - (aRawVersion[2] || '0') || releaseTypeMap[bReleaseType] - releaseTypeMap[aReleaseType] || bReleaseCount - aReleaseCount || b.build - a.build
+}
+
 for (const jb of jbList) {
     var redirects = []
     if (jb.hasOwnProperty('alias')) {
@@ -75,7 +93,7 @@ for (const jb of jbList) {
     const supportedFw = function() {
       const firmwares = jb.info.firmwares
       if (!firmwares) return
-      if (firmwares[0] == firmwares[1]) return strObj.supportedStrSingle.format({ ver: firmwares[0] })
+      if (firmwares[0] == firmwares[1] || !firmwares[1]) return strObj.supportedStrSingle.format({ ver: firmwares[0] })
       else return strObj.supportedStr.format({ ver0: firmwares[0], ver1: firmwares[1]})
     }
     const infoData = [
@@ -93,7 +111,7 @@ for (const jb of jbList) {
       const devList = Array.from(new Set(
         compat
         .map(x => x.devices)
-        .map(x => x.map(y => groupList.filter(g => g.devices.includes(y))[0]))
+        .map(x => x.map(y => groupList.filter(g => (g.type != 'iPhone' || g.groupKey.toLowerCase().indexOf('series') == -1) && g.devices.includes(y))[0]))
         .flat()
         .map(x => JSON.stringify(x))
       ))
@@ -108,7 +126,7 @@ for (const jb of jbList) {
             name: jsonDeviceList[d].name
           }
         })
-
+        
         x.firmwares = x.devices.map(d => {
           var ret = []
           const fwList = compat.filter(c => {
@@ -120,19 +138,28 @@ for (const jb of jbList) {
           return ret
         })
 
-        var fwArr = []
-        for (var i in x.firmwares) for (var f in x.firmwares[i]) if (!fwArr.includes(x.firmwares[i][f])) {
-          const fw = iosList.filter(b => b.uniqueBuild == x.firmwares[i][f])[0]
-          if (!fw) continue
-          if (fw.beta) continue
-          if (fwArr.includes(fw)) continue
-          // get rid of sources, we don't need it and it makes files too big
-          const {sources: _, ...newFw} = fw;
-          fwArr.push(newFw)
+        var fwDict = {}
+        for (var i in x.firmwares) for (var f in x.firmwares[i]) {
+          const fwList = iosList.filter(b => b.uniqueBuild == x.firmwares[i][f])
+          for (const fw of fwList) {
+            if (fw.beta) continue
+            const fwDictKey = fw['osStr'] + fw['uniqueBuild']
+            if (fwDict.hasOwnProperty(fwDictKey)) continue
+            // get rid of sources, we don't need it and it makes files too big
+            const pluck = (item, keys) => {
+              newItem = {}
+              for (const k of keys) {
+                newItem[k] = item[k]
+              }
+              return newItem
+            }
+            const newFw = pluck(fw, ['osStr', 'path', 'version', 'build', 'uniqueBuild', 'deviceMap'])
+            fwDict[fwDictKey] = newFw
+          }
         }
 
-        x.firmwares = fwArr.filter(fw => Object.keys(fw.deviceMap).some(r => x.devices.map(x => x.key).includes(r)))
-        x.firmwares.reverse()
+        x.firmwares = Object.keys(fwDict).map(key => fwDict[key]).filter(fw => Object.keys(fw.deviceMap).some(r => x.devices.map(x => x.key).includes(r)))
+        x.firmwares.sort(sortBuilds)
 
         return x
       })
