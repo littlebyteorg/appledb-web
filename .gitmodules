@@ -1,6 +1,6 @@
 [submodule "appledb"]
 	path = appledb
-	url = https://github.com/emiyl/appledb
+	url = https://github.com/littlebyteorg/appledb
 [submodule "emiyl-theme"]
 	path = emiyl-theme
 	url = https://github.com/emiyl/emiyl-theme
