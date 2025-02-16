@@ -163,7 +163,7 @@ for (const jb of jbList) {
 
         return x
       })
-
+      .filter(x => x.firmwares.length > 0);
       return devList
     }
 
