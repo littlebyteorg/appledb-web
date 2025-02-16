@@ -183,8 +183,8 @@ export default {
         }
     },
     mounted() {
-        const identifierArr = this.fw.devices.filter(x => this.shouldSigningStatusBeChecked(x, this.fw.osStr))
-        if (identifierArr.length && !this.fw.rc) this.getSigningStatus(this.fw.build, identifierArr[0], this.fw.osStr, this.fw.beta || this.fw.rc, this.fw.uniqueBuild)
+        const identifierArr = this.fw.devices.filter(x => this.shouldSigningStatusBeChecked(x, this.fw.filteredDownloads, (this.fw.beta || this.fw.rc)))
+        if (identifierArr.length) this.getSigningStatus(this.fw.build, identifierArr[0], this.fw.osStr, this.fw.beta || this.fw.rc, this.fw.uniqueBuild)
         
         this.tags = [
         ].filter(x => x.val)
@@ -227,25 +227,12 @@ export default {
 
             request.send()
         },
-        shouldSigningStatusBeChecked(identifier, osStr) {
-            return [
-                'bridgeOS',
-                'iOS',
-                'iPadOS',
-                'macOS',
-                'HomePod Software',
-                'tvOS',
-                'watchOS',
-                'Apple TV Software',
-                'iPhoneOS',
-                'visionOS'
-            ].includes(osStr) && ![
+        shouldSigningStatusBeChecked(identifier, filteredDownloads, beta) {
+            if (beta || !filteredDownloads || [
                 'iPhone1,1',
                 'iPhone1,2',
-                'iPod1,1',
-                'AudioAccessory1,1',
-                'AudioAccessory6,1'
-            ].includes(identifier)
+                'iPod1,1'].includes(identifier)) return false
+            return filteredDownloads.filter(x => x.key.startsWith(identifier) && x.url.endsWith('.ipsw')).length > 0
         },
         openDownloadDropdown() {
             var elements = document.getElementsByClassName('downloadDropdown active')
