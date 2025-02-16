@@ -286,7 +286,7 @@ function getJailbreakPageData(os) {
     let combinedJbArr = osJailbreakArr.map((x,index) => {
         x.osDeviceMap = Array.from(new Set(jbDevArr[index].flat()))
         return x
-    })
+    }).filter(x => x.osDeviceMap.length > 0)
 
     return combinedJbArr.map(jb => {
         let allDevicesSupported = jb.osDeviceMap.length === os.deviceMap.length
