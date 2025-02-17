@@ -84,7 +84,7 @@ export default {
     aModelArr() { return [...new Set(this.modelArr.filter(x => x.length == 5 && x[0] == 'A'))] },
     totalAModel() {
       const sortedModelArr = this.aModelArr.map(x => parseInt(x.slice(1))).sort()
-      return sortedModelArr.slice(-1)[0] - sortedModelArr.slice(1)[0]
+      return sortedModelArr.slice(-1)[0] - sortedModelArr.slice(0)[0]
     },
     modelList() {
       let modelDevArr = []
