@@ -11,7 +11,7 @@
             <h1>{{ title }}</h1>
             <div><template v-if="grabInfo('released')[0]">{{ grabInfo('released')[0] }} — </template><router-link :to="`/device-selection/${grabInfo('type')[0].replace(/ /g,'-')}.html`">
                     {{ grabInfo('type')[0] }}
-                </router-link></div>
+                </router-link><template v-if="grabInfo('appLink')"> — <a :href="grabInfo('appLink')[0]"><i class="fas fa-download" style="margin-right: 0.5em;"></i></a></template></div>
         </div>
     </div>
 </template>
