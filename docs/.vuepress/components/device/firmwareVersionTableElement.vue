@@ -85,14 +85,14 @@
                         <template v-if="fw.filteredDownloads.length">
                             <h5>Download</h5>
                             <ul :style="`${fw.filteredDownloads.length == 1 ? 'padding-left: 0; list-style-type: none;' : ''}`">
-                                <li v-if="fw.filteredDownloads.length == 1"><a :href="fw.filteredDownloads[0].url">{{ fw.filteredDownloads[0].label.slice(0,60) }}{{ fw.filteredDownloads[0].label.length > 60 ? '...' : '' }}</a></li>
+                                <li v-if="fw.filteredDownloads.length == 1"><a :href="fw.filteredDownloads[0].url">{{ fw.filteredDownloads[0].deviceName.slice(0,60) }}{{ fw.filteredDownloads[0].deviceName.length > 60 ? '...' : '' }}</a></li>
                                 <li v-else v-for="dl in fw.filteredDownloads" :key="dl"><a :href="dl.url">{{ dl.deviceName }}</a></li>
                             </ul>
                         </template>
                         <template v-if="fw.filteredOtas.length">
                             <h5>Download (OTA)</h5>
                             <ul :style="`${fw.filteredOtas.length == 1 ? 'padding-left: 0; list-style-type: none;' : ''}`">
-                                <li v-if="fw.filteredOtas.length == 1"><a :href="fw.filteredOtas[0].url">{{ fw.filteredOtas[0].label.slice(0,60) }}{{ fw.filteredOtas[0].label.length > 60 ? '...' : '' }}</a></li>
+                                <li v-if="fw.filteredOtas.length == 1"><a :href="fw.filteredOtas[0].url">{{ fw.filteredOtas[0].deviceName.slice(0,60) }}{{ fw.filteredOtas[0].deviceName.length > 60 ? '...' : '' }}</a></li>
                                 <li v-else v-for="dl in fw.filteredOtas" :key="dl"><a :href="dl.url">{{ dl.deviceName }}</a></li>
                             </ul>
                         </template>

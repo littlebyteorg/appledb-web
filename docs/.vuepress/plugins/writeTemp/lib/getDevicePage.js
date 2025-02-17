@@ -104,10 +104,9 @@ module.exports = function(args) {
         let jbArr = []
         if (hasJbArr.includes(i.osStr)) jbArr = Array.from(
             new Set(
-                devArr.map(d => jbList.filter(jb => {
+                Object.keys(i.deviceMap).map(d => jbList.filter(jb => {
                     if (!jb.compatibility) return false
-                    const compat = jb.compatibility.map(x => x.firmwares.includes(i.build) && x.devices.includes(d.key))
-                    return compat.filter(x => x).length > 0
+                    return jb.compatibility.filter(x => x.firmwares.includes(i.build) && x.devices.includes(d)).length > 0
                 }))
             .flat()
             .map(x => x ? x.name : x)
@@ -152,7 +151,7 @@ module.exports = function(args) {
         ]
     ]
 
-    const propertyArr = ['name','identifier','key','released','soc','arch','model','board','type']
+    const propertyArr = ['name','identifier','appLink','key','released','soc','arch','model','board','type']
     const infoArr = devArr.map(x => {
         var o = {}
         for (const p of propertyArr) if (x[p]) o[p] = x[p]
