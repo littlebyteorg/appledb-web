@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 export default {
     props: {
         device: Array,
@@ -25,7 +26,8 @@ export default {
     },
     data() {
         return {
-            wrapImg: false
+            wrapImg: false,
+            isDarkMode: useDarkMode()
         }
     },
     computed: {

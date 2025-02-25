@@ -9,7 +9,7 @@ module.exports = {
     description: 'A database of Apple software and devices.',
   
     theme: localTheme({
-      repo: 'emiyl/appledb',
+      repo: 'littlebyteorg/appledb',
       selectLanguageText: '<i class="fas fa-globe"/>',
       logo: 'https://img.appledb.dev/images@128/logo/0.png',
       logoDark: 'https://img.appledb.dev/images@128/logo/0_dark.png',

@@ -29,6 +29,7 @@ export default {
       hideTitle: false,
       noAds: false,
       adUnits: useThemeLocaleData().value.adUnits,
+      frontmatter: null,
     }
   },
   async created() {

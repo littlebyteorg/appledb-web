@@ -14,14 +14,18 @@
         </div>
 
         <table v-if="showMoreArr.includes(group.groupKey)">
-          <tr>
-            <th>{{ versionStr }}</th>
-            <th v-for="d in group.devices" :key="d.key">{{ d.name }}</th>
-          </tr>
-          <tr v-for="fw in group.firmwares" :key="fw">
-            <td>{{fw.version}} (<router-link :to="fw.path">{{ fw.build }}</router-link>)</td>
-            <td v-for="d in group.devices" :key="d">{{ fm.compat[d.key][fw.uniqueBuild] }}</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>{{ versionStr }}</th>
+              <th v-for="d in group.devices" :key="d.key">{{ d.name }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="fw in group.firmwares" :key="fw">
+              <td>{{fw.version}} (<router-link :to="fw.path">{{ fw.build }}</router-link>)</td>
+              <td v-for="d in group.devices" :key="d">{{ fm.compat[d.key][fw.uniqueBuild] }}</td>
+            </tr>
+          </tbody>
         </table>
       </li>
     </ul>
