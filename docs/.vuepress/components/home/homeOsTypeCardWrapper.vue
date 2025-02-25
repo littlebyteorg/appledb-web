@@ -5,10 +5,7 @@
         <div class="overlay right"></div>-->
         <div class="cardWrapper">
             <div class="recentDeviceCard" v-for="card in osTypeCards" :key="card.name">
-                <router-link v-if="card.link" :to="card.link">
-                    <homeSmallItem :card="card"/>
-                </router-link>
-                <homeSmallItem v-else :card="card"/>
+                <homeOsCard :card="card" :latestVersion="latestVersion[card.osStr]"/>
             </div>
         </div>
     </div>
@@ -19,7 +16,8 @@
 export default {
     data() {
         return {
-            osTypeCards: []
+            osTypeCards: [],
+            latestVersion: Object
         }
     },
     created() {
@@ -27,6 +25,7 @@ export default {
             .then(response => response.json())
             .then(data => {
                 this.osTypeCards = data.osTypeCardArray
+                this.latestVersion = data.latestVersions
         })
     }
 }
