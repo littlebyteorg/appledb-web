@@ -3,8 +3,6 @@
     <input :placeholder="searchStr" :aria-placeholder="searchStr" v-model="searchQuery">
   </form>
 
-  <h3>Filter</h3>
-
   <h3>"A" Model Number Tracker</h3>
 
   <div class="progressBar">
@@ -21,24 +19,31 @@
   </div>
 
   <table>
-    <tr><th v-for="h in [
-      'Model',
-      'Name',
-      'Released',
-      'Identifier'
-    ]" :key="h">{{h}}</th></tr>
-    <tr v-for="dev in deviceArr.filter(checkSearch)" :key="dev">
-      <td>{{ dev.model }}</td>
-      <td>
-        <router-link :to="'/device/identifier/' + dev.key.fdn() + '.html'">
-          {{dev.name}}
-        </router-link>
-      </td>
-      <td><span v-if="dev.released">{{ Array.isArray(dev.released) ? dev.released.join(', ') : dev.released }}</span></td>
-      <td><code v-if="dev.identifier[0] && dev.name != dev.identifier">
-        {{ dev.identifier.join(', ') }}
-      </code></td>
-    </tr>
+    <thead>
+      <tr>
+        <th v-for="h in [
+            'Model',
+            'Name',
+            'Released',
+            'Identifier'
+          ]" :key="h">{{h}}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="dev in deviceArr.filter(checkSearch)" :key="dev">
+        <td>{{ dev.model }}</td>
+        <td>
+          <router-link :to="'/device/identifier/' + dev.key.fdn() + '.html'">
+            {{dev.name}}
+          </router-link>
+        </td>
+        <td><span v-if="dev.released">{{ Array.isArray(dev.released) ? dev.released.join(', ') : dev.released }}</span></td>
+        <td><code v-if="dev.identifier[0] && dev.name != dev.identifier">
+          {{ dev.identifier.join(', ') }}
+        </code></td>
+      </tr>
+    </tbody>
   </table>
 
   <p>AppleDB is not affiliated with Apple Inc.</p>

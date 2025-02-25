@@ -2,7 +2,7 @@
     <div
         class="container"
         :style="{
-            'flex-direction': content.image.align == 'right' ? 'row' : 'row-reverse'
+            'flex-direction': content.image && content.image.align == 'right' ? 'row' : 'row-reverse'
         }"
     >
         <div class="text">
@@ -23,7 +23,7 @@
             class="image"
             v-if="content.image && content.image.url"
             :style="{
-                'margin-right': content.image.align == 'left' ? '1em' : '0em'
+                'margin-right': content.image && content.image.align == 'left' ? '1em' : '0em'
             }"
         >
             <picture>

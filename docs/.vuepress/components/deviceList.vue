@@ -20,29 +20,33 @@
     </template>
 
     <table>
-        <tr>
-            <th v-for="h in [
-                'Model',
-                'Name',
-                'Released',
-                'Identifier'
-            ]" :key="h">{{ h }}</th>
-        </tr>
-        <template v-for="dev in devList" :key="dev.key">
-            <tr v-if="devTypeFilter.includes(dev.type)">
-                <td>{{ dev.model.join(', ') }}</td>
-                <td>
-                    <router-link :to="'/device/identifier/' + dev.key.fdn() + '.html'">
-                        {{ dev.name }}
-                    </router-link>
-                </td>
-                <td><span v-if="dev.released">{{ Array.isArray(dev.released) ? dev.released.join(', ') : dev.released
-                }}</span></td>
-                <td><code v-if="dev.identifier[0] && dev.name != dev.identifier">
-                        {{ dev.identifier.join(', ') }}
-                    </code></td>
+        <thead>
+            <tr>
+                <th v-for="h in [
+                    'Model',
+                    'Name',
+                    'Released',
+                    'Identifier'
+                ]" :key="h">{{ h }}</th>
             </tr>
-        </template>
+        </thead>
+        <tbody>
+            <template v-for="dev in devList.filter(checkSearch)" :key="dev.key">
+                <tr v-if="devTypeFilter.includes(dev.type)">
+                    <td>{{ dev.model.join(', ') }}</td>
+                    <td>
+                        <router-link :to="'/device/identifier/' + dev.key.fdn() + '.html'">
+                            {{ dev.name }}
+                        </router-link>
+                    </td>
+                    <td><span v-if="dev.released">{{ Array.isArray(dev.released) ? dev.released.join(', ') : dev.released
+                    }}</span></td>
+                    <td><code v-if="dev.identifier[0] && dev.name != dev.identifier">
+                            {{ dev.identifier.join(', ') }}
+                        </code></td>
+                </tr>
+            </template>
+        </tbody>
     </table>
 
     <p>AppleDB is not affiliated with Apple Inc.</p>

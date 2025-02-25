@@ -239,7 +239,7 @@ export default {
         },
         unexpandMenu() {
             this.expandedMenu = false
-            this.$refs.checkbox.checked = false
+            if (this.$refs.checkbox) this.$refs.checkbox.checked = false
         }
     },
     mounted() {
