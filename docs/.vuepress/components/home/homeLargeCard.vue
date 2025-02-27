@@ -55,6 +55,7 @@
 }
 
 .img {
+    min-height: 10em;
     max-height: 10em;
     overflow-y: hidden; 
 

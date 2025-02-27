@@ -1,9 +1,12 @@
 ---
 title: Credits
 sidebar: false
+home: true
+hero: false
 ---
 
 <div>
+  <h1>Credits</h1>
   <div class="credits">
     <div class="user">
       <img src="https://github.com/emiyl.png">
