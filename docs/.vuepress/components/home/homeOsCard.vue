@@ -90,6 +90,8 @@ a {
     line-height: 1em;
     font-size: .5em;
     letter-spacing: .5px;
+    bottom: 2px;
+    position: relative;
 }
 
 @media screen and (min-width: 801px) {
