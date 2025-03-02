@@ -30,7 +30,7 @@
                         </picture>
                     </div>
                     <div class="listText">
-                        Software <i class="fas fa-chevron-right"></i>
+                        Firmware <i class="fas fa-chevron-right"></i>
                         <div class="subtext">{{ softwareCount || "10,000+" }} firmware versions</div>
                     </div>
                 </div>

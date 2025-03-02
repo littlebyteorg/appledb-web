@@ -129,6 +129,14 @@ let fwChartPageArr = [
     typeArr: [
       "HomePod"
     ]
+  },
+  {
+    name: 'Bluetooth Headset Firmware Chart',
+    description: 'Bluetooth Headset Firmware Chart',
+    path: '/firmware/Bluetooth-Headset-Firmware.html',
+    typeArr: [
+      "AirPods"
+    ]
   }
 ]
 
