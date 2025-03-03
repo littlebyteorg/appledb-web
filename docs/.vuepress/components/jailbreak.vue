@@ -10,7 +10,7 @@
 
         <div class="hoverElement" style="display: inline;">
           <i class="fas fa-circle ml-" style="font-size: 0.3rem; opacity: 0.5; vertical-align: middle; margin-left: 2em; margin-right: 2em;"/>
-          <a style="cursor: pointer" @click="showMoreArr.includes(group.groupKey) ? showMoreArr = showMoreArr.filter(x => x != group.groupKey) : showMoreArr.push(group.groupKey)">{{ showMoreStr }}</a>
+          <a style="cursor: pointer" @click="showMoreArr.includes(group.groupKey) ? showMoreArr = showMoreArr.filter(x => x != group.groupKey) : showMoreArr.push(group.groupKey)">{{ showMoreArr.includes(group.groupKey) ? showLessStr : showMoreStr }}</a>
         </div>
 
         <table v-if="showMoreArr.includes(group.groupKey)">
