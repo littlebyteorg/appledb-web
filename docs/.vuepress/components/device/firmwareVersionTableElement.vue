@@ -184,7 +184,7 @@ export default {
     },
     mounted() {
         const identifierArr = this.fw.devices.filter(x => this.shouldSigningStatusBeChecked(x, this.fw.filteredDownloads, (this.fw.beta || this.fw.rc)))
-        this.fw.jailbreakArr = this.fw.jailbreakArr.filter(x => [...new Set(identifierArr).intersection(new Set(this.fw.jailbreakCompatibility[x]))].length)
+        this.fw.jailbreakArr = Object.keys(this.fw.jailbreakCompatibility).filter(x => [...new Set(identifierArr).intersection(new Set(this.fw.jailbreakCompatibility[x]))].length)
         if (identifierArr.length) this.getSigningStatus(this.fw.build, identifierArr[0], this.fw.osStr, this.fw.beta || this.fw.rc, this.fw.uniqueBuild)
         
         this.tags = [

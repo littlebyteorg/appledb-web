@@ -103,18 +103,10 @@ module.exports = function(args) {
 
         let jbArr = []
         let jbCompatibility = {}
-        if (hasJbArr.includes(i.osStr)) jbArr = Array.from(
-            new Set(
-                Object.keys(i.deviceMap).map(d => jbList.filter(jb => {
-                    if (!jb.compatibility) return false
-                    const compatible = jb.compatibility.filter(x => x.firmwares.includes(i.build) && x.devices.includes(d)).length > 0;
-                    if (compatible) jbCompatibility[jb.name] = jb.compatibility.filter(x => x.firmwares.includes(i.build)).map(x => x.devices).flat(Infinity)
-                    return compatible
-                }))
-            .flat()
-            .map(x => x ? x.name : x)
-            )
-        ).filter(x => x)
+        if (hasJbArr.includes(i.osStr)) jbList.forEach(jb => {
+            if (!jb.compatibility) return;
+            jbCompatibility[jb.name] = jb.compatibility.filter(x => x.firmwares.includes(i.build)).map(x => x.devices).flat(Infinity)
+        })
 
 
         return {
@@ -135,7 +127,6 @@ module.exports = function(args) {
             deviceFilterArr: (mainList) ?
                 devTypeArr :
                 devIdFwArr,
-            jailbreakArr: jbArr,
             jailbreakCompatibility: jbCompatibility,
             downloads: dlArr,
             filteredDownloads: getFilteredDownloads(dlArr),
