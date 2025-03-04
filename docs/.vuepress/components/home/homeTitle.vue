@@ -16,7 +16,7 @@
                     </div>
                     <div class="listText">
                         Devices <i class="fas fa-chevron-right"></i>
-                        <div class="subtext">{{ deviceCount || "1,400+" }} products</div>
+                        <div class="subtext">{{ deviceCount || "1,700+" }} products</div>
                     </div>
                 </div>
             </a>
@@ -24,14 +24,14 @@
                 <div class="listItem">
                     <div class="listImg">
                         <picture>
-                            <source srcset="https://img.appledb.dev/images@64/Sonoma/0.avif" type="image/avif">
-                            <source srcset="https://img.appledb.dev/images@64/Sonoma/0.webp" type="image/webp">
-                            <img src="https://img.appledb.dev/images@64/Sonoma/0.png">
+                            <source srcset="https://img.appledb.dev/images@64/Sequoia/0.avif" type="image/avif">
+                            <source srcset="https://img.appledb.dev/images@64/Sequoia/0.webp" type="image/webp">
+                            <img src="https://img.appledb.dev/images@64/Sequoia/0.png">
                         </picture>
                     </div>
                     <div class="listText">
-                        Software <i class="fas fa-chevron-right"></i>
-                        <div class="subtext">{{ softwareCount || "7,900+" }} firmware versions</div>
+                        Firmware <i class="fas fa-chevron-right"></i>
+                        <div class="subtext">{{ softwareCount || "10,000+" }} firmware versions</div>
                     </div>
                 </div>
             </a>

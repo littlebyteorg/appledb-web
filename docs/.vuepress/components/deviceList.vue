@@ -1,5 +1,5 @@
 <template>
-    <form class="search-box" role="search">
+    <form onsubmit="event.preventDefault();" class="search-box" role="search">
         <input :placeholder="searchStr" :aria-placeholder="searchStr" v-model="searchQuery">
     </form>
 

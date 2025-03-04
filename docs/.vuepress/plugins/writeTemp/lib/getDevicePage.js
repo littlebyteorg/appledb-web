@@ -32,6 +32,7 @@ module.exports = function(args) {
     const hideChildren = args.hideChildren
     const show = args.show
     const subgroups = args.subgroups || []
+    const osStrArr = args.osStrArr || []
     
     let devFwArr = iosList
     if (!mainList) devFwArr = devFwArr.filter(i => {
@@ -40,6 +41,8 @@ module.exports = function(args) {
         for (const id of devIdArr) if (fwDevArr.includes(id)) return true
         return false
     })
+
+    if (osStrArr.length) devFwArr = devFwArr.filter(i => osStrArr.includes(i.osStr))
 
     const devFwVersionArr = devFwArr.map(x => [x.osStr,x.version].join(' '))
     const duplicateVersionArr = devFwVersionArr.filter((fw, index) => index !== devFwVersionArr.indexOf(fw))
@@ -101,17 +104,13 @@ module.exports = function(args) {
             released = new Intl.DateTimeFormat('en-US', dateStyleArr[releasedArr.length-1]).format(adjustedDate)
         }
 
-        let jbArr = []
-        if (hasJbArr.includes(i.osStr)) jbArr = Array.from(
-            new Set(
-                Object.keys(i.deviceMap).map(d => jbList.filter(jb => {
-                    if (!jb.compatibility) return false
-                    return jb.compatibility.filter(x => x.firmwares.includes(i.build) && x.devices.includes(d)).length > 0
-                }))
-            .flat()
-            .map(x => x ? x.name : x)
-            )
-        ).filter(x => x)
+        let jbCompatibility = {}
+        if (hasJbArr.includes(i.osStr)) jbList.forEach(jb => {
+            if (!jb.compatibility) return;
+            const compatibility = jb.compatibility.filter(x => x.firmwares.includes(i.build)).map(x => x.devices).flat(Infinity)
+            if (compatibility.length) jbCompatibility[jb.name] = compatibility
+        })
+
 
         return {
             osStr: i.osStr,
@@ -131,7 +130,7 @@ module.exports = function(args) {
             deviceFilterArr: (mainList) ?
                 devTypeArr :
                 devIdFwArr,
-            jailbreakArr: jbArr,
+            jailbreakCompatibility: jbCompatibility,
             downloads: dlArr,
             filteredDownloads: getFilteredDownloads(dlArr),
             otas: otaArr,

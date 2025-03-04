@@ -63,6 +63,10 @@ let fwChartPageArr = [
     typeArr: [
       'iPhone',
       'iPod touch'
+    ],
+    osStrArr: [
+      'iPhoneOS',
+      'iOS'
     ]
   },
   {
@@ -74,6 +78,11 @@ let fwChartPageArr = [
       'iPad mini',
       'iPad Pro',
       'iPad Air'
+    ],
+    osStrArr: [
+      'iPhoneOS',
+      'iOS',
+      'iPadOS'
     ]
   },
   {
@@ -96,6 +105,13 @@ let fwChartPageArr = [
       "PowerMac",
       "Virtual Machine",
       "Xserve"
+    ],
+    osStrArr: [
+      'Mac OS',
+      'Mac OS X',
+      'OS X',
+      'cloudOS',
+      'macOS'
     ]
   },
   {
@@ -104,6 +120,10 @@ let fwChartPageArr = [
     path: '/firmware/tvOS.html',
     typeArr: [
       "Apple TV"
+    ],
+    osStrArr: [
+      'Apple TV Software',
+      'tvOS'
     ]
   },
   {
@@ -112,6 +132,9 @@ let fwChartPageArr = [
     path: '/firmware/watchOS.html',
     typeArr: [
       "Apple Watch"
+    ],
+    osStrArr: [
+      'watchOS'
     ]
   },
   {
@@ -120,6 +143,9 @@ let fwChartPageArr = [
     path: '/firmware/visionOS.html',
     typeArr: [
       "Headset"
+    ],
+    osStrArr: [
+      'visionOS'
     ]
   },
   {
@@ -128,6 +154,22 @@ let fwChartPageArr = [
     path: '/firmware/HomePod-Software.html',
     typeArr: [
       "HomePod"
+    ],
+    osStrArr: [
+      'audioOS',
+      'HomePod Software'
+    ]
+  },
+  {
+    name: 'Bluetooth Headset Firmware Chart',
+    description: 'Bluetooth Headset Firmware Chart',
+    path: '/firmware/Bluetooth-Headset-Firmware.html',
+    typeArr: [
+      "AirPods"
+    ],
+    osStrArr: [
+      'AirPods Firmware',
+      'Bluetooth Headset Firmware'
     ]
   }
 ]
@@ -151,7 +193,8 @@ for (const fwChartPage of fwChartPageArr) {
       devArr: fwChartPageDevArr,
       show: fwChartPage.show,
       grouped: true,
-      mainList: true
+      mainList: true,
+      osStrArr: fwChartPage.osStrArr
     })
   )
 }
