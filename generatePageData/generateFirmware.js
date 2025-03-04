@@ -236,7 +236,7 @@ function getDevicePageData(os) {
                 dark: img.dark,
             },
             icons: icons,
-            link: urlStart + require('../appledb/formatDeviceName.js')(dev.key)
+            link: urlStart + require('../docs/.vuepress/plugins/writeTemp/lib/formatDeviceName.js')(dev.key)
         }
 
         if (dev.hoverLink) retObj.hoverLink = dev.hoverLink
