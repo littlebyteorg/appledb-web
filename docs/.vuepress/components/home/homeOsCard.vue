@@ -10,17 +10,19 @@
             </div>
             <h2 class="osNameText">{{ card.title }}</h2>
         </router-link>
-        <div class="osVersionText" v-for="(version, index) in latestVersion">
-            <router-link :to="`/firmware/${version.osStr.replace(/ /g,'-')}/${version.uniqueBuild}.html`">
-                <div :class="version.replaced && 'faded'">{{ version.version }}
-                    <div class="tag" style="color: #ab47bc;" v-if="version.beta">beta</div>
-                    <div class="tag" style="color: #ab47bc;" v-else-if="version.rc">rc</div>
-                    <div class="tag" style="color: #f0ad05;" v-else-if="version.internal">internal</div>
-                    <div class="tag" style="color: #039be5;" v-else>release</div>
-                
-                    <div>{{ version.released }}</div>
-                </div>
-            </router-link>
+        <div class="osVersionWrapper">
+            <div class="osVersionText" v-for="(version, index) in latestVersion.sort((a, b) => (a.beta || a.rc) > (b.beta || b.rc))" :key="index">
+                <router-link :to="`/firmware/${version.osStr.replace(/ /g,'-')}/${version.uniqueBuild}.html`">
+                    <div :class="version.replaced && 'faded'">{{ version.version }}
+                        <div class="tag" style="color: #ab47bc;" v-if="version.beta">beta</div>
+                        <div class="tag" style="color: #ab47bc;" v-else-if="version.rc">rc</div>
+                        <div class="tag" style="color: #f0ad05;" v-else-if="version.internal">internal</div>
+                        <div class="tag" style="color: #039be5;" v-else>release</div>
+                    
+                        <div class="osVersionReleasedText">{{ version.released }}</div>
+                    </div>
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -29,13 +31,23 @@
 .wrapper {
     position: static;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 0;
-    padding-block: 1.5em;
+    margin-inline: -2em;
+    padding: 2em;
     border-radius: 1em;
     transition: all .2s cubic-bezier(0,0,.5,1);
-    width: 10em;
-    margin-inline: -.5em;
+
+    h2 {
+        border-bottom: none;
+    }
+}
+
+@media screen and (min-width: 801px) {
+    .wrapper {
+        width: 80%;
+    }
+    
 }
 
 .osNameText {
@@ -44,10 +56,18 @@
     font-size: 1.5em;
 }
 
-.osVersionText {
-    text-align: center;
-    margin-top: .8em;
+.osVersionWrapper {
+    margin-left: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
+
+.osVersionReleasedText {
+    font-size: .9em;
+    color: var(--c-text-lighter);
+}
+
 a {
     color: var(--c-text);
 
@@ -57,7 +77,7 @@ a {
 }
 
 .faded {
-    color: gray;
+    color: var(--c-text-lighter);
 }
 
 .text {
@@ -83,8 +103,8 @@ a {
     border-radius: 4em;
     border: 1px solid;
     padding: 5px 9px;
-    margin-top: 6px;
-    margin-bottom: 5px;
+    margin-block: 6px 5px;
+    margin-left: 4px;
     text-transform: uppercase;
     font-weight: 700;
     line-height: 1em;
@@ -94,19 +114,10 @@ a {
     position: relative;
 }
 
-@media screen and (min-width: 801px) {
-    .wrapper:hover {
-        background: var(--c-container-bg);
-        box-shadow: 2px 4px 12px rgba(0,0,0,.08);
-        transform: scale(1.02);
-    }
-}
-
-@media screen and (max-width: 800px) {
-    .wrapper {
-        width: 8em;
-        margin-inline: 0em;
-    }
+.wrapper:hover {
+    background: var(--c-container-bg);
+    box-shadow: 2px 4px 12px rgba(0,0,0,.08);
+    transform: scale(1.02);
 }
 </style>
 

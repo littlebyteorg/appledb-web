@@ -4,7 +4,7 @@
         <!--<div class="overlay left"></div>
         <div class="overlay right"></div>-->
         <div class="cardWrapper">
-            <div class="recentDeviceCard" v-for="card in osTypeCards" :key="card.name">
+            <div class="card" v-for="card in osTypeCards" :key="card.name">
                 <homeOsCard :card="card" :latestVersion="latestVersion[card.osStr]"/>
             </div>
         </div>
@@ -32,42 +32,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.space {
-    height: 12em;
-}
-
-.wrapper {
-    position: absolute;
-    left: 0em;
-    width: 100%;
-}
-
-/*.overlay {
-    &.right {
-        background: linear-gradient(90deg, #00000000, var(--c-bg));
-        max-width: 2em;
-        right: calc(max(2rem, calc(calc(100vw - var(--homepage-width)) / 2)) - 2em);
-    }
-
-    &.left {
-        background: linear-gradient(270deg, #00000000, var(--c-bg));
-        max-width: 2em;
-        left: calc(max(2rem, calc(calc(100vw - var(--homepage-width)) / 2)) - 4em);
-    }
-
-    height: 21em;
-    position: absolute;
-    width: 100%;
-    z-index: 99999;
-}*/
-
 .cardWrapper {
     display: flex;
-    overflow-x: scroll;
-    gap: 5em;
+    flex-flow: row wrap;
     justify-content: space-between;
     padding-block: .5em 1.5em;
     padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 2em);
+}
+
+.card {
+    width: 100%;
+}
+
+@media screen and (min-width: 800px) {
+    .card {
+        width: 50%;
+    }
 }
 
 a {
