@@ -7,9 +7,9 @@
             <div class="card" v-for="card in osTypeCards" :key="card.name">
                 <homeOsCard :card="card" :latestVersion="latestVersion[card.osStr]"/>
             </div>
+            <div class="card"></div>
         </div>
     </div>
-    <div class="space"></div>
 </template>
 
 <script>
@@ -35,18 +35,23 @@ export default {
 .cardWrapper {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     padding-block: .5em 1.5em;
-    padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 2em);
 }
 
 .card {
     width: 100%;
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 800px) and (max-width: 1919px) {
     .card {
         width: 50%;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .card {
+        width: 32%;
     }
 }
 
