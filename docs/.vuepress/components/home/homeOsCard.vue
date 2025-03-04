@@ -7,8 +7,8 @@
                     <source :srcset="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/0.webp`" type="image/webp">
                     <img :src="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/0.png`">
                 </picture>
+                <div class="osNameText">{{ card.title }}</div>
             </div>
-            <h2 class="osNameText">{{ card.title }}</h2>
         </router-link>
         <div class="osVersionWrapper">
             <div class="osVersionText" v-for="(version, index) in latestVersion.sort((a, b) => (a.beta || a.rc) > (b.beta || b.rc))" :key="index">
@@ -32,10 +32,11 @@
     display: flex;
     flex-direction: row;
     gap: 0;
-    margin-inline: -2em;
+    margin-inline: 0em;
     padding: 2em;
     border-radius: 1em;
     transition: all .2s cubic-bezier(0,0,.5,1);
+    margin-top: .5em;
 
     h2 {
         border-bottom: none;
@@ -48,6 +49,12 @@
     }
 }
 
+@media screen and (max-width: 800px) {
+    .wrapper {
+        margin-inline: -.5em;
+    }
+}
+
 .osNameText {
     text-align: center;
     font-weight: 600;
@@ -55,10 +62,10 @@
 }
 
 .osVersionWrapper {
-    margin-left: 2em;
+    margin-left: 3em;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .osVersionReleasedText {
@@ -87,13 +94,16 @@ a {
 .img {
     img {
         max-height: 5em;
+        margin-inline: auto;
+        margin-bottom: 1em;
     }
-    height: 5em;
+    width: 7em;
 
     text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+}
+    
+.osNameText {
+    font-size: 1.5em;
 }
 
 .tag {

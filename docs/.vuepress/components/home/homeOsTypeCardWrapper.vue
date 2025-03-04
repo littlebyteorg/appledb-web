@@ -36,7 +36,6 @@ export default {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
-    padding-block: .5em 1.5em;
 }
 
 .card {
