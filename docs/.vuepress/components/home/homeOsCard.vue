@@ -62,10 +62,22 @@
 }
 
 .osVersionWrapper {
-    margin-left: 1em;
+    margin-left: 2em;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.osVersionText {
+    padding: .5em 1em 1em 1em;
+    margin: -.5em -1em -1em -1em;
+    border-radius: 8px;
+    transition: all .2s cubic-bezier(0,0,.5,1);
+
+    &:hover {
+        background: var(--c-bg-lighter);
+        box-shadow: inset 2px 4px 12px rgba(0,0,0,.08);
+    }
 }
 
 .osVersionReleasedText {
