@@ -42,13 +42,13 @@ export default {
     width: 100%;
 }
 
-@media screen and (min-width: 800px) and (max-width: 1919px) {
+@media screen and (min-width: 800px) and (max-width: 1279px) {
     .card {
         width: 50%;
     }
 }
 
-@media screen and (min-width: 1920px) {
+@media screen and (min-width: 1280px) {
     .card {
         width: 32%;
     }

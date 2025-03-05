@@ -62,7 +62,7 @@
 }
 
 .osVersionWrapper {
-    margin-left: 3em;
+    margin-left: 1em;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
