@@ -27,7 +27,7 @@ export default {
       titleContent: {},
       sections: [],
       hideTitle: false,
-      noAds: false,
+      noAds: true,
       adUnits: useThemeLocaleData().value.adUnits,
       frontmatter: null,
     }
@@ -71,8 +71,7 @@ export default {
 	        headers: { 'Content-Type': 'application/json' }
         }
       )
-      .then((response) => response.text())
-      .then((response) => JSON.parse(response));
+      .then((response) => response.json());
     }
   }
 }
