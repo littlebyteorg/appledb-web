@@ -1,5 +1,5 @@
 <template>
-    <h1>Recent devices</h1>
+    <h1>Recent Devices</h1>
     <div class="wrapper">
         <div class="cardWrapper">
             <div class="recentDeviceCard" v-for="card in recentDeviceCards" :key="card.title">

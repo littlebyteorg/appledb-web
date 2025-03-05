@@ -1,5 +1,5 @@
 <template>
-    <h1 style="margin-bottom: .5em;">Firmware versions</h1>
+    <h1 style="margin-bottom: .5em;">Firmware Versions</h1>
     <div class="wrapper">
         <!--<div class="overlay left"></div>
         <div class="overlay right"></div>-->

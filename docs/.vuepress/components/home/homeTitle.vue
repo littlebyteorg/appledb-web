@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="titleWrapper">
             <h1><span class="colourText">AppleDB</span></h1>
-            <p>a database of Apple software and devices</p>
+            <p>A database of Apple software and devices</p>
         </div>
         <div class="listWrapper">
             <a href="/device-selection/">

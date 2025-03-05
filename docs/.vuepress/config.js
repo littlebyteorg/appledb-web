@@ -14,10 +14,7 @@ module.exports = {
       logo: 'https://img.appledb.dev/images@128/logo/0.png',
       logoDark: 'https://img.appledb.dev/images@128/logo/0_dark.png',
       repoLabel: '<i class="fab fa-github icon"></i>',
-      adUnits: [
-        "13840",
-        "13841"
-      ],
+      adUnits: [],
       navbar: [
         {
           text: 'Devices',
