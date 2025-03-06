@@ -11,7 +11,7 @@
             <h1>{{ card.title }}</h1>
         </div>
         <div v-if="card.date" class="subtext">
-            {{ card.date < new Date() ? releasedStr : releasingStr }} {{ this.convertDate(card.date) }}
+            {{ card.date < new Date().toISOString().split('T')[0] ? releasedStr : releasingStr }} {{ this.convertDate(card.date) }}
         </div>
         <div v-else class="subtext">
             {{ card.text }}
