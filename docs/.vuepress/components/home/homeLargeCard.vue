@@ -10,7 +10,10 @@
         <div class="text">
             <h1>{{ card.title }}</h1>
         </div>
-        <div class="subtext">
+        <div v-if="card.date" class="subtext">
+            {{ card.date < new Date() ? releasedStr : releasingStr }} {{ this.convertDate(card.date) }}
+        </div>
+        <div v-else class="subtext">
             {{ card.text }}
         </div>
     </div>
@@ -85,7 +88,23 @@ export default {
     },
     data() {
         return {
-            isDarkMode: useDarkMode()
+            isDarkMode: useDarkMode(),
+            releasedStr: 'Released',
+            releasingStr: 'Releasing'
+        }
+    },
+    methods: {
+        convertDate: function (date) {
+            let dateStyle = { dateStyle: 'medium'}
+            const dateOffset = (new Date().getTimezoneOffset() * 60 * 1000) + (60 * 60000)
+            const currentDate = new Date(date).valueOf()
+            const adjustedDate = new Date(currentDate + dateOffset)
+            if (date.toString().includes('-')) {
+                const dateArr = date.split('-')
+                const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
+                dateStyle = dateStyleArr[dateArr.length-1]
+            }
+            return new Intl.DateTimeFormat('en-US', dateStyle).format(adjustedDate)
         }
     }
 }
