@@ -49,7 +49,6 @@ for (const dev of deviceArr.concat(deviceGroupArr)) {
     
     let showImg = (dev.imgCount > 0)
     let imgKey = dev.key
-    let imgName = dev.imgNames[0]
     if (dev.devices) {
         let iterateDevice
         for (iterateDevice of dev.devices) if (deviceArr.find(x => x.key == iterateDevice).img.count > 0) {
@@ -84,7 +83,7 @@ for (const dev of deviceArr.concat(deviceGroupArr)) {
     parsedPage.querySelector('blockquote').innerHTML = 'Retrieving data...'
     
     if (showImg) {
-        parsedPage.querySelectorAll('meta').find(x => x.rawAttrs.includes('property="og:image"')).rawAttrs = `property="og:image" content="https://img.appledb.dev/device@preview/${imgKey}/${imgName}.png"`
+        parsedPage.querySelectorAll('meta').find(x => x.rawAttrs.includes('property="og:image"')).rawAttrs = `property="og:image" content="https://img.appledb.dev/device@preview/${imgKey}/${dev.imgNames[0]}.png"`
     }
     
     fs.writeFile(`./docs/.vuepress/dist/device${dev.groupKey ? '' : '/identifier'}/${(dev.key || dev.groupKey).replace(/ /g,'-').replace(/\//g,'-')}.html`, parsedPage.toString(), (err) => {
