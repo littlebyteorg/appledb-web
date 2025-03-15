@@ -139,13 +139,12 @@ module.exports = function(args) {
     })
 
     const osStr = Array.from(new Set(getVersionArr.map(x => x.osStr)))
-
-    const head = (mainList) ? [] : [
+    const head = (mainList || !devArr[0].imgCount) ? [] : [
         [
         "meta",
         {
             property: "og:image",
-            content: `https://img.appledb.dev/device@256/${devArr[0].key}/0.png`
+            content: `https://img.appledb.dev/device@256/${devArr[0].key}/${(devArr[0].imgNames)[0]}.png`
         }
         ]
     ]

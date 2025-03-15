@@ -53,7 +53,8 @@ let imgArr = imgJson.map(x => {
   return {
     key: x.key,
     imgCount: x.count,
-    dark: x.dark
+    dark: x.dark,
+    imgNames: x.index.map(y => y.id)
   }
 })
 
@@ -71,7 +72,8 @@ for (const file in deviceFiles) {
   let imgObj = {
     count: 0,
     dark: true,
-    key: 'logo'
+    key: 'logo',
+    names: []
   }
 
   let devImgObj = imgArr.find(x => x.key == obj.key)
@@ -79,6 +81,7 @@ for (const file in deviceFiles) {
     imgObj.count = devImgObj.imgCount
     imgObj.dark = devImgObj.dark
     imgObj.key = obj.key
+    imgObj.names = devImgObj.imgNames
   }
 
   obj.img = imgObj

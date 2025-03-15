@@ -170,7 +170,8 @@ export default {
                 firstDeviceObj[g.type] = {
                     key: g.devices[0],
                     imageBool: g.img.count > 0,
-                    dark: g.img.dark
+                    dark: g.img.dark,
+                    imageNames: g.img.names
                 }
             }
 
@@ -180,7 +181,8 @@ export default {
                 firstDeviceObj[type] = {
                     key: firstGroup.groupKey,
                     imageBool: firstGroup.img.count > 0,
-                    dark: firstGroup.img.dark
+                    dark: firstGroup.img.dark,
+                    imageNames: firstGroup.img.names
                 }
             }
 
@@ -189,7 +191,8 @@ export default {
                     firstDeviceObj[software.groupKey] = {
                         key: software.devices[0],
                         imageBool: software.img.count > 0,
-                        dark: software.img.dark
+                        dark: software.img.dark,
+                        imageNames: software.img.names
                     }
                 }
             }
@@ -208,13 +211,14 @@ export default {
                 firstDeviceObj[o] = {
                     key: group.devices[0],
                     imageBool: group.img.count > 0,
-                    dark: group.img.dark
+                    dark: group.img.dark,
+                    imageNames: group.img.names
                 }
             }
 
             var ret = {}
             for (const d in firstDeviceObj) ret[d] = firstDeviceObj[d].imageBool ?
-                `https://img.appledb.dev/device@preview/${firstDeviceObj[d].key}/0${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}` :
+                `https://img.appledb.dev/device@preview/${firstDeviceObj[d].key}/${firstDeviceObj[d].imageNames[0]}${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}` :
                 `https://img.appledb.dev/device@preview/logo/0${this.isDarkMode ? '_dark' : ''}`
             
             return ret

@@ -6,12 +6,7 @@ const iosList = require('../../../../../grabData/ios')
 const devicePath = '/device'
 var pageList = []
 
-for (const d of Object.keys(deviceList).map(x => deviceList[x]).filter(x => {
-  return !(
-    process.env.NODE_ENV === 'development' &&
-    x.name === "Beats Solo³ Wireless Mickey's 90th Anniversary Edition"
-  )
-})) {
+for (const d of Object.keys(deviceList).map(x => deviceList[x])) {
   const urlPart = require('../../writeTemp/lib/formatDeviceName')(d.key)
   const url = [devicePath, 'identifier', urlPart].join('/') + '.html'
   pageList.push(

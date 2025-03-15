@@ -34,7 +34,7 @@ export default {
         imgUrlArr() {
             let retArr = []
             for (let i = 0; i < this.img.count; i++) {
-                retArr.push(`https://img.appledb.dev/device@main/${this.img.key}/${i}${this.isDarkMode && this.img.dark ? '_dark' : ''}`)
+                retArr.push(`https://img.appledb.dev/device@main/${this.img.key}/${this.img.names[i]}${this.isDarkMode && this.img.dark ? '_dark' : ''}`)
             }
             return retArr
         }
