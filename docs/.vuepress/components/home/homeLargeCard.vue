@@ -1,10 +1,10 @@
 <template>
     <div class="wrapper">
         <div class="img">
-            <picture v-for="i in card.image.count || 1" :key="i">
-                <source :srcset="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${i-1}${isDarkMode && card.image.dark ? '_dark' : ''}.avif`" type="image/avif">
-                <source :srcset="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${i-1}${isDarkMode && card.image.dark ? '_dark' : ''}.webp`" type="image/webp">
-                <img :src="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${i-1}${isDarkMode && card.image.dark ? '_dark' : ''}.png`">
+            <picture v-for="i in (card.image.names || ['0']).length" :key="i">
+                <source :srcset="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${(card.image.names || ['0'])[i-1]}${isDarkMode && card.image.dark ? '_dark' : ''}.avif`" type="image/avif">
+                <source :srcset="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${(card.image.names || ['0'])[i-1]}${isDarkMode && card.image.dark ? '_dark' : ''}.webp`" type="image/webp">
+                <img :src="`https://img.appledb.dev/${card.image.type}@256/${card.image.key}/${(card.image.names || ['0'])[i-1]}${isDarkMode && card.image.dark ? '_dark' : ''}.png`">
             </picture>
         </div>
         <div class="text">
