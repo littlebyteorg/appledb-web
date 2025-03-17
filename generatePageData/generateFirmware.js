@@ -175,7 +175,6 @@ function getImg(dev) {
 
     function validateImg(obj) {
         if (!obj.img || !obj.img.count) return false
-        console.log(obj.img)
         return {
             key: obj.img.key || obj.key,
             count: obj.img.count,
