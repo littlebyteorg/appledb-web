@@ -55,11 +55,15 @@ export default {
         this.titleContent = data.title
         this.sections = data.sections
       }
-      document.title = this.titleContent.header + ' | AppleDB'
+      if (this.titleContent.header && this.titleContent.header != 'AppleDB') {
+        document.title = this.titleContent.header + ' | AppleDB'
+      }
     })
   },
   mounted() {
-    document.title = this.titleContent.header + ' | AppleDB' // Yes this needs to be done twice idk why
+    if (this.titleContent.header && this.titleContent.header != 'AppleDB') {
+      document.title = this.titleContent.header + ' | AppleDB' // Yes this needs to be done twice idk why
+    }
   },
   methods: {
     getPageData() {

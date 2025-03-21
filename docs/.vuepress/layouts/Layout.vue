@@ -72,7 +72,6 @@ const scrollPromise = useScrollPromise()
 const onBeforeEnter = scrollPromise.resolve
 const onBeforeLeave = scrollPromise.pending
 
-document.title = 'AppleDB'
 </script>
 
 <template>
