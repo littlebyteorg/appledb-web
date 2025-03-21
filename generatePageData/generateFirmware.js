@@ -62,12 +62,15 @@ function getUrl(links) {
 
 function getDeviceList(os) {
     const osDevMap = os.deviceMap
+    const osMap = (os.osMap || []).length > 1 ? os.osMap : false
     
     let groupArr = []
 
-    function getDownloadLink(device) {
+    function getDownloadLink(device, osName=null) {
         if (!os.sources) return null
-        const source = os.sources.find(x => x.deviceMap.includes(device))
+        let source
+        if (osName) source = os.sources.find(x => x.deviceMap.includes(device) && x.osMap.includes(osName))
+        else source = os.sources.find(x => x.deviceMap.includes(device))
         if (!source) return null
         
         let url
@@ -83,20 +86,21 @@ function getDeviceList(os) {
         }
     }
 
-    function getDeviceData(device) {
+    function getDeviceData(device, osName=null) {
         let d = deviceArr.find(x => x.key === device)
         if (!d) console.log(`ERROR: Device '${device}' not found in ${os.osStr} ${os.version} (${os.build})`)
 
-        let link = getDownloadLink(device) || null
+        let link = getDownloadLink(device, osName) || null
+        const deviceName = osName ? `${d.name} (${osName})` : d.name
         if (link) link = {
-            name: d.name,
+            name: deviceName,
             key: d.key,
             link: link,
             size: link.size
         }
         
         return {
-            name: d.name,
+            name: deviceName,
             key: d.key,
             type: d.type,
             img: d.img,
@@ -134,7 +138,11 @@ function getDeviceList(os) {
         const devicesInDeviceGroup = osDevMap.filter(x => deviceGroup.devices.includes(x))
         if (devicesInDeviceGroup.length < 2) continue
 
-        const children = devicesInDeviceGroup.map(x => getDeviceData(x))
+        let children = [];
+        if (osMap) for (const osName of osMap) {
+            children.push(...devicesInDeviceGroup.map(x => getDeviceData(x, osName)))
+        }
+        else children = devicesInDeviceGroup.map(x => getDeviceData(x))
         
         const groupData = [...children].sort((a,b) => {
             for (var sort of sortArr) {
@@ -157,9 +165,11 @@ function getDeviceList(os) {
         })
     }
 
-    const ungroupedDevices = osDevMap
+    let ungroupedDevicesBase = osDevMap
     .filter(x => !groupArr.map(y => y.children).flat().map(x => x.key).includes(x))
-    .map(x => getDeviceData(x))
+    let ungroupedDevices = []
+    if (osMap) for (const osName of osMap) ungroupedDevices.push(...ungroupedDevicesBase.map(x => getDeviceData(x, osName)))
+    else ungroupedDevices = ungroupedDevicesBase.map(x => getDeviceData(x))
     
     return groupArr.concat(ungroupedDevices).sort((a,b) => {
         for (var sort of sortArr) {
