@@ -116,9 +116,12 @@ function getDeviceList(os) {
     }
 
     function dateSort(x, y, attr) {
-        const dates = [x,y].map(i => new Date(i[attr]))
-        if (dates[0] < dates[1]) return -1
-        if (dates[0] > dates[1]) return 1
+        let xDate = x[attr]
+        let yDate = y[attr]
+        if (Array.isArray(xDate)) xDate = xDate.sort()[0]
+        if (Array.isArray(yDate)) yDate = yDate.sort()[0]
+        if (xDate < yDate) return -1
+        if (xDate > yDate) return 1
         return 0
     }
 
