@@ -121,7 +121,7 @@ export default {
 
             if (this.hasSoftwareType) presetOrder.push({
                 label: "Software",
-                types: this.groupList.filter(x => x.type == 'Software').map(x => x.groupKey).sort((a,b) => {
+                types: this.groupList.filter(x => x.type == 'Software').map(x => x.name).sort((a,b) => {
                     a = a.toLowerCase()
                     b = b.toLowerCase()
                     if (a < b) return -1
@@ -188,7 +188,7 @@ export default {
 
             if (this.hasSoftwareType) {
                 for (const software of this.groupList.filter(x => x.type == "Software")) {
-                    firstDeviceObj[software.groupKey] = {
+                    firstDeviceObj[software.name] = {
                         key: software.devices[0],
                         imageBool: software.img.count > 0,
                         dark: software.img.dark,
