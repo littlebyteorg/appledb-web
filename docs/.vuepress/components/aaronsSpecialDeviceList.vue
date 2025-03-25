@@ -144,7 +144,8 @@ export default {
       const searchQuery = this.searchQuery.toLowerCase()
       for (const p of this.searchProperties) {
         try {
-          if (dev[p].toLowerCase().includes(searchQuery)) return true
+          let devPValue = Array.isArray(dev[p]) ? dev[p].join() : dev[p]
+          if (devPValue.toLowerCase().includes(searchQuery)) return true
         } catch {
           continue
         }
