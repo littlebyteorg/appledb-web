@@ -1,11 +1,20 @@
 <template>
     <template v-if="!fm.mainList">
-        <deviceTitle :device="fm.device" :title="fm.title" :img="fm.img"/>
+        <deviceTitle :color="colorName" :device="fm.device" :title="fm.title" :img="fm.img"/>
         <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
         <deviceInfo :device="fm.device" :extraInfo="fm.extraInfo"/>
         <template v-if="!fm.hideChildren">
             <groupedOrRelatedDeviceWrapper v-if="fm.subgroups.length" :device="fm.subgroups" :img="fm.img"/>
             <groupedOrRelatedDeviceWrapper v-else :device="fm.device" :img="fm.img"/>
+        </template>
+        <template v-if="fm.device[0].colors">
+            <h5>Color Selection</h5>
+            <div class="wrapper">
+                <div class="colorWrapper" v-for="color in fm.device[0].colors">
+                    <span v-on:click.prevent="changeColor(color)" class="dot" :class="colorName == color.name ? 'selected' : ''" :style="{ backgroundColor: '#' + color.hex}"></span>
+                    <div class="title">{{color.name}}</div>
+                </div>
+            </div>
         </template>
     </template>
 
@@ -41,10 +50,16 @@ export default {
                 show: false
             },
             fm: this.frontmatter || usePageFrontmatter(),
-            adUnits: useThemeLocaleData().value.adUnits
+            adUnits: useThemeLocaleData().value.adUnits,
+            colorName: null
         }
     },
     methods: {
+        changeColor: function(color) {
+            this.colorName = color.name
+            this.fm.device[0].color = color.name
+            this.fm.device[0].released = color.released
+        }
         /*checkScroll: function() {
             const loadRows = this.loadedFirmwares[1] - this.loadedFirmwares[0]
             
@@ -74,3 +89,39 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+.title {
+    font-weight: 700;
+    margin-block: 0 .4em;
+    color: var(--c-text-light);
+    font-size: .8em;
+
+    margin-top: 1.5em;
+    &:first-of-type {
+        margin-top: 0;
+    }
+}
+.wrapper {
+    display: flex;
+    overflow-x: scroll;
+    padding-block: 2em 1.5em;
+    padding-inline: 2em;
+    margin-inline: -1em;
+}
+.colorWrapper {
+    padding-inline: 2em;
+    margin-inline: -1em;
+    width: 5em;
+    text-align: center;
+}
+.dot {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 2px solid var(--c-border);
+  &.selected {
+    border: 2px solid var(--c-tip);
+  }
+}
+</style>

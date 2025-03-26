@@ -125,6 +125,10 @@ export default {
                 board: {
                     title: 'Board',
                     string: '${i}'
+                },
+                color: {
+                    title: 'Color',
+                    string: '${i}'
                 }
             },
         }

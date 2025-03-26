@@ -20,6 +20,7 @@
 import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 export default {
     props: {
+        color: String,
         device: Array,
         title: String,
         img: Object,
@@ -34,6 +35,7 @@ export default {
         imgUrlArr() {
             let retArr = []
             for (let i = 0; i < this.img.count; i++) {
+                if (this.color && this.color != this.img.names[i]) continue
                 retArr.push(`https://img.appledb.dev/device@main/${this.img.key}/${this.img.names[i]}${this.isDarkMode && this.img.dark ? '_dark' : ''}`)
             }
             return retArr
