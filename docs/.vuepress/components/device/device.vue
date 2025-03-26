@@ -54,6 +54,11 @@ export default {
             colorName: null
         }
     },
+    created() {
+        if (this.fm.device[0].colors) {
+            this.changeColor(this.fm.device[0].colors[0])
+        }
+    },
     methods: {
         changeColor: function(color) {
             this.colorName = color.name
