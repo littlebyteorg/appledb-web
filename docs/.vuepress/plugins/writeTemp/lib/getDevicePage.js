@@ -149,7 +149,7 @@ module.exports = function(args) {
         ]
     ]
 
-    const propertyArr = ['name','identifier','appLink','key','released','soc','arch','model','board','type']
+    const propertyArr = ['name','identifier','appLink','key','released','soc','arch','model','board','type','colors','img']
     const infoArr = devArr.map(x => {
         var o = {}
         for (const p of propertyArr) if (x[p]) o[p] = x[p]
@@ -185,7 +185,9 @@ module.exports = function(args) {
         for (const i of devArr) extraInfo[i.key] = i.info
     }*/
 
-    const img = devArr[0].img
+    let img = devArr.filter(x => x.img && x.img.count)
+    if (img.length) img = img[0].img
+    else img = { count: 0, dark: true, key: 'logo', names: [] }
 
     var imgCount = 0
     try {
@@ -234,7 +236,7 @@ module.exports = function(args) {
             grouped: grouped,
             subgroups: subgroups.map(sg => {
                 let devArr = infoArr.filter(d => sg.devices.includes(d.key))
-                
+
                 return {
                     name: sg.name,
                     identifier: devArr.map(x => x.identifier).flat().flat(),
@@ -246,7 +248,9 @@ module.exports = function(args) {
                     arch: devArr[0].arch,
                     model: devArr.map(x => x.model).flat().flat(),
                     board: devArr.map(x => x.board).flat().flat(),
-                    type: sg.type
+                    type: sg.type,
+                    colors: [...new Set(...devArr.map(x => x.colors).flat().flat())],
+                    img: devArr[0].img
                 }
             }),
             hideChildren: hideChildren,

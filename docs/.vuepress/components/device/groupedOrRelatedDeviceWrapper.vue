@@ -34,9 +34,9 @@ export default {
                         key: x.key,
                         released: x.released,
                         imgKey: x.subgroup ? x.deviceKeys[0] : x.key,
-                        imgCount: this.img.count,
-                        imgNames: this.img.names,
-                        imgDark: this.img.dark,
+                        imgCount: x.img.count,
+                        imgNames: x.img.names,
+                        imgDark: x.img.dark,
                         url: [
                             '/device',
                             x.subgroup ? '' : 'identifier',
