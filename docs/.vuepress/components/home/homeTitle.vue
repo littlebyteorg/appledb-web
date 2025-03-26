@@ -9,14 +9,14 @@
                 <div class="listItem">
                     <div class="listImg">
                         <picture>
-                            <source srcset="https://img.appledb.dev/device@64/iPod%20classic/0.avif" type="image/avif">
-                            <source srcset="https://img.appledb.dev/device@64/iPod%20classic/0.webp" type="image/webp">
-                            <img src="https://img.appledb.dev/device@64/iPod%20classic/0.png">
+                            <source :srcset="`https://img.appledb.dev/device@64/${deviceImage}.avif`" type="image/avif">
+                            <source :srcset="`https://img.appledb.dev/device@64/${deviceImage}.webp`" type="image/webp">
+                            <img :src="`https://img.appledb.dev/device@64/${deviceImage}.png`">
                         </picture>
                     </div>
                     <div class="listText">
                         Devices <i class="fas fa-chevron-right"></i>
-                        <div class="subtext">{{ deviceCount || "1,700+" }} products</div>
+                        <div class="subtext">{{ deviceCount }} products</div>
                     </div>
                 </div>
             </a>
@@ -24,14 +24,14 @@
                 <div class="listItem">
                     <div class="listImg">
                         <picture>
-                            <source srcset="https://img.appledb.dev/images@64/Sequoia/0.avif" type="image/avif">
-                            <source srcset="https://img.appledb.dev/images@64/Sequoia/0.webp" type="image/webp">
-                            <img src="https://img.appledb.dev/images@64/Sequoia/0.png">
+                            <source :srcset="`https://img.appledb.dev/images@64/${firmwareImage}.avif`" type="image/avif">
+                            <source :srcset="`https://img.appledb.dev/images@64/${firmwareImage}.webp`" type="image/webp">
+                            <img :src="`https://img.appledb.dev/images@64/${firmwareImage}.png`">
                         </picture>
                     </div>
                     <div class="listText">
                         Firmware <i class="fas fa-chevron-right"></i>
-                        <div class="subtext">{{ softwareCount || "10,000+" }} firmware versions</div>
+                        <div class="subtext">{{ softwareCount }} firmware versions</div>
                     </div>
                 </div>
             </a>
@@ -43,8 +43,10 @@
 export default {
     data() {
         return {
-            softwareCount: "",
-            deviceCount: ""
+            softwareCount: "12,000+",
+            deviceCount: "1,700+",
+            firmwareImage: "Sequoia/0",
+            deviceImage: "iPod classic/0"
         }
     },
     created() {
@@ -53,6 +55,8 @@ export default {
             .then(data => {
                 this.softwareCount = data.softwareCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 this.deviceCount = data.deviceCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                this.firmwareImage = data.topImages.firmware.key + "/" + data.topImages.firmware.name
+                this.deviceImage = data.topImages.device.key + "/" + data.topImages.device.name
         })
     }
 }
