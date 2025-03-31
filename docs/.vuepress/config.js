@@ -11,8 +11,8 @@ module.exports = {
     theme: localTheme({
       repo: 'littlebyteorg/appledb',
       selectLanguageText: '<i class="fas fa-globe"/>',
-      logo: 'https://img.appledb.dev/images@128/logo/0.png',
-      logoDark: 'https://img.appledb.dev/images@128/logo/0_dark.png',
+      logo: 'https://img.appledb.dev/images@256/logo/0.png',
+      logoDark: 'https://img.appledb.dev/images@256/logo/0_dark.png',
       repoLabel: '<i class="fab fa-github icon"></i>',
       adUnits: [],
       navbar: [

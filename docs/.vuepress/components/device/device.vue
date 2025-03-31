@@ -11,7 +11,7 @@
             <h5>Color Selection</h5>
             <div class="wrapper">
                 <div class="colorWrapper" v-for="color in fm.device[0].colors">
-                    <span v-on:click.prevent="changeColor(color)" class="dot" :class="colorName == color.name ? 'selected' : ''" :style="{ backgroundColor: '#' + color.hex}"></span>
+                    <span v-on:click.prevent="changeColor(color)" class="dot" :class="colorName == color.key ? 'selected' : ''" :style="{ backgroundColor: '#' + color.hex}"></span>
                     <div class="title">{{color.name}}</div>
                 </div>
             </div>
@@ -61,8 +61,8 @@ export default {
     },
     methods: {
         changeColor: function(color) {
-            this.colorName = color.name
-            this.fm.device[0].color = color.name
+            this.colorName = color.key
+            this.fm.device[0].color = color.key
             this.fm.device[0].released = color.released
         }
         /*checkScroll: function() {
