@@ -94,7 +94,7 @@ a {
 }
 
 .faded {
-    color: var(--c-text-lighter);
+    color: var(--c-text-lightest);
 }
 
 .text {
