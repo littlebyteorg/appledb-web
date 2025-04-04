@@ -4,6 +4,7 @@
             'button',
             index == length - 1 ? 'last' : ''
         ]"
+        :style="item.style ? item.style: ''"
     >
         <i :class="item.icon"></i>
         <span v-html="item.text"/>

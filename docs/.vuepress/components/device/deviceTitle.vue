@@ -11,9 +11,10 @@
             <h1>{{ title }}</h1>
             <div><template v-if="grabInfo('released')[0]">{{ grabInfo('released')[0] }} — </template><router-link :to="`/device-selection/${grabInfo('type')[0].replace(/ /g,'-')}.html`">
                     {{ grabInfo('type')[0] }}
-                </router-link><template v-if="grabInfo('appLink')[0]"> — <a :href="grabInfo('appLink')[0]"><i class="fas fa-download" style="margin-right: 0.5em;"></i></a></template></div>
+                </router-link></div>
         </div>
     </div>
+    <buttons :content="buttonContent" class="wrap" />
 </template>
 
 <script>
@@ -39,6 +40,18 @@ export default {
                 retArr.push(`https://img.appledb.dev/device@main/${this.img.key}/${this.img.names[i]}${this.isDarkMode && this.img.dark ? '_dark' : ''}`)
             }
             return retArr
+        },
+        buttonContent() {
+            return [
+                {
+                    "text": "App Store",
+                    "key": "store",
+                    "link": this.grabInfo('appLink')[0].url,
+                    "icon": "fas fa-download",
+                    "type": "store",
+                    "style": this.grabInfo('appLink')[0].active && false ? null : "background-color: pink; color: #2c3e50"
+                }
+            ]
         }
     },
     methods: {
