@@ -225,7 +225,7 @@ function getDevicePageData(os) {
 
         if (links.length == 1 || [...new Set(links.map(x => x.link.url))].length == 1) {
             icons = [{
-                class: 'fas fa-download',
+                class: 'fas fa-fw fa-download',
                 link: links[0].link.url,
             }]
             links = links.slice(0,1)
@@ -241,9 +241,10 @@ function getDevicePageData(os) {
                 text: x.label || x.name,
                 key: x.key,
                 link: x.link.url,
-                icon: 'fas fa-download',
+                icon: 'fas fa-fw fa-download',
                 type: x.link.type,
-                size: x.link.size
+                size: x.link.size,
+                expandable: true
             }}),
             img: img.key,
             imgFlags: {
@@ -417,13 +418,31 @@ for (const os of osArr) {
             text: downloadTextObj[x],
             key: x,
             link: getUrl(source.links),
-            icon: 'fas fa-download',
-            type: x
+            icon: 'fas fa-fw fa-download',
+            type: x,
+            expandable: true
         }
         let bytes = formatBytes(source.size, 1)
         if (bytes) ret.text += ` (${bytes})`
         return ret
     })
+
+    if (os.releaseNotes) {
+        singleDownload.push({
+            text: "Release Notes",
+            link: os.releaseNotes,
+            icon: 'fas fa-fw fa-info',
+            expandable: true
+        })
+    }
+    if (os.securityNotes) {
+        singleDownload.push({
+            text: "Security Notes",
+            link: os.securityNotes,
+            icon: 'fas fa-fw fa-lock',
+            expandable: true
+        })
+    }
 
     let obj = {
         title: getTitle(os),

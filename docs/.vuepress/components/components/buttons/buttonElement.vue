@@ -5,9 +5,11 @@
             index == length - 1 ? 'last' : ''
         ]"
         :style="item.style ? item.style: ''"
+        @mouseover="expanded = true"
+        @mouseleave="expanded = !this.expandable"
     >
-        <i :class="item.icon"></i>
-        <span v-html="item.text"/>
+        <i :class="item.icon" />
+        <span v-if="expanded" v-html="item.text"/>
     </div>
 </template>
 
@@ -17,6 +19,16 @@ export default {
         item: Object,
         index: Number,
         length: Number
+    },
+    data() {
+        return {
+            expandable: false,
+            expanded: false
+        }
+    },
+    created() {
+        this.expandable = this.item.expandable && this.length > 1
+        this.expanded = !(this.expandable)
     }
 }
 </script>
@@ -40,8 +52,8 @@ export default {
         cursor: pointer;
     }
 
-    i {
-        margin-right: .7em;
+    span {
+        margin-left: .7em;
     }
 
     &.last {
