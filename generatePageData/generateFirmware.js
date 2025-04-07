@@ -243,8 +243,7 @@ function getDevicePageData(os) {
                 link: x.link.url,
                 icon: 'fas fa-fw fa-download',
                 type: x.link.type,
-                size: x.link.size,
-                expandable: true
+                size: x.link.size
             }}),
             img: img.key,
             imgFlags: {
@@ -419,8 +418,7 @@ for (const os of osArr) {
             key: x,
             link: getUrl(source.links),
             icon: 'fas fa-fw fa-download',
-            type: x,
-            expandable: true
+            type: x
         }
         let bytes = formatBytes(source.size, 1)
         if (bytes) ret.text += ` (${bytes})`
@@ -431,16 +429,14 @@ for (const os of osArr) {
         singleDownload.push({
             text: "Release Notes",
             link: os.releaseNotes,
-            icon: 'fas fa-fw fa-info',
-            expandable: true
+            icon: 'fas fa-fw fa-info'
         })
     }
     if (os.securityNotes) {
         singleDownload.push({
             text: "Security Notes",
             link: os.securityNotes,
-            icon: 'fas fa-fw fa-lock',
-            expandable: true
+            icon: 'fas fa-fw fa-lock'
         })
     }
 
