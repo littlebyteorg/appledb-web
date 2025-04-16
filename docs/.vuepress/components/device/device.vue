@@ -61,7 +61,7 @@ export default {
     },
     methods: {
         changeColor: function(color) {
-            this.colorName = color.key
+            this.colorName = color.key || color.name
             this.fm.device[0].color = color.key || color.name
             this.fm.device[0].released = color.released
         }
