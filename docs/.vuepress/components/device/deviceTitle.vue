@@ -14,7 +14,7 @@
                 </router-link></div>
         </div>
     </div>
-    <buttons :content="buttonContent" class="wrap" />
+    <buttons v-if="grabInfo('appLink')[0] != undefined" :content="buttonContent" class="wrap" />
 </template>
 
 <script>

@@ -62,7 +62,7 @@ export default {
     methods: {
         changeColor: function(color) {
             this.colorName = color.key
-            this.fm.device[0].color = color.key
+            this.fm.device[0].color = color.key || color.name
             this.fm.device[0].released = color.released
         }
         /*checkScroll: function() {
