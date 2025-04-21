@@ -150,9 +150,17 @@ module.exports = function(args) {
     ]
 
     const propertyArr = ['name','identifier','appLink','key','released','soc','arch','model','board','type','colors','img']
+    const linkableArr = ['appLink']
     const infoArr = devArr.map(x => {
         var o = {}
-        for (const p of propertyArr) if (x[p]) o[p] = x[p]
+        for (const p of propertyArr)
+            if (x[p])
+                if (linkableArr.includes(p) && typeof x[p] === 'string')
+                    o[p] = {
+                        'url': x[p],
+                        'active': true
+                    }
+                else o[p] = x[p]
         return o
     })
 

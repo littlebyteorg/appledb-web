@@ -49,7 +49,7 @@ const downloadTextObj = {
     "dmg": "DMG"
 }
 
-function getUrl(links) {
+function getPreferredLink(links) {
     if (!links) return null
     return links.sort((a,b) => {
         if (a.active > b.active) return -1
@@ -57,7 +57,7 @@ function getUrl(links) {
         if (a.preferred > b.preferred) return -1
         if (a.preferred < b.preferred) return 1
         return 0
-    })[0].url
+    })[0]
 }
 
 function getDeviceList(os) {
@@ -73,16 +73,24 @@ function getDeviceList(os) {
         else source = os.sources.find(x => x.deviceMap.includes(device))
         if (!source) return null
         
+        let link
         let url
-        if (!source.links) url = null
-        else url = getUrl(source.links)
+        let active = false
+        if (!source.links) {
+            url = null
+        } else {
+            link = getPreferredLink(source.links)
+            url = link.url
+            active = link.active
+        }
 
         return {
             type: source.type,
             text: Object.keys(downloadTextObj).includes(source.type) ? downloadTextObj[source.type] : source.type,
             url: url,
             filename: url.split('/').slice(-1).join(''),
-            size: source.size || -1
+            size: source.size || -1,
+            active: active
         }
     }
 
@@ -96,7 +104,9 @@ function getDeviceList(os) {
             name: deviceName,
             key: d.key,
             link: link,
-            size: link.size
+            size: link.size,
+            active: link.active,
+            style: link.style
         }
         
         return {
@@ -243,7 +253,9 @@ function getDevicePageData(os) {
                 link: x.link.url,
                 icon: 'fas fa-fw fa-download',
                 type: x.link.type,
-                size: x.link.size
+                size: x.link.size,
+                active: x.link.active,
+                style: x.link.style
             }}),
             img: img.key,
             imgFlags: {
@@ -413,30 +425,45 @@ for (const os of osArr) {
         os.sources.map(x => x.type).every(x => ['ipsw','installassistant'].includes(x))
     ) singleDownload = ['ipsw','installassistant'].map(x => {
         let source = os.sources.find(y => y.type == x)
+        let link = getPreferredLink(source.links)
         let ret = {
             text: downloadTextObj[x],
             key: x,
-            link: getUrl(source.links),
+            link: link.url,
             icon: 'fas fa-fw fa-download',
-            type: x
+            type: x,
+            active: link.active
         }
         let bytes = formatBytes(source.size, 1)
         if (bytes) ret.text += ` (${bytes})`
         return ret
     })
 
+    const linkableArr = ['releaseNotes', 'securityNotes']
+
+    for (const p of linkableArr) {
+        if (os[p] && typeof os[p] === 'string') {
+            os[p] = {
+                'url': os[p],
+                'active': true
+            }
+        }
+    }
+
     if (os.releaseNotes) {
         singleDownload.push({
             text: "Release Notes",
-            link: os.releaseNotes,
-            icon: 'fas fa-fw fa-info'
+            link: os.releaseNotes.url,
+            icon: 'fas fa-fw fa-info',
+            active: os.releaseNotes.active,
         })
     }
     if (os.securityNotes) {
         singleDownload.push({
             text: "Security Notes",
-            link: os.securityNotes,
-            icon: 'fas fa-fw fa-lock'
+            link: os.securityNotes.url,
+            icon: 'fas fa-fw fa-lock',
+            active: os.securityNotes.active
         })
     }
 

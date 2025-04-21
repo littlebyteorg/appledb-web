@@ -4,7 +4,7 @@
             'button',
             index == length - 1 ? 'last' : ''
         ]"
-        :style="item.style ? item.style: ''"
+        :style="item.active ? (item.style ? item.style: '') : this.inactiveStyle"
         @mouseover="expanded = true"
         @mouseleave="expanded = !this.expandable"
     >
@@ -23,7 +23,8 @@ export default {
     data() {
         return {
             expandable: false,
-            expanded: false
+            expanded: false,
+            inactiveStyle: "background-color: pink; color: var(--c-text-lightest);text-decoration: line-through;"
         }
     },
     created() {

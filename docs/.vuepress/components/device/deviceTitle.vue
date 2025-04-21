@@ -49,7 +49,7 @@ export default {
                     "link": this.grabInfo('appLink')[0].url,
                     "icon": "fas fa-download",
                     "type": "store",
-                    "style": this.grabInfo('appLink')[0].active ? null : "background-color: pink; color: #2c3e50"
+                    "active": this.grabInfo('appLink')[0].active
                 }
             ]
         }
