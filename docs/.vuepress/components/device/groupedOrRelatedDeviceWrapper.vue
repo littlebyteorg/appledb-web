@@ -6,6 +6,7 @@
                 v-for="dev in groupedOrRelatedDevicesObj.devices"
                 :key="dev.url"
                 :device="dev"
+                :color="color"
             />
         </div>
     </template>
@@ -20,7 +21,8 @@ export default {
     },
     props: {
         device: Array,
-        img: Object
+        img: Object,
+        color: String
     },
     computed: {
         groupedOrRelatedDevicesObj() {

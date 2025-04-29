@@ -4,8 +4,8 @@
         <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
         <deviceInfo :device="fm.device" :extraInfo="fm.extraInfo"/>
         <template v-if="!fm.hideChildren">
-            <groupedOrRelatedDeviceWrapper v-if="fm.subgroups.length" :device="fm.subgroups" :img="fm.img"/>
-            <groupedOrRelatedDeviceWrapper v-else :device="fm.device" :img="fm.img"/>
+            <groupedOrRelatedDeviceWrapper v-if="fm.subgroups.length" :device="fm.subgroups" :color="colorName" :img="fm.img"/>
+            <groupedOrRelatedDeviceWrapper v-else :device="fm.device" :color="colorName" :img="fm.img"/>
         </template>
         <template v-if="fm.device[0].colors">
             <h5>Color Selection</h5>

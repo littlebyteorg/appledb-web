@@ -6,9 +6,9 @@
         }"
     >
         <div class="imgWrapper" v-if="device.imgCount"><picture>
-            <source :srcset="`https://img.appledb.dev/device@preview/${device.imgKey}/${device.imgNames[0]}${isDarkMode && device.imgDark ? '_dark' : ''}.avif`" type="image/avif">
-            <source :srcset="`https://img.appledb.dev/device@preview/${device.imgKey}/${device.imgNames[0]}${isDarkMode && device.imgDark ? '_dark' : ''}.webp`" type="image/webp">
-            <img :src="`https://img.appledb.dev/device@preview/${device.imgKey}/${device.imgNames[0]}${isDarkMode && device.imgDark ? '_dark' : ''}.png`">
+            <source :srcset="`https://img.appledb.dev/device@preview/${device.imgKey}/${imgName}${isDarkMode && device.imgDark ? '_dark' : ''}.avif`" type="image/avif">
+            <source :srcset="`https://img.appledb.dev/device@preview/${device.imgKey}/${imgName}${isDarkMode && device.imgDark ? '_dark' : ''}.webp`" type="image/webp">
+            <img :src="`https://img.appledb.dev/device@preview/${device.imgKey}/${imgName}${isDarkMode && device.imgDark ? '_dark' : ''}.png`">
         </picture></div>
         <div class="info">
             <div class="title" style="color: var(--c-text);">{{ device.name }}</div>
@@ -31,11 +31,20 @@ String.prototype.format = function(vars) {
 
 export default {
     props: {
-        device: Object
+        device: Object,
+        color: String
     },
     data() {
         return {
             isDarkMode: useDarkMode()
+        }
+    },
+    computed: {
+        imgName() {
+            if (Object.values(this.device.imgNames).indexOf(this.color) >= 0) {
+                return this.color
+            }
+            return this.device.imgNames[0]
         }
     },
     methods: {
