@@ -107,7 +107,8 @@ module.exports = function(args) {
         let jbCompatibility = {}
         if (hasJbArr.includes(i.osStr)) jbList.forEach(jb => {
             if (!jb.compatibility) return;
-            const compatibility = jb.compatibility.filter(x => x.firmwares.includes(i.build)).map(x => x.devices).flat(Infinity)
+            let compatibility = jb.compatibility.filter(x => x.firmwares.includes(i.build)).map(x => x.devices).flat(Infinity)
+            compatibility = [...new Set(compatibility).intersection(new Set(devIdFwArr))]
             if (compatibility.length) jbCompatibility[jb.name] = compatibility
         })
 

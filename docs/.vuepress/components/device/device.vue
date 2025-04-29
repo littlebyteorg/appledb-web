@@ -54,6 +54,12 @@ export default {
             colorName: null
         }
     },
+    mounted() {
+        let query = this.$route.query
+        if (query && query.color) {
+            this.colorName = query.color
+        }
+    },
     created() {
         if (this.fm.device[0].colors) {
             this.changeColor(this.fm.device[0].colors[0])

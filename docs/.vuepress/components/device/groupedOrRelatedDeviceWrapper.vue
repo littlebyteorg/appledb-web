@@ -43,7 +43,7 @@ export default {
                             '/device',
                             x.subgroup ? '' : 'identifier',
                             x.key.replace(/ /g,'-')
-                        ].filter(x => x).join('/') + '.html'
+                        ].filter(x => x).join('/') + '.html' + (this.color ? `?color=${this.color}` : '')
                     }
                 })
             }
