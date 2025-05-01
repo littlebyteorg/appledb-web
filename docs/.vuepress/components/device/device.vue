@@ -7,7 +7,7 @@
             <groupedOrRelatedDeviceWrapper v-if="fm.subgroups.length" :device="fm.subgroups" :color="colorName" :img="fm.img"/>
             <groupedOrRelatedDeviceWrapper v-else :device="fm.device" :color="colorName" :img="fm.img"/>
         </template>
-        <template v-if="fm.device[0].colors">
+        <template v-if="fm.device[0].colors && fm.device[0].colors.length > 1">
             <h5>Color Selection</h5>
             <div class="wrapper">
                 <div class="colorWrapper" v-for="color in fm.device[0].colors">
