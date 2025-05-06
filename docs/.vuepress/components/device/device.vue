@@ -62,7 +62,7 @@ export default {
     },
     created() {
         if (this.fm.device[0].colors) {
-            this.changeColor(this.fm.device[0].colors[0])
+            this.changeColor(this.fm.device[0].colors[this.fm.device[0].colors.length - 1])
         }
     },
     methods: {
