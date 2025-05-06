@@ -397,7 +397,7 @@ function getTitle(os) {
 }
 
 function formatBytes(bytes, decimals = 2) {
-    if (!+bytes) return false
+    if (!+bytes || bytes == -1) return false
 
     const k = 1000
     const dm = decimals < 0 ? 0 : decimals
