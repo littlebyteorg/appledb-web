@@ -35,9 +35,9 @@ export default {
     computed: {
         imgUrlArr() {
             let retArr = []
-            for (let i = 0; i < this.img.count; i++) {
-                if (this.color && this.color != this.img.names[i]) continue
-                retArr.push(`https://img.appledb.dev/device@main/${this.img.key}/${this.img.names[i]}${this.isDarkMode && this.img.dark ? '_dark' : ''}`)
+            for (let i = 0; i < this.img.images.length; i++) {
+                if (this.color && this.color != this.img.images[i].id) continue
+                retArr.push(`https://img.appledb.dev/device@main/${this.img.key}/${this.img.images[i].id}${this.isDarkMode && this.img.images[i].dark ? '_dark' : ''}`)
             }
             return retArr
         },

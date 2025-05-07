@@ -47,12 +47,12 @@ function convertDate(date) {
 for (const dev of deviceArr.concat(deviceGroupArr)) {
     let parsedPage = parse(page)
     
-    let showImg = (dev.imgCount > 0)
+    let showImg = ((dev.imgNames || dev.img.images).length > 0)
     let imgKey = dev.key
-    let imgName = showImg ? (dev.imgNames || dev.img.names)[0] : '0'
+    let imgName = showImg ? (dev.imgNames || dev.img.images)[0].id : '0'
     if (dev.devices) {
         let iterateDevice
-        for (iterateDevice of dev.devices) if (deviceArr.find(x => x.key == iterateDevice).img.count > 0) {
+        for (iterateDevice of dev.devices) if (deviceArr.find(x => x.key == iterateDevice).img.images.length > 0) {
             showImg = true
             imgKey = iterateDevice
             break

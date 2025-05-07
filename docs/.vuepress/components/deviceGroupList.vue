@@ -165,13 +165,12 @@ export default {
             const typeArr = Array.from(new Set(groupList.map(x => x.type)))
             
             for (const g of groupList) {
-                if (tempTypeArr.includes(g.type) || !g.img || g.img.count < 1) continue
+                if (tempTypeArr.includes(g.type) || !g.img || g.img.images.length < 1 || g.img.key == 'logo') continue
                 tempTypeArr.push(g.type)
                 firstDeviceObj[g.type] = {
                     key: g.devices[0],
-                    imageBool: g.img.count > 0,
-                    dark: g.img.dark,
-                    imageNames: g.img.names
+                    imageBool: g.img.images.length > 0,
+                    imageNames: g.img.images
                 }
             }
 
@@ -180,9 +179,8 @@ export default {
                 const firstGroup = groupList.filter(x => x.type == type)[0]
                 firstDeviceObj[type] = {
                     key: firstGroup.groupKey,
-                    imageBool: firstGroup.img.count > 0,
-                    dark: firstGroup.img.dark,
-                    imageNames: firstGroup.img.names
+                    imageBool: firstGroup.img.images.length > 0 && firstGroup.img.key != 'logo',
+                    imageNames: firstGroup.img.images
                 }
             }
 
@@ -190,9 +188,8 @@ export default {
                 for (const software of this.groupList.filter(x => x.type == "Software")) {
                     firstDeviceObj[software.name] = {
                         key: software.devices[0],
-                        imageBool: software.img.count > 0,
-                        dark: software.img.dark,
-                        imageNames: software.img.names
+                        imageBool: software.img.images.length > 0 && software.img.key != 'logo',
+                        imageNames: software.img.images
                     }
                 }
             }
@@ -210,15 +207,14 @@ export default {
                 if (!group) continue
                 firstDeviceObj[o] = {
                     key: group.devices[0],
-                    imageBool: group.img.count > 0,
-                    dark: group.img.dark,
-                    imageNames: group.img.names
+                    imageBool: group.img.images.length > 0,
+                    imageNames: group.img.images
                 }
             }
 
             var ret = {}
             for (const d in firstDeviceObj) ret[d] = firstDeviceObj[d].imageBool ?
-                `https://img.appledb.dev/device@preview/${firstDeviceObj[d].key}/${firstDeviceObj[d].imageNames[0]}${this.isDarkMode && firstDeviceObj[d].dark ? '_dark' : ''}` :
+                `https://img.appledb.dev/device@preview/${firstDeviceObj[d].key}/${firstDeviceObj[d].imageNames[0].id}${this.isDarkMode && firstDeviceObj[d].imageNames[0].dark ? '_dark' : ''}` :
                 `https://img.appledb.dev/device@preview/logo/0${this.isDarkMode ? '_dark' : ''}`
             
             return ret

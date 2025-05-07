@@ -2,10 +2,10 @@
     <a :href="device.url"><div
         class="gridWrapper"
         :style="{
-            'grid-template-columns': device.imgCount > 0 ? '3em calc(100% - 3em)' : '100%'
+            'grid-template-columns': device.imgNames.length > 0 ? '3em calc(100% - 3em)' : '100%'
         }"
     >
-        <div class="imgWrapper" v-if="device.imgCount"><picture>
+        <div class="imgWrapper" v-if="device.imgNames.length"><picture>
             <source :srcset="`https://img.appledb.dev/device@preview/${device.imgKey}/${imgName}${isDarkMode && device.imgDark ? '_dark' : ''}.avif`" type="image/avif">
             <source :srcset="`https://img.appledb.dev/device@preview/${device.imgKey}/${imgName}${isDarkMode && device.imgDark ? '_dark' : ''}.webp`" type="image/webp">
             <img :src="`https://img.appledb.dev/device@preview/${device.imgKey}/${imgName}${isDarkMode && device.imgDark ? '_dark' : ''}.png`">
@@ -41,10 +41,10 @@ export default {
     },
     computed: {
         imgName() {
-            if (Object.values(this.device.imgNames).indexOf(this.color) >= 0) {
+            if (this.device.imgNames.filter(x => x.id == this.color).length > 0) {
                 return this.color
             }
-            return this.device.imgNames[0]
+            return this.device.imgNames[0].id
         }
     },
     methods: {

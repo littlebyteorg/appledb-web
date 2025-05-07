@@ -52,9 +52,7 @@ function isDir(p) {
 let imgArr = imgJson.map(x => {
   return {
     key: x.key,
-    imgCount: x.count,
-    dark: x.dark,
-    imgNames: x.index.map(y => y.id)
+    images: x.index
   }
 })
 
@@ -70,21 +68,23 @@ for (const file in deviceFiles) {
   obj.key = obj.key || obj.identifier[0] || obj.name
 
   let imgObj = {
-    count: 0,
-    dark: true,
     key: 'logo',
-    names: []
+    images: [{
+      'id': '0',
+      'dark': true
+    }]
   }
+  let hasImage = false
 
-  let devImgObj = imgArr.find(x => x.key == obj.key)
+  let devImgObj = imgArr.find(x => x.key == obj.key && x.images.length)
   if (devImgObj) {
-    imgObj.count = devImgObj.imgCount
-    imgObj.dark = devImgObj.dark
+    hasImage = true
     imgObj.key = obj.key
-    imgObj.names = devImgObj.imgNames
+    imgObj.images = devImgObj.images
   }
 
   obj.img = imgObj
+  obj.hasImage = hasImage
 
   if (obj.info) obj.info = obj.info.map(o => {
     if (o.type != 'Display') return o

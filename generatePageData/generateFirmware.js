@@ -197,12 +197,10 @@ function getImg(dev) {
     let img
 
     function validateImg(obj) {
-        if (!obj.img || !obj.img.count) return false
+        if (!obj.img.images.length) return false
         return {
             key: obj.img.key || obj.key,
-            count: obj.img.count,
-            dark: obj.img.dark,
-            names: obj.img.names
+            images: obj.img.images
         }
     }
 
@@ -217,9 +215,7 @@ function getImg(dev) {
 
     return img || {
         key: 'logo',
-        count: 1,
-        dark: true,
-        names: ['0']
+        images: [{id: '0', dark: true}]
     }
 }
 
@@ -260,8 +256,7 @@ function getDevicePageData(os) {
             img: img.key,
             imgFlags: {
                 internal: true,
-                dark: img.dark,
-                names: img.names,
+                images: img.images,
             },
             icons: icons,
             link: urlStart + require('../docs/.vuepress/plugins/writeTemp/lib/formatDeviceName.js')(dev.key)
@@ -391,8 +386,8 @@ function getTitle(os) {
         image: os.appledbWebImage ? {
             url: os.appledbWebImage.id,
             align: os.appledbWebImage.align,
-            names: ['0']
-        } : { url: null, align: 'right', names: []}
+            images: [{'id':'0'}]
+        } : { url: null, align: 'right', images: []}
     }
 }
 

@@ -140,12 +140,12 @@ module.exports = function(args) {
     })
 
     const osStr = Array.from(new Set(getVersionArr.map(x => x.osStr)))
-    const head = (mainList || !devArr[0].imgCount) ? [] : [
+    const head = (mainList || !devArr[0].hasImage) ? [] : [
         [
         "meta",
         {
             property: "og:image",
-            content: `https://img.appledb.dev/device@256/${devArr[0].key}/${(devArr[0].imgNames)[0]}.png`
+            content: `https://img.appledb.dev/device@256/${devArr[0].key}/${devArr[0].img.images[0].id}.png`
         }
         ]
     ]
@@ -194,9 +194,9 @@ module.exports = function(args) {
         for (const i of devArr) extraInfo[i.key] = i.info
     }*/
 
-    let img = devArr.filter(x => x.img && x.img.count)
+    let img = devArr.filter(x => x.img && x.img.images && x.img.images.length)
     if (img.length) img = img[0].img
-    else img = { count: 0, dark: true, key: 'logo', names: [] }
+    else img = { key: 'logo', images: [{'id': 0, 'dark': true}] }
 
     var imgCount = 0
     try {

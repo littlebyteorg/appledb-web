@@ -16,14 +16,14 @@
                     <h3>{{dev.name}}</h3>
                     <div class="flexWrapper flexImg" style="user-select: none;">
                         <div
-                            v-for="i in (Math.min(dev.img.count,3) || 1)"
+                            v-for="i in (Math.min(dev.img.images.length,3) || 1)"
                             :key="i"
                             :class="`imgWrapper imgWrapper${i}`"
                         >
                             <picture
                                 v-for="imgUrl in [
-                                    dev.img.count ?
-                                        `https://img.appledb.dev/device@main/${dev.devices[0].replace(/\//g,'%252F')}/${dev.img.names[i-1]}${isDarkMode && dev.img.names[i-1].dark ? '_dark' : ''}` :
+                                    dev.img.key != 'logo' && dev.img.images.length ?
+                                        `https://img.appledb.dev/device@main/${dev.devices[0].replace(/\//g,'%252F')}/${dev.img.images[i-1].id}${isDarkMode && dev.img.images[i-1].dark ? '_dark' : ''}` :
                                         `https://img.appledb.dev/device@main/logo/0${isDarkMode ? '_dark' : ''}`
                                 ]"
                                 :key="imgUrl"

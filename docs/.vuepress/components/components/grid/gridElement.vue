@@ -49,14 +49,14 @@ export default {
             if (!this.content.imgFlags) return this.content.img
 
             const flags = this.content.imgFlags
-            const imgName = (flags.names || ['0'])[0]
+            const imgName = (flags.images || [{'id': '0', 'dark': false}])[0]
 
             if (flags.internal) {
                 const baseUrl = 'https://img.appledb.dev/device@preview'
                 const imgKey = this.content.img
-                const dark = (flags.dark && this.isDarkMode) ? '_dark' : ''
+                const dark = (imgName.dark && this.isDarkMode) ? '_dark' : ''
 
-                return [baseUrl,imgKey,imgName+dark].join('/')
+                return [baseUrl,imgKey,imgName.id+dark].join('/')
             }
         }
     }
