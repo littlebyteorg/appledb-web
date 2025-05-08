@@ -7,6 +7,7 @@
                 :key="dev.url"
                 :device="dev"
                 :color="color"
+                :colorGroup="colorGroup"
             />
         </div>
     </template>
@@ -22,7 +23,8 @@ export default {
     props: {
         device: Array,
         img: Object,
-        color: String
+        color: String,
+        colorGroup: String
     },
     computed: {
         groupedOrRelatedDevicesObj() {
@@ -30,18 +32,22 @@ export default {
             return {
                 header: this.groupedHeaderStr,
                 devices: this.device.map(x => {
+                    let urlQueryString = []
+                    if (this.color) urlQueryString.push(`color=${this.color}`)
+                    if (this.colorGroup) urlQueryString.push(`colorGroup=${this.colorGroup}`)
                     return {
                         name: x.name,
                         identifier: x.identifier,
                         key: x.key,
                         released: x.released,
                         imgKey: x.subgroup ? x.deviceKeys[0] : x.key,
+                        colors: x.colors,
                         imgNames: x.img.images,
                         url: [
                             '/device',
                             x.subgroup ? '' : 'identifier',
                             x.key.replace(/ /g,'-')
-                        ].filter(x => x).join('/') + '.html' + (this.color ? `?color=${this.color}` : '')
+                        ].filter(x => x).join('/') + '.html' + (urlQueryString ? `?${urlQueryString.join("&")}` : '')
                     }
                 })
             }

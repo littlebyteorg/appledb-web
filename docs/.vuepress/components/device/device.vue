@@ -4,14 +4,14 @@
         <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
         <deviceInfo :device="fm.device" :extraInfo="fm.extraInfo"/>
         <template v-if="!fm.hideChildren">
-            <groupedOrRelatedDeviceWrapper v-if="fm.subgroups.length" :device="fm.subgroups" :color="colorName" :img="fm.img"/>
-            <groupedOrRelatedDeviceWrapper v-else :device="fm.device" :color="colorName" :img="fm.img"/>
+            <groupedOrRelatedDeviceWrapper v-if="fm.subgroups.length" :device="fm.subgroups" :color="colorName" :colorGroup="colorGroup" :img="fm.img"/>
+            <groupedOrRelatedDeviceWrapper v-else :device="fm.device" :color="colorName" :colorGroup="colorGroup" :img="fm.img"/>
         </template>
         <template v-if="fm.device[0].colors && fm.device[0].colors.length > 1">
             <h5>Color Selection</h5>
             <div class="wrapper">
                 <div class="colorWrapper" v-for="color in fm.device[0].colors">
-                    <span v-on:click.prevent="changeColor(color)" class="dot" :class="colorName == color.key ? 'selected' : ''" :style="{ backgroundColor: '#' + color.hex}"></span>
+                    <span v-on:click.prevent="changeColor(color)" class="dot" :class="(colorName == color.key || (colorGroup && colorGroup == color.group)) ? 'selected' : ''" :style="{ backgroundColor: '#' + color.hex}"></span>
                     <div class="title">{{color.name}}</div>
                 </div>
             </div>
@@ -51,13 +51,19 @@ export default {
             },
             fm: this.frontmatter || usePageFrontmatter(),
             adUnits: useThemeLocaleData().value.adUnits,
-            colorName: null
+            colorName: null,
+            colorGroup: null
         }
     },
     mounted() {
         let query = this.$route.query
-        if (query && query.color) {
-            this.colorName = query.color
+        if (query) {
+            if (query.color) {
+                this.colorName = query.color
+            }
+            else if (query.colorGroup) {
+                this.colorGroup = query.colorGroup
+            }
         }
     },
     created() {
@@ -68,7 +74,8 @@ export default {
     methods: {
         changeColor: function(color) {
             this.colorName = color.key || color.name
-            this.fm.device[0].color = color.key || color.name
+            this.colorGroup = color.group || ""
+            this.fm.device[0].color = color.name
             this.fm.device[0].released = color.released
         }
         /*checkScroll: function() {

@@ -13,7 +13,7 @@
         <div class="info">
             <div class="title" style="color: var(--c-text);">{{ device.name }}</div>
             <div class="text" style="color: var(--c-text);">
-                {{ device.released ? getDate(device.released) : 'Unknown' }}
+                {{ released }}
             </div>
         </div>
     </div></a>
@@ -32,7 +32,8 @@ String.prototype.format = function(vars) {
 export default {
     props: {
         device: Object,
-        color: String
+        color: String,
+        colorGroup: String
     },
     data() {
         return {
@@ -40,10 +41,22 @@ export default {
         }
     },
     computed: {
+        colorName() {
+            let colorMatch = []
+            if (this.color) colorMatch = this.device.colors.filter(x => this.color == (x.key || x.name))
+            if (!colorMatch.length && this.colorGroup) colorMatch = this.device.colors.filter(x => this.colorGroup == x.group)
+            if (colorMatch.length) return (colorMatch[0].key || colorMatch[0].name)
+            return this.color
+        },
+        released() {
+            const currentColor = this.colorName
+            const colorObject = this.device.colors.filter(x => (x.key || x.name) == currentColor)
+            if (colorObject.length) return this.getDate(colorObject[0].released)
+            return this.device.released ? this.getDate(this.device.released) : 'Unknown'
+        },
         imgName() {
-            if (this.device.imgNames.filter(x => x.id == this.color).length > 0) {
-                return this.color
-            }
+            const currentColor = this.colorName
+            if (this.device.imgNames.filter(x => x.id == currentColor).length) return currentColor
             return this.device.imgNames[0].id
         }
     },
