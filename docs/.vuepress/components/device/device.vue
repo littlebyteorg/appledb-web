@@ -7,11 +7,11 @@
             <groupedOrRelatedDeviceWrapper v-if="fm.subgroups.length" :device="fm.subgroups" :color="colorName" :colorGroup="colorGroup" :img="fm.img"/>
             <groupedOrRelatedDeviceWrapper v-else :device="fm.device" :color="colorName" :colorGroup="colorGroup" :img="fm.img"/>
         </template>
-        <template v-if="fm.device[0].colors && fm.device[0].colors.length > 1">
+        <template v-if="this.colors && this.colors.length > 1">
             <h5>Color Selection</h5>
             <div class="wrapper">
-                <div class="colorWrapper" v-for="color in fm.device[0].colors">
-                    <span v-on:click.prevent="changeColor(color)" class="dot" :class="(colorName == color.key || (colorGroup && colorGroup == color.group)) ? 'selected' : ''" :style="{ backgroundColor: '#' + color.hex}"></span>
+                <div class="colorWrapper" v-for="color in this.colors">
+                    <span v-on:click.prevent="changeColor(color)" class="dot" :class="(colorName == color.key || (colorGroup && colorGroup == color.group)) ? 'selected' : ''" :style=colorStyle(color.hex)></span>
                     <div class="title">{{color.name}}</div>
                 </div>
             </div>
@@ -55,14 +55,39 @@ export default {
             colorGroup: null
         }
     },
+    computed: {
+        colors() {
+            if (this.fm.device.length == 1) return this.fm.device[0].colors
+            let colors = {}
+            for (const dev of this.fm.device) {
+                if (!dev.colors) continue
+                for (const color of dev.colors) {
+                    const colorKey = (color.group || color.key || color.name)
+                    if (colors[colorKey]) {
+                        if (Array.isArray(colors[colorKey].hex)) {
+                            if (!colors[colorKey].hex.filter(x => x == color.hex)) colors[colorKey].hex.push(color.hex)
+                        } else if (colors[colorKey].hex != color.hex) {
+                            colors[colorKey].hex = [colors[colorKey].hex, color.hex]
+                        }
+                        continue
+                    }
+                    if (color.group) color.name = color.group
+                    colors[colorKey] = color
+                }
+            }
+            return Object.values(colors)
+        }
+    },
     mounted() {
         let query = this.$route.query
         if (query) {
-            if (query.color) {
-                this.colorName = query.color
-            }
-            else if (query.colorGroup) {
+            if (query.colorGroup) {
+                const colorOption = this.colors.filter(x => x.group == query.colorGroup)[0]
+                this.colorName = colorOption.key || colorOption.name
                 this.colorGroup = query.colorGroup
+            }
+            else if (query.color) {
+                this.colorName = query.color
             }
         }
     },
@@ -72,6 +97,15 @@ export default {
         }
     },
     methods: {
+        colorStyle: function(colorHex) {
+            if (Array.isArray(colorHex)) {
+                return {
+                    "backgroundColor": "#" + colorHex[colorHex.length - 1],
+                    "backgroundImage": "-webkit-linear-gradient(135deg, #" + colorHex[0] + " 50%, #" + colorHex[1] + " 50%)"
+                }
+            }
+            return {"backgroundColor": "#" + colorHex}
+        },
         changeColor: function(color) {
             this.colorName = color.key || color.name
             this.colorGroup = color.group || ""
