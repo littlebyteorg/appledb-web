@@ -63,11 +63,13 @@ export default {
                 if (!dev.colors) continue
                 for (const color of dev.colors) {
                     const colorKey = (color.group || color.key || color.name)
+                    let colorHex = color.hex
+                    if (Array.isArray(colorHex)) colorHex = colorHex[0]
                     if (colors[colorKey]) {
                         if (Array.isArray(colors[colorKey].hex)) {
-                            if (!colors[colorKey].hex.filter(x => x == color.hex)) colors[colorKey].hex.push(color.hex)
-                        } else if (colors[colorKey].hex != color.hex) {
-                            colors[colorKey].hex = [colors[colorKey].hex, color.hex]
+                            if (!colors[colorKey].hex.filter(x => x == colorHex)) colors[colorKey].hex.push(colorHex)
+                        } else if (colors[colorKey].hex != colorHex) {
+                            colors[colorKey].hex = [colors[colorKey].hex, colorHex]
                         }
                         continue
                     }
