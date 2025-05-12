@@ -103,7 +103,7 @@ export default {
             if (Array.isArray(colorHex)) {
                 return {
                     "backgroundColor": "#" + colorHex[colorHex.length - 1],
-                    "backgroundImage": "-webkit-linear-gradient(135deg, #" + colorHex[0] + " 50%, #" + colorHex[1] + " 50%)"
+                    "backgroundImage": "-webkit-linear-gradient(-45deg, #" + colorHex[0] + " 50%, #" + colorHex[1] + " 50%)"
                 }
             }
             return {"backgroundColor": "#" + colorHex}
