@@ -258,7 +258,7 @@ module.exports = function(args) {
                     model: devArr.map(x => x.model).flat().flat(),
                     board: devArr.map(x => x.board).flat().flat(),
                     type: sg.type,
-                    colors: [...new Set(...devArr.map(x => x.colors).flat().flat())],
+                    colors: devArr.map(x => x.colors || []).flat().flat(),
                     img: devArr[0].img
                 }
             }),
