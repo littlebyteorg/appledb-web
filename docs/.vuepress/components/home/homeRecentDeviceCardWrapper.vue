@@ -41,7 +41,7 @@ export default {
 
 .cardWrapper {
     display: flex;
-    overflow-x: scroll;
+    overflow-x: auto;
     gap: 4em;
     padding-block: 2em 1.5em;
     padding-inline: max(calc(50vw - max(var(--homepage-width), 85%) / 2), 2em);

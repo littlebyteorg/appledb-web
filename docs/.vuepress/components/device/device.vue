@@ -157,7 +157,7 @@ export default {
 }
 .wrapper {
     display: flex;
-    overflow-x: scroll;
+    overflow-x: auto;
     padding-block: 2em 1.5em;
     padding-inline: 2em;
     margin-inline: -1em;

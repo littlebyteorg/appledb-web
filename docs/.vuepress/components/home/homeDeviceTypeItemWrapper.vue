@@ -45,7 +45,7 @@ export default {
 .cardWrapper {
     display: flex;
     flex-direction: row;
-    overflow-x: scroll;
+    overflow-x: auto;
     gap: 2em;
     justify-content: space-between;
     padding-block: .5em 1.5em;
