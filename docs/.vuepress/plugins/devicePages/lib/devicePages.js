@@ -60,7 +60,8 @@ let fwChartPageArr = [
       'iPod touch'
     ],
     osStrArr: [
-      'iPhoneOS',
+      'iPhone Software',
+      'iPhone OS',
       'iOS'
     ]
   },
@@ -75,7 +76,7 @@ let fwChartPageArr = [
       'iPad Air'
     ],
     osStrArr: [
-      'iPhoneOS',
+      'iPhone OS',
       'iOS',
       'iPadOS'
     ]

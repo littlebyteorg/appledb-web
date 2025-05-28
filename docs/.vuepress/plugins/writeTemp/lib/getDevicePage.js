@@ -7,7 +7,8 @@ const hasJbArr = [
     'tvOS',
     'HomePod Software',
     'watchOS',
-    'iPhoneOS',
+    'iPhone Software',
+    'iPhone OS',
     'iPadOS',
     'Apple TV Software',
     'bridgeOS'
