@@ -165,7 +165,7 @@ export default {
 .colorWrapper {
     padding-inline: 2em;
     margin-inline: -1em;
-    width: 5em;
+    width: 7em;
     text-align: center;
 }
 .dot {
