@@ -2,9 +2,10 @@
     <div
         :class="[
             'button',
-            index == length - 1 ? 'last' : ''
+            index == length - 1 ? 'last' : '',
+            item.active ? '' : 'inactive'
         ]"
-        :style="item.active ? (item.style ? item.style: '') : this.inactiveStyle"
+        :style="item.style ? item.style: ''"
         @mouseover="expanded = true"
         @mouseleave="expanded = !this.expandable"
     >
@@ -62,6 +63,12 @@ export default {
     }
 }
 
+.inactive {
+    background-color: pink !important;
+    color: var(--c-text-lightest);
+    text-decoration: line-through;
+}
+
 html.dark {
     .button {
         background: var(--c-bg-light);
@@ -71,6 +78,9 @@ html.dark {
             background: var(--c-border);
             color: var(--c-text);
         }
+    }
+    .inactive {
+        color: var(--c-border);
     }
 }
 </style>
