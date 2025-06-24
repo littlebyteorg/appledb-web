@@ -199,7 +199,7 @@ function getImg(dev) {
     function validateImg(obj) {
         if (!obj.img.images.length) return false
         return {
-            key: obj.img.key || obj.key,
+            key: obj.img.key || obj.imageKey,
             images: obj.img.images
         }
     }

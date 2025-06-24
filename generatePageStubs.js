@@ -48,7 +48,7 @@ for (const dev of deviceArr.concat(deviceGroupArr)) {
     let parsedPage = parse(page)
     
     let showImg = dev.img && dev.img.images && dev.img.images.length > 0
-    let imgKey = dev.key
+    let imgKey = dev.imageKey || dev.key
     let imgName = showImg ? dev.img.images[0].id : '0'
     if (dev.devices) {
         let iterateDevice

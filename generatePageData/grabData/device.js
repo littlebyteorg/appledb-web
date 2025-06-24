@@ -64,6 +64,7 @@ for (const file in deviceFiles) {
 
   obj.name = obj.name || obj.identifier[0] || obj.key
   obj.key = obj.key || obj.identifier[0] || obj.name
+  obj.imageKey = obj.imageKey || obj.key
 
   let imgObj = {
     key: 'logo',
@@ -75,7 +76,7 @@ for (const file in deviceFiles) {
 
   let devImgObj = imgArr.find(x => x.key == obj.key && x.images.length)
   if (devImgObj) {
-    imgObj.key = obj.key
+    imgObj.key = obj.imageKey
     imgObj.images = devImgObj.images
   }
   

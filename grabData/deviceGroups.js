@@ -60,7 +60,8 @@ const nowPutThemInGroups = ungroupedDevices.map(x => {
     name: x.name,
     type: x.type,
     devices: [x.key],
-    groupKey: x.key
+    groupKey: x.key,
+    imageKey: [x.imageKey]
   }
 })
 

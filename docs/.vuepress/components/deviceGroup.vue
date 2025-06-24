@@ -23,7 +23,7 @@
                             <picture
                                 v-for="imgUrl in [
                                     dev.img.key != 'logo' && dev.img.images.length ?
-                                        `https://img.appledb.dev/device@main/${dev.devices[0].replace(/\//g,'%252F')}/${dev.img.images[i-1].id}${isDarkMode && dev.img.images[i-1].dark ? '_dark' : ''}` :
+                                        `https://img.appledb.dev/device@main/${dev.img.key.replace(/\//g,'%252F')}/${dev.img.images[i-1].id}${isDarkMode && dev.img.images[i-1].dark ? '_dark' : ''}` :
                                         `https://img.appledb.dev/device@main/logo/0${isDarkMode ? '_dark' : ''}`
                                 ]"
                                 :key="imgUrl"

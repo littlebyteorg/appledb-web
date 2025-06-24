@@ -168,7 +168,7 @@ export default {
                 if (tempTypeArr.includes(g.type) || !g.img || g.img.images.length < 1 || g.img.key == 'logo') continue
                 tempTypeArr.push(g.type)
                 firstDeviceObj[g.type] = {
-                    key: g.devices[0],
+                    key: g.img.key,
                     imageBool: g.img.images.length > 0,
                     imageNames: g.img.images
                 }
