@@ -190,16 +190,11 @@ export default {
         this.tags = [
         ].filter(x => x.val)
     },
-    async created() {
-        //let data = await this.getFwData()
-        //this.fwData = data.sections.find(x => x.title == 'Devices')
-    },
     methods: {
         async getSigningStatus(buildid, identifier, osStr, beta) {
             var request = new XMLHttpRequest()
 
-            /*if (beta) request.open('GET', `https://api.m1sta.xyz/betas/${identifier}`)
-            else*/ request.open('GET', `https://api.ipsw.me/v4/ipsw/${identifier}/${buildid}`)
+            request.open('GET', `https://api.ipsw.me/v4/ipsw/${identifier}/${buildid}`)
 
             request.setRequestHeader('Accept', 'application/json')
 

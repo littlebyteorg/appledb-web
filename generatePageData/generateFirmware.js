@@ -2,9 +2,32 @@ const osArr = require('./grabData/firmware.js')
 const deviceGroupArr = require('./grabData/deviceGroup.js')
 const deviceArr = require('./grabData/device.js')
 const jailbreakArr = require('./grabData/jailbreak.js')
+const request = require('sync-request')
 const fs = require('fs')
 
 if (!fs.existsSync('./docs/.vuepress/public/pageData/firmware')) fs.mkdirSync('./docs/.vuepress/public/pageData/firmware', { recursive: true })
+
+let imgJson = []
+try {
+    const req = request(
+        'GET',
+        'https://img.appledb.dev/logos.json'
+    ).getBody('utf8')
+    if (!fs.existsSync('./cache')) fs.mkdirSync('./cache')
+    fs.writeFileSync('./cache/imgLogoArr.json', req)
+
+    imgJson = JSON.parse(req)
+} catch (e) {
+    if (fs.existsSync('./cache/imgLogoArr.json'))
+        imgJson = require('../../cache/imgLogoArr.json')
+}
+
+let imgArr = imgJson.map(x => {
+    return {
+        key: x.key,
+        images: x.index
+    }
+})
 
 function getReleaseDate(released) {
     if (!released) return -1
@@ -74,6 +97,7 @@ function getDeviceList(os) {
         if (!source) return null
         
         let link
+        let decryptionKey
         let url
         let active = false
         if (!source.links) {
@@ -82,12 +106,14 @@ function getDeviceList(os) {
             link = getPreferredLink(source.links)
             url = link.url
             active = link.active
+            decryptionKey = link.decryptionKey
         }
 
         return {
             type: source.type,
             text: Object.keys(downloadTextObj).includes(source.type) ? downloadTextObj[source.type] : source.type,
             url: url,
+            decryptionKey: decryptionKey,
             filename: url.split('/').slice(-1).join(''),
             size: source.size || -1,
             active: active
@@ -112,6 +138,7 @@ function getDeviceList(os) {
         return {
             name: deviceName,
             key: d.key,
+            imageKey: d.imageKey,
             type: d.type,
             img: d.img,
             released: d.released,
@@ -206,8 +233,10 @@ function getImg(dev) {
 
     if (dev.children) {
         for (const child of dev.children)
-            if (validateImg(child))
+            if (validateImg(child)) {
                 img = validateImg(child)
+                break
+            }
     } else {
         if (validateImg(dev))
             img = validateImg(dev)
@@ -247,6 +276,7 @@ function getDevicePageData(os) {
                 text: x.label || x.name,
                 key: x.key,
                 link: x.link.url,
+                decryptionKey: x.link.decryptionKey,
                 icon: 'fas fa-fw fa-download',
                 type: x.link.type,
                 size: x.link.size,
@@ -343,6 +373,16 @@ function getJailbreakPageData(os) {
 }
 
 function getTitle(os) {
+    if (os.appledbWebImage && imgArr.find(x => x.key == os.appledbWebImage.id)) {
+        found_img = imgArr.find(x => x.key == os.appledbWebImage.id)
+        img = {
+            url: os.appledbWebImage.id,
+            align: os.appledbWebImage.align,
+            images: found_img.images
+        }
+    } else {
+        img = { url: null, align: 'right', images: []}
+    }
     return {
         header: [os.osStr,os.version].join(' '),
         subtitle: {
@@ -383,11 +423,7 @@ function getTitle(os) {
                 return x
             })
         },
-        image: os.appledbWebImage ? {
-            url: os.appledbWebImage.id,
-            align: os.appledbWebImage.align,
-            images: [{'id':'0'}]
-        } : { url: null, align: 'right', images: []}
+        image: img
     }
 }
 
@@ -425,6 +461,7 @@ for (const os of osArr) {
             text: downloadTextObj[x],
             key: x,
             link: link.url,
+            decryptionKey: link.decryptionKey,
             icon: 'fas fa-fw fa-download',
             type: x,
             active: link.active

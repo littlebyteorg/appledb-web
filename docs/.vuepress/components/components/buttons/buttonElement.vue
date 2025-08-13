@@ -24,8 +24,7 @@ export default {
     data() {
         return {
             expandable: false,
-            expanded: false,
-            inactiveStyle: "background-color: pink; color: var(--c-text-lightest);text-decoration: line-through;"
+            expanded: false
         }
     },
     created() {

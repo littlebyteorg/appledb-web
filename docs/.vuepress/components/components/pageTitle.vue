@@ -27,16 +27,22 @@
             }"
         >
             <picture>
-                <source :srcset="`https://img.appledb.dev/images@preview/${content.image.url}/0.avif`" type="image/avif">
-                <source :srcset="`https://img.appledb.dev/images@preview/${content.image.url}/0.webp`" type="image/webp">
-                <img :src="`https://img.appledb.dev/images@preview/${content.image.url}/0.png`">
+                <source :srcset="`https://img.appledb.dev/images@preview/${content.image.url}/${content.image.images[0].id}${isDarkMode && content.image.images[0].dark ? '_dark' : ''}.avif`" type="image/avif">
+                <source :srcset="`https://img.appledb.dev/images@preview/${content.image.url}/${content.image.images[0].id}${isDarkMode && content.image.images[0].dark ? '_dark' : ''}.webp`" type="image/webp">
+                <img :src="`https://img.appledb.dev/images@preview/${content.image.url}/${content.image.images[0].id}${isDarkMode && content.image.images[0].dark ? '_dark' : ''}.png`">
             </picture>
         </div>
     </div>
 </template>
 
 <script>
+import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 export default {
+    data() {
+        return {
+            isDarkMode: useDarkMode()
+        }
+    },
     props: {
         content: Object
     }

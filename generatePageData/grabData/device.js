@@ -74,7 +74,7 @@ for (const file in deviceFiles) {
     }]
   }
 
-  let devImgObj = imgArr.find(x => x.key == obj.key && x.images.length)
+  let devImgObj = imgArr.find(x => x.key == obj.imageKey && x.images.length)
   if (devImgObj) {
     imgObj.key = obj.imageKey
     imgObj.images = devImgObj.images
