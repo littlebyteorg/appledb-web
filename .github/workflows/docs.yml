@@ -25,7 +25,7 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: yarn
+        run: yarn install --immutable
 
       - name: Generate appledb-web page data
         run: node generatePageData/index.js
