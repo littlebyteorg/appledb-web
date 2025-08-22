@@ -2,7 +2,6 @@ node_modules
 .temp
 .cache
 dist
-yarn.lock
 yarn-error.log
 docs/.vuepress/public/main.json
 .DS_STORE
