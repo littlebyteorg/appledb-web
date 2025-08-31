@@ -24,9 +24,9 @@
                 <div class="listItem">
                     <div class="listImg">
                         <picture>
-                            <source :srcset="`https://img.appledb.dev/images@64/${firmwareImage}.avif`" type="image/avif">
-                            <source :srcset="`https://img.appledb.dev/images@64/${firmwareImage}.webp`" type="image/webp">
-                            <img :src="`https://img.appledb.dev/images@64/${firmwareImage}.png`">
+                            <source :srcset="`https://img.appledb.dev/images@64/${firmwareImage}${isDarkMode ? '_dark' : ''}.avif`" type="image/avif">
+                            <source :srcset="`https://img.appledb.dev/images@64/${firmwareImage}${isDarkMode ? '_dark' : ''}.webp`" type="image/webp">
+                            <img :src="`https://img.appledb.dev/images@64/${firmwareImage}${isDarkMode ? '_dark' : ''}.png`">
                         </picture>
                     </div>
                     <div class="listText">
@@ -40,13 +40,15 @@
 </template>
 
 <script>
+import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 export default {
     data() {
         return {
-            softwareCount: "12,000+",
+            softwareCount: "13,000+",
             deviceCount: "1,700+",
-            firmwareImage: "Sequoia/0",
-            deviceImage: "iPod classic/0"
+            firmwareImage: "Tahoe/0",
+            deviceImage: "iPod classic/0",
+            isDarkMode: useDarkMode()
         }
     },
     created() {
