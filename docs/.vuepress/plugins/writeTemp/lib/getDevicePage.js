@@ -3,15 +3,58 @@ const jbList = require('../../../../../grabData/jailbreak')
 const deviceFilterGroups = require('../../../../../appledb/appledb-web/deviceFilterGroups.json')
 
 const hasJbArr = [
-    'iOS',
-    'tvOS',
-    'HomePod Software',
-    'watchOS',
+    'Apple TV Software',
+    'audioOS',
+    'bridgeOS',
     'iPhone Software',
     'iPhone OS',
+    'iOS',
     'iPadOS',
+    'HomePod Software',
+    'tvOS',
+    'watchOS'
+]
+
+const showSigningArr = [
     'Apple TV Software',
-    'bridgeOS'
+    'audioOS',
+    'bridgeOS',
+    'HomePod Software',
+    'iOS',
+    'iPadOS',
+    'macOS',
+    'tvOS',
+    'Studio Display Firmware',
+    'visionOS',
+    'watchOS'
+]
+
+const macIntelPrefixes = [
+    'iMac14',
+    'iMac15',
+    'iMac16',
+    'iMac17',
+    'iMac18',
+    'iMac19',
+    'iMac20',
+    'iMacPro1',
+    'MacBook8',
+    'MacBook9',
+    'MacBook10',
+    'MacBookAir6',
+    'MacBookAir7',
+    'MacBookAir8',
+    'MacBookAir9',
+    'MacBookPro11',
+    'MacBookPro12',
+    'MacBookPro13',
+    'MacBookPro14',
+    'MacBookPro15',
+    'MacBookPro16',
+    'Macmini7',
+    'Macmini8',
+    'MacPro6',
+    'MacPro7',
 ]
 
 function getFilteredDownloads(dlArr) {
@@ -113,6 +156,18 @@ module.exports = function(args) {
             if (compatibility.length) jbCompatibility[jb.name] = compatibility
         })
 
+        let showSigning = false
+        if (showSigningArr.includes(i.osStr)) {
+            if (i.osStr == 'Apple TV Software' && devIdFwArr.includes('AppleTV1,1')) showSigning = false;
+            else if (i.version.indexOf('Simulator') > -1 || i.version.indexOf('SDK') > -1) showSigning = false;
+            else if (!i.sources || !i.sources.filter(x => x.type != 'kdk').length) showSigning = false;
+            else if (i.osStr == 'macOS') {
+                if (i.version.split(".")[0] < "11" || i.uniqueBuild.startsWith('20A4')) showSigning = false;
+                else showSigning = devIdFwArr.filter(x => !macIntelPrefixes.includes(x.split(",")[0])) || false;
+            }
+            else showSigning = true;
+        }
+
 
         return {
             osStr: i.osStr,
@@ -123,6 +178,7 @@ module.exports = function(args) {
             url: `/firmware/${i.osStr.replace(/ /g,'-')}/${i.uniqueBuild}.html`,
             released: i.released,
             preinstalled: Array.isArray(i.preinstalled) ? i.preinstalled : i.preinstalled ? devIdFwArr : [],
+            signed: Array.isArray(i.signed) ? i.signed : i.signed ? devIdFwArr : [],
             beta: i.beta,
             internal: i.internal,
             rc: i.rc,
@@ -136,7 +192,8 @@ module.exports = function(args) {
             downloads: dlArr,
             filteredDownloads: getFilteredDownloads(dlArr),
             otas: otaArr,
-            filteredOtas: getFilteredDownloads(otaArr)
+            filteredOtas: getFilteredDownloads(otaArr),
+            showSigning: showSigning
         }
     })
 
