@@ -15,48 +15,6 @@ const hasJbArr = [
     'watchOS'
 ]
 
-const showSigningArr = [
-    'Apple TV Software',
-    'audioOS',
-    'bridgeOS',
-    'HomePod Software',
-    'iOS',
-    'iPadOS',
-    'macOS',
-    'tvOS',
-    'Studio Display Firmware',
-    'visionOS',
-    'watchOS'
-]
-
-const macIntelPrefixes = [
-    'iMac14',
-    'iMac15',
-    'iMac16',
-    'iMac17',
-    'iMac18',
-    'iMac19',
-    'iMac20',
-    'iMacPro1',
-    'MacBook8',
-    'MacBook9',
-    'MacBook10',
-    'MacBookAir6',
-    'MacBookAir7',
-    'MacBookAir8',
-    'MacBookAir9',
-    'MacBookPro11',
-    'MacBookPro12',
-    'MacBookPro13',
-    'MacBookPro14',
-    'MacBookPro15',
-    'MacBookPro16',
-    'Macmini7',
-    'Macmini8',
-    'MacPro6',
-    'MacPro7',
-]
-
 function getFilteredDownloads(dlArr) {
     const retArr = dlArr
     const urlCount = Array.from(new Set(retArr)).length
@@ -156,19 +114,6 @@ module.exports = function(args) {
             if (compatibility.length) jbCompatibility[jb.name] = compatibility
         })
 
-        let showSigning = false
-        if (showSigningArr.includes(i.osStr)) {
-            if (i.osStr == 'Apple TV Software' && devIdFwArr.includes('AppleTV1,1')) showSigning = false;
-            else if (i.version.indexOf('Simulator') > -1 || i.version.indexOf('SDK') > -1) showSigning = false;
-            else if (i.preinstalled && !i.signed) showSigning = false;
-            else if (i.osStr == 'macOS') {
-                if (i.version.split(".")[0] < "11" || i.uniqueBuild.startsWith('20A4')) showSigning = false;
-                else showSigning = devIdFwArr.filter(x => !macIntelPrefixes.includes(x.split(",")[0])) || false;
-            }
-            else showSigning = true;
-        }
-
-
         return {
             osStr: i.osStr,
             version: i.version,
@@ -193,7 +138,7 @@ module.exports = function(args) {
             filteredDownloads: getFilteredDownloads(dlArr),
             otas: otaArr,
             filteredOtas: getFilteredDownloads(otaArr),
-            showSigning: showSigning
+            showSigning: i.showSigning
         }
     })
 
