@@ -160,7 +160,7 @@ module.exports = function(args) {
         if (showSigningArr.includes(i.osStr)) {
             if (i.osStr == 'Apple TV Software' && devIdFwArr.includes('AppleTV1,1')) showSigning = false;
             else if (i.version.indexOf('Simulator') > -1 || i.version.indexOf('SDK') > -1) showSigning = false;
-            else if (!i.sources || !i.sources.filter(x => x.type != 'kdk').length) showSigning = false;
+            else if (i.preinstalled && !i.signed) showSigning = false;
             else if (i.osStr == 'macOS') {
                 if (i.version.split(".")[0] < "11" || i.uniqueBuild.startsWith('20A4')) showSigning = false;
                 else showSigning = devIdFwArr.filter(x => !macIntelPrefixes.includes(x.split(",")[0])) || false;
