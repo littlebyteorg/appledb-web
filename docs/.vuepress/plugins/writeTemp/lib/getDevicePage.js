@@ -3,15 +3,16 @@ const jbList = require('../../../../../grabData/jailbreak')
 const deviceFilterGroups = require('../../../../../appledb/appledb-web/deviceFilterGroups.json')
 
 const hasJbArr = [
-    'iOS',
-    'tvOS',
-    'HomePod Software',
-    'watchOS',
+    'Apple TV Software',
+    'audioOS',
+    'bridgeOS',
     'iPhone Software',
     'iPhone OS',
+    'iOS',
     'iPadOS',
-    'Apple TV Software',
-    'bridgeOS'
+    'HomePod Software',
+    'tvOS',
+    'watchOS'
 ]
 
 function getFilteredDownloads(dlArr) {
@@ -113,7 +114,6 @@ module.exports = function(args) {
             if (compatibility.length) jbCompatibility[jb.name] = compatibility
         })
 
-
         return {
             osStr: i.osStr,
             version: i.version,
@@ -123,6 +123,7 @@ module.exports = function(args) {
             url: `/firmware/${i.osStr.replace(/ /g,'-')}/${i.uniqueBuild}.html`,
             released: i.released,
             preinstalled: Array.isArray(i.preinstalled) ? i.preinstalled : i.preinstalled ? devIdFwArr : [],
+            signed: Array.isArray(i.signed) ? i.signed : i.signed ? devIdFwArr : [],
             beta: i.beta,
             internal: i.internal,
             rc: i.rc,
@@ -136,7 +137,8 @@ module.exports = function(args) {
             downloads: dlArr,
             filteredDownloads: getFilteredDownloads(dlArr),
             otas: otaArr,
-            filteredOtas: getFilteredDownloads(otaArr)
+            filteredOtas: getFilteredDownloads(otaArr),
+            showSigning: i.showSigning
         }
     })
 

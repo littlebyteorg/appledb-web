@@ -59,11 +59,9 @@
                     </i>
                 </span>
                 <div v-if="fw.rsr" class="releaseBetaInternalWrapper"><span>RSR</span></div>
-                <div class="signingStatus" :style="{
-                    'display': options.showSigningStatus ? 'initial' : 'none'
-                }">
-                    <i :id="`signing-status-${fw.osStr}-${fw.build}`" class="fas"></i>
-                    <span :id="`signing-text-${fw.osStr}-${fw.build}`" class="signingText"></span>
+                <div v-if="checkSigning" class="signingStatus">
+                    <i :id="`signing-status-${fw.osStr}-${fw.build}`" class="fas" :class="this.fw.signed.length ? 'fa-check' : 'fa-times'"></i>
+                    <span :id="`signing-text-${fw.osStr}-${fw.build}`" class="signingText">{{ this.fw.signed.length ? 'Signed' : 'Not signed' }}</span>
                 </div>
             </div>
             <div style="text-align: right;" class="releasedStr" v-if="fw.releasedStr && options.showReleasedString">{{ fw.releasedStr }}</div>
@@ -177,74 +175,26 @@ export default {
         return {
             expanded: false,
             showDownloadDropdown: false,
-            signed: 'unknown',
             fwData: [],
-            tags: []
+            tags: [],
+            checkSigning: false
         }
     },
     mounted() {
-        const identifierArr = this.fw.devices.filter(x => this.shouldSigningStatusBeChecked(x, this.fw.filteredDownloads, (this.fw.beta || this.fw.rc)))
-        this.fw.jailbreakArr = Object.keys(this.fw.jailbreakCompatibility).filter(x => [...new Set(identifierArr).intersection(new Set(this.fw.jailbreakCompatibility[x]))].length)
-        if (identifierArr.length) this.getSigningStatus(this.fw.build, identifierArr[0], this.fw.osStr, this.fw.beta || this.fw.rc, this.fw.uniqueBuild)
+        this.checkSigning = (Array.isArray(this.fw.showSigning)) ? (this.fw.devices.filter(x => this.fw.showSigning.includes(x)).length > 0) : this.fw.showSigning;
+        this.fw.jailbreakArr = Object.keys(this.fw.jailbreakCompatibility).filter(x => [...new Set(this.fw.devices).intersection(new Set(this.fw.jailbreakCompatibility[x]))].length)
+        this.fw.signed = this.fw.signed.filter(x => this.fw.devices.includes(x))
         
         this.tags = [
         ].filter(x => x.val)
     },
     methods: {
-        async getSigningStatus(buildid, identifier, osStr, beta) {
-            var request = new XMLHttpRequest()
-
-            request.open('GET', `https://api.ipsw.me/v4/ipsw/${identifier}/${buildid}`)
-
-            request.setRequestHeader('Accept', 'application/json')
-
-            request.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status == 200) {
-                    let response = JSON.parse(this.responseText)
-                    var statusElement = document.getElementById(`signing-status-${osStr}-${buildid}`)
-                    var statusText = document.getElementById(`signing-text-${osStr}-${buildid}`)
-
-                    if (beta) {
-                        response = response.filter(x => x.buildid == buildid)
-                        if (!response.length) return
-                        else response = response[0]
-                    }
-                    
-                    if (response.signed) {
-                        statusElement.classList.add('fa-check')
-                        statusText.innerHTML = 'Signed'
-                    }
-                    else {
-                        statusElement.classList.add('fa-times')
-                        statusText.innerHTML = 'Not signed'
-                    }
-                }
-            }
-
-            request.send()
-        },
-        shouldSigningStatusBeChecked(identifier, filteredDownloads, beta) {
-            if (beta || !filteredDownloads || [
-                'iPhone1,1',
-                'iPhone1,2',
-                'iPod1,1'].includes(identifier)) return false
-            return filteredDownloads.filter(x => x.key.startsWith(identifier) && x.url.endsWith('.ipsw')).length > 0
-        },
         openDownloadDropdown() {
             var elements = document.getElementsByClassName('downloadDropdown active')
             for (let element of elements) element.classList.remove('active')
 
             this.expanded = !this.expanded
             this.showDownloadDropdown = !this.showDownloadDropdown
-        },
-        getFwData() {
-            return fetch(`/pageData/firmware/${[this.fw.osStr,this.fw.uniqueBuild].join(';')}.json`.replace(/\.html/g,''), {
-                method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                }
-            )
-            .then((response) => response.text())
-            .then((response) => JSON.parse(response));
         }
     }
 }
