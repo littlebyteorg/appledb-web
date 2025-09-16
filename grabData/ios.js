@@ -80,12 +80,12 @@ function handleSDKs(baseItem) {
 }
 
 function handleSigning(fw) {
-  let showSigning = false
-  if (showSigningArr.includes(fw.osStr) && fw.deviceMap) {
+  let showSigning = false;
+  if (showSigningArr.includes(fw.osStr) && fw.deviceMap && !fw.rsr) {
+    showSigning = [...new Set((fw.sources || []).filter(x => x.type != 'kdk').map(x => x.deviceMap).flat())];
     if (fw.osStr == 'Apple TV Software' && fw.deviceMap.includes('AppleTV1,1')) showSigning = false;
     else if (fw.version.indexOf('Simulator') > -1 || fw.version.indexOf('SDK') > -1) showSigning = false;
     else if (fw.preinstalled) {
-      showSigning = [...new Set((fw.sources || []).filter(x => x.type != 'kdk').map(x => x.deviceMap).flat())];
       if (!showSigning && Array.isArray(fw.preinstalled)) {
         showSigning = fw.deviceMap.filter(x => !fw.preinstalled.includes(x));
       }
@@ -93,7 +93,7 @@ function handleSigning(fw) {
     else if (fw.osStr == 'macOS') {
       if (fw.version.split(".")[0] < "11" || fw.build.startsWith('20A4')) showSigning = false;
       else showSigning = fw.deviceMap.filter(x => !macIntelPrefixes.includes(x.split(",")[0])) || false;
-    } else showSigning = true;
+    }
   }
 
   return showSigning;
