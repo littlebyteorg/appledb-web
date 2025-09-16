@@ -84,7 +84,7 @@ function handleSigning(fw) {
   if (showSigningArr.includes(fw.osStr) && fw.deviceMap) {
     if (fw.osStr == 'Apple TV Software' && fw.deviceMap.includes('AppleTV1,1')) showSigning = false;
     else if (fw.version.indexOf('Simulator') > -1 || fw.version.indexOf('SDK') > -1) showSigning = false;
-    else if (fw.preinstalled && !fw.signed) {
+    else if (fw.preinstalled) {
       showSigning = [...new Set((fw.sources || []).filter(x => x.type != 'kdk').map(x => x.deviceMap).flat())];
       if (!showSigning && Array.isArray(fw.preinstalled)) {
         showSigning = fw.deviceMap.filter(x => !fw.preinstalled.includes(x));
