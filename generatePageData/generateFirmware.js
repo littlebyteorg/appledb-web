@@ -384,7 +384,7 @@ function getTitle(os) {
         img = { url: null, align: 'right', images: []}
     }
     return {
-        header: [os.osStr,os.version].join(' '),
+        header: `${os.osStr} ${os.version} ${os.build && os.build != os.version ? ("(" + os.build + ")") : ''}`.trimEnd(),
         subtitle: {
             text: [
                 getReleaseDate(os.released) == '-1' ? null : getReleaseDate(os.released),
