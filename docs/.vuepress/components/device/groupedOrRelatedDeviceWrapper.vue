@@ -40,7 +40,7 @@ export default {
                         identifier: x.identifier,
                         key: x.key,
                         released: x.released,
-                        imgKey: x.subgroup ? x.deviceKeys[0] : x.img.key,
+                        imgKey: x.img.key,
                         colors: x.colors,
                         imgNames: x.img.images,
                         url: [
