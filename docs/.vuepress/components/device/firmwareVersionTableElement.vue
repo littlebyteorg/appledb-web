@@ -182,7 +182,7 @@ export default {
     },
     mounted() {
         this.checkSigning = (Array.isArray(this.fw.showSigning)) ? (this.fw.devices.filter(x => this.fw.showSigning.includes(x)).length > 0) : this.fw.showSigning;
-        this.fw.jailbreakArr = Object.keys(this.fw.jailbreakCompatibility).filter(x => [...new Set(this.fw.devices).intersection(new Set(this.fw.jailbreakCompatibility[x]))].length)
+        this.fw.jailbreakArr = Object.keys(this.fw.jailbreakCompatibility).filter(x => this.fw.devices.filter(y => this.fw.jailbreakCompatibility[x].includes(y)).length);
         this.fw.signed = this.fw.signed.filter(x => this.fw.devices.includes(x))
         
         this.tags = [
