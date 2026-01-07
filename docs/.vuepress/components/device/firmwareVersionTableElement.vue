@@ -59,6 +59,7 @@
                     </i>
                 </span>
                 <div v-if="fw.rsr" class="releaseBetaInternalWrapper"><span>RSR</span></div>
+                <div v-if="fw.bsi" class="releaseBetaInternalWrapper"><span>BSI</span></div>
                 <div v-if="checkSigning" class="signingStatus">
                     <i :id="`signing-status-${fw.osStr}-${fw.build}`" class="fas" :class="this.fw.signed.length ? 'fa-check' : 'fa-times'"></i>
                     <span :id="`signing-text-${fw.osStr}-${fw.build}`" class="signingText">{{ this.fw.signed.length ? 'Signed' : 'Not signed' }}</span>

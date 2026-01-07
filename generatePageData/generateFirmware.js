@@ -414,6 +414,10 @@ function getTitle(os) {
                 {
                     text: 'RSR',
                     active: os.rsr
+                },
+                {
+                    text: 'BSI',
+                    active: os.bsi
                 }
             ]
             .filter(x => x.active && x.text)

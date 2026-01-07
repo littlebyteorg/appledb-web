@@ -78,7 +78,7 @@ function handleSDKs(baseItem) {
 
 function handleSigning(fw) {
   let showSigning = false;
-  if (showSigningArr.includes(fw.osStr) && fw.deviceMap) {
+  if (showSigningArr.includes(fw.osStr) && fw.deviceMap && !fw.rsr && !fw.bsi) {
     showSigning = [...new Set((fw.sources || []).filter(x => x.type != 'kdk').map(x => x.deviceMap).flat())];
     if (fw.osStr == 'Apple TV Software' && fw.deviceMap.includes('AppleTV1,1')) showSigning = false;
     else if (fw.version.indexOf('Simulator') > -1 || fw.version.indexOf('SDK') > -1) showSigning = false;

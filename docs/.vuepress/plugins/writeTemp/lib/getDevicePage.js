@@ -127,6 +127,7 @@ module.exports = function(args) {
             beta: i.beta,
             internal: i.internal,
             rc: i.rc,
+            bsi: i.bsi,
             rsr: i.rsr,
             releasedStr: released,
             devices: devIdFwArr,

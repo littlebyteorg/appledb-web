@@ -19,6 +19,7 @@
                             <div class="tag" style="color: #f0ad05;" v-else-if="version.internal">internal</div>
                             <div class="tag" style="color: #039be5;" v-else>release</div>
                             <div class="tag" v-if="version.rsr">rsr</div>
+                            <div class="tag" v-if="version.bsi">bsi</div>
                         </div>
                         <a class="link">View more</a>
                     </div>
