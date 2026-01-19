@@ -44,8 +44,8 @@ import { useDarkMode } from '@vuepress/theme-default/lib/client/composables'
 export default {
     data() {
         return {
-            softwareCount: "13,000+",
-            deviceCount: "1,700+",
+            softwareCount: "15,000+",
+            deviceCount: "1,800+",
             firmwareImage: "Tahoe/0",
             deviceImage: "iPod classic/0",
             isDarkMode: useDarkMode()
