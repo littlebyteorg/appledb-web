@@ -83,8 +83,13 @@ new Array([...new Set(deviceGroups.map(x => x.type)), ...Object.keys(customTypeA
             group: deviceGroups.filter(x => !x.hideFromDeviceList)
             .map(x => {
                 const devArr = x.devices.map(y => deviceList[y])
-                
-                x.img = devArr[0].img
+                for (const dev of devArr) {
+                    if (dev.img.key == 'logo') continue
+                    x.img = dev.img
+                    break
+                }
+
+                if (!x.img) x.img = devArr[0].img
         
                 const released = Array.from(new Set(devArr.map(y => y.released))).flat().sort((a,b) => {
                     if (new Date(a.released) < new Date(b.released)) return -1

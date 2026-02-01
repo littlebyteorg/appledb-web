@@ -26,6 +26,7 @@ function getFilteredDownloads(dlArr) {
 module.exports = function(args) {
     if (!Array.isArray(args.devArr)) args.devArr = [args.devArr]
     const devArr = args.devArr
+    const devImg = (devArr.filter(x => x && x.hasImage) || devArr)[0]
     const name = args.name
     const devPath = encodeURI(args.path)
     const description = args.description
@@ -144,12 +145,12 @@ module.exports = function(args) {
     })
 
     const osStr = Array.from(new Set(getVersionArr.map(x => x.osStr)))
-    const head = (mainList || !devArr[0].hasImage) ? [] : [
+    const head = (mainList || !devImg || !devImg.hasImage) ? [] : [
         [
         "meta",
         {
             property: "og:image",
-            content: `https://img.appledb.dev/device@256/${devArr[0].imageKey}/${devArr[0].img.images[0].id}.png`
+            content: `https://img.appledb.dev/device@256/${devImg.imageKey}/${devImg.img.images[0].id}.png`
         }
         ]
     ]
@@ -198,9 +199,7 @@ module.exports = function(args) {
         for (const i of devArr) extraInfo[i.key] = i.info
     }*/
 
-    let img = devArr.filter(x => x.img && x.img.images && x.img.images.length)
-    if (img.length) img = img[0].img
-    else img = { key: 'logo', images: [{'id': 0, 'dark': true}] }
+    let img = devImg ? devImg.img : { key: 'logo', images: [{'id': 0, 'dark': true}] }
 
     var imgCount = 0
     try {

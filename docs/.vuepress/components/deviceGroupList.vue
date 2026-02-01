@@ -187,7 +187,7 @@ export default {
             if (this.hasSoftwareType) {
                 for (const software of this.groupList.filter(x => x.type == "Software")) {
                     firstDeviceObj[software.groupKey] = {
-                        key: software.devices[0],
+                        key: software.img.key,
                         imageBool: software.img.images.length > 0 && software.img.key != 'logo',
                         imageNames: software.img.images
                     }
