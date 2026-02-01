@@ -26,7 +26,7 @@ function getFilteredDownloads(dlArr) {
 module.exports = function(args) {
     if (!Array.isArray(args.devArr)) args.devArr = [args.devArr]
     const devArr = args.devArr
-    const devImg = (devArr.filter(x => x && x.hasImage) || devArr)[0]
+    const devImg = (devArr.filter(x => x && x.hasImage && (args.imageKey == x.key || !args.imageKey)) || devArr)[0]
     const name = args.name
     const devPath = encodeURI(args.path)
     const description = args.description

@@ -31,7 +31,8 @@ for (const g of deviceGroups) {
       grouped: true,
       subgroups: g.subgroups || [],
       hideChildren: g.hideChildren,
-      show: {}
+      show: {},
+      imageKey: g.imageKey
     })
   )
 }

@@ -84,6 +84,7 @@ new Array([...new Set(deviceGroups.map(x => x.type)), ...Object.keys(customTypeA
             .map(x => {
                 const devArr = x.devices.map(y => deviceList[y])
                 for (const dev of devArr) {
+                    if (x.imageKey && x.imageKey != dev.img.key) continue
                     if (dev.img.key == 'logo') continue
                     x.img = dev.img
                     break
