@@ -83,12 +83,13 @@ function handleSigning(fw) {
     if (fw.osStr == 'Apple TV Software' && fw.deviceMap.includes('AppleTV1,1')) showSigning = false;
     else if (fw.version.indexOf('Simulator') > -1 || fw.version.indexOf('SDK') > -1) showSigning = false;
     else if (fw.preinstalled) {
-      if (!showSigning && Array.isArray(fw.preinstalled)) {
+      if (fw.osStr == 'macOS' && fw.version.split(".")[0] < "11") showSigning = false;
+      else if (!showSigning && Array.isArray(fw.preinstalled)) {
         showSigning = fw.deviceMap.filter(x => !fw.preinstalled.includes(x));
       }
     }
     else if (fw.osStr == 'macOS') {
-      if (fw.version.split(".")[0] < "11" || fw.build.startsWith('20A4')) showSigning = false;
+      if (fw.version.split(".")[0] < "11") showSigning = false;
       else showSigning = fw.deviceMap.filter(x => !macIntelPrefixes.includes(x.split(",")[0])) || false;
     }
   }
