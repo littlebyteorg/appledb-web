@@ -97,6 +97,7 @@ let fwChartPageArr = [
       "Mac Studio",
       "MacBook",
       "MacBook Air",
+      "MacBook Neo",
       "MacBook Pro",
       "PowerBook",
       "PowerMac",

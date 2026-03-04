@@ -52,7 +52,7 @@ let customTypeArr = {
         subtitle: ['Please select what model of iPad you have below.']
     },
     Macs: {
-        typeArr: ['MacBook', 'MacBook Air', 'MacBook Pro', 'iMac', 'Mac mini', 'Mac Studio', 'Mac Pro', 'Xserve'],
+        typeArr: ['MacBook', 'MacBook Air', 'MacBook Neo', 'MacBook Pro', 'iMac', 'Mac mini', 'Mac Studio', 'Mac Pro', 'Xserve'],
         subtitle: ['Please select what model of Mac you have below.']
     },
     iPods: {
