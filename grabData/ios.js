@@ -93,7 +93,7 @@ function handleSigning(fw) {
     }
     else if (fw.osStr == 'macOS') {
       if (fw.version.split(".")[0] < "11") showSigning = false;
-      else showSigning = fw.deviceMap.filter(x => !macIntelPrefixes.includes(x.split(",")[0])) || false;
+      else showSigning = (fw.sources && fw.deviceMap.filter(x => !macIntelPrefixes.includes(x.split(",")[0]))) || false;
     }
   }
 
