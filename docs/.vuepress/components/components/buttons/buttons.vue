@@ -14,6 +14,10 @@
                 :index="index" 
                 :length="content.length
             "/>
+            <template v-if="item.decryptionKey">
+                <h5>Decryption Key</h5>
+                <code>{{ item.decryptionKey }}</code>
+            </template>
         </div>
     </div>
 </template>
