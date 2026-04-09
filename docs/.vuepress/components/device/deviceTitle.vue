@@ -42,16 +42,18 @@ export default {
             return retArr
         },
         buttonContent() {
-            return [
-                {
-                    "text": "App Store",
+            let retArr = []
+            for (const link of this.grabInfo('appLink')) {
+                retArr.push({
+                    "text": link.label ? `App Store (${link.label})` : "App Store",
                     "key": "store",
-                    "link": this.grabInfo('appLink')[0].url,
+                    "link": link.url,
                     "icon": "fas fa-download",
                     "type": "store",
-                    "active": this.grabInfo('appLink')[0].active
-                }
-            ]
+                    "active": link.active
+                })
+            }
+            return retArr
         }
     },
     methods: {
