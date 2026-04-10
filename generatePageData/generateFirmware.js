@@ -496,7 +496,7 @@ for (const os of osArr) {
     }
     if (os.enterpriseNotes) {
         singleDownload.push({
-            text: "Enterprise Notes",
+            text: "Enterprise Release Notes",
             link: os.enterpriseNotes.url,
             icon: 'fas fa-fw fa-info',
             active: os.enterpriseNotes.active,
