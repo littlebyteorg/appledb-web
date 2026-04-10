@@ -475,7 +475,7 @@ for (const os of osArr) {
         return ret
     })
 
-    const linkableArr = ['releaseNotes', 'securityNotes']
+    const linkableArr = ['releaseNotes', 'enterpriseNotes', 'securityNotes']
 
     for (const p of linkableArr) {
         if (os[p] && typeof os[p] === 'string') {
@@ -492,6 +492,14 @@ for (const os of osArr) {
             link: os.releaseNotes.url,
             icon: 'fas fa-fw fa-info',
             active: os.releaseNotes.active,
+        })
+    }
+    if (os.enterpriseNotes) {
+        singleDownload.push({
+            text: "Enterprise Notes",
+            link: os.enterpriseNotes.url,
+            icon: 'fas fa-fw fa-info',
+            active: os.enterpriseNotes.active,
         })
     }
     if (os.securityNotes) {
