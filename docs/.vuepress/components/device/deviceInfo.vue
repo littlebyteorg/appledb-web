@@ -228,7 +228,8 @@ export default {
                 return dateArr
             }
             if (property == 'discontinued') {
-                const colors = Array.from(new Set(this.device.map(x => x.colors).flat())).filter(x => (x.key || x.name) == this.color)
+                let colors = []
+                if (this.color) colors = Array.from(new Set(this.device.map(x => x.colors).flat())).filter(x => (x.key || x.name) == this.color)
                 let dates = this.device.map(x => x[property])
                 if (this.color && colors && colors[0][property]) {
                     dates = colors.map(x => x[property])
