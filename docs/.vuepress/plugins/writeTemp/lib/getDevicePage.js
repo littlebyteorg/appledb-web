@@ -155,7 +155,7 @@ module.exports = function(args) {
         ]
     ]
 
-    const propertyArr = ['name','identifier','appLink','key','released','soc','arch','model','board','type','colors','img']
+    const propertyArr = ['name','identifier','appLink','key','released','discontinued','soc','arch','model','board','type','colors','img']
     const linkableArr = ['appLink']
     const infoArr = devArr.map(x => {
         var o = {}

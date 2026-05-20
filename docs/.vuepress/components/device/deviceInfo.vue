@@ -129,12 +129,17 @@ export default {
                 color: {
                     title: 'Color',
                     string: '${i}'
+                },
+                discontinued: {
+                    title: 'Discontinued',
+                    string: '${i}'
                 }
             },
         }
     },
     props: {
         device: Array,
+        color: String,
         extraInfo: Object
     },
     computed: {
@@ -221,6 +226,25 @@ export default {
                     return date
                 })
                 return dateArr
+            }
+            if (property == 'discontinued') {
+                const colors = Array.from(new Set(this.device.map(x => x.colors).flat())).filter(x => (x.key || x.name) == this.color)
+                let dates = this.device.map(x => x[property])
+                if (this.color && colors && colors[0][property]) {
+                    dates = colors.map(x => x[property])
+                }
+                const dateArr = Array.from(new Set(dates.flat())).filter(x => x).sort().reverse().map(x => {
+                    const dateOffset = (new Date().getTimezoneOffset() * 60 * 1000) + (60 * 60000)
+                    const currentDate = new Date(x).valueOf()
+                    const adjustedDate = new Date(currentDate + dateOffset)
+
+                    const discontinuedArr = x.split('-')
+                    const dateStyleArr = [{ year: 'numeric' }, { year: 'numeric', month: 'short' }, { dateStyle: 'medium' }]
+                    const date = new Intl.DateTimeFormat('en-US', dateStyleArr[discontinuedArr.length-1]).format(adjustedDate)
+                    
+                    return date
+                })
+                return [dateArr[0]]
             }
 
             return Array.from(new Set(this.device.map(x => x[property]).flat())).sort()

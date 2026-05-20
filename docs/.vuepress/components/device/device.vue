@@ -2,7 +2,7 @@
     <template v-if="!fm.mainList">
         <deviceTitle :color="colorName" :device="fm.device" :title="fm.title" :img="fm.img"/>
         <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
-        <deviceInfo :device="fm.device" :extraInfo="fm.extraInfo"/>
+        <deviceInfo :device="fm.device" :extraInfo="fm.extraInfo" :color="colorName"/>
         <template v-if="!fm.hideChildren">
             <groupedOrRelatedDeviceWrapper v-if="fm.subgroups.length" :device="fm.subgroups" :color="colorName" :colorGroup="colorGroup" :img="fm.img"/>
             <groupedOrRelatedDeviceWrapper v-else :device="fm.device" :color="colorName" :colorGroup="colorGroup" :img="fm.img"/>
