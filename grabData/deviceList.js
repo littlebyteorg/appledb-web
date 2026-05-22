@@ -68,6 +68,11 @@ for (const file in deviceFiles) {
   obj.key = obj.key || obj.identifier[0] || obj.name
   obj.imageKey = obj.imageKey || obj.key
 
+  if (obj.colors) obj.colors = obj.colors.map(x => {
+    x.key = x.key || x.name
+    return x
+  })
+
   let imgObj = {
     key: 'logo',
     images: [{

@@ -43,15 +43,15 @@ export default {
     computed: {
         colorName() {
             let colorMatch = []
-            if (this.color && this.device.colors) colorMatch = this.device.colors.filter(x => this.color == (x.key || x.name))
+            if (this.color && this.device.colors) colorMatch = this.device.colors.filter(x => this.color == (x.key))
             if (!colorMatch.length && this.colorGroup && this.device.colors) colorMatch = this.device.colors.filter(x => this.colorGroup == x.group)
-            if (colorMatch.length) return (colorMatch[0].key || colorMatch[0].name)
+            if (colorMatch.length) return (colorMatch[0].key)
             return this.color
         },
         released() {
             if (!this.device.colors) return this.device.released ? this.getDate(this.device.released) : 'Unknown'
             const currentColor = this.colorName
-            const colorObject = this.device.colors.filter(x => (x.key || x.name) == currentColor)
+            const colorObject = this.device.colors.filter(x => (x.key) == currentColor)
             if (colorObject.length) return this.getDate(colorObject[0].released)
             return this.device.released ? this.getDate(this.device.released) : 'Unknown'
         },

@@ -82,6 +82,11 @@ for (const file in deviceFiles) {
   
   obj.img = imgObj
 
+  if (obj.colors) obj.colors = obj.colors.map(x => {
+    x.key = x.key || x.name
+    return x
+  })
+
   if (obj.info) obj.info = obj.info.map(o => {
     if (o.type != 'Display') return o
     if (o.Resolution && o.Screen_Size) {

@@ -115,8 +115,13 @@ module.exports = function(args) {
             if (compatibility.length) jbCompatibility[jb.name] = compatibility
         })
 
+        let osStrSuffix = ''
+        if (i.osStr == 'Safari' && i.osMap) {
+            osStrSuffix = ` (${i.osMap.join(", ")})`
+        }
+
         return {
-            osStr: i.osStr,
+            osStr: `${i.osStr}${osStrSuffix}`,
             version: i.version,
             build: i.build,
             uniqueBuild: i.uniqueBuild,
@@ -167,6 +172,10 @@ module.exports = function(args) {
                         'active': true
                     }
                 else o[p] = x[p]
+        if (o.colors) o.colors = o.colors.map(y => {
+            y.key = y.key || y.name
+            return y
+        })
         return o
     })
 

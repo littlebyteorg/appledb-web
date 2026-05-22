@@ -62,7 +62,7 @@ export default {
             for (const dev of this.fm.device) {
                 if (!dev.colors) continue
                 for (const color of dev.colors) {
-                    const colorKey = (color.group || color.key || color.name)
+                    const colorKey = (color.group || color.key)
                     let colorHex = color.hex
                     if (Array.isArray(colorHex)) colorHex = colorHex[0]
                     if (colors[colorKey]) {
@@ -85,7 +85,7 @@ export default {
         if (query) {
             if (query.colorGroup) {
                 const colorOption = this.colors.filter(x => x.group == query.colorGroup)[0]
-                this.colorName = colorOption.key || colorOption.name
+                this.colorName = colorOption.key
                 this.colorGroup = query.colorGroup
             }
             else if (query.color) {
@@ -109,10 +109,12 @@ export default {
             return {"backgroundColor": "#" + colorHex}
         },
         changeColor: function(color) {
-            this.colorName = color.key || color.name
+            this.colorName = color.key
             this.colorGroup = color.group || ""
             this.fm.device[0].color = color.name
             this.fm.device[0].released = color.released
+            if (color.discontinued) this.fm.device[0].discontinued = color.discontinued
+            else if (this.fm.device[0].discontinued) delete this.fm.device[0].discontinued
         }
         /*checkScroll: function() {
             const loadRows = this.loadedFirmwares[1] - this.loadedFirmwares[0]

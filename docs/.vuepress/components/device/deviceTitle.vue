@@ -59,7 +59,12 @@ export default {
     methods: {
         grabInfo(property) {
             if (property == 'released') {
-                const dateArr = Array.from(new Set(this.device.map(x => x[property]).flat())).filter(x => x).sort().map(x => {
+                let dates = this.device.map(x => x[property])
+                if (this.color) {
+                    const colors = Array.from(new Set(this.device.map(x => x.colors).flat())).filter(x => x.key == this.color)
+                    if (colors && colors.map(x => x[property])) dates = colors.map(x => x[property])
+                }
+                const dateArr = Array.from(new Set(dates.flat())).filter(x => x).sort().map(x => {
                     const dateOffset = (new Date().getTimezoneOffset() * 60 * 1000) + (60 * 60000)
                     const currentDate = new Date(x).valueOf()
                     const adjustedDate = new Date(currentDate + dateOffset)

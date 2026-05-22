@@ -383,8 +383,12 @@ function getTitle(os) {
     } else {
         img = { url: null, align: 'right', images: []}
     }
+    let osStrSuffix = ''
+    if (os.osStr == 'Safari' && os.osMap) {
+        osStrSuffix = ` (${os.osMap.join(", ")})`
+    }
     return {
-        header: `${os.osStr} ${os.version} ${os.build && os.build != os.version ? ("(" + os.build + ")") : ''}`.trimEnd(),
+        header: `${os.osStr}${osStrSuffix} ${os.version} ${os.build && os.build != os.version ? ("(" + os.build + ")") : ''}`.trimEnd(),
         subtitle: {
             text: [
                 getReleaseDate(os.released) == '-1' ? null : getReleaseDate(os.released),
