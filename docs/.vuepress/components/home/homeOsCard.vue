@@ -11,7 +11,7 @@
             </div>
         </router-link>
         <div class="osVersionWrapper">
-            <div class="osVersionText" v-for="(version, index) in latestVersion.sort((a, b) => (a.beta || a.rc) > (b.beta || b.rc))" :key="index">
+            <div class="osVersionText" v-for="(version, index) in latestVersion" :key="index">
                 <router-link :to="`/firmware/${version.osStr.replace(/ /g,'-')}/${version.uniqueBuild}.html`">
                      <div :class="version.replaced && 'faded'">{{ version.version }}
                         <div class="tag" style="color: #ab47bc;" v-if="version.beta">beta</div>
@@ -70,7 +70,6 @@
 
 .osVersionText {
     padding: .5em 1em 1em 1em;
-    margin: -.5em -1em -1em -1em;
     border-radius: 8px;
     transition: all .2s cubic-bezier(0,0,.5,1);
 
