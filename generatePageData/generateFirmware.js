@@ -459,11 +459,10 @@ for (const os of osArr) {
 
     if (
         os.osStr == 'macOS' &&
-        os.sources && 
-        os.sources.length == 2 &&
-        os.sources.map(x => x.type).every(x => ['ipsw','installassistant'].includes(x))
+        os.sources
     ) singleDownload = ['ipsw','installassistant'].map(x => {
         let source = os.sources.find(y => y.type == x)
+        if (!source) return null
         let link = getPreferredLink(source.links)
         let ret = {
             text: downloadTextObj[x],
@@ -477,7 +476,7 @@ for (const os of osArr) {
         let bytes = formatBytes(source.size, 1)
         if (bytes) ret.text += ` (${bytes})`
         return ret
-    })
+    }).filter(x => x)
 
     const linkableArr = ['releaseNotes', 'enterpriseNotes', 'securityNotes']
 
