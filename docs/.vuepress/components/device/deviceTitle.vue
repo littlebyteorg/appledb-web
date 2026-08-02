@@ -25,6 +25,7 @@ export default {
         device: Array,
         title: String,
         img: Object,
+        groupImg: Array
     },
     data() {
         return {
@@ -38,6 +39,14 @@ export default {
             for (let i = 0; i < this.img.images.length; i++) {
                 if (this.color && this.color != this.img.images[i].id) continue
                 retArr.push(`https://img.appledb.dev/device@main/${this.img.key}/${this.img.images[i].id}${this.isDarkMode && this.img.images[i].dark ? '_dark' : ''}`)
+            }
+            if (this.groupImg.length && !retArr.length) {
+                for (let j = 0; j < this.groupImg.length; j++) {
+                    for (let i = 0; i < this.groupImg[j].images.length; i++) {
+                        if (this.color && this.color != this.groupImg[j].images[i].id) continue
+                        retArr.push(`https://img.appledb.dev/device@main/${this.groupImg[j].key}/${this.groupImg[j].images[i].id}${this.isDarkMode && this.groupImg[j].images[i].dark ? '_dark' : ''}`)
+                    }
+                }
             }
             return retArr
         },
@@ -78,7 +87,7 @@ export default {
                 return dateArr
             }
 
-            return Array.from(new Set(this.device.map(x => x[property]).flat())).sort()
+            return Array.from(new Set(this.device.map(x => x[property]).flat().filter(x => x))).sort()
         },
         checkWrap() {
             const flexImgs = document.getElementsByClassName('flexImg')

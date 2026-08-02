@@ -126,6 +126,14 @@ export default {
                     title: 'Board',
                     string: '${i}'
                 },
+                storage: {
+                    title: 'Storage',
+                    string: '${i}'
+                },
+                memory: {
+                    title: 'RAM',
+                    string: '${i}'
+                },
                 color: {
                     title: 'Color',
                     string: '${i}'
@@ -140,6 +148,7 @@ export default {
     props: {
         device: Array,
         color: String,
+        config: String,
         extraInfo: Object
     },
     computed: {

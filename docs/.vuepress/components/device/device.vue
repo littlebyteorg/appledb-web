@@ -1,6 +1,6 @@
 <template>
     <template v-if="!fm.mainList">
-        <deviceTitle :color="colorName" :device="fm.device" :title="fm.title" :img="fm.img"/>
+        <deviceTitle :color="colorName" :device="fm.device" :title="fm.title" :img="fm.img" :groupImg="fm.groupImg"/>
         <div v-if="adUnits && adUnits.length > 0" :id="`waldo-tag-${adUnits[0]}`"></div>
         <deviceInfo :device="fm.device" :extraInfo="fm.extraInfo" :color="colorName"/>
         <template v-if="!fm.hideChildren">
@@ -87,15 +87,32 @@ export default {
                 const colorOption = this.colors.filter(x => x.group == query.colorGroup)[0]
                 this.colorName = colorOption.key
                 this.colorGroup = query.colorGroup
+                this.colorConfigs = colorOption.configurations
             }
             else if (query.color) {
-                this.colorName = query.color
+                const colorOption = this.colors.filter(x => x.key == query.color)
+                if (colorOption.length) {
+                    this.colorName = query.color
+                } else {
+                    this.colorName = this.colors[this.colors.length - 1].key
+                }
             }
         }
     },
     created() {
-        if (this.fm.device[0].colors) {
-            this.changeColor(this.fm.device[0].colors[this.fm.device[0].colors.length - 1])
+        if (this.fm.device && this.colors && this.colors.length) {
+            let colorNames = new Set()
+            for (const device of this.fm.device) {
+                if (!device.colors) continue
+                const currentDeviceColors = device.colors.map(x => x.key).filter(x => device.key != 'MacPro6,1' || (device.key == 'MacPro6,1' && x != 'Red'))
+                if (colorNames.size) {
+                    colorNames = colorNames.intersection(new Set(currentDeviceColors))
+                } else {
+                    colorNames = new Set(currentDeviceColors)
+                }
+            }
+            const primaryColor = this.colors.filter(x => colorNames.has(x.key))[0]
+            this.changeColor(primaryColor)
         }
     },
     methods: {

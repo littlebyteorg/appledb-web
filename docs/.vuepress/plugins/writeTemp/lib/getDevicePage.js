@@ -36,6 +36,10 @@ module.exports = function(args) {
     const show = args.show
     const subgroups = args.subgroups || []
     const osStrArr = args.osStrArr || []
+    let groupImg = []
+    if (grouped && !mainList) {
+        groupImg = devArr.filter(x => x && x.hasImage && (args.imageKey == x.key || !args.imageKey)).map(x => x.img)
+    }
     
     let devFwArr = iosList
     if (!mainList) devFwArr = devFwArr.filter(i => {
@@ -255,8 +259,10 @@ module.exports = function(args) {
             hasFirmwares: hasFirmwares,
             hasFirmwareFilters: hasFirmwareFilters,
             grouped: grouped,
+            groupImg: groupImg,
             subgroups: subgroups.map(sg => {
                 let devArr = infoArr.filter(d => sg.devices.includes(d.key))
+                let subgroupImg = devArr.map(x => x.img)
 
                 return {
                     name: sg.name,
@@ -271,7 +277,8 @@ module.exports = function(args) {
                     board: devArr.map(x => x.board).flat().flat(),
                     type: sg.type,
                     colors: devArr.map(x => x.colors || []).flat().flat(),
-                    img: devArr[0].img
+                    img: devArr[0].img,
+                    groupImg: subgroupImg
                 }
             }),
             hideChildren: hideChildren,
