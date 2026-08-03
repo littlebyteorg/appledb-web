@@ -16,7 +16,6 @@
     "ghbuild": "NODE_OPTIONS=--max_old_space_size=24576 vuepress build docs"
   },
   "dependencies": {
-    "form-data": "2.5.6",
     "node-html-parser": "^5.4.1",
     "object-hash": "^3.0.0",
     "sync-request": "^6.1.0"
