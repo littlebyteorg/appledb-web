@@ -140,7 +140,7 @@ for (const jb of jbList) {
 
         var fwDict = {}
         for (var i in x.firmwares) for (var f in x.firmwares[i]) {
-          const fwList = iosList.filter(b => b.uniqueBuild == x.firmwares[i][f])
+          const fwList = iosList.filter(b => b.build == x.firmwares[i][f])
           for (const fw of fwList) {
             if (fw.beta) continue
             const fwDictKey = fw['osStr'] + fw['uniqueBuild']
@@ -182,6 +182,7 @@ for (const jb of jbList) {
           devObj[dev] = {}
           for (var fw of x.firmwares) {
             const firmware = fw.uniqueBuild
+            const firmwareFallback = fw.build
             devObj[dev][firmware] = compatStrObj.na
 
             let deviceMap = fw.deviceMap
@@ -194,7 +195,7 @@ for (const jb of jbList) {
 
             for (var c of compat) {
               if (!c.firmwares || !c.devices) continue
-              if (c.firmwares.includes(firmware) && c.devices.includes(dev)) {
+              if ((c.firmwares.includes(firmware) || c.firmwares.includes(firmwareFallback)) && c.devices.includes(dev)) {
                 devObj[dev][firmware] = compatStrObj.compatible
                 break
               }
