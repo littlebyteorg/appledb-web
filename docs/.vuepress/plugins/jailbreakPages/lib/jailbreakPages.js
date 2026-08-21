@@ -24,11 +24,21 @@ const sortBuilds = (a,b) => {
   bVersion = b.version.split(" ")
   aReleaseType = (aVersion[1] || "release").toLowerCase()
   bReleaseType = (bVersion[1] || "release").toLowerCase()
-  aReleaseCount = (aVersion[2] || '1')
-  bReleaseCount = (bVersion[2] || '1')
-  aRawVersion = aVersion[0].split(".")
-  bRawVersion = bVersion[0].split(".")
-  return bRawVersion[0] - aRawVersion[0] || bRawVersion[1] - aRawVersion[1] || (bRawVersion[2] || '0') - (aRawVersion[2] || '0') || releaseTypeMap[bReleaseType] - releaseTypeMap[aReleaseType] || bReleaseCount - aReleaseCount || b.build - a.build
+  aReleaseCount = parseInt(aVersion[2] || '1')
+  bReleaseCount = parseInt(bVersion[2] || '1')
+  aRawVersion = aVersion[0].split(".").map(x => parseInt(x))
+  bRawVersion = bVersion[0].split(".").map(x => parseInt(x))
+  const buildSort = (b.build > a.build ? 1 : (b.build < a.build ? -1 : 0))
+  if (aRawVersion.length == 1) aRawVersion.push(0)
+  if (aRawVersion.length == 2) aRawVersion.push(0)
+  if (bRawVersion.length == 1) bRawVersion.push(0)
+  if (bRawVersion.length == 2) bRawVersion.push(0)
+  if (bRawVersion[0] != aRawVersion[0]) return bRawVersion[0] - aRawVersion[0]
+  if (bRawVersion[1] != aRawVersion[1]) return bRawVersion[1] - aRawVersion[1]
+  if (bRawVersion[2] != aRawVersion[2]) return bRawVersion[2] - aRawVersion[2]
+  if (releaseTypeMap[bReleaseType] != releaseTypeMap[aReleaseType]) return releaseTypeMap[bReleaseType] - releaseTypeMap[aReleaseType]
+  if (bReleaseCount != aReleaseCount) return bReleaseCount - aReleaseCount
+  return buildSort
 }
 
 for (const jb of jbList) {
