@@ -2,7 +2,7 @@ const osArr = require('./grabData/firmware.js')
 const deviceGroupArr = require('./grabData/deviceGroup.js')
 const deviceArr = require('./grabData/device.js')
 const jailbreakArr = require('./grabData/jailbreak.js')
-const request = require('sync-request')
+const request = require('sync-request-curl')
 const fs = require('fs')
 
 if (!fs.existsSync('./docs/.vuepress/public/pageData/firmware')) fs.mkdirSync('./docs/.vuepress/public/pageData/firmware', { recursive: true })
