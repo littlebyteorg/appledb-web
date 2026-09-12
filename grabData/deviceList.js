@@ -1,4 +1,4 @@
-const request = require('sync-request')
+const request = require('sync-request-curl')
 const fs = require('fs');
 const path = require('path');
 const p = './appledb/deviceFiles'
