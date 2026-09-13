@@ -18,7 +18,7 @@
         </template>
     </template>
 
-    <p v-if="fm.device[0].key == 'Polishing Cloth'">Dedicated to Aaron.</p>
+    <p v-if="fm.device[0].key.startsWith('Polishing Cloth')">Dedicated to Aaron.</p>
 
     <firmwareVersionTableWrapper
         v-if="fm.versionArr && fm.versionArr.length > 0"
