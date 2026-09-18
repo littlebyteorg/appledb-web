@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const hash = require('object-hash')
-const request = require('sync-request')
+const request = require('sync-request-curl')
 const p = './appledb/deviceFiles'
 
 function getAllFiles(dirPath, arrayOfFiles) {
