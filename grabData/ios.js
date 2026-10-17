@@ -10,6 +10,7 @@ const showSigningArr = [
   'audioOS',
   'bridgeOS',
   'HomePod Software',
+  'HomeView Software',
   'iOS',
   'iPadOS',
   'macOS',

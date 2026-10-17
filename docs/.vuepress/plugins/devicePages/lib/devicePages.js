@@ -159,6 +159,17 @@ let fwChartPageArr = [
     ]
   },
   {
+    name: 'HomeView Software Firmware Chart',
+    description: 'HomeView Software Firmware Chart',
+    path: '/firmware/HomeView-Software.html',
+    typeArr: [
+      "Apple HomeView"
+    ],
+    osStrArr: [
+      'HomeView Software'
+    ]
+  },
+  {
     name: 'Bluetooth Headset Firmware Chart',
     description: 'Bluetooth Headset Firmware Chart',
     path: '/firmware/Bluetooth-Headset-Firmware.html',
