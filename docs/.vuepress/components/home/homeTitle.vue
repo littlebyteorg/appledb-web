@@ -35,6 +35,17 @@
                     </div>
                 </div>
             </a>
+            <a href="/app/">
+                <div class="listItem">
+                    <div class="listImg">
+                        <img src="/app-icons/placeholder.svg" alt="" width="64" height="64">
+                    </div>
+                    <div class="listText">
+                        Apps <i class="fas fa-chevron-right"></i>
+                        <div class="subtext">Apps, versions, and downloads</div>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 </template>
