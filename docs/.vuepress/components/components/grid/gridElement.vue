@@ -11,7 +11,10 @@
             </template>
         </div>
         <div class="text">
-            <div class="title">{{ content.title }}</div>
+            <div class="title">
+                <a v-if="content.link" :href="content.link">{{ content.title }}</a>
+                <template v-else>{{ content.title }}</template>
+            </div>
             <div class="subtitle">
                 {{ content.subtitle }}
                 <div class="iconRow" v-if="content.icons">
@@ -22,6 +25,10 @@
                         <li v-for="link in content.links" :key="link">
                             <a v-if="link.link" :href="link.link"><i v-if="link.icon" :class="link.icon"></i> {{ link.text }}</a>
                             <template v-else><i v-if="link.icon" :class="link.icon"></i> {{ link.text }}</template>
+                            <template v-if="link.decryptionKey">
+                                <i class="fa fa-key" @click.stop="controlVisibility(link.link)" />
+                                <div :style="visibleKeys.includes(link.link) ? '' : 'display: none'">Decryption Key:<code>{{ link.decryptionKey }}</code></div>
+                            </template>
                         </li>
                     </ul>
                 </div>
@@ -40,6 +47,7 @@ export default {
     },
     data() {
         return {
+            visibleKeys: [],
             isDarkMode: useDarkMode()
         }
     },
@@ -57,6 +65,15 @@ export default {
                 const dark = (imgName.dark && this.isDarkMode) ? '_dark' : ''
 
                 return [baseUrl,imgKey,imgName.id+dark].join('/')
+            }
+        }
+    },
+    methods: {
+        controlVisibility(itemLink) {
+            if (this.visibleKeys.includes(itemLink)) {
+                this.visibleKeys = this.visibleKeys.filter(x => x != itemLink)
+            } else {
+                this.visibleKeys.push(itemLink)
             }
         }
     }
@@ -84,6 +101,15 @@ export default {
         font-size: 1.2em;
         padding-bottom: 6px;
         width: calc(100% - 2em);
+
+        a {
+            color: var(--c-text);
+            font-weight: 600;
+
+            &:hover {
+                text-decoration: initial;
+            }
+        }
     }
 
     .links {

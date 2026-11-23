@@ -7,8 +7,7 @@
             v-for="i in content"
             :key="i.key"
         >
-            <a v-if="i.link" :href="i.link"><gridElement :sectionClass="sectionClass" class="gridElement" :content="i"/></a>
-            <gridElement v-else :sectionClass="sectionClass" :content="i"/>
+            <gridElement :sectionClass="sectionClass" class="gridElement" :content="i"/>
         </template>
     </div>
 </template>
