@@ -491,8 +491,9 @@ html.dark .btn {
     }
 
     .hoverElement {
-        left: 2em;
-        max-width: 60%;
+        left: 0.25em;
+        width: max-content;
+        max-width: 80vw;
     }
 
     .optionsWrapper {
@@ -544,6 +545,7 @@ html.dark .btn {
 .filterListItem {
     padding: .4em;
     display: flex;
+    align-items: center;
 
     &:hover {
         cursor: pointer;
