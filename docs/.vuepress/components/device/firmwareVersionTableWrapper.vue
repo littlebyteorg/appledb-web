@@ -55,7 +55,11 @@
                         {
                             label: 'Internal',
                             option: 'showInternal'
-                        }
+                        },
+                        ...(hasSigningSupport ? [{
+                            label: 'Signed',
+                            option: 'onlySigned'
+                        }] : [])
                     ]"
                     :key="filter"
                     :class="[
@@ -191,7 +195,7 @@ export default {
     },
     data() {
         return {
-            loadedFirmwares: [0,100],
+            loadedFirmwares:[0,100],
             versionArr: [],
 
             versionHeaderStr: 'Firmware Versions',
@@ -213,6 +217,7 @@ export default {
                 showRelease: true,
                 showBeta: false,
                 showInternal: false,
+                onlySigned: false,
 
                 showTweetButton: false,
 
@@ -238,6 +243,11 @@ export default {
                     display: true
                 }
             })
+        },
+        hasSigningSupport() {
+            return this.fmVersionArr.some(fw =>
+                Array.isArray(fw.showSigning) ? fw.showSigning.length > 0 : Boolean(fw.showSigning)
+            )
         }
     },
     methods: {
@@ -249,6 +259,9 @@ export default {
                     fw.deviceFilterArr.some(r => this.options.filterDev.includes(r))
                 ) && (
                     [fw.osStr,fw.version,fw.build].join(' ').toLowerCase().includes(this.options.searchStr.toLowerCase())
+                ) && (
+                    !this.options.onlySigned ||
+                    (Array.isArray(fw.signed) && fw.signed.some(x => fw.devices.includes(x) && this.options.filterDev.includes(x)))
                 )
             )
 
@@ -262,6 +275,7 @@ export default {
             
             let filter = filterValues.filter(x => x[1]).map(x => x[0])
             if (filter.length == filterValues.length) filter = []
+            if (this.options.onlySigned) filter.push('signed')
 
             if (this.deviceFilter.length != this.options.filterDev.length) {
                 filter.push(...this.options.filterDev)
@@ -287,6 +301,9 @@ export default {
                 this.options.showBeta = query.includes('beta')
                 this.options.showInternal = query.includes('internal')
             }
+            if (query.includes('signed')) {
+                this.options.onlySigned = true
+            }
             if (query.some(r => this.deviceFilter.map(x => x.value).includes(r))) {
                 querySet.deviceFilter = true
                 this.options.filterDev = query.filter(x => this.deviceFilter.map(x => x.value).includes(x))
@@ -310,6 +327,7 @@ export default {
     }
 }
 </script>
+
 
 <style lang="scss" scoped>
 html.dark .btn {
