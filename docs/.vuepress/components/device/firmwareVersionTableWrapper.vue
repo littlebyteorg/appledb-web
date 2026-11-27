@@ -34,6 +34,14 @@
         >
             <i class="fas fa-circle internal"></i> Internal
         </div>
+                <div
+            :class="[options.onlySigned ? 'active' : '', 'signed', 'btn', 'sbiFilter']"
+            @click="options.onlySigned = !options.onlySigned; filterVersions()"
+            v-if="hasSigningSupport"
+        >
+            <i class="fas fa-circle signed"></i> Signed
+        </div>
+
         <div class="separatorBefore"></div>
         <div :class="['hoverOn',deviceFilter.length < 2 ? 'show740' : '']">
             <div
@@ -55,7 +63,11 @@
                         {
                             label: 'Internal',
                             option: 'showInternal'
-                        }
+                        },
+                        ...(hasSigningSupport ? [{
+                            label: 'Signed',
+                            option: 'onlySigned'
+                        }] : [])
                     ]"
                     :key="filter"
                     :class="[
@@ -191,7 +203,7 @@ export default {
     },
     data() {
         return {
-            loadedFirmwares: [0,100],
+            loadedFirmwares:[0,100],
             versionArr: [],
 
             versionHeaderStr: 'Firmware Versions',
@@ -213,6 +225,7 @@ export default {
                 showRelease: true,
                 showBeta: false,
                 showInternal: false,
+                onlySigned: false,
 
                 showTweetButton: false,
 
@@ -238,6 +251,11 @@ export default {
                     display: true
                 }
             })
+        },
+        hasSigningSupport() {
+            return this.fmVersionArr.some(fw =>
+                Array.isArray(fw.showSigning) ? fw.showSigning.length > 0 : Boolean(fw.showSigning)
+            )
         }
     },
     methods: {
@@ -249,6 +267,12 @@ export default {
                     fw.deviceFilterArr.some(r => this.options.filterDev.includes(r))
                 ) && (
                     [fw.osStr,fw.version,fw.build].join(' ').toLowerCase().includes(this.options.searchStr.toLowerCase())
+                ) && (
+                    !this.options.onlySigned ||
+                    (Array.isArray(fw.signed) && fw.signed.length > 0 && (
+                        this.mainList ||
+                        fw.signed.some(x => fw.devices.includes(x) && this.options.filterDev.includes(x))
+                    ))
                 )
             )
 
@@ -262,6 +286,7 @@ export default {
             
             let filter = filterValues.filter(x => x[1]).map(x => x[0])
             if (filter.length == filterValues.length) filter = []
+            if (this.options.onlySigned) filter.push('signed')
 
             if (this.deviceFilter.length != this.options.filterDev.length) {
                 filter.push(...this.options.filterDev)
@@ -287,6 +312,9 @@ export default {
                 this.options.showBeta = query.includes('beta')
                 this.options.showInternal = query.includes('internal')
             }
+            if (query.includes('signed')) {
+                this.options.onlySigned = true
+            }
             if (query.some(r => this.deviceFilter.map(x => x.value).includes(r))) {
                 querySet.deviceFilter = true
                 this.options.filterDev = query.filter(x => this.deviceFilter.map(x => x.value).includes(x))
@@ -310,6 +338,7 @@ export default {
     }
 }
 </script>
+
 
 <style lang="scss" scoped>
 html.dark .btn {
@@ -347,8 +376,8 @@ html.dark .btn {
     .btn {
         white-space: nowrap;
         padding: .7em;
-        padding-inline: 1.2em;
-        margin: .3em;
+        padding-inline: 0.95em;
+        margin: .25em;
         border-radius: 4em;
         cursor: pointer;
         transition: 100ms background ease-in-out, transform 150ms ease-in-out;
@@ -431,15 +460,21 @@ html.dark .btn {
     }
 }
 
+.hoverOn {
+    position: relative;
+}
+
 .hoverElement {
     opacity: 0;
     transition: opacity 100ms ease-in-out, margin-top 100ms ease-in-out, transform 200ms ease;
     margin-top: -10px;
     transform: scale(0);
     transform-origin: top left;
-    position: relative;
-    left: calc(calc(calc(100vw - var(--content-width)) / 2) + 416px);
+    position: absolute;
+    left: 0;
+    width: max-content;
     max-width: calc(var(--content-width) * 0.6);
+    z-index: 10;
 }
 
 .show740 {
@@ -556,5 +591,22 @@ html.dark .btn {
     &.active i {
         opacity: 1;
     }
+}
+    .optionsWrapper .btn {
+    &.signed {
+        background: #4caf5010 !important;
+        border-color: #4caf5001 !important;
+        &:hover, &.active {
+            background: #4caf5030 !important;
+        }
+    }
+    .signed {
+        color: #4caf50;
+    }
+}
+
+.filterListItem .iconWrapper.onlySigned {
+    color: #4caf50;
+    opacity: 1;
 }
 </style>
