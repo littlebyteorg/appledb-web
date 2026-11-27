@@ -34,6 +34,14 @@
         >
             <i class="fas fa-circle internal"></i> Internal
         </div>
+                <div
+            :class="[options.onlySigned ? 'active' : '', 'signed', 'btn', 'sbiFilter']"
+            @click="options.onlySigned = !options.onlySigned; filterVersions()"
+            v-if="hasSigningSupport"
+        >
+            <i class="fas fa-circle signed"></i> Signed
+        </div>
+
         <div class="separatorBefore"></div>
         <div :class="['hoverOn',deviceFilter.length < 2 ? 'show740' : '']">
             <div
@@ -574,5 +582,22 @@ html.dark .btn {
     &.active i {
         opacity: 1;
     }
+}
+    .optionsWrapper .btn {
+    &.signed {
+        background: #4caf5010 !important;
+        border-color: #4caf5001 !important;
+        &:hover, &.active {
+            background: #4caf5030 !important;
+        }
+    }
+    .signed {
+        color: #4caf50;
+    }
+}
+
+.filterListItem .iconWrapper.onlySigned {
+    color: #4caf50;
+    opacity: 1;
 }
 </style>
