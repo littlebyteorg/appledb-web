@@ -25,6 +25,10 @@ module.exports = {
           link: '/firmware.html'
         },
         {
+          text: 'Apps',
+          link: '/app/'
+        },
+        {
           text: 'Credits',
           link: '/credits.html'
         },
