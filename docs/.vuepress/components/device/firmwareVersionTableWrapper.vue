@@ -269,7 +269,10 @@ export default {
                     [fw.osStr,fw.version,fw.build].join(' ').toLowerCase().includes(this.options.searchStr.toLowerCase())
                 ) && (
                     !this.options.onlySigned ||
-                    (Array.isArray(fw.signed) && fw.signed.some(x => fw.devices.includes(x) && this.options.filterDev.includes(x)))
+                    (Array.isArray(fw.signed) && fw.signed.length > 0 && (
+                        this.mainList ||
+                        fw.signed.some(x => fw.devices.includes(x) && this.options.filterDev.includes(x))
+                    ))
                 )
             )
 
@@ -373,8 +376,8 @@ html.dark .btn {
     .btn {
         white-space: nowrap;
         padding: .7em;
-        padding-inline: 1.2em;
-        margin: .3em;
+        padding-inline: 0.95em;
+        margin: .25em;
         border-radius: 4em;
         cursor: pointer;
         transition: 100ms background ease-in-out, transform 150ms ease-in-out;
@@ -457,15 +460,21 @@ html.dark .btn {
     }
 }
 
+.hoverOn {
+    position: relative;
+}
+
 .hoverElement {
     opacity: 0;
     transition: opacity 100ms ease-in-out, margin-top 100ms ease-in-out, transform 200ms ease;
     margin-top: -10px;
     transform: scale(0);
     transform-origin: top left;
-    position: relative;
-    left: calc(calc(calc(100vw - var(--content-width)) / 2) + 416px);
+    position: absolute;
+    left: 0;
+    width: max-content;
     max-width: calc(var(--content-width) * 0.6);
+    z-index: 10;
 }
 
 .show740 {
